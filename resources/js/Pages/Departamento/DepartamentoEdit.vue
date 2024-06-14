@@ -8,9 +8,12 @@ import TextInput from "@/Components/TextInput.vue";
 
 const props = defineProps({
     areas: Array,
+    departamento: Object,
 });
 
 const areas = ref(props.areas);
+
+const departamento = ref(props.departamento);
 
 async function getAreas() {
     await axios
@@ -22,13 +25,13 @@ async function getAreas() {
 }
 
 const form = useForm({
-    nombre: "",
-    area_id: "",
-    descripcion: "",
+    nombre: departamento.value.nombre,
+    area_id: departamento.value.area_id,
+    descripcion: departamento.value.descripcion,
 });
 
 const submit = () => {
-    form.post(route("departamento.store"), {
+    form.patch(route("departamento.update", props.departamento.id), {
         onFinish: () => form.reset(),
     });
 };
@@ -40,7 +43,7 @@ getAreas();
     <Layout>
         <Head title="Usuarios" />
 
-        <h1 class="mb-10 text-5xl font-bold">Nueva Departamento</h1>
+        <h1 class="mb-10 text-5xl font-bold">Editar Departamento</h1>
 
         <div class="container mx-auto">
             <form @submit.prevent="submit">
@@ -101,7 +104,7 @@ getAreas();
                             :class="{ 'opacity-25': form.processing }"
                             :disabled="form.processing"
                         >
-                            Guardar
+                            Actualizar
                         </PrimaryButton>
                     </div>
                 </div>

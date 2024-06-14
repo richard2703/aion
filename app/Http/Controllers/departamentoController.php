@@ -47,6 +47,6 @@ class departamentoController extends Controller
     {
         $departamento = Departamento::find($id);
         $departamento->delete();
-        return redirect()->route('departamento.index');
+        return response()->json(['departamentos' => Departamento::with('area')->get(),]);
     }
 }

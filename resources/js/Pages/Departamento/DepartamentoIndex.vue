@@ -42,7 +42,10 @@ const deleteDepartamento = (id) => {
         if (result.isConfirmed) {
             await axios
                 .delete(route("departamento.destroy", id))
-                .then((response) => (areas.value = response.data.areas))
+                .then(
+                    (response) =>
+                        (departamentos.value = response.data.departamentos)
+                )
                 .catch((error) => {
                     console.log(error);
                 });

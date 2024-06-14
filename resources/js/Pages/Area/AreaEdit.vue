@@ -65,7 +65,7 @@ const submit = () => {
                             :class="{ 'opacity-25': form.processing }"
                             :disabled="form.processing"
                         >
-                            Guardar
+                            Actualizar
                         </PrimaryButton>
                     </div>
                 </div>
