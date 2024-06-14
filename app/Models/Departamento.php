@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Departamento extends Model
 {
@@ -15,7 +16,13 @@ class Departamento extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'description',
+        'nombre',
+        'descripcion',
+        'area_id'
     ];
+
+    public function area(): BelongsTo
+    {
+        return $this->belongsTo(Area::class, 'area_id', 'id');
+    }
 }

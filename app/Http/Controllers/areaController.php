@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Throwable;
 
-// FIXME: Revisar los controladores hay un bug al hacer los retornos
 class areaController extends Controller
 {
     //
@@ -20,6 +19,12 @@ class areaController extends Controller
         ]);
     }
 
+    public function findAll()
+    {
+
+        return response()->json(['areas' => Area::all()]);
+    }
+
     function create()
     {
         return Inertia::render('Area/AreaCreate');
@@ -28,9 +33,8 @@ class areaController extends Controller
     function store(Request $request)
     {
 
-            $area = Area::create($request->only('nombre', 'descripcion'));
-            return redirect()->route('area.index');
-
+        $area = Area::create($request->only('nombre', 'descripcion'));
+        return redirect()->route('area.index');
     }
 
     // function show($id)

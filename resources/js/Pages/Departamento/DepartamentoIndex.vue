@@ -7,11 +7,14 @@ import Swal from "sweetalert2";
 
 const props = defineProps({
     areas: Array,
+    departamentos: Array,
 });
 
 const areas = ref(props.areas);
 
-const deleteArea = (id) => {
+const departamentos = ref(props.departamentos);
+
+const deleteDepartamento = (id) => {
     const Toast = Swal.mixin({
         toast: true,
         position: "top-end",
@@ -38,7 +41,7 @@ const deleteArea = (id) => {
     }).then(async (result) => {
         if (result.isConfirmed) {
             await axios
-                .delete(route("area.destroy", id))
+                .delete(route("departamento.destroy", id))
                 .then((response) => (areas.value = response.data.areas))
                 .catch((error) => {
                     console.log(error);
@@ -53,16 +56,16 @@ const deleteArea = (id) => {
 </script>
 
 <template>
-    <Layout title="Area">
-        <Head title="Area" />
+    <Layout title="Departamento">
+        <Head title="Departamento" />
 
-        <h1 class="mb-10 text-5xl font-bold">Areas</h1>
+        <h1 class="mb-10 text-5xl font-bold">Departamentos</h1>
 
         <Link
             class="inline-block mb-4 px-6 py-2 bg-yellow-800 rounded hover:text-white float-right"
-            :href="route('area.create')"
+            :href="route('departamento.create')"
         >
-            Registrar Area
+            Registrar Departamento
         </Link>
 
         <table class="table-auto w-full">
@@ -70,6 +73,11 @@ const deleteArea = (id) => {
                 <tr class="bg-slate-100">
                     <th class="min-w-[160px] text-lg py-4 lg:py-7 px-3 lg:px-4">
                         ID
+                    </th>
+                    <th
+                        class="bg-slate-100 min-w-[160px] text-lg py-4 lg:py-7 px-3 lg:px-4"
+                    >
+                        Departamento
                     </th>
                     <th
                         class="bg-slate-100 min-w-[160px] text-lg py-4 lg:py-7 px-3 lg:px-4"
@@ -87,37 +95,43 @@ const deleteArea = (id) => {
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="area in areas">
+                <tr v-for="departamento in departamentos">
                     <td
-                        v-if="area"
+                        v-if="departamento"
                         class="text-center text-dark font-medium text-base py-5 px-2 bg-[#F3F6FF] border-b border-l border-[#E8E8E8]"
                     >
-                        {{ area.id }}
+                        {{ departamento.id }}
                     </td>
                     <td
-                        v-if="area"
+                        v-if="departamento"
                         class="text-center text-dark font-medium text-base py-5 px-2 bg-white border-b border-[#E8E8E8]"
                     >
-                        {{ area.nombre }}
+                        {{ departamento.nombre }}
                     </td>
                     <td
-                        v-if="area"
+                        v-if="departamento"
+                        class="text-center text-dark font-medium text-base py-5 px-2 bg-white border-b border-[#E8E8E8]"
+                    >
+                        {{ departamento.area.nombre }}
+                    </td>
+                    <td
+                        v-if="departamento"
                         class="text-center text-dark font-medium text-base py-5 px-2 bg-[#F3F6FF] border-b border-[#E8E8E8]"
                     >
-                        {{ area.descripcion }}
+                        {{ departamento.descripcion }}
                     </td>
                     <td
-                        v-if="area"
+                        v-if="departamento"
                         class="text-center text-dark font-medium text-base py-5 px-2 bg-white border-b border-r border-[#E8E8E8]"
                     >
                         <Link
-                            :href="route('area.edit', area.id)"
+                            :href="route('departamento.edit', departamento.id)"
                             class="mx-1 border py-2 px-6 bg-yellow-800 inline-block rounded hover:bg-primary hover:text-white"
                         >
                             Editar
                         </Link>
                         <a
-                            @click.prevent="deleteArea(area.id)"
+                            @click.prevent="deleteDepartamento(departamento.id)"
                             class="mx-1 border py-2 px-6 bg-red-300 inline-block rounded hover:bg-primary hover:text-white"
                         >
                             Borrar

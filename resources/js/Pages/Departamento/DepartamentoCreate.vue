@@ -1,31 +1,46 @@
 <script setup>
-import { Head, useForm } from "@inertiajs/vue3";
+import { ref } from "vue";
+import { Head, Link, useForm } from "@inertiajs/vue3";
 import Layout from "@/Layouts/Layout.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 
 const props = defineProps({
-    area: Object,
+    areas: Array,
 });
 
+const areas = ref(props.areas);
+
+async function getAreas() {
+    await axios
+        .get("/api/areas")
+        .then((response) => (areas.value = response.data.areas))
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
 const form = useForm({
-    nombre: props.area.nombre,
-    descripcion: props.area.descripcion,
+    nombre: "",
+    area_id: "",
+    descripcion: "",
 });
 
 const submit = () => {
-    form.patch(route("area.update", props.area.id), {
+    form.post(route("departamento.store"), {
         onFinish: () => form.reset(),
     });
 };
+
+getAreas();
 </script>
 
 <template>
     <Layout>
         <Head title="Usuarios" />
 
-        <h1 class="mb-10 text-5xl font-bold">Editar Area</h1>
+        <h1 class="mb-10 text-5xl font-bold">Nueva Departamento</h1>
 
         <div class="container mx-auto">
             <form @submit.prevent="submit">
@@ -46,14 +61,35 @@ const submit = () => {
                     </div>
 
                     <div>
-                        <InputLabel for="description" value="Description" />
+                        <InputLabel for="area_id" value="Area: " />
+                        <select
+                            ref="select"
+                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                            v-model="form.area_id"
+                            required
+                        >
+                            <option value="" disabled selected>
+                                Seleccione una opcion
+                            </option>
+                            <option
+                                v-for="area in areas"
+                                :key="area.id"
+                                :value="area.id"
+                            >
+                                {{ area.nombre }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <InputLabel for="descripcion" value="Descripcion:" />
                         <TextInput
-                            id="description"
+                            id="descripcion"
                             v-model="form.descripcion"
                             type="text"
                             class="mt-1 block w-full"
                             required
-                            autocomplete="username"
+                            autocomplete="descripcion"
                         />
                     </div>
 

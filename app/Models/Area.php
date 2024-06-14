@@ -19,7 +19,8 @@ class Area extends Model
         'nombre',
         'descripcion',
     ];
-    function departamentos() : HasMany {
-        return $this->hasMany(Departamento::class);
+    function departamentos(): HasMany
+    {
+        return $this->hasMany(Departamento::class, 'area_id', 'id');
     }
 }
