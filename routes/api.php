@@ -10,3 +10,5 @@ Route::get('/user', function (Request $request) {
 Route::get('/hello', function (Request $request) {
     return response('Hello World', 200);
 })->name('hello');
+
+Route::get('/areas', [App\Http\Controllers\areaController::class, 'findAll'])->name('areas.findAll');
