@@ -104,6 +104,7 @@ import Logo from "@/Layouts/Shared/Logo.vue";
 import Dropdown from "@/Layouts/Shared/Dropdown.vue";
 import MainMenu from "@/Layouts/Shared/MainMenu.vue";
 //   import FlashMessages from '@/Layouts/Shared/FlashMessages.vue'
+  import '../../css/general.css';
 
 export default {
     components: {
