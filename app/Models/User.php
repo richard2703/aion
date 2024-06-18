@@ -26,6 +26,8 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'area_id',
+        'departamento_id',
         'name',
         'email',
         'password',
@@ -63,5 +65,15 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function area()
+    {
+        return $this->belongsTo(Area::class, 'area_id', 'id');
+    }
+
+    public function departamento()
+    {
+        return $this->belongsTo(Departamento::class, 'departamento_id', 'id');
     }
 }
