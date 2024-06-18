@@ -39,4 +39,14 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('/departamento/{id}/edit', [App\Http\Controllers\departamentoController::class, 'edit'])->name('departamento.edit');
     Route::patch('/departamento/{id}/update', [App\Http\Controllers\departamentoController::class, 'update'])->name('departamento.update');
     Route::delete('/departamento/{id}/destroy', [App\Http\Controllers\departamentoController::class, 'destroy'])->name('departamento.destroy');
+
+    // User
+    Route::get('/users', [App\Http\Controllers\userController::class, 'index'])->name('user.index');
+    Route::get('/user/create', [App\Http\Controllers\userController::class, 'create'])->name('user.create');
+    Route::post('/user/store', [App\Http\Controllers\userController::class, 'store'])->name('user.store');
+    // Route::get('/user/{id}', [App\Http\Controllers\userController::class, 'show'])->name('user.show');
+    Route::get('/user/{id}/edit', [App\Http\Controllers\userController::class, 'edit'])->name('user.edit');
+    Route::patch('/user/{id}/update', [App\Http\Controllers\userController::class, 'update'])->name('user.update');
+    Route::patch('/user/{id}/updatePassword', [App\Http\Controllers\userController::class, 'updatePassword'])->name('user.updatePassword');
+    Route::delete('/user/{id}/destroy', [App\Http\Controllers\userController::class, 'destroy'])->name('user.destroy');
 });

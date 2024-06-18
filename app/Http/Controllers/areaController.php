@@ -22,7 +22,7 @@ class areaController extends Controller
     public function findAll()
     {
 
-        return response()->json(['areas' => Area::all()]);
+        return response()->json(['areas' => Area::with('departamentos')->get()]);
     }
 
     function create()
