@@ -23,3 +23,24 @@
 .bg-general {
     @apply bg-[var(--blanco-logo)];
 }
+
+.breadcrumbsTitulo {
+    @apply text-2xl;
+    @apply font-bold;
+    @apply text-[var(--azul)];
+}
+.breadcrumbs {
+ @aplly font-semibold;
+ @apply text-[var(--azul-logo)];
+}
+
+.breadcrumbs a:hover  {
+    color: var(--azul);
+}
+
+.breadcrumbs a.active  {
+    color: var(--azul);
+    @apply font-bold;
+  }
+
+/* breadcrumbs  */

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="bg-general">
         <div id="dropdown" />
         <div class="md:flex md:flex-col">
             <div class="md:flex md:flex-col md:h-screen">
@@ -81,13 +81,9 @@
                     </div>
                 </div>
                 <div class="md:flex md:grow md:overflow-hidden">
-                    <main-menu
-                        class="hidden shrink-0 p-12 w-56 bg-neutral-800 overflow-y-auto md:block"
-                    />
-                    <div
-                        class="px-4 py-8 md:flex-1 md:p-12 md:overflow-y-auto"
-                        scroll-region
-                    >
+                    <main-menu class="hidden shrink-0 p-12 w-56 bg-neutral-800 overflow-y-auto md:block"/>
+                    <!-- <div class="px-4 py-8 md:flex-1 md:p-12 md:overflow-y-auto" scroll-region> -->
+                        <div class="px-2 py-4 md:flex-1 md:p-4 md:overflow-y-auto" scroll-region>
                         <flash-messages />
                         <slot />
                     </div>
@@ -104,7 +100,7 @@ import Logo from "@/Layouts/Shared/Logo.vue";
 import Dropdown from "@/Layouts/Shared/Dropdown.vue";
 import MainMenu from "@/Layouts/Shared/MainMenu.vue";
 //   import FlashMessages from '@/Layouts/Shared/FlashMessages.vue'
-  import '../../css/general.css';
+import '../../css/general.css';
 
 export default {
     components: {
