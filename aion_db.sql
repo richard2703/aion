@@ -479,3 +479,5 @@ ALTER TABLE `role_has_permissions`
 COMMIT;
 
 
+--
+-- Estructura de tabla para la tabla `users`
