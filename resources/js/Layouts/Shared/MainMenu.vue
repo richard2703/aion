@@ -4,24 +4,16 @@
             <li>
                 <div class="mb-4">
                     <Link class="group flex items-center py-3" href="/">
-                        <icon
-                            name="dashboard"
-                            class="mr-2 w-4 h-4"
-                            :class="
-                                isUrl('')
-                                    ? 'fill-white'
-                                    : 'fill-indigo-400 group-hover:fill-white'
-                            "
-                        />
-                        <div
-                            :class="
-                                isUrl('')
-                                    ? 'text-white'
-                                    : 'text-indigo-300 group-hover:text-white'
-                            "
-                        >
-                            Dashboard
-                        </div>
+                    <icon name="dashboard" class="mr-2 w-4 h-4" :class="isUrl('')
+                        ? 'fill-white'
+                        : 'fill-indigo-400 group-hover:fill-white'
+                        " />
+                    <div :class="isUrl('')
+                        ? 'text-white'
+                        : 'text-indigo-300 group-hover:text-white'
+                        ">
+                        Dashboard
+                    </div>
                     </Link>
                 </div>
             </li>
@@ -29,52 +21,33 @@
             <li>
                 <div class="mb-4">
                     <Link class="group flex items-center py-3" href="/areas">
-                        <icon
-                            name="office"
-                            class="mr-2 w-4 h-4"
-                            :class="
-                                isUrl('organizations')
-                                    ? 'fill-white'
-                                    : 'fill-indigo-400 group-hover:fill-white'
-                            "
-                        />
-                        <div
-                            :class="
-                                isUrl('organizations')
-                                    ? 'text-white'
-                                    : 'text-indigo-300 group-hover:text-white'
-                            "
-                        >
-                            Areas
-                        </div>
+                    <icon name="office" class="mr-2 w-4 h-4" :class="isUrl('organizations')
+                        ? 'fill-white'
+                        : 'fill-indigo-400 group-hover:fill-white'
+                        " />
+                    <div :class="isUrl('organizations')
+                        ? 'text-white'
+                        : 'text-indigo-300 group-hover:text-white'
+                        ">
+                        Areas
+                    </div>
                     </Link>
                 </div>
             </li>
 
             <li>
                 <div class="mb-4">
-                    <Link
-                        class="group flex items-center py-3"
-                        href="/departamentos"
-                    >
-                        <icon
-                            name="office"
-                            class="mr-2 w-4 h-4"
-                            :class="
-                                isUrl('organizations')
-                                    ? 'fill-white'
-                                    : 'fill-indigo-400 group-hover:fill-white'
-                            "
-                        />
-                        <div
-                            :class="
-                                isUrl('organizations')
-                                    ? 'text-white'
-                                    : 'text-indigo-300 group-hover:text-white'
-                            "
-                        >
-                            Departamentos
-                        </div>
+                    <Link class="group flex items-center py-3" href="/departamentos">
+                    <icon name="office" class="mr-2 w-4 h-4" :class="isUrl('organizations')
+                        ? 'fill-white'
+                        : 'fill-indigo-400 group-hover:fill-white'
+                        " />
+                    <div :class="isUrl('organizations')
+                        ? 'text-white'
+                        : 'text-indigo-300 group-hover:text-white'
+                        ">
+                        Departamentos
+                    </div>
                     </Link>
                 </div>
             </li>
