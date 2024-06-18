@@ -8,10 +8,18 @@ use App\Models\User;
 
 class testController extends Controller
 {
+    // public function primero()
+    // {
+    //     // return response()->json(['message' => 'Hello World'], 200);
+    //     return Inertia::render('test/HelloWorld', [
+    //         'message' => 'Hello World'
+    //     ]);
+    // }
+
     public function primero()
     {
         // return response()->json(['message' => 'Hello World'], 200);
-        return Inertia::render('test/HelloWorld', [
+        return Inertia::render('test/base', [
             'message' => 'Hello World'
         ]);
     }
