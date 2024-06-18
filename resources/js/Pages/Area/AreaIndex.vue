@@ -4,8 +4,7 @@ import { ref } from "vue";
 import axios from "axios";
 import Layout from "@/Layouts/Layout.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-
-import Swal from "sweetalert2";
+import { confirmDialog, showToast } from "../utils/SweetAlert.service";
 
 const props = defineProps({
     areas: Array,
@@ -13,44 +12,17 @@ const props = defineProps({
 
 const areas = ref(props.areas);
 
-const deleteArea = (id) => {
-    const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-        },
-    });
-
-    Swal.fire({
-        title: "Estas seguro?",
-        text: "Ya no podras revertir esto!",
-        icon: "warning",
-        position: "center",
-        width: 400,
-        height: 300,
-        showCancelButton: true,
-        confirmButtonColor: "#d33",
-        cancelButtonColor: "#3085d6",
-        confirmButtonText: "Si, Eliminar!",
-    }).then(async (result) => {
+const deleteArea = async (id) => {
+    try {
+        const result = await confirmDialog();
         if (result.isConfirmed) {
-            await axios
-                .delete(route("area.destroy", id))
-                .then((response) => (areas.value = response.data.areas))
-                .catch((error) => {
-                    console.log(error);
-                });
-            Toast.fire({
-                icon: "success",
-                title: "El registro ha sido eliminado",
-            });
+            const response = await axios.delete(route("area.destroy", id));
+            areas.value = response.data.areas;
+            showToast("El registro ha sido eliminado", "success");
         }
-    });
+    } catch (error) {
+        console.error(error);
+    }
 };
 </script>
 
