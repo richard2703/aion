@@ -14,7 +14,11 @@ const areas = ref(props.areas);
 
 const deleteArea = async (id) => {
     try {
-        const result = await confirmDialog();
+        const result = await confirmDialog(
+            "Estas seguro?",
+            "Ya no podras revertir esto!",
+            "warning"
+        );
         if (result.isConfirmed) {
             const response = await axios.delete(route("area.destroy", id));
             areas.value = response.data.areas;

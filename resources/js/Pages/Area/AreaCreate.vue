@@ -4,15 +4,24 @@ import Layout from "@/Layouts/Layout.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
+import { confirmDialog, showToast } from "../utils/SweetAlert.service";
 
 const form = useForm({
     nombre: "",
     descripcion: "",
 });
-const submit = () => {
-    form.post(route("area.store"), {
-        onFinish: () => form.reset(),
-    });
+const submit = async () => {
+    try {
+        form.post(route("area.store"), {
+            onFinish: () => {
+                showToast("El registro ha sido creado", "success");
+                form.reset();
+            },
+        });
+    } catch (error) {
+        showToast("Ocurrio un error", "error");
+        console.error(error);
+    }
 };
 </script>
 

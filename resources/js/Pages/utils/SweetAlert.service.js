@@ -12,18 +12,18 @@ const Toast = Swal.mixin({
     }
 });
 
-export const confirmDialog = () => {
+export const confirmDialog = (title, text, icon) => {
     return Swal.fire({
-        title: 'Estas seguro?',
-        text: 'Ya no podras revertir esto!',
-        icon: 'warning',
+        title: title,
+        text: text,
+        icon: icon,
         position: 'center',
         width: 400,
-        height: 300,
         showCancelButton: true,
         confirmButtonColor: '#d33',
         cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Si, Eliminar!'
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Aceptar!'
     });
 };
 
