@@ -94,7 +94,6 @@ const submit = async () => {
                                             v-model="form.descripcion"
                                             type="text"
                                             class="mt-1 block w-full"
-                                            required
                                             autocomplete="username"
                                         />
                                     </div>

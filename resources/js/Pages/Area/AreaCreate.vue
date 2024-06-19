@@ -4,7 +4,7 @@ import Layout from "@/Layouts/Layout.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
-import { confirmDialog, showToast } from "../utils/SweetAlert.service";
+import { showToast } from "../utils/SweetAlert.service";
 
 const form = useForm({
     nombre: "",
