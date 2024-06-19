@@ -10,7 +10,9 @@ const props = defineProps({
     usuarios: Object,
 });
 
-const usuarios = ref(props.usuarios); // para mostrar los datos en la vista
+const usuarios = ref(props.usuarios);
+const title = "usuarios";
+const subTitle = "index";
 
 async function deleteUser(id) {
     const Toast = Swal.mixin({
@@ -54,17 +56,15 @@ async function deleteUser(id) {
 </script>
 
 <template>
-    <Layout>
+    <Layout :titulo="title" :subTitulo="subTitle">
+
         <Head title="Usuarios" />
 
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             Usuarios
         </h2>
 
-        <PrimaryButton
-            class="ms-4 float-right mb-4 px-6 py-2"
-            :href="route('user.create')"
-        >
+        <PrimaryButton class="ms-4 float-right mb-4 px-6 py-2" :href="route('user.create')">
             Registrar usuario
         </PrimaryButton>
 
@@ -74,79 +74,51 @@ async function deleteUser(id) {
                     <th class="min-w-[160px] text-lg py-4 lg:py-7 px-3 lg:px-4">
                         ID
                     </th>
-                    <th
-                        class="bg-slate-100 min-w-[160px] text-lg py-4 lg:py-7 px-3 lg:px-4"
-                    >
+                    <th class="bg-slate-100 min-w-[160px] text-lg py-4 lg:py-7 px-3 lg:px-4">
                         Nombre
                     </th>
-                    <th
-                        class="bg-slate-100 min-w-[160px] text-lg py-4 lg:py-7 px-3 lg:px-4"
-                    >
+                    <th class="bg-slate-100 min-w-[160px] text-lg py-4 lg:py-7 px-3 lg:px-4">
                         Email
                     </th>
-                    <th
-                        class="bg-slate-100 min-w-[160px] text-lg py-4 lg:py-7 px-3 lg:px-4"
-                    >
+                    <th class="bg-slate-100 min-w-[160px] text-lg py-4 lg:py-7 px-3 lg:px-4">
                         Area
                     </th>
-                    <th
-                        class="bg-slate-100 min-w-[160px] text-lg py-4 lg:py-7 px-3 lg:px-4"
-                    >
+                    <th class="bg-slate-100 min-w-[160px] text-lg py-4 lg:py-7 px-3 lg:px-4">
                         Departamento
                     </th>
-                    <th
-                        class="bg-slate-100 min-w-[160px] text-lg py-4 lg:py-7 px-3 lg:px-4"
-                    ></th>
+                    <th class="bg-slate-100 min-w-[160px] text-lg py-4 lg:py-7 px-3 lg:px-4"></th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="usuario in usuarios">
+                <tr v-for="usuario in usuarios" :key="usuario.id">
                     <td
-                        v-if="usuario"
-                        class="text-center text-dark font-medium text-base py-5 px-2 bg-white border-b border-[#E8E8E8]"
-                    >
+                        class="text-center text-dark font-medium text-base py-5 px-2 bg-white border-b border-[#E8E8E8]">
                         {{ usuario.id }}
                     </td>
                     <td
-                        v-if="usuario"
-                        class="text-center text-dark font-medium text-base py-5 px-2 bg-white border-b border-[#E8E8E8]"
-                    >
+                        class="text-center text-dark font-medium text-base py-5 px-2 bg-white border-b border-[#E8E8E8]">
                         {{ usuario.name }}
                     </td>
                     <td
-                        v-if="usuario"
-                        class="text-center text-dark font-medium text-base py-5 px-2 bg-white border-b border-[#E8E8E8]"
-                    >
+                        class="text-center text-dark font-medium text-base py-5 px-2 bg-white border-b border-[#E8E8E8]">
                         {{ usuario.email }}
                     </td>
                     <td
-                        v-if="usuario"
-                        class="text-center text-dark font-medium text-base py-5 px-2 bg-white border-b border-[#E8E8E8]"
-                    >
+                        class="text-center text-dark font-medium text-base py-5 px-2 bg-white border-b border-[#E8E8E8]">
                         {{ usuario.area.nombre }}
                     </td>
                     <td
-                        v-if="usuario"
-                        class="text-center text-dark font-medium text-base py-5 px-2 bg-white border-b border-[#E8E8E8]"
-                    >
+                        class="text-center text-dark font-medium text-base py-5 px-2 bg-white border-b border-[#E8E8E8]">
                         {{ usuario.departamento.nombre }}
                     </td>
                     <td
-                        v-if="usuario"
-                        class="text-center text-dark font-medium text-base py-5 px-2 bg-white border-b border-[#E8E8E8]"
-                    >
-                        <PrimaryButton
-                            :href="route('user.edit', usuario.id)"
-                            class="mx-1 border py-2 px-6"
-                        >
-                            editar
+                        class="text-center text-dark font-medium text-base py-5 px-2 bg-white border-b border-[#E8E8E8]">
+                        <PrimaryButton :href="route('user.edit', usuario.id)" class="mx-1 border py-2 px-6">
+                            Editar
                         </PrimaryButton>
 
-                        <PrimaryButton
-                            @click.prevent="deleteUser(usuario.id)"
-                            class="mx-1 border py-2 px-6"
-                        >
-                            borrar
+                        <PrimaryButton @click.prevent="deleteUser(usuario.id)" class="mx-1 border py-2 px-6">
+                            Borrar
                         </PrimaryButton>
                     </td>
                 </tr>
