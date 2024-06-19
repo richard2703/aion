@@ -11,6 +11,7 @@ const props = defineProps({
 });
 
 const areas = ref(props.areas);
+const title = "areas";
 
 const deleteArea = async (id) => {
     try {
@@ -31,7 +32,7 @@ const deleteArea = async (id) => {
 </script>
 
 <template>
-    <Layout title="Area">
+    <Layout :titulo="title">
         <Head title="Area" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">

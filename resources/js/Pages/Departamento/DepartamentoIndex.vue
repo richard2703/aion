@@ -11,6 +11,7 @@ const props = defineProps({
 });
 
 const departamentos = ref(props.departamentos);
+const title = "departamentos";
 
 const deleteDepartamento = async (id) => {
     try {
@@ -37,7 +38,7 @@ const deleteDepartamento = async (id) => {
 </script>
 
 <template>
-    <Layout title="Departamento">
+    <Layout :titulo="title">
         <Head title="Departamento" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">

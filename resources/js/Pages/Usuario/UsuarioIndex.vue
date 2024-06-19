@@ -12,7 +12,7 @@ const props = defineProps({
 
 const usuarios = ref(props.usuarios);
 const title = "usuarios";
-const subTitle = "index";
+// const subTitle = "index";
 
 async function deleteUser(id) {
     try {
