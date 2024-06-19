@@ -64,7 +64,7 @@ const deleteDepartamento = async (id) => {
                         >
                     </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
-                        <div class="container mx-auto">
+                        <div class="container mx-auto overflow-x-auto">
                             <table class="table-auto w-full">
                                 <thead>
                                     <tr class="bg-slate-100">

@@ -49,10 +49,10 @@ getAreas();
                 <Link :href="route('dashboard')" class="px-1">
                     <h3>Dashboard -</h3>
                 </Link>
-                <Link :href="route('area.index')" class="px-1">
+                <Link :href="route('departamento.index')" class="px-1">
                     <h3>Departamentos -</h3>
                 </Link>
-                <Link :href="route('area.create')" class="active">
+                <Link :href="route('departamento.create')" class="active">
                     <h3>Nuevo</h3>
                 </Link>
             </div>
