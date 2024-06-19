@@ -15,10 +15,13 @@ const submit = () => {
     });
 };
 
+const title = "dashboard";  // Aquí asegúrate de que esto coincida con el valor que esperas en MainMenu
+const subTitle = "subTitle2"; // Este segundo es por siu viene de un menu desplegable en MainMenu
+
 </script>
 
 <template>
-    <Layout>
+    <Layout :titulo="title" :subTitulo="subTitle">
 
         <Head title="Dashboard" />
         <div class=" overflow-hidden sm:rounded-lg">

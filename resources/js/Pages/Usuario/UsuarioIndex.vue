@@ -11,8 +11,8 @@ const props = defineProps({
 });
 
 const usuarios = ref(props.usuarios);
-const title = "usuarios";  // Aquí asegúrate de que esto coincida con el valor que esperas en MainMenu
-const subTitle = "subTitle2";
+const title = "usuarios";
+const subTitle = "index";
 
 async function deleteUser(id) {
     const Toast = Swal.mixin({
