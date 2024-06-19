@@ -18,6 +18,15 @@ class departamentoController extends Controller
         ]);
     }
 
+    function byArea($area_id)
+    {
+        return response()->json(['departamentos' => Departamento::where('area_id', $area_id)->get()]);
+    }
+    function findAll()
+    {
+        return response()->json(['departamentos' => Departamento::all()]);
+    }
+
     function create()
     {
         return Inertia::render('Departamento/DepartamentoCreate');
