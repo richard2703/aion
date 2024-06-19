@@ -25,6 +25,9 @@
     },
     "dependencies": {
         "@popperjs/core": "^2.11.8",
+        "@primevue/themes": "^4.0.0-rc.2",
+        "primeicons": "^7.0.0",
+        "primevue": "^4.0.0-rc.2",
         "sweetalert2": "^11.11.1"
     }
 }

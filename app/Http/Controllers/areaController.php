@@ -19,10 +19,12 @@ class areaController extends Controller
         ]);
     }
 
-    public function findAll()
+    public function findAll(Request $request)
     {
-
-        return response()->json(['areas' => Area::with('departamentos')->get()]);
+        $page = $request->get('page', 1);
+        $pageSize = $request->get('rows', 2);
+        $areas = Area::paginate($pageSize, ['*'], 'page', $page);
+        return response()->json(['areas' => $areas]);
     }
 
     function create()

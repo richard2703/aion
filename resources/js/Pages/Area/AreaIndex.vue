@@ -5,14 +5,32 @@ import axios from "axios";
 import Layout from "@/Layouts/Layout.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { confirmDialog, showToast } from "../utils/SweetAlert.service";
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
+import Button from "primevue/button";
 
 const props = defineProps({
     areas: Array,
+    areasAPI: Array,
 });
 
 const areas = ref(props.areas);
+const areasAPI = ref(props.areasAPI);
 const title = "areas";
 
+async function getAreas() {
+    await axios
+        .get("/api/areas")
+        .then((response) => {
+            areasAPI.value = response.data.areas;
+
+            console.log(areasAPI.value);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+getAreas();
 const deleteArea = async (id) => {
     try {
         const result = await confirmDialog(
@@ -28,6 +46,10 @@ const deleteArea = async (id) => {
     } catch (error) {
         console.error(error);
     }
+};
+console.log({ log: areasAPI });
+const click = (id) => {
+    console.log(id);
 };
 </script>
 
@@ -130,5 +152,36 @@ const deleteArea = async (id) => {
                 </div>
             </div>
         </div>
+
+        <DataTable
+            :value="areasAPI"
+            paginator
+            :rows="2"
+            :rowsPerPageOptions="[2, 10, 20, 50]"
+            tableStyle="min-width: 50rem"
+            :selection="selectedArea"
+            @rowSelect="onRowSelect"
+        >
+            <Column field="id" header="ID" style="width: 25%"></Column>
+            <Column field="nombre" header="Area" style="width: 25%"></Column>
+            <Column
+                field="descripcion"
+                header="Descripcion"
+                style="width: 25%"
+            ></Column>
+            <Column headerStyle="width:4em;" header="">
+                <template #body="area">
+                    <Button
+                        label="Search"
+                        type="button"
+                        icon="pi pi-search"
+                        class="p-button-success"
+                        style="margin-right: 0.5em"
+                        @click="click(area.data.id)"
+                    >
+                    </Button>
+                </template>
+            </Column>
+        </DataTable>
     </Layout>
 </template>
