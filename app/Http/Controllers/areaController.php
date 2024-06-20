@@ -22,9 +22,9 @@ class areaController extends Controller
     public function findAll(Request $request)
     {
         $page = $request->get('page', 1);
-        $pageSize = $request->get('rows', 2);
+        $pageSize = $request->get('rows', 10);
         $areas = Area::paginate($pageSize, ['*'], 'page', $page);
-        return response()->json(['areas' => $areas]);
+        return response()->json($areas);
     }
 
     function create()

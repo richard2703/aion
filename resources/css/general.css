@@ -9,6 +9,7 @@
     --morado: #8c00ff;
     --verde: #25dc45;
     --dorado: #c9a76a ;
+    --slate: #1e293b
 }
 
 .bg-logo {
@@ -44,3 +45,22 @@
   }
 
 /* breadcrumbs  */
+
+/* prime */
+.p-button-secondary {
+    @apply bg-[var(--slate)] !important;
+    @apply text-[var(--blanco)] !important;
+    display: inline-flex;
+    align-items: center;
+    padding-left: 1rem;  /* px-4 */
+    padding-right: 1rem; /* px-4 */
+    padding-top: 0.5rem; /* py-2 */
+    padding-bottom: 0.5rem; /* py-2 */
+    border-radius: 0.375rem; /* rounded-md */
+    font-weight: 600; /* font-semibold */
+    font-size: 0.75rem; /* text-xs */
+    text-transform: uppercase; /* uppercase */
+    letter-spacing: 0.05em; /* tracking-widest */
+    transition: background-color 0.15s ease-in-out;
+
+}
