@@ -58,7 +58,7 @@ const deleteArea = async (id) => {
         );
         if (result.isConfirmed) {
             const response = await axios.delete(route("area.destroy", id));
-            areas.value = response.data.areas;
+            areas.value = areas.value.filter((area) => area.id !== id);
             showToast("El registro ha sido eliminado", "success");
         }
     } catch (error) {
@@ -108,25 +108,30 @@ const deleteArea = async (id) => {
                                 tableStyle="min-width: 50rem"
                                 :selection="selectedArea"
                                 @rowSelect="onRowSelect"
-                                class="p-datatable-sm p-datatable-striped"
+                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines"
                             >
                                 <Column
                                     field="id"
                                     header="ID"
-                                    style="width: 25%"
+                                    headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;"
                                 ></Column>
                                 <Column
                                     field="nombre"
                                     header="Area"
-                                    style="width: 25%"
+                                    headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;"
+                                    bodyClass="text-center"
                                 ></Column>
                                 <Column
                                     field="descripcion"
                                     header="Descripcion"
-                                    style="width: 25%"
+                                    headerStyle="width:4em;"
+                                    bodyClass="text-center"
                                 ></Column>
-                                <Column headerStyle="width:4em;" header="">
-                                    <template #body="area">
+
+                                <Column header="" headerStyle="width:4em;">
+                                    <template #body="area" class="text-center">
                                         <Button
                                             label="Editar"
                                             type="button"
