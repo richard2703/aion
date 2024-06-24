@@ -7,7 +7,6 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { confirmDialog, showToast } from "../utils/SweetAlert.service";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
-import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 
 // Definir propiedades
@@ -205,25 +204,26 @@ watch(globalFilter, (newValue) => {
                                         #body="slotProps"
                                         class="text-center"
                                     >
-                                        <Button
-                                            label="Editar"
-                                            type="button"
-                                            icon="pi pi-pencil"
-                                            class="p-button-secondary"
-                                            style="margin-right: 0.5em"
-                                            @click="editArea(slotProps.data.id)"
-                                        ></Button>
+                                        <PrimaryButton
+                                            class="me-2"
+                                            :href="
+                                                route(
+                                                    'area.edit',
+                                                    slotProps.data.id
+                                                )
+                                            "
+                                        >
+                                            Editar
+                                        </PrimaryButton>
 
-                                        <Button
-                                            label="Borrar"
-                                            type="button"
-                                            icon="pi pi-trash"
-                                            class="p-button-secondary"
-                                            style="margin-right: 0.5em"
-                                            @click="
+                                        <PrimaryButton
+                                            class="me-2"
+                                            @click.prevent="
                                                 deleteArea(slotProps.data.id)
                                             "
-                                        ></Button>
+                                        >
+                                            Borrar
+                                        </PrimaryButton>
                                     </template>
                                 </Column>
                             </DataTable>
