@@ -35,7 +35,9 @@ class areaController extends Controller
                 ->orWhere('descripcion', 'like', '%' . $filter . '%');
         }
 
-        $query->orderBy($sortField, $sortOrder);
+        if (in_array($sortField, ['id', 'nombre', 'descripcion'])) {
+            $query->orderBy($sortField, $sortOrder);
+        }
 
         $areas = $query->paginate($pageSize, ['*'], 'page', $page);
 

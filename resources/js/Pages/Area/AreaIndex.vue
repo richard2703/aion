@@ -1,3 +1,126 @@
+<script setup>
+import { Head, Link } from "@inertiajs/vue3";
+import { ref, onMounted, watch } from "vue";
+import axios from "axios";
+import Layout from "@/Layouts/Layout.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import { confirmDialog, showToast } from "../utils/SweetAlert.service";
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
+import Button from "primevue/button";
+import InputText from "primevue/inputtext";
+
+// Definir propiedades
+const props = defineProps({
+    areas: Array,
+    areasAPI: Array,
+});
+
+const totalRecords = ref(0);
+const rows = ref(10);
+const first = ref(0);
+const areas = ref([]);
+const globalFilter = ref("");
+const filters = ref({});
+const sortField = ref("id"); // Valor predeterminado
+const sortOrder = ref(1);
+const title = "areas";
+
+// Función para obtener áreas
+async function getAreas(
+    page = 1,
+    rowsPerPage = rows.value,
+    filter = "",
+    sortField = "id",
+    sortOrder = 1
+) {
+    try {
+        const response = await axios.get("/api/areas", {
+            params: {
+                page,
+                rows: rowsPerPage,
+                filter,
+                sortField,
+                sortOrder: sortOrder === 1 ? "asc" : "desc",
+            },
+        });
+        areas.value = response.data.data;
+        totalRecords.value = response.data.total;
+        first.value = (response.data.current_page - 1) * rows.value;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// Manejar paginación
+const onPage = (event) => {
+    const page = event.page + 1;
+    rows.value = event.rows; // Actualizar filas por página
+    getAreas(
+        page,
+        rows.value,
+        globalFilter.value,
+        sortField.value,
+        sortOrder.value
+    );
+};
+
+// Manejar ordenación
+const onSort = (event) => {
+    sortField.value = event.sortField || "id";
+    sortOrder.value = event.sortOrder;
+    getAreas(
+        1,
+        rows.value,
+        globalFilter.value,
+        sortField.value,
+        sortOrder.value
+    );
+};
+
+// Obtener áreas al montar el componente
+onMounted(() => {
+    getAreas();
+});
+
+// Editar área
+const editArea = (id) => {
+    window.location.href = route("area.edit", id);
+};
+
+// Eliminar área
+const deleteArea = async (id) => {
+    try {
+        const result = await confirmDialog(
+            "Estas seguro?",
+            "Ya no podras revertir esto!",
+            "warning"
+        );
+        if (result.isConfirmed) {
+            const response = await axios.delete(route("area.destroy", id));
+            areas.value = areas.value.filter((area) => area.id !== id);
+            showToast("El registro ha sido eliminado", "success");
+        }
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+// Actualizar filtro global
+watch(globalFilter, (newValue) => {
+    filters.value = {
+        global: { value: newValue, matchMode: "contains" },
+    };
+    getAreas(1, rows.value, newValue, sortField.value, sortOrder.value);
+});
+</script>
+
+<style scoped>
+.mb-3 {
+    margin-bottom: 1rem;
+}
+</style>
+
 <template>
     <Layout :titulo="title">
         <Head title="Area" />
@@ -111,126 +234,3 @@
         </div>
     </Layout>
 </template>
-
-<script setup>
-import { Head, Link } from "@inertiajs/vue3";
-import { ref, onMounted, watch } from "vue";
-import axios from "axios";
-import Layout from "@/Layouts/Layout.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
-import { confirmDialog, showToast } from "../utils/SweetAlert.service";
-import DataTable from "primevue/datatable";
-import Column from "primevue/column";
-import Button from "primevue/button";
-import InputText from "primevue/inputtext";
-
-// Definir propiedades
-const props = defineProps({
-    areas: Array,
-    areasAPI: Array,
-});
-
-// Variables reactivasconst totalRecords = ref(0);
-const rows = ref(10);
-const first = ref(0);
-const areas = ref([]);
-const globalFilter = ref("");
-const filters = ref({});
-const sortField = ref("id"); // Valor predeterminado
-const sortOrder = ref(1);
-const title = "areas";
-
-// Función para obtener áreas
-async function getAreas(
-    page = 1,
-    rowsPerPage = rows.value,
-    filter = "",
-    sortField = "id",
-    sortOrder = 1
-) {
-    try {
-        const response = await axios.get("/api/areas", {
-            params: {
-                page,
-                rows: rowsPerPage,
-                filter,
-                sortField,
-                sortOrder: sortOrder === 1 ? "asc" : "desc",
-            },
-        });
-        areas.value = response.data.data;
-        totalRecords.value = response.data.total;
-        first.value = (response.data.current_page - 1) * rows.value;
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-// Manejar paginación
-const onPage = (event) => {
-    const page = event.page + 1;
-    rows.value = event.rows; // Actualizar filas por página
-    getAreas(
-        page,
-        rows.value,
-        globalFilter.value,
-        sortField.value,
-        sortOrder.value
-    );
-};
-
-// Manejar ordenación
-const onSort = (event) => {
-    sortField.value = event.sortField;
-    sortOrder.value = event.sortOrder;
-    getAreas(
-        1,
-        rows.value,
-        globalFilter.value,
-        sortField.value,
-        sortOrder.value
-    );
-};
-
-// Obtener áreas al montar el componente
-onMounted(() => {
-    getAreas();
-});
-
-// Editar área
-const editArea = (id) => {
-    window.location.href = route("area.edit", id);
-};
-
-// Eliminar área
-const deleteArea = async (id) => {
-    try {
-        const result = await confirmDialog(
-            "Estas seguro?",
-            "Ya no podras revertir esto!",
-            "warning"
-        );
-        if (result.isConfirmed) {
-            const response = await axios.delete(route("area.destroy", id));
-            areas.value = areas.value.filter((area) => area.id !== id);
-            showToast("El registro ha sido eliminado", "success");
-        }
-    } catch (error) {
-        console.error(error);
-    }
-};
-
-// Actualizar filtro global
-watch(globalFilter, (newValue) => {
-    filters.value = {
-        global: { value: newValue, matchMode: "contains" },
-    };
-    getAreas(1, rows.value, newValue, sortField.value, sortOrder.value);
-});
-</script>
-
-<style scoped>
-.mb-3 {
-    margin-bottom: 1rem;
-}
-</style>
