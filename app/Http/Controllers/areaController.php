@@ -21,9 +21,26 @@ class areaController extends Controller
 
     public function findAll(Request $request)
     {
-        $page = $request->get('page', 1);
-        $pageSize = $request->get('rows', 10);
-        $areas = Area::paginate($pageSize, ['*'], 'page', $page);
+        $pageSize = $request->get('rows', 10); // Default page size
+        $page = $request->get('page', 1); // Current page
+        $filter = $request->get('filter', ''); // Filter value
+        $sortField = $request->get('sortField', 'id'); // Default sort field
+        $sortOrder = $request->get('sortOrder', 'asc'); // Default sort order
+
+        $query = Area::query();
+
+        if ($filter) {
+            $query->where('id', 'like', '%' . $filter . '%')
+                ->orWhere('nombre', 'like', '%' . $filter . '%')
+                ->orWhere('descripcion', 'like', '%' . $filter . '%');
+        }
+
+        if (in_array($sortField, ['id', 'nombre', 'descripcion'])) {
+            $query->orderBy($sortField, $sortOrder);
+        }
+
+        $areas = $query->paginate($pageSize, ['*'], 'page', $page);
+
         return response()->json($areas);
     }
 
@@ -58,10 +75,7 @@ class areaController extends Controller
     {
         $area = Area::find($id);
         $area->update($request->only('nombre', 'descripcion'));
-
-        return Inertia::render('Area/AreaIndex', [
-            'areas' => Area::all(),
-        ]);
+        return redirect()->route('area.index');
     }
 
     function destroy($id)

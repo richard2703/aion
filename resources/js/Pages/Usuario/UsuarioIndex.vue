@@ -1,18 +1,52 @@
 <script setup>
 import { Head, Link } from "@inertiajs/vue3";
-import { ref } from "vue";
+import { ref, onMounted, watch } from "vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import axios from "axios";
 import Layout from "@/Layouts/Layout.vue";
 import { confirmDialog, showToast } from "../utils/SweetAlert.service";
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
+import InputText from "primevue/inputtext";
 
 const props = defineProps({
     usuarios: Object,
 });
 
-const usuarios = ref(props.usuarios);
 const title = "usuarios";
-// const subTitle = "index";
+const usuarios = ref([]);
+const totalRecords = ref(0);
+const rows = ref(10);
+const first = ref(0);
+const globalFilter = ref("");
+const filters = ref({});
+const sortField = ref("id");
+const sortOrder = ref(1);
+
+async function getUsuarios(
+    page = 1,
+    rowsPerPage = rows.value,
+    filter = "",
+    sortField = "id",
+    sortOrder = 1
+) {
+    try {
+        const response = await axios.get("/api/usuarios", {
+            params: {
+                page,
+                rows: rowsPerPage,
+                filter,
+                sortField,
+                sortOrder: sortOrder === 1 ? "asc" : "desc",
+            },
+        });
+        usuarios.value = response.data.data;
+        totalRecords.value = response.data.total;
+        first.value = (response.data.current_page - 1) * rows.value;
+    } catch (error) {
+        console.error(error);
+    }
+}
 
 async function deleteUser(id) {
     try {
@@ -35,7 +69,48 @@ async function deleteUser(id) {
         showToast("Ocurrio un error", "error");
     }
 }
+
+const onPage = (event) => {
+    const page = event.page + 1;
+    rows.value = event.rows; // Actualizar filas por página
+    getUsuarios(
+        page,
+        rows.value,
+        globalFilter.value,
+        sortField.value,
+        sortOrder.value
+    );
+};
+
+const onSort = (event) => {
+    sortField.value = event.sortField || "id";
+    sortOrder.value = event.sortOrder;
+    getUsuarios(
+        1,
+        rows.value,
+        globalFilter.value,
+        sortField.value,
+        sortOrder.value
+    );
+};
+
+onMounted(() => {
+    getUsuarios();
+});
+
+watch(globalFilter, (newValue) => {
+    filters.value = {
+        global: { value: newValue, matchMode: "contains" },
+    };
+    getUsuarios(1, rows.value, newValue, sortField.value, sortOrder.value);
+});
 </script>
+
+<style scoped>
+.mb-3 {
+    margin-bottom: 1rem;
+}
+</style>
 
 <template>
     <Layout :titulo="title" :subTitulo="subTitle">
@@ -67,97 +142,100 @@ async function deleteUser(id) {
                     </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto overflow-x-auto">
-                            <table class="table-auto w-full">
-                                <thead>
-                                    <tr class="bg-slate-100">
-                                        <th
-                                            class="min-w-[160px] text-lg py-4 lg:py-7 px-3 lg:px-4"
-                                        >
-                                            ID
-                                        </th>
-                                        <th
-                                            class="bg-slate-100 min-w-[160px] text-lg py-4 lg:py-7 px-3 lg:px-4"
-                                        >
-                                            Nombre
-                                        </th>
-                                        <th
-                                            class="bg-slate-100 min-w-[160px] text-lg py-4 lg:py-7 px-3 lg:px-4"
-                                        >
-                                            Email
-                                        </th>
-                                        <th
-                                            class="bg-slate-100 min-w-[160px] text-lg py-4 lg:py-7 px-3 lg:px-4"
-                                        >
-                                            Area
-                                        </th>
-                                        <th
-                                            class="bg-slate-100 min-w-[160px] text-lg py-4 lg:py-7 px-3 lg:px-4"
-                                        >
-                                            Departamento
-                                        </th>
-                                        <th
-                                            class="bg-slate-100 min-w-[160px] text-lg py-4 lg:py-7 px-3 lg:px-4"
-                                        ></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="usuario in usuarios">
-                                        <td
-                                            v-if="usuario"
-                                            class="text-center text-dark font-medium text-base py-5 px-2 bg-white border-b border-[#E8E8E8]"
-                                        >
-                                            {{ usuario.id }}
-                                        </td>
-                                        <td
-                                            v-if="usuario"
-                                            class="text-center text-dark font-medium text-base py-5 px-2 bg-white border-b border-[#E8E8E8]"
-                                        >
-                                            {{ usuario.name }}
-                                        </td>
-                                        <td
-                                            v-if="usuario"
-                                            class="text-center text-dark font-medium text-base py-5 px-2 bg-white border-b border-[#E8E8E8]"
-                                        >
-                                            {{ usuario.email }}
-                                        </td>
-                                        <td
-                                            v-if="usuario"
-                                            class="text-center text-dark font-medium text-base py-5 px-2 bg-white border-b border-[#E8E8E8]"
-                                        >
-                                            {{ usuario.area.nombre }}
-                                        </td>
-                                        <td
-                                            v-if="usuario"
-                                            class="text-center text-dark font-medium text-base py-5 px-2 bg-white border-b border-[#E8E8E8]"
-                                        >
-                                            {{ usuario.departamento.nombre }}
-                                        </td>
-                                        <td
-                                            v-if="usuario"
-                                            class="text-center text-dark font-medium text-base py-5 px-2 bg-white border-b border-[#E8E8E8] flex gap-2 justify-center"
-                                        >
-                                            <PrimaryButton
-                                                :href="
-                                                    route(
-                                                        'user.edit',
-                                                        usuario.id
-                                                    )
-                                                "
-                                            >
-                                                editar
-                                            </PrimaryButton>
+                            <InputText
+                                v-model="globalFilter"
+                                placeholder="Buscar..."
+                                class="mb-3"
+                            />
+                            <DataTable
+                                :value="usuarios"
+                                paginator
+                                :rows="rows"
+                                :totalRecords="totalRecords"
+                                :lazy="true"
+                                :first="first"
+                                @page="onPage"
+                                @sort="onSort"
+                                :rowsPerPageOptions="[5, 10, 20, 50]"
+                                tableStyle="min-width: 50rem"
+                                :filters="filters"
+                                :globalFilterFields="[
+                                    'id',
+                                    'name',
+                                    'email',
+                                    'area.nombre',
+                                    'departamento.nombre',
+                                ]"
+                                :sortField="sortField"
+                                :sortOrder="sortOrder"
+                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines"
+                            >
+                                <Column
+                                    field="id"
+                                    header="ID"
+                                    headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;"
+                                    sortable
+                                ></Column>
+                                <Column
+                                    field="name"
+                                    header="Name"
+                                    headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;"
+                                    bodyClass="text-center"
+                                    sortable
+                                ></Column>
+                                <Column
+                                    field="email"
+                                    header="Email"
+                                    headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;"
+                                    bodyClass="text-center"
+                                    sortable
+                                ></Column>
+                                <Column
+                                    field="area.nombre"
+                                    header="Area"
+                                    headerStyle="width:4em;"
+                                    bodyClass="text-center"
+                                    sortable
+                                ></Column>
+                                <Column
+                                    field="departamento.nombre"
+                                    header="Departamento"
+                                    headerStyle="width:4em;"
+                                    bodyClass="text-center"
+                                    sortable
+                                ></Column>
 
-                                            <PrimaryButton
-                                                @click.prevent="
-                                                    deleteUser(usuario.id)
-                                                "
-                                            >
-                                                borrar
-                                            </PrimaryButton>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                <Column header="" headerStyle="width:4em;">
+                                    <template
+                                        #body="slotProps"
+                                        class="text-center"
+                                    >
+                                        <PrimaryButton
+                                            class="m-2"
+                                            :href="
+                                                route(
+                                                    'user.edit',
+                                                    slotProps.data.id
+                                                )
+                                            "
+                                        >
+                                            Editar
+                                        </PrimaryButton>
+
+                                        <PrimaryButton
+                                            class="m-2"
+                                            @click.prevent="
+                                                deleteUser(slotProps.data.id)
+                                            "
+                                        >
+                                            Borrar
+                                        </PrimaryButton>
+                                    </template>
+                                </Column>
+                            </DataTable>
                         </div>
                     </div>
                 </div>

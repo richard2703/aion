@@ -22,9 +22,39 @@ class departamentoController extends Controller
     {
         return response()->json(['departamentos' => Departamento::where('area_id', $area_id)->get()]);
     }
-    function findAll()
+    function findAll(Request $request)
     {
-        return response()->json(['departamentos' => Departamento::all()]);
+        $query = Departamento::query();
+        $pageSize = $request->get('rows', 10);
+        $page = $request->get('page', 1);
+
+        $filter = $request->get('filter', '');
+        $sortField = $request->get('sortField', 'id');
+        $sortOrder = $request->get('sortOrder', 'asc');
+        if ($filter) {
+            $query->where(function ($q) use ($filter) {
+                $q->where('departamentos.id', 'like', '%' . $filter . '%')
+                    ->orWhere('departamentos.nombre', 'like', '%' . $filter . '%')
+                    ->orWhere('departamentos.descripcion', 'like', '%' . $filter . '%')
+                    ->orWhereHas('area', function ($q) use ($filter) {
+                        $q->where('areas.nombre', 'like', '%' . $filter . '%')
+                            ->orWhere('areas.descripcion', 'like', '%' . $filter . '%');
+                    });
+            });
+        }
+
+        if (in_array($sortField, ['id', 'nombre', 'descripcion', 'area.nombre'])) {
+            if (strpos($sortField, 'area.') === 0) {
+                $query->join('areas', 'departamentos.area_id', '=', 'areas.id')
+                    ->orderBy('areas.' . substr($sortField, 5), $sortOrder);
+            } else {
+                $query->orderBy($sortField, $sortOrder);
+            }
+        }
+
+        $departamentos = $query->with('area')->paginate($pageSize, ['*'], 'page', $page);
+
+        return response()->json($departamentos);
     }
 
     function create()

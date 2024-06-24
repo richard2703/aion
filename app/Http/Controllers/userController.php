@@ -20,6 +20,47 @@ class userController extends Controller
         ]);
     }
 
+    function findAll(Request $request)
+    {
+        $query = User::query();
+        $pageSize = $request->get('rows', 10);
+        $page = $request->get('page', 1);
+        $filter = $request->get('filter', '');
+        $sortField = $request->get('sortField', 'id');
+        $sortOrder = $request->get('sortOrder', 'asc');
+        if ($filter) {
+            $query->where(function ($q) use ($filter) {
+                $q->where('users.id', 'like', '%' . $filter . '%')
+                    ->orWhere('users.name', 'like', '%' . $filter . '%')
+                    ->orWhere('users.email', 'like', '%' . $filter . '%')
+                    ->orWhereHas('area', function ($q) use ($filter) {
+                        $q->where('areas.nombre', 'like', '%' . $filter . '%')
+                            ->orWhere('areas.descripcion', 'like', '%' . $filter . '%');
+                    })
+                    ->orWhereHas('departamento', function ($q) use ($filter) {
+                        $q->where('departamentos.nombre', 'like', '%' . $filter . '%')
+                            ->orWhere('departamentos.descripcion', 'like', '%' . $filter . '%');
+                    });
+            });
+        }
+
+        if (in_array($sortField, ['id', 'name', 'email', 'area.nombre', 'departamento.nombre'])) {
+            if (strpos($sortField, 'area.') === 0) {
+                $query->join('areas', 'users.area_id', '=', 'areas.id')
+                    ->orderBy('areas.' . substr($sortField, 5), $sortOrder);
+            } else if (strpos($sortField, 'departamento.') === 0) {
+                $query->join('departamentos', 'users.departamento_id', '=', 'departamentos.id')
+                    ->orderBy('departamentos.' . substr($sortField, 12), $sortOrder);
+            } else {
+                $query->orderBy($sortField, $sortOrder);
+            }
+        }
+
+        $users = $query->with('area', 'departamento')->paginate($pageSize, ['*'], 'page', $page);
+
+        return response()->json($users);
+    }
+
     function create()
     {
         return Inertia::render('Usuario/UsuarioCreate');

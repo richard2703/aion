@@ -14,3 +14,4 @@ Route::get('/hello', function (Request $request) {
 Route::get('/areas', [App\Http\Controllers\areaController::class, 'findAll'])->name('areas.findAll');
 Route::get('/departamentos/{area_id}', [App\Http\Controllers\departamentoController::class, 'byArea'])->name('departamentos.byArea');
 Route::get('/departamentos', [App\Http\Controllers\departamentoController::class, 'findAll'])->name('departamentos.findAll');
+Route::get('/usuarios', [App\Http\Controllers\userController::class, 'findAll'])->name('users.findAll');

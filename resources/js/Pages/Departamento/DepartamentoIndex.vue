@@ -1,17 +1,52 @@
 <script setup>
 import { Head, Link } from "@inertiajs/vue3";
-import { ref } from "vue";
+import { ref, onMounted, watch } from "vue";
 import axios from "axios";
 import Layout from "@/Layouts/Layout.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { confirmDialog, showToast } from "../utils/SweetAlert.service";
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
+import InputText from "primevue/inputtext";
 
 const props = defineProps({
     departamentos: Array,
 });
 
-const departamentos = ref(props.departamentos);
 const title = "departamentos";
+const departamentos = ref([]);
+const totalRecords = ref(0);
+const rows = ref(10);
+const first = ref(0);
+const globalFilter = ref("");
+const filters = ref({});
+const sortField = ref("id");
+const sortOrder = ref(1);
+
+async function getDepartamentos(
+    page = 1,
+    rowsPerPage = rows.value,
+    filter = "",
+    sortField = "id",
+    sortOrder = 1
+) {
+    try {
+        const response = await axios.get("/api/departamentos", {
+            params: {
+                page,
+                rows: rowsPerPage,
+                filter,
+                sortField,
+                sortOrder: sortOrder === 1 ? "asc" : "desc",
+            },
+        });
+        departamentos.value = response.data.data;
+        totalRecords.value = response.data.total;
+        first.value = (response.data.current_page - 1) * rows.value;
+    } catch (error) {
+        console.error(error);
+    }
+}
 
 const deleteDepartamento = async (id) => {
     try {
@@ -21,21 +56,59 @@ const deleteDepartamento = async (id) => {
             "warning"
         );
         if (result.isConfirmed) {
-            await axios
-                .delete(route("departamento.destroy", id))
-                .then((response) => {
-                    departamentos.value = response.data.departamentos;
-                    showToast("El registro ha sido eliminado", "success");
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+            await axios.delete(route("departamento.destroy", id));
+
+            departamentos.value = departamentos.value.filter(
+                (departamento) => departamento.id !== id
+            );
+            showToast("El registro ha sido eliminado", "success");
         }
     } catch (error) {
         console.error(error);
     }
 };
+
+const onPage = (event) => {
+    const page = event.page + 1;
+    rows.value = event.rows; // Actualizar filas por página
+    getDepartamentos(
+        page,
+        rows.value,
+        globalFilter.value,
+        sortField.value,
+        sortOrder.value
+    );
+};
+
+const onSort = (event) => {
+    sortField.value = event.sortField || "id";
+    sortOrder.value = event.sortOrder;
+    getDepartamentos(
+        1,
+        rows.value,
+        globalFilter.value,
+        sortField.value,
+        sortOrder.value
+    );
+};
+
+onMounted(() => {
+    getDepartamentos();
+});
+
+watch(globalFilter, (newValue) => {
+    filters.value = {
+        global: { value: newValue, matchMode: "contains" },
+    };
+    getDepartamentos(1, rows.value, newValue, sortField.value, sortOrder.value);
+});
 </script>
+
+<style scoped>
+.mb-3 {
+    margin-bottom: 1rem;
+}
+</style>
 
 <template>
     <Layout :titulo="title">
@@ -66,87 +139,95 @@ const deleteDepartamento = async (id) => {
                     </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto overflow-x-auto">
-                            <table class="table-auto w-full">
-                                <thead>
-                                    <tr class="bg-slate-100">
-                                        <th
-                                            class="min-w-[160px] text-lg py-4 lg:py-7 px-3 lg:px-4"
+                            <InputText
+                                v-model="globalFilter"
+                                placeholder="Buscar..."
+                                class="mb-3"
+                            />
+
+                            <DataTable
+                                :value="departamentos"
+                                paginator
+                                :rows="rows"
+                                :totalRecords="totalRecords"
+                                :lazy="true"
+                                :first="first"
+                                @page="onPage"
+                                @sort="onSort"
+                                :rowsPerPageOptions="[5, 10, 20, 50]"
+                                tableStyle="min-width: 50rem"
+                                :filters="filters"
+                                :globalFilterFields="[
+                                    'id',
+                                    'nombre',
+                                    'area.nombre',
+                                    'descripcion',
+                                ]"
+                                :sortField="sortField"
+                                :sortOrder="sortOrder"
+                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines"
+                            >
+                                <Column
+                                    field="id"
+                                    header="ID"
+                                    headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;"
+                                    sortable
+                                ></Column>
+                                <Column
+                                    field="area.nombre"
+                                    header="Area"
+                                    headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;"
+                                    bodyClass="text-center"
+                                    sortable
+                                ></Column>
+                                <Column
+                                    field="nombre"
+                                    header="Departamento"
+                                    headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;"
+                                    bodyClass="text-center"
+                                    sortable
+                                ></Column>
+                                <Column
+                                    field="descripcion"
+                                    header="Descripcion"
+                                    headerStyle="width:4em;"
+                                    bodyClass="text-center"
+                                    sortable
+                                ></Column>
+
+                                <Column header="" headerStyle="width:4em;">
+                                    <template
+                                        #body="slotProps"
+                                        class="text-center"
+                                    >
+                                        <PrimaryButton
+                                            class="me-2"
+                                            :href="
+                                                route(
+                                                    'departamento.edit',
+                                                    slotProps.data.id
+                                                )
+                                            "
                                         >
-                                            ID
-                                        </th>
-                                        <th
-                                            class="bg-slate-100 min-w-[160px] text-lg py-4 lg:py-7 px-3 lg:px-4"
+                                            Editar
+                                        </PrimaryButton>
+
+                                        <PrimaryButton
+                                            class="me-2"
+                                            @click.prevent="
+                                                deleteDepartamento(
+                                                    slotProps.data.id
+                                                )
+                                            "
                                         >
-                                            Departamento
-                                        </th>
-                                        <th
-                                            class="bg-slate-100 min-w-[160px] text-lg py-4 lg:py-7 px-3 lg:px-4"
-                                        >
-                                            Area
-                                        </th>
-                                        <th
-                                            class="bg-slate-100 min-w-[160px] text-lg py-4 lg:py-7 px-3 lg:px-4"
-                                        >
-                                            Descripcion
-                                        </th>
-                                        <th
-                                            class="bg-slate-100 min-w-[160px] text-lg py-4 lg:py-7 px-3 lg:px-4"
-                                        ></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="departamento in departamentos">
-                                        <td
-                                            v-if="departamento"
-                                            class="text-center text-dark font-medium text-base py-5 px-2 bg-white border-b border-[#E8E8E8]"
-                                        >
-                                            {{ departamento.id }}
-                                        </td>
-                                        <td
-                                            v-if="departamento"
-                                            class="text-center text-dark font-medium text-base py-5 px-2 bg-white border-b border-[#E8E8E8]"
-                                        >
-                                            {{ departamento.nombre }}
-                                        </td>
-                                        <td
-                                            v-if="departamento"
-                                            class="text-center text-dark font-medium text-base py-5 px-2 bg-white border-b border-[#E8E8E8]"
-                                        >
-                                            {{ departamento.area.nombre }}
-                                        </td>
-                                        <td
-                                            v-if="departamento"
-                                            class="text-center text-dark font-medium text-base py-5 px-2 bg-white border-b border-[#E8E8E8]"
-                                        >
-                                            {{ departamento.descripcion }}
-                                        </td>
-                                        <td
-                                            v-if="departamento"
-                                            class="text-center text-dark font-medium text-base py-5 px-2 bg-white border-b border-r border-[#E8E8E8] flex gap-2 justify-center"
-                                        >
-                                            <PrimaryButton
-                                                :href="
-                                                    route(
-                                                        'departamento.edit',
-                                                        departamento.id
-                                                    )
-                                                "
-                                            >
-                                                Editar
-                                            </PrimaryButton>
-                                            <PrimaryButton
-                                                @click.prevent="
-                                                    deleteDepartamento(
-                                                        departamento.id
-                                                    )
-                                                "
-                                            >
-                                                Borrar
-                                            </PrimaryButton>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                            Borrar
+                                        </PrimaryButton>
+                                    </template>
+                                </Column>
+                            </DataTable>
                         </div>
                     </div>
                 </div>
