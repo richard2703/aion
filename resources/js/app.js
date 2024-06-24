@@ -20,6 +20,9 @@ createInertiaApp({
             .use(ZiggyVue)
             .use(PrimeVue, { theme: {
                 preset: Lara,
+                options: {
+                    darkModeSelector: 'false',
+                }
             } })
             .mount(el);
     },
