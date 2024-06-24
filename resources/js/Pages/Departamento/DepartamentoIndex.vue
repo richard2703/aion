@@ -96,10 +96,6 @@ onMounted(() => {
     getDepartamentos();
 });
 
-const editDepartamento = (id) => {
-    window.location.href = route("departamento.edit", id);
-};
-
 watch(globalFilter, (newValue) => {
     filters.value = {
         global: { value: newValue, matchMode: "contains" },
