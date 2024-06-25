@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use \App\Models\Departamento;
 
+use function PHPUnit\Framework\isNull;
+
 class departamentoController extends Controller
 {
     //
@@ -22,15 +24,17 @@ class departamentoController extends Controller
     {
         return response()->json(['departamentos' => Departamento::where('area_id', $area_id)->get()]);
     }
-    function findAll(Request $request)
+
+    public function findAll(Request $request)
     {
         $query = Departamento::query();
-        $pageSize = $request->get('rows', 10);
-        $page = $request->get('page', 1);
 
+        $pageSize = $request->get('rows');
+        $page = $request->get('page');
         $filter = $request->get('filter', '');
         $sortField = $request->get('sortField', 'id');
         $sortOrder = $request->get('sortOrder', 'asc');
+
         if ($filter) {
             $query->where(function ($q) use ($filter) {
                 $q->where('departamentos.id', 'like', '%' . $filter . '%')
@@ -52,10 +56,22 @@ class departamentoController extends Controller
             }
         }
 
-        $departamentos = $query->with('area')->paginate($pageSize, ['*'], 'page', $page);
+        if (!$pageSize && !$page) {
+            $departamentos = $query->with('area')->get();
+            return response()->json($departamentos);
+        }
 
+        if ($pageSize && $page) {
+            $departamentos = $query->with('area')->paginate($pageSize, ['*'], 'page', $page);
+            return response()->json($departamentos);
+        }
+
+        // Default case if only one of the pagination parameters is missing, return all without pagination
+        $departamentos = $query->with('area')->get();
         return response()->json($departamentos);
     }
+
+
 
     function create()
     {

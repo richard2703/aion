@@ -21,28 +21,45 @@ class areaController extends Controller
 
     public function findAll(Request $request)
     {
-        $pageSize = $request->get('rows', 10); // Default page size
-        $page = $request->get('page', 1); // Current page
-        $filter = $request->get('filter', ''); // Filter value
-        $sortField = $request->get('sortField', 'id'); // Default sort field
-        $sortOrder = $request->get('sortOrder', 'asc'); // Default sort order
-
         $query = Area::query();
 
-        if ($filter) {
-            $query->where('id', 'like', '%' . $filter . '%')
-                ->orWhere('nombre', 'like', '%' . $filter . '%')
-                ->orWhere('descripcion', 'like', '%' . $filter . '%');
+        $pageSize = $request->get('rows');
+        $page = $request->get('page');
+        $filter = $request->get('filter', '');
+        $sortField = $request->get('sortField', 'id');
+        $sortOrder = $request->get('sortOrder', 'asc');
+
+        if (!$pageSize && !$page) {
+            if ($filter) {
+                $query->where('id', 'like', '%' . $filter . '%')
+                    ->orWhere('nombre', 'like', '%' . $filter . '%')
+                    ->orWhere('descripcion', 'like', '%' . $filter . '%');
+            }
+
+            if (in_array($sortField, ['id', 'nombre', 'descripcion'])) {
+                $query->orderBy($sortField, $sortOrder);
+            }
+
+            $areas = $query->get();
+            return response()->json($areas);
         }
 
-        if (in_array($sortField, ['id', 'nombre', 'descripcion'])) {
-            $query->orderBy($sortField, $sortOrder);
+        if ($pageSize && $page) {
+            if ($filter) {
+                $query->where('id', 'like', '%' . $filter . '%')
+                    ->orWhere('nombre', 'like', '%' . $filter . '%')
+                    ->orWhere('descripcion', 'like', '%' . $filter . '%');
+            }
+
+            if (in_array($sortField, ['id', 'nombre', 'descripcion'])) {
+                $query->orderBy($sortField, $sortOrder);
+            }
+
+            $areas = $query->paginate($pageSize, ['*'], 'page', $page);
+            return response()->json($areas);
         }
-
-        $areas = $query->paginate($pageSize, ['*'], 'page', $page);
-
-        return response()->json($areas);
     }
+
 
     function create()
     {
@@ -55,14 +72,6 @@ class areaController extends Controller
         $area = Area::create($request->only('nombre', 'descripcion'));
         return redirect()->route('area.index');
     }
-
-    // function show($id)
-    // {
-    //     return Inertia::render('Area/AreaShow', [
-    //         'area' => Area::find($id),
-    //     ]);
-
-    // }
 
     function edit($id)
     {

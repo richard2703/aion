@@ -63,6 +63,16 @@
     @apply text-[var(--cafe)];
 }
 
+
+.administrador{
+    border-bottom: solid;
+    border-color: white;
+    color: white;
+    text-align: center;
+
+}
+
+
 /* siderbar  */
 
 

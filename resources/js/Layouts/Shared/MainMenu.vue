@@ -44,6 +44,13 @@
 
             <!-- Other Menu Items -->
             <li>
+                <div class="mb-4 administrador">
+                    <div>
+                        Administracion
+                    </div>
+                </div>
+            </li>
+            <li>
                 <div class="mb-4">
                     <Link class="group flex items-center py-3" href="/areas">
                     <div :class="title === 'areas' ? 'activo flex' : 'inactivo flex'">
@@ -69,6 +76,17 @@
                     <div :class="title === 'usuarios' ? 'activo flex' : 'inactivo flex'">
                         <icon name="users" class="mr-2 w-4 h-4" />
                         Usuarios
+                    </div>
+                    </Link>
+                </div>
+            </li>
+
+            <li>
+                <div class="mb-4">
+                    <Link class="group flex items-center py-3" :href="route('challenge.index')">
+                    <div :class="title === 'Chanllenges' ? 'activo flex' : 'inactivo flex'">
+                        <icon name="office" class="mr-2 w-4 h-4" />
+                        Challenges
                     </div>
                     </Link>
                 </div>

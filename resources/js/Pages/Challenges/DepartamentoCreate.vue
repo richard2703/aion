@@ -5,52 +5,33 @@ import Layout from "@/Layouts/Layout.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
-import { confirmDialog, showToast } from "../utils/SweetAlert.service";
+import { showToast } from "../utils/SweetAlert.service";
 
 const props = defineProps({
     areas: Array,
-    departamento: Object,
 });
 
 const areas = ref(props.areas);
 
-const departamento = ref(props.departamento);
-
 async function getAreas() {
     await axios
         .get("/api/areas")
-        .then((response) => {
-            areas.value = response.data;
-        })
+        .then((response) => (areas.value = response.data.areas))
         .catch((error) => {
             console.log(error);
         });
 }
 
 const form = useForm({
-    nombre: departamento.value.nombre,
-    area_id: departamento.value.area_id,
-    descripcion: departamento.value.descripcion,
+    nombre: "",
+    area_id: "",
+    descripcion: "",
 });
 
-const submit = async () => {
-    try {
-        const result = await confirmDialog(
-            "Estas seguro?",
-            "Se modificara el registro!",
-            "info"
-        );
-        if (result.isConfirmed) {
-            form.patch(route("departamento.update", props.departamento.id), {
-                onFinish: () => {
-                    showToast("El registro ha sido actualizado", "success");
-                    form.reset();
-                },
-            });
-        }
-    } catch (error) {
-        console.error(error);
-    }
+const submit = () => {
+    form.post(route("departamento.store"), {
+        onFinish: () => form.reset(),
+    });
 };
 
 getAreas();
@@ -59,6 +40,7 @@ getAreas();
 <template>
     <Layout>
         <Head title="Usuarios" />
+
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
                 <h3>Departamentos</h3>
@@ -71,7 +53,7 @@ getAreas();
                     <h3>Departamentos -</h3>
                 </Link>
                 <Link :href="route('departamento.create')" class="active">
-                    <h3>Actualizar</h3>
+                    <h3>Nuevo</h3>
                 </Link>
             </div>
         </div>
@@ -152,7 +134,7 @@ getAreas();
                                             }"
                                             :disabled="form.processing"
                                         >
-                                            Actualizar
+                                            Guardar
                                         </PrimaryButton>
                                     </div>
                                 </div>

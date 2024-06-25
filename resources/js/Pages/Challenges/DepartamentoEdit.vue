@@ -19,9 +19,7 @@ const departamento = ref(props.departamento);
 async function getAreas() {
     await axios
         .get("/api/areas")
-        .then((response) => {
-            areas.value = response.data;
-        })
+        .then((response) => (areas.value = response.data.areas))
         .catch((error) => {
             console.log(error);
         });
