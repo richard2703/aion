@@ -16,7 +16,9 @@ const areas = ref(props.areas);
 async function getAreas() {
     await axios
         .get("/api/areas")
-        .then((response) => (areas.value = response.data.areas))
+        .then((response) => {
+            areas.value = response.data;
+        })
         .catch((error) => {
             console.log(error);
         });
