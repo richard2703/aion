@@ -8,8 +8,9 @@
     --azul-logo: #2551a5;
     --morado: #8c00ff;
     --verde: #25dc45;
-    --dorado: #c9a76a ;
-    --slate: #1e293b
+    --dorado: #dfb569 ;
+    --cafe: #b38a4a ;
+    --slate: #1e293b;
 }
 
 .bg-logo {
@@ -25,6 +26,7 @@
     @apply bg-[var(--blanco-logo)];
 }
 
+/* breadcrumbs  */
 .breadcrumbsTitulo {
     @apply text-2xl;
     @apply font-bold;
@@ -61,6 +63,7 @@
     @apply text-[var(--cafe)];
 }
 
+
 .administrador{
     border-bottom: solid;
     border-color: white;
@@ -68,6 +71,7 @@
     text-align: center;
 
 }
+
 
 /* siderbar  */
 
