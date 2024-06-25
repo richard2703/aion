@@ -46,6 +46,32 @@
 
 /* breadcrumbs  */
 
+/* siderbar  */
+.activo{
+    @apply fill-[var(--dorado)];
+    @apply text-[var(--dorado)];
+}
+
+.inactivo{
+    @apply fill-[var(--blanco)];
+    @apply text-[var(--blanco)];
+}
+.inactivo:hover{
+    @apply fill-[var(--cafe)];
+    @apply text-[var(--cafe)];
+}
+
+.administrador{
+    border-bottom: solid;
+    border-color: white;
+    color: white;
+    text-align: center;
+
+}
+
+/* siderbar  */
+
+
 /* prime */
 .p-button-secondary {
     @apply bg-[var(--slate)] !important;

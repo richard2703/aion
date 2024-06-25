@@ -58,6 +58,13 @@
 
             <!-- Other Menu Items -->
             <li>
+                <div class="mb-4 administrador">
+                    <div>
+                        Administracion
+                    </div>
+                </div>
+            </li>
+            <li>
                 <div class="mb-4">
                     <Link class="group flex items-center py-3" href="/areas">
                         <icon
@@ -132,6 +139,17 @@
                         >
                             Usuarios
                         </div>
+                    </Link>
+                </div>
+            </li>
+
+            <li>
+                <div class="mb-4">
+                    <Link class="group flex items-center py-3" :href="route('challenge.index')">
+                    <div :class="title === 'Chanllenges' ? 'activo flex' : 'inactivo flex'">
+                        <icon name="office" class="mr-2 w-4 h-4" />
+                        Challenges
+                    </div>
                     </Link>
                 </div>
             </li>
