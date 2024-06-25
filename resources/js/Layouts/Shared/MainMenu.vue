@@ -5,7 +5,10 @@
             <li>
                 <div class="mb-4">
                     <Link class="group flex items-center py-3" href="/">
-                    <div :class="title === 'dashboard' ? 'activo flex' : 'inactivo flex'">
+                    <div :class="title === 'dashboard'
+                            ? 'activo flex'
+                            : 'inactivo flex'
+                        ">
                         <icon name="office" class="mr-2 w-4 h-4" />
                         Home
                     </div>
@@ -45,15 +48,16 @@
             <!-- Other Menu Items -->
             <li>
                 <div class="mb-4 administrador">
-                    <div>
-                        Administracion
-                    </div>
+                    <div>Administracion</div>
                 </div>
             </li>
             <li>
                 <div class="mb-4">
                     <Link class="group flex items-center py-3" href="/areas">
-                    <div :class="title === 'areas' ? 'activo flex' : 'inactivo flex'">
+                    <div :class="title === 'areas'
+                            ? 'activo flex'
+                            : 'inactivo flex'
+                        ">
                         <icon name="office" class="mr-2 w-4 h-4" />
                         Areas
                     </div>
@@ -63,7 +67,10 @@
             <li>
                 <div class="mb-4">
                     <Link class="group flex items-center py-3" href="/departamentos">
-                    <div :class="title === 'departamentos' ? 'activo flex' : 'inactivo flex'">
+                    <div :class="title === 'departamentos'
+                            ? 'activo flex'
+                            : 'inactivo flex'
+                        ">
                         <icon name="office" class="mr-2 w-4 h-4" />
                         Departamentos
                     </div>
@@ -73,7 +80,10 @@
             <li>
                 <div class="mb-4">
                     <Link class="group flex items-center py-3" :href="route('user.index')">
-                    <div :class="title === 'usuarios' ? 'activo flex' : 'inactivo flex'">
+                    <div :class="title === 'usuarios'
+                            ? 'activo flex'
+                            : 'inactivo flex'
+                        ">
                         <icon name="users" class="mr-2 w-4 h-4" />
                         Usuarios
                     </div>
@@ -84,7 +94,10 @@
             <li>
                 <div class="mb-4">
                     <Link class="group flex items-center py-3" :href="route('challenge.index')">
-                    <div :class="title === 'Chanllenges' ? 'activo flex' : 'inactivo flex'">
+                    <div :class="title === 'Challenges'
+                            ? 'activo flex'
+                            : 'inactivo flex'
+                        ">
                         <icon name="office" class="mr-2 w-4 h-4" />
                         Challenges
                     </div>

@@ -112,6 +112,7 @@ watch(globalFilter, (newValue) => {
 
 <template>
     <Layout :titulo="title">
+
         <Head title="Departamento" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
@@ -119,10 +120,10 @@ watch(globalFilter, (newValue) => {
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
-                    <h3>Dashboard -</h3>
+                <h3>Home -</h3>
                 </Link>
                 <Link class="active">
-                    <h3>Departamentos</h3>
+                <h3>Departamentos</h3>
                 </Link>
             </div>
         </div>
@@ -130,99 +131,47 @@ watch(globalFilter, (newValue) => {
         <div class="py-2">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div>
-                    <div
-                        class="px-4 py-2 flex justify-end bg-white border-b border-gray-200"
-                    >
-                        <PrimaryButton :href="route('departamento.create')"
-                            >Nuevo</PrimaryButton
-                        >
+                    <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
+                        <PrimaryButton :href="route('departamento.create')">Nuevo</PrimaryButton>
                     </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto overflow-x-auto">
-                            <InputText
-                                v-model="globalFilter"
-                                placeholder="Buscar..."
-                                class="mb-3"
-                            />
+                            <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
 
-                            <DataTable
-                                :value="departamentos"
-                                paginator
-                                :rows="rows"
-                                :totalRecords="totalRecords"
-                                :lazy="true"
-                                :first="first"
-                                @page="onPage"
-                                @sort="onSort"
-                                :rowsPerPageOptions="[5, 10, 20, 50]"
-                                tableStyle="min-width: 50rem"
-                                :filters="filters"
+                            <DataTable :value="departamentos" paginator :rows="rows" :totalRecords="totalRecords"
+                                :lazy="true" :first="first" @page="onPage" @sort="onSort"
+                                :rowsPerPageOptions="[5, 10, 20, 50]" tableStyle="min-width: 50rem" :filters="filters"
                                 :globalFilterFields="[
                                     'id',
                                     'nombre',
                                     'area.nombre',
                                     'descripcion',
-                                ]"
-                                :sortField="sortField"
-                                :sortOrder="sortOrder"
-                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines"
-                            >
-                                <Column
-                                    field="id"
-                                    header="ID"
-                                    headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;"
-                                    sortable
-                                ></Column>
-                                <Column
-                                    field="area.nombre"
-                                    header="Area"
-                                    headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;"
-                                    bodyClass="text-center"
-                                    sortable
-                                ></Column>
-                                <Column
-                                    field="nombre"
-                                    header="Departamento"
-                                    headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;"
-                                    bodyClass="text-center"
-                                    sortable
-                                ></Column>
-                                <Column
-                                    field="descripcion"
-                                    header="Descripcion"
-                                    headerStyle="width:4em;"
-                                    bodyClass="text-center"
-                                    sortable
-                                ></Column>
+                                ]" :sortField="sortField" :sortOrder="sortOrder"
+                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+                                <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
+                                    sortable></Column>
+                                <Column field="area.nombre" header="Area" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+                                <Column field="nombre" header="Departamento" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+                                <Column field="descripcion" header="Descripcion" headerStyle="width:4em;"
+                                    bodyClass="text-center" sortable></Column>
 
                                 <Column header="" headerStyle="width:4em;">
-                                    <template
-                                        #body="slotProps"
-                                        class="text-center"
-                                    >
-                                        <PrimaryButton
-                                            class="me-2"
-                                            :href="
-                                                route(
-                                                    'departamento.edit',
-                                                    slotProps.data.id
-                                                )
-                                            "
-                                        >
+                                    <template #body="slotProps" class="text-center">
+                                        <PrimaryButton class="me-2" :href="route(
+                                            'departamento.edit',
+                                            slotProps.data.id
+                                        )
+                                            ">
                                             Editar
                                         </PrimaryButton>
 
-                                        <PrimaryButton
-                                            class="me-2"
-                                            @click.prevent="
-                                                deleteDepartamento(
-                                                    slotProps.data.id
-                                                )
-                                            "
-                                        >
+                                        <PrimaryButton class="me-2" @click.prevent="
+                                            deleteDepartamento(
+                                                slotProps.data.id
+                                            )
+                                            ">
                                             Borrar
                                         </PrimaryButton>
                                     </template>
