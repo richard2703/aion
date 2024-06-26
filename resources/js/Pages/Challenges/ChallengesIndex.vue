@@ -161,8 +161,7 @@ console.log(challenges.value);
                                         <PrimaryButton class="m-2" :href="route(
                                             'challenge.edit',
                                             slotProps.data.id
-                                        )
-                                            ">
+                                        )">
                                             Editar
                                         </PrimaryButton>
 

@@ -74,10 +74,10 @@ onMounted(() => {
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
-                <Link :href="route('departamento.index')" class="px-1">
+                <Link :href="route('challenge.index')" class="px-1">
                 <h3>Challenges -</h3>
                 </Link>
-                <Link :href="route('departamento.create')" class="active">
+                <Link :href="route('challenge.create')" class="active">
                 <h3>Nuevo</h3>
                 </Link>
             </div>
