@@ -15,3 +15,4 @@ Route::get('/areas', [App\Http\Controllers\areaController::class, 'findAll'])->n
 Route::get('/departamentos/{area_id}', [App\Http\Controllers\departamentoController::class, 'byArea'])->name('departamentos.byArea');
 Route::get('/departamentos', [App\Http\Controllers\departamentoController::class, 'findAll'])->name('departamentos.findAll');
 Route::get('/usuarios', [App\Http\Controllers\userController::class, 'findAll'])->name('users.findAll');
+Route::get('/challenges', [App\Http\Controllers\challengesController::class, 'findAll'])->name('challenges.findAll');

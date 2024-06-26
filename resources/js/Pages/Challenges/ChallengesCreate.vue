@@ -2,7 +2,6 @@
 import { onMounted, ref } from "vue";
 import Layout from "@/Layouts/Layout.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
-import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
@@ -26,12 +25,9 @@ async function getAreas() {
 }
 
 const form = useForm({
-    name: "",
-    email: "",
-    password: "",
-    password_confirmation: "",
     area_id: "",
     departamento_id: "",
+    challenge: "",
 });
 
 const onChange = async (event) => {
@@ -44,14 +40,15 @@ const onChange = async (event) => {
         });
 };
 
-const submit = async () => {
+const submit = () => {
     try {
-        form.post(route("user.store"), {
+        form.post(route("challenge.store"), {
             onFinish: () => {
                 showToast("El registro ha sido creado", "success");
                 form.reset();
             },
         });
+
     } catch (error) {
         showToast("Ocurrio un error", "error");
         console.error(error);
@@ -60,25 +57,27 @@ const submit = async () => {
 
 onMounted(() => {
     getAreas();
-});
+})
+
 </script>
 
 <template>
     <Layout>
 
-        <Head title="Usuario" />
+        <Head title="Challenges" />
+
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
-                <h3>Usuarios</h3>
+                <h3>Challenges</h3>
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
-                <Link :href="route('user.index')" class="px-1">
-                <h3>Usuarios -</h3>
+                <Link :href="route('departamento.index')" class="px-1">
+                <h3>Challenges -</h3>
                 </Link>
-                <Link :href="route('user.create')" class="active">
+                <Link :href="route('departamento.create')" class="active">
                 <h3>Nuevo</h3>
                 </Link>
             </div>
@@ -91,19 +90,7 @@ onMounted(() => {
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto">
                             <form @submit.prevent="submit">
-                                <div>
-                                    <InputLabel for="name" value="Name" />
-                                    <TextInput id="name" v-model="form.name" type="text" class="mt-1 block w-full"
-                                        required autofocus autocomplete="name" />
-                                    <InputError class="mt-2" :message="form.errors.name" />
-                                </div>
 
-                                <div class="mt-4">
-                                    <InputLabel for="email" value="Email" />
-                                    <TextInput id="email" v-model="form.email" type="email" class="mt-1 block w-full"
-                                        required autocomplete="username" />
-                                    <InputError class="mt-2" :message="form.errors.email" />
-                                </div>
 
                                 <div class="mt-4">
                                     <InputLabel for="area_id" value="Area: " />
@@ -135,42 +122,9 @@ onMounted(() => {
                                 </div>
 
                                 <div class="mt-4">
-                                    <InputLabel for="password" value="Password" />
-                                    <TextInput id="password" v-model="form.password" type="password"
-                                        class="mt-1 block w-full" required autocomplete="new-password" />
-                                    <InputError class="mt-2" :message="form.errors.password" />
-                                </div>
-
-                                <div class="mt-4">
-                                    <InputLabel for="password_confirmation" value="Confirm Password" />
-                                    <TextInput id="password_confirmation" v-model="form.password_confirmation"
-                                        type="password" class="mt-1 block w-full" required
-                                        autocomplete="new-password" />
-                                    <InputError class="mt-2" :message="form.errors.password_confirmation
-                                        " />
-                                </div>
-
-                                <div v-if="
-                                    $page.props.jetstream
-                                        .hasTermsAndPrivacyPolicyFeature
-                                " class="mt-4">
-                                    <InputLabel for="terms">
-                                        <div class="flex items-center">
-                                            <Checkbox id="terms" v-model:checked="form.terms" name="terms" required />
-
-                                            <div class="ms-2">
-                                                I agree to the
-                                                <a target="_blank" :href="route('terms.show')"
-                                                    class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Terms
-                                                    of Service</a>
-                                                and
-                                                <a target="_blank" :href="route('policy.show')"
-                                                    class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Privacy
-                                                    Policy</a>
-                                            </div>
-                                        </div>
-                                        <InputError class="mt-2" :message="form.errors.terms" />
-                                    </InputLabel>
+                                    <InputLabel for="challenge" value="Challenge: " />
+                                    <TextInput id="challenge" v-model="form.challenge" type="text"
+                                        class="mt-1 block w-full" required autocomplete="new-challenge" />
                                 </div>
 
                                 <div class="flex items-center justify-end mt-4">
