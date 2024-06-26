@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import Layout from "@/Layouts/Layout.vue";
 import { Head, useForm, Link } from "@inertiajs/vue3";
 import SectionBorder from "@/Components/SectionBorder.vue";
@@ -99,8 +99,10 @@ async function submitPassword() {
     }
 }
 
-getAreas();
-getDepartamentos(userArea);
+onMounted(() => {
+    getAreas();
+    getDepartamentos(userArea);
+});
 </script>
 
 <template>
@@ -227,7 +229,7 @@ getDepartamentos(userArea);
                                     <TextInput id="password_confirmation" v-model="passwordForm.password_confirmation
                                         " type="password" class="mt-1 block w-full" autocomplete="new-password" />
                                     <InputError :message="passwordForm.errors
-                                            .password_confirmation
+                                        .password_confirmation
                                         " class="mt-2" />
                                 </div>
 

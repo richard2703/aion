@@ -82,11 +82,6 @@ onMounted(() => {
     getAreas();
 });
 
-// Editar área
-const editArea = (id) => {
-    window.location.href = route("area.edit", id);
-};
-
 // Eliminar área
 const deleteArea = async (id) => {
     try {

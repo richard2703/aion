@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import Layout from "@/Layouts/Layout.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import InputError from "@/Components/InputError.vue";
@@ -58,7 +58,9 @@ const submit = async () => {
     }
 };
 
-getAreas();
+onMounted(() => {
+    getAreas();
+});
 </script>
 
 <template>
