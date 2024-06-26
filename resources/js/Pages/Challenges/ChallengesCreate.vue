@@ -122,7 +122,7 @@ onMounted(() => {
                                 </div>
 
                                 <div class="mt-4">
-                                    <InputLabel for="challenge" value="challenge" />
+                                    <InputLabel for="challenge" value="Challenge: " />
                                     <TextInput id="challenge" v-model="form.challenge" type="text"
                                         class="mt-1 block w-full" required autocomplete="new-challenge" />
                                 </div>

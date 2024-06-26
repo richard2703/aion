@@ -12,12 +12,9 @@ class challengesController extends Controller
     public function index()
     {
 
-        return Inertia::render(
-            'Challenges/ChallengesIndex',
-            [
-                'challenges' => Challenge::with('area', 'departamento')->get(),
-            ]
-        );
+        return Inertia::render('Challenges/ChallengesIndex', [
+            'challenges' => Challenge::with('area', 'departamento')->get(),
+        ]);
     }
 
     function findAll(Request $request)
