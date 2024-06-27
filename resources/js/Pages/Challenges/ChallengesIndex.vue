@@ -71,11 +71,11 @@ onMounted(() => {
     getChallenges();
 });
 
-watch(globalFilter, (value) => {
+watch(globalFilter, (newValue) => {
     filters.value = {
         global: { value: newValue, matchMode: "contains" },
     };
-    getChallenges(1, rows.value, value, sortField.value, sortOrder.value);
+    getChallenges(1, rows.value, newValue, sortField.value, sortOrder.value);
 });
 
 const onPage = (event) => {
@@ -147,6 +147,7 @@ console.log(challenges.value);
                                     'challenge',
                                 ]" :sortField="sortField" :sortOrder="sortOrder"
                                 class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+                                <template #empty> No data found. </template>
                                 <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
                                     sortable></Column>
                                 <Column field="area.nombre" header="Area" headerStyle="width:4em;"
