@@ -27,9 +27,9 @@ async function getAreas() {
         });
 }
 
-async function getDepartamentos(challengeArea) {
+async function getDepartamentos(area_id) {
     await axios
-        .get(route("departamentos.byArea", challengeArea))
+        .get(route("departamentos.byArea", area_id))
         .then((response) => (departamentos.value = response.data.departamentos))
         .catch((error) => {
             console.log(error);

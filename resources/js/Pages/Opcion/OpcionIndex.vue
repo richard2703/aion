@@ -142,23 +142,24 @@ console.log(opciones.value);
                                 :rowsPerPageOptions="[5, 10, 20, 50]" tableStyle="min-width: 50rem" :filters="filters"
                                 :globalFilterFields="[
                                     'id',
-                                    'alias',
+                                    'madurez',
                                     'in',
                                     'informal',
                                     'challenge.challenge',
 
                                 ]" :sortField="sortField" :sortOrder="sortOrder"
                                 class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+                                <template #empty> No data found. </template>
                                 <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
                                     sortable></Column>
-                                <Column field="alias" header="Alias" headerStyle="width:4em;"
+                                <Column field="challenge.challenge" header="Opcion" headerStyle="width:4em;"
+                                    bodyClass="text-center" sortable></Column>
+                                <Column field="madurez" header="Madurez" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                 <Column field="formal" header="Formal" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                 <Column field="informal" header="Informal" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                                <Column field="challenge.challenge" header="Opcion" headerStyle="width:4em;"
-                                    bodyClass="text-center" sortable></Column>
 
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">

@@ -19,7 +19,9 @@ class Opcion extends Model
      */
     protected $fillable = [
         'challenge_id',
-        'alias',
+        'area_id',
+        'departamento_id',
+        'madurez',
         'formal',
         'informal',
     ];
