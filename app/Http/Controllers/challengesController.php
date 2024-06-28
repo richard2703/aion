@@ -17,6 +17,11 @@ class challengesController extends Controller
         ]);
     }
 
+    function byDepartamento($departamento_id)
+    {
+        return response()->json(['challenges' => Challenge::where('departamento_id', $departamento_id)->get()]);
+    }
+
     function findAll(Request $request)
     {
         $query = Challenge::query();

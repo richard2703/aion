@@ -57,4 +57,12 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('/challenge/{id}/edit', [App\Http\Controllers\challengesController::class, 'edit'])->name('challenge.edit');
     Route::patch('/challenge/{id}/update', [App\Http\Controllers\challengesController::class, 'update'])->name('challenge.update');
     Route::delete('/challenge/{id}/destroy', [App\Http\Controllers\challengesController::class, 'destroy'])->name('challenge.destroy');
+
+    //Opciones
+    Route::get('/opciones', [App\Http\Controllers\opcionController::class, 'index'])->name('opcion.index');
+    Route::get('/opcion/create', [App\Http\Controllers\opcionController::class, 'create'])->name('opcion.create');
+    Route::post('/opcion/store', [App\Http\Controllers\opcionController::class, 'store'])->name('opcion.store');
+    Route::get('/opcion/{id}/edit', [App\Http\Controllers\opcionController::class, 'edit'])->name('opcion.edit');
+    Route::patch('/opcion/{id}/update', [App\Http\Controllers\opcionController::class, 'update'])->name('opcion.update');
+    Route::delete('/opcion/{id}/destroy', [App\Http\Controllers\opcionController::class, 'destroy'])->name('opcion.destroy');
 });

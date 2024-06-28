@@ -10,11 +10,11 @@ import Column from "primevue/column";
 import InputText from "primevue/inputtext";
 
 const props = defineProps({
-    challenges: Array,
+    opciones: Array,
 });
 
-const title = "Challenges";
-const challenges = ref([]);
+const title = "Opciones";
+const opciones = ref([]);
 const totalRecords = ref(0);
 const rows = ref(10);
 const first = ref(0);
@@ -23,7 +23,7 @@ const filters = ref({});
 const sortField = ref("id");
 const sortOrder = ref(1);
 
-async function getChallenges(
+async function getOpciones(
     page = 1,
     rowsPerPage = rows.value,
     filter = "",
@@ -31,7 +31,7 @@ async function getChallenges(
     sortOrder = 1
 ) {
     try {
-        const response = await axios.get("/api/challenges", {
+        const response = await axios.get("/api/opciones", {
             params: {
                 page,
                 rows: rowsPerPage,
@@ -40,7 +40,7 @@ async function getChallenges(
                 sortOrder: sortOrder === 1 ? "asc" : "desc",
             },
         });
-        challenges.value = response.data.data;
+        opciones.value = response.data.data;
         totalRecords.value = response.data.total;
         first.value = (response.data.current_page - 1) * rows.value;
     } catch (error) {
@@ -48,7 +48,7 @@ async function getChallenges(
     }
 }
 
-const deleteChallenge = async (id) => {
+const deleteOpcion = async (id) => {
     try {
         const result = await confirmDialog(
             "Estas seguro?",
@@ -56,8 +56,8 @@ const deleteChallenge = async (id) => {
             "warning"
         );
         if (result.isConfirmed) {
-            await axios.delete(route("challenge.destroy", id));
-            challenges.value = challenges.value.filter((challenge) => challenge.id !== id);
+            await axios.delete(route("opcion.destroy", id));
+            opciones.value = opciones.value.filter((opcion) => opcion.id !== id);
             showToast("El registro ha sido eliminado", "success");
 
         }
@@ -68,20 +68,20 @@ const deleteChallenge = async (id) => {
 };
 
 onMounted(() => {
-    getChallenges();
+    getOpciones();
 });
 
-watch(globalFilter, (newValue) => {
+watch(globalFilter, (value) => {
     filters.value = {
         global: { value: newValue, matchMode: "contains" },
     };
-    getChallenges(1, rows.value, newValue, sortField.value, sortOrder.value);
+    getOpciones(1, rows.value, value, sortField.value, sortOrder.value);
 });
 
 const onPage = (event) => {
     const page = event.page + 1;
     rows.value = event.rows;
-    getChallenges(
+    getOpciones(
         page,
         rows.value,
         globalFilter.value,
@@ -93,7 +93,7 @@ const onPage = (event) => {
 const onSort = (event) => {
     sortField.value = event.sortField || "id";
     sortOrder.value = event.sortOrder;
-    getChallenges(
+    getOpciones(
         1,
         rows.value,
         globalFilter.value,
@@ -101,7 +101,7 @@ const onSort = (event) => {
         sortOrder.value
     );
 };
-console.log(challenges.value);
+console.log(opciones.value);
 </script>
 
 <style scoped>
@@ -116,14 +116,14 @@ console.log(challenges.value);
         <Head title="Departamento" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
-                <h3>Challenges</h3>
+                <h3>Opciones</h3>
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
                 <Link class="active">
-                <h3>Challenges</h3>
+                <h3>Opciones</h3>
                 </Link>
             </div>
         </div>
@@ -132,42 +132,46 @@ console.log(challenges.value);
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div>
                     <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
-                        <PrimaryButton :href="route('challenge.create')">Nuevo</PrimaryButton>
+                        <PrimaryButton :href="route('opcion.create')">Nuevo</PrimaryButton>
                     </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto overflow-x-auto">
                             <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
-                            <DataTable :value="challenges" paginator :rows="rows" :totalRecords="totalRecords"
+                            <DataTable :value="opciones" paginator :rows="rows" :totalRecords="totalRecords"
                                 :lazy="true" :first="first" @page="onPage" @sort="onSort"
                                 :rowsPerPageOptions="[5, 10, 20, 50]" tableStyle="min-width: 50rem" :filters="filters"
                                 :globalFilterFields="[
                                     'id',
-                                    'area.nombre',
-                                    'departamento.nombre',
-                                    'challenge',
+                                    'madurez',
+                                    'in',
+                                    'informal',
+                                    'challenge.challenge',
+
                                 ]" :sortField="sortField" :sortOrder="sortOrder"
                                 class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
                                 <template #empty> No data found. </template>
                                 <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
                                     sortable></Column>
-                                <Column field="area.nombre" header="Area" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                                <Column field="departamento.nombre" header="Departamento" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                                <Column field="challenge" header="Challenge" headerStyle="width:4em;"
+                                <Column field="challenge.challenge" header="Opcion" headerStyle="width:4em;"
                                     bodyClass="text-center" sortable></Column>
+                                <Column field="madurez" header="Madurez" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+                                <Column field="formal" header="Formal" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+                                <Column field="informal" header="Informal" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
 
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">
                                         <PrimaryButton class="m-2" :href="route(
-                                            'challenge.edit',
+                                            'opcion.edit',
                                             slotProps.data.id
                                         )">
                                             Editar
                                         </PrimaryButton>
 
                                         <PrimaryButton class="m-2" @click.prevent="
-                                            deleteChallenge(slotProps.data.id)
+                                            deleteOpcion(slotProps.data.id)
                                             ">
                                             Borrar
                                         </PrimaryButton>
