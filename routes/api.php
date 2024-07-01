@@ -16,3 +16,4 @@ Route::get('/departamentos/{area_id}', [App\Http\Controllers\departamentoControl
 Route::get('/departamentos', [App\Http\Controllers\departamentoController::class, 'findAll'])->name('departamentos.findAll');
 Route::get('/usuarios', [App\Http\Controllers\userController::class, 'findAll'])->name('users.findAll');
 Route::get('/challenges', [App\Http\Controllers\challengesController::class, 'findAll'])->name('challenges.findAll');
+Route::get('/config-dashboard', [App\Http\Controllers\dashboardController::class, 'getConfig'])->name('config.getConfig');
