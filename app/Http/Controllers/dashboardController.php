@@ -14,28 +14,8 @@ class dashboardController extends Controller
     {
         $personalizar = Personalizar::first();
 
-        if (!$personalizar) {
-            return response()->json([
-                'message' => 'No configuration found.',
-            ], 404);
-        }
 
-        $data = [
-            'id' => $personalizar->id,
-            'proposito' => $personalizar->proposito,
-            'logo' => null, // Placeholder for logo URL
-            'banner' => null, // Placeholder for banner URL
-        ];
-
-        if ($personalizar->logo) {
-            $data['logo'] = Storage::disk('logos')->url($personalizar->logo); // Construct logo URL from storage path
-        }
-
-        if ($personalizar->banner) {
-            $data['banner'] = Storage::disk('banners')->url($personalizar->banner); // Construct banner URL from storage path
-        }
-
-        return response()->json($data);
+        return response()->json($personalizar);
     }
 
 
@@ -81,34 +61,34 @@ class dashboardController extends Controller
     }
 
 
-    function update(Request $request, $id)
+    public function update(Request $request, $id)
     {
-        $proposito = $request->proposito;
+        $request->validate([
+            'proposito' => 'required|string|max:255',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
 
-        $profile = Personalizar::find($id); // Find profile by ID
+        $personalizar = Personalizar::findOrFail($id);
 
-        $data = [
-            'proposito' => $proposito,
-        ];
-        dd($data, $id);
+        $personalizar->proposito = $request->proposito;
 
+        // Handle logo upload
         if ($request->hasFile('logo')) {
-            $logoPath = $request->file('logo')->store('logos'); // Store logo in 'logos' disk
-            $data['logo'] = $logoPath;
-
-            // Optionally delete the old logo if applicable (implement logic here)
+            $logo = $request->file('logo');
+            $path1 = $logo->store('uploads', 'public');
+            $personalizar->logo = $path1;
         }
 
+        // Handle banner upload
         if ($request->hasFile('banner')) {
-            $bannerPath = $request->file('banner')->store('banners'); // Store banner in 'banners' disk
-            $data['banner'] = $bannerPath;
-
-            // Optionally delete the old banner if applicable (implement logic here)
+            $banner = $request->file('banner');
+            $path2 = $banner->store('uploads', 'public');
+            $personalizar->banner = $path2;
         }
 
-        $profile->update($data);
+        $personalizar->save();
 
-        return response()->json(['message' => 'Updated successfully', 'profile' => $profile->fresh()]); // Return updated profile data
-
+        return response()->json(['message' => 'Updated successfully', 'personalizar' => $personalizar->fresh()]);
     }
 }
