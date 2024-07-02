@@ -151,6 +151,7 @@ watch(globalFilter, (newValue) => {
                                     'descripcion',
                                 ]" :sortField="sortField" :sortOrder="sortOrder"
                                 class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+                                <template #empty> No data found. </template>
                                 <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
                                     sortable></Column>
                                 <Column field="nombre" header="Area" headerStyle="width:4em;"

@@ -151,6 +151,7 @@ watch(globalFilter, (newValue) => {
                                     'departamento.nombre',
                                 ]" :sortField="sortField" :sortOrder="sortOrder"
                                 class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+                                <template #empty> No data found. </template>
                                 <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
                                     sortable></Column>
                                 <Column field="name" header="Name" headerStyle="width:4em;"
@@ -160,7 +161,8 @@ watch(globalFilter, (newValue) => {
                                 <Column field="area.nombre" header="Area" headerStyle="width:4em;"
                                     bodyClass="text-center" sortable></Column>
                                 <Column field="departamento.nombre" header="Departamento" headerStyle="width:4em;"
-                                    bodyClass="text-center" sortable></Column>
+                                    bodyClass="text-center" sortable>
+                                </Column>
 
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">

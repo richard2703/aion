@@ -27,9 +27,9 @@ async function getAreas() {
         });
 }
 
-async function getDepartamentos(challengeArea) {
+async function getDepartamentos(area_id) {
     await axios
-        .get(route("departamentos.byArea", challengeArea))
+        .get(route("departamentos.byArea", area_id))
         .then((response) => (departamentos.value = response.data.departamentos))
         .catch((error) => {
             console.log(error);
@@ -87,10 +87,10 @@ onMounted(() => {
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
-                <Link :href="route('departamento.index')" class="px-1">
+                <Link :href="route('challenge.index')" class="px-1">
                 <h3>Challenges -</h3>
                 </Link>
-                <Link :href="route('departamento.create')" class="active">
+                <Link :href="route('challenge.edit', challenge.id)" class="active">
                 <h3>Nuevo</h3>
                 </Link>
             </div>
