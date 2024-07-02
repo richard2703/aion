@@ -107,36 +107,40 @@ const getItem = () => {
                                     <img class="h-96" :src="banner_path" alt="Banner actual" srcset="">
                                 </div>
                                 <div class="bg-gray-300 ">
-                                    <h2 class="text-center text-2xl">proposito</h2>
-                                    <p class="p-4">{{ proposito }}</p>
+                                    <h2 class="text-center font-bold text-2xl">proposito</h2>
+                                    <p class="italic m-4 text-lg">{{ proposito }}</p>
                                 </div>
                             </div>
                             <br>
                             <div class="grid sm:grid-cols-1 md:grid-cols-3 gap-4 bg-gray-300">
                                 <div class="bg-gray-300 ">
+                                    <h2 class="text-center font-bold text-2xl">PDCA</h2>
                                     <Chart type="radar" :data="chartData" :options="chartOptions" class="" />
                                 </div>
                                 <div class="bg-gray-300 text-center ">
-                                    <img class="w-full h-full"
-                                        src="https://www.conceptdraw.com/How-To-Guide/picture/Metro-Map-ELR-Route-Map.png"
-                                        alt="">
+                                    <h2 class="text-center font-bold text-2xl">Metromap</h2>
+                                    <img class="w-full h-40" src="../../img/metromaps/metromap.png" alt="">
                                 </div>
                                 <div class="bg-gray-300 ">
-                                    <h2 class="text-center">Lorem</h2>
-                                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eveniet non molestias
-                                        aliquam neque, libero a, assumenda inventore adipisci ipsam, quibusdam quae
-                                        dolor?
-                                        Qui modi nemo eius iste aperiam, laborum laudantium.</p>
+                                    <h2 class="text-center font-bold text-2xl">Objetivos</h2>
+                                    <ul>
+                                        <li>Objetivo 1</li>
+                                        <li>Objetivo 2</li>
+                                        <li>Objetivo 3</li>
+                                        <li>Objetivo 4</li>
+                                        <li>Objetivo 5</li>
+                                    </ul>
                                 </div>
-                            </div>
-                            <br>
-                            <div class="grid  grid-cols-1 gap-4 bg-gray-300">
-                                <div class="bg-gray-300 ">
-                                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eveniet non molestias
-                                        aliquam neque, libero a, assumenda inventore adipisci ipsam, quibusdam quae
-                                        dolor?
-                                        Qui modi nemo eius iste aperiam, laborum laudantium.</p>
-                                </div>
+                                <br>
+                                <!-- <div class="grid  grid-cols-1 gap-4 bg-gray-300">
+                                    <div class="bg-gray-300 ">
+                                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eveniet non
+                                            molestias
+                                            aliquam neque, libero a, assumenda inventore adipisci ipsam, quibusdam quae
+                                            dolor?
+                                            Qui modi nemo eius iste aperiam, laborum laudantium.</p>
+                                    </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>

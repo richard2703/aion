@@ -117,8 +117,7 @@ const submit = async () => {
         }
         getItem();
         // Optionally reset form state after successful submission
-        form.banner.reset();
-        form.logo.reset();
+        // form.reset();
     } catch (error) {
         if (error.response) {
             console.error('Error response:', error.response.data);

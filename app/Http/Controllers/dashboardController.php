@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Personalizar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
 
 class dashboardController extends Controller
 {
@@ -30,13 +29,13 @@ class dashboardController extends Controller
         // Handle file uploads
         if ($request->hasFile('logo')) {
             $logo = $request->file('logo');
-            $path1 = $logo->store('uploads', 'public');
+            $path1 = $logo->store('logos', 'public');
             $data['logo'] = $path1;
         }
 
         if ($request->hasFile('banner')) {
             $banner = $request->file('banner');
-            $path2 = $banner->store('uploads', 'public');
+            $path2 = $banner->store('banners', 'public');
             $data['banner'] = $path2;
         }
 
@@ -56,18 +55,29 @@ class dashboardController extends Controller
 
         $personalizar->proposito = $request->proposito;
 
-        // Handle logo upload
+        // Manejar la carga del logo
         if ($request->hasFile('logo')) {
-            // Delete previous file if it exists
+            // Eliminar el archivo anterior si existe
+            if ($personalizar->logo) {
+                Storage::disk('public')->delete($personalizar->logo);
+            }
+
+            // Guardar el nuevo archivo
             $logo = $request->file('logo');
-            $path1 = $logo->store('uploads', 'public');
+            $path1 = $logo->store('logos', 'public');
             $personalizar->logo = $path1;
         }
 
-        // Handle banner upload
+        // Manejar la carga del banner
         if ($request->hasFile('banner')) {
+            // Eliminar el archivo anterior si existe
+            if ($personalizar->banner) {
+                Storage::disk('public')->delete($personalizar->banner);
+            }
+
+            // Guardar el nuevo archivo
             $banner = $request->file('banner');
-            $path2 = $banner->store('uploads', 'public');
+            $path2 = $banner->store('banners', 'public');
             $personalizar->banner = $path2;
         }
 

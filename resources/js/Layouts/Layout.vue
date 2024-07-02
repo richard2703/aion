@@ -7,7 +7,7 @@
                     <div
                         class="flex items-center justify-between  bg-neutral-900 md:shrink-0 md:justify-center md:w-56">
                         <Link class="mt-1" href="/">
-                        <logo class="fill-white" width="80" height="28" />
+                        <logo class="fill-white m-1" width="150" height="150" />
                         </Link>
                         <dropdown class="md:hidden float-right" placement="bottom-end">
                             <template #default>
