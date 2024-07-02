@@ -65,4 +65,10 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('/opcion/{id}/edit', [App\Http\Controllers\opcionController::class, 'edit'])->name('opcion.edit');
     Route::patch('/opcion/{id}/update', [App\Http\Controllers\opcionController::class, 'update'])->name('opcion.update');
     Route::delete('/opcion/{id}/destroy', [App\Http\Controllers\opcionController::class, 'destroy'])->name('opcion.destroy');
+
+    Route::get('/config', [App\Http\Controllers\configController::class, 'index'])->name('config.index');
+
+    // Dashboard
+    Route::post('/dashboard/store', [App\Http\Controllers\dashboardController::class, 'store'])->name('dashboard.store');
+    Route::post('/dashboard/{id}/update', [App\Http\Controllers\dashboardController::class, 'update'])->name('dashboard.update');
 });

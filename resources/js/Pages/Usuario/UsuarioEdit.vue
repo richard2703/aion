@@ -63,7 +63,6 @@ async function submitProfile() {
             "Se modificara el registro!",
             "info"
         );
-        console.log(result.isConfirmed);
         if (result.isConfirmed) {
             profileForm.patch(route("user.update", usuario.value.id), {
                 onFinish: () => {

@@ -118,6 +118,19 @@
                     </Link>
                 </div>
             </li>
+            <li>
+                <div class="mb-4">
+                    <Link class="group flex items-center py-3" :href="route('config.index')">
+                    <div :class="title === 'Configuraciones'
+                        ? 'activo flex'
+                        : 'inactivo flex'
+                        ">
+                        <icon name="office" class="mr-2 w-4 h-4" />
+                        Configuraciones
+                    </div>
+                    </Link>
+                </div>
+            </li>
         </ul>
     </div>
 </template>
