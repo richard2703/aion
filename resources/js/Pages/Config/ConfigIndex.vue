@@ -13,7 +13,7 @@ const template = ref('dashboard');
 </script>
 
 <template>
-    <Layout title="Area">
+    <Layout title="Configuraciones">
 
         <Head title="Usuarios" />
         <div class="overflow-hidden sm:rounded-lg">
@@ -37,40 +37,27 @@ const template = ref('dashboard');
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto">
                             <div class="grid sm:grid-cols-1 md:grid-cols-2 bg-slate-50">
-                                <div class="bg-red-300 h-96 p-4">
+                                <div class="bg-white p-4">
 
-                                    <h2>Menu de Configuraciones</h2>
+                                    <h2 class="text-2xl">Menu de Configuraciones</h2>
 
                                     <ul class="space-y-2">
-                                        <li class="text-indigo-300 group-hover:text-white font-bold text-xl">
+                                        <li class="text-blue-300 hover:text-blue-800 font-bold text-xl">
                                             <button @click="template = 'dashboard'">
                                                 Dashboard
                                             </button>
                                         </li>
-                                        <li class="text-indigo-300 group-hover:text-white font-bold text-xl">
+                                        <!-- TODO: eliminar si no se usa -->
+                                        <li class="text-blue-300 hover:text-blue-800 font-bold text-xl">
                                             <button @click="template = 'seccion2'">
                                                 Seccion 2
                                             </button>
                                         </li>
-                                        <li class="text-indigo-300 group-hover:text-white font-bold text-xl">
-                                            <button @click="template = 'seccion3'">
-                                                Seccion 3
-                                            </button>
-                                        </li>
-                                        <li class="text-indigo-300 group-hover:text-white font-bold text-xl">
-                                            <button @click="template = 'seccion4'">
-                                                Seccion 4
-                                            </button>
-                                        </li>
-                                        <li class="text-indigo-300 group-hover:text-white font-bold text-xl">
-                                            <button @click="template = 'seccion5'">
-                                                Seccion 5
-                                            </button>
-                                        </li>
+
 
                                     </ul>
                                 </div>
-                                <div class="bg-red-300 p-4">
+                                <div class="bg-white p-4">
 
                                     <ConfigDashboard v-if="template === 'dashboard'" />
                                     <div v-if="template === 'seccion2'">

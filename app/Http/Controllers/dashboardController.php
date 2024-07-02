@@ -14,6 +14,8 @@ class dashboardController extends Controller
     {
         $personalizar = Personalizar::first();
 
+        $personalizar->logo_path = Storage::disk('public')->url($personalizar->logo);
+        $personalizar->banner_path = Storage::disk('public')->url($personalizar->banner);
 
         return response()->json($personalizar);
     }
@@ -21,19 +23,6 @@ class dashboardController extends Controller
 
     public function store(Request $request)
     {
-        // Validate the incoming request
-        $validator = Validator::make($request->all(), [
-            'proposito' => 'required|string',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Max 2MB
-            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Max 2MB
-        ]);
-
-        // Check if validation fails
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors(), 'message' => $validator->errors()->first()], 422);
-        }
-
-        // Prepare data to save
         $data = [
             'proposito' => $request->proposito,
         ];
@@ -63,18 +52,13 @@ class dashboardController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'proposito' => 'required|string|max:255',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-
         $personalizar = Personalizar::findOrFail($id);
 
         $personalizar->proposito = $request->proposito;
 
         // Handle logo upload
         if ($request->hasFile('logo')) {
+            // Delete previous file if it exists
             $logo = $request->file('logo');
             $path1 = $logo->store('uploads', 'public');
             $personalizar->logo = $path1;

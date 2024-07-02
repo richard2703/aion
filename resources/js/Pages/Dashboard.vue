@@ -8,11 +8,18 @@ import Chart from 'primevue/chart';
 onMounted(() => {
     chartData.value = setChartData();
     chartOptions.value = setChartOptions();
+    getItem();
 });
 
+const props = defineProps({
+    item: Object || null,
+});
 
 const chartData = ref();
 const chartOptions = ref();
+const item = ref({});
+const banner_path = ref();
+const proposito = ref();
 
 const setChartData = () => {
     const documentStyle = getComputedStyle(document.documentElement);
@@ -57,6 +64,20 @@ const setChartOptions = () => {
     };
 }
 
+const getItem = () => {
+    axios
+        .get("/api/config-dashboard")
+        .then((response) => {
+            item.value = response.data;
+            proposito.value = item.value.proposito;
+            banner_path.value = item.value.banner_path;
+            // Set other form fields here as needed
+        })
+        .catch((error) => {
+            console.error('Error fetching item:', error);
+        });
+};
+
 
 </script>
 
@@ -70,7 +91,7 @@ const setChartOptions = () => {
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
-                <h3>Home -</h3>
+                <h3>Home</h3>
                 </Link>
             </div>
         </div>
@@ -83,17 +104,11 @@ const setChartOptions = () => {
                         <div class="container mx-auto">
                             <div class="grid sm:grid-cols-1 md:grid-cols-2 bg-gray-300">
                                 <div class="bg-gray-300 h-96">
-
-                                    <img class="h-96"
-                                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/M%C3%BCnster%2C_LVM%2C_B%C3%BCrogeb%C3%A4ude_--_2013_--_5149-51.jpg/1200px-M%C3%BCnster%2C_LVM%2C_B%C3%BCrogeb%C3%A4ude_--_2013_--_5149-51.jpg"
-                                        alt="">
+                                    <img class="h-96" :src="banner_path" alt="Banner actual" srcset="">
                                 </div>
                                 <div class="bg-gray-300 ">
-                                    <h2 class="text-center">Lorem</h2>
-                                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eveniet non molestias
-                                        aliquam neque, libero a, assumenda inventore adipisci ipsam, quibusdam quae
-                                        dolor?
-                                        Qui modi nemo eius iste aperiam, laborum laudantium.</p>
+                                    <h2 class="text-center text-2xl">proposito</h2>
+                                    <p class="p-4">{{ proposito }}</p>
                                 </div>
                             </div>
                             <br>
