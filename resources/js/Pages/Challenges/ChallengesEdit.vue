@@ -91,7 +91,7 @@ onMounted(() => {
                 <h3>Challenges -</h3>
                 </Link>
                 <Link :href="route('challenge.edit', challenge.id)" class="active">
-                <h3>Nuevo</h3>
+                <h3>Editar</h3>
                 </Link>
             </div>
         </div>

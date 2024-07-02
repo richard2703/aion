@@ -71,4 +71,20 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     // Dashboard
     Route::post('/dashboard/store', [App\Http\Controllers\dashboardController::class, 'store'])->name('dashboard.store');
     Route::post('/dashboard/{id}/update', [App\Http\Controllers\dashboardController::class, 'update'])->name('dashboard.update');
+
+    //Objetivo
+    Route::get('/objetivos', [App\Http\Controllers\objetivosController::class, 'index'])->name('objetivo.index');
+    Route::get('/objetivo/create', [App\Http\Controllers\objetivosController::class, 'create'])->name('objetivo.create');
+    Route::post('/objetivo/store', [App\Http\Controllers\objetivosController::class, 'store'])->name('objetivo.store');
+    Route::get('/objetivo/{objetivo}/edit', [App\Http\Controllers\objetivosController::class, 'edit'])->name('objetivo.edit');
+    Route::patch('/objetivo/{objetivo}/update', [App\Http\Controllers\objetivosController::class, 'update'])->name('objetivo.update');
+    Route::delete('/objetivo/{objetivo}/destroy', [App\Http\Controllers\objetivosController::class, 'destroy'])->name('objetivo.destroy');
+
+    //minutero
+    Route::get('/minutas', [App\Http\Controllers\minutasController::class, 'index'])->name('minutas.index');
+    Route::get('/minutas/create', [App\Http\Controllers\minutasController::class, 'create'])->name('minutas.create');
+    Route::post('/minutas/store', [App\Http\Controllers\minutasController::class, 'store'])->name('minutas.store');
+    Route::get('/minutas/{objetivo}/edit', [App\Http\Controllers\minutasController::class, 'edit'])->name('minutas.edit');
+    Route::patch('/minutas/{objetivo}/update', [App\Http\Controllers\minutasController::class, 'update'])->name('minutas.update');
+    Route::delete('/minutas/{objetivo}/destroy', [App\Http\Controllers\minutasController::class, 'destroy'])->name('minutas.destroy');
 });

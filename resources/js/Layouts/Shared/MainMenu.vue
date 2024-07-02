@@ -16,6 +16,20 @@
                 </div>
             </li>
 
+            <li>
+                <div class="mb-4">
+                    <Link class="group flex items-center py-3" :href="route('minutas.index')">
+                    <div :class="title === 'minutero'
+                        ? 'activo flex'
+                        : 'inactivo flex'
+                        ">
+                        <icon name="office" class="mr-2 w-4 h-4" />
+                        Minutero
+                    </div>
+                    </Link>
+                </div>
+            </li>
+
             <!-- Usuarios Menu Item with Submenus -->
             <!-- <li>
                 <a class="group flex items-center py-3 cursor-pointer" @click="toggleMenu('usuarios')">
@@ -127,6 +141,16 @@
                         ">
                         <icon name="office" class="mr-2 w-4 h-4" />
                         Configuraciones
+                    </div>
+                    </Link>
+                </div>
+            </li>
+            <li>
+                <div class="mb-4">
+                    <Link class="group flex items-center py-3" :href="route('objetivo.index')">
+                    <div :class="title === 'Objetivos' ? 'activo flex' : 'inactivo flex'">
+                        <icon name="office" class="mr-2 w-4 h-4" />
+                        Objetivo
                     </div>
                     </Link>
                 </div>
