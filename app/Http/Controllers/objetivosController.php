@@ -87,15 +87,18 @@ class objetivosController extends Controller
      */
     public function edit(objetivos $objetivo)
     {
-        dd($objetivo->titulo);
+
+        return Inertia::render('Objetivos/ObjetivoEdit', ['objetivo' => $objetivo]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, objetivos $objetivos)
+    public function update(Request $request, objetivos $objetivo)
     {
         //
+        $objetivo->update($request->only('titulo', 'objetivo'));
+        return redirect()->route('objetivo.index');
     }
 
     /**
@@ -103,10 +106,8 @@ class objetivosController extends Controller
      */
     public function destroy(objetivos $objetivo)
     {
-        // $departamento = Departamento::find($id);
-        // dd($objetivo);
+
         $objetivo->delete();
-        // return response()->json(['departamentos' => Departamento::with('area')->get(),]);
         return response()->json(['objetivos' => "ok"]);
     }
 }

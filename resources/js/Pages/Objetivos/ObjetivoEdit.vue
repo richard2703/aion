@@ -6,81 +6,33 @@ import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { showToast } from "../utils/SweetAlert.service";
 import Textarea from 'primevue/textarea';
+import TextInput from "@/Components/TextInput.vue";
+import InputError from "@/Components/InputError.vue";
 
 
 const props = defineProps({
-    opcion: Object,
-    areas: Array,
-    departamentos: Array || null,
-    challenges: Array || null,
+    objetivo: Object | null,
 });
 
-const opcion = ref(props.opcion);
-const areas = ref(props.areas);
-const departamentos = ref(props.departamentos);
-const challenges = ref(props.challenges);
+const objetivo = ref(props.objetivo);
+const title = "Objetivos";
 
-async function getAreas() {
-    await axios
-        .get("/api/areas")
-        .then((response) => (areas.value = response.data))
-        .catch((error) => {
-            console.log(error);
-        });
-}
-
-async function getDepartamentos(area_id) {
-    await axios
-        .get(route("departamentos.byArea", area_id))
-        .then((response) => (departamentos.value = response.data.departamentos))
-        .catch((error) => {
-            console.log(error);
-        });
-}
-
-async function getChallenges(departamento_id) {
-    await axios
-        .get(route("challenges.byArea", departamento_id))
-        .then((response) => (challenges.value = response.data.challenges))
-        .catch((error) => {
-            console.log(error);
-        });
-}
 
 const form = useForm({
-    area_id: opcion.value.area_id,
-    departamento_id: opcion.value.departamento_id,
-    challenge_id: opcion.value.challenge_id,
-    madurez: opcion.value.madurez,
-    formal: opcion.value.formal,
-    informal: opcion.value.informal,
+    titulo: objetivo.value.titulo,
+    objetivo: objetivo.value.objetivo,
 });
+onMounted(() => {
 
-const onChangeArea = async (event) => {
-    const taget_id = event.target.value;
-    await axios
-        .get(route("departamentos.byArea", taget_id))
-        .then((response) => (departamentos.value = response.data.departamentos))
-        .catch((error) => {
-            console.log(error);
-        });
-};
 
-const onChangeDepartamento = async (event) => {
-    const taget_id = event.target.value;
-    await axios
-        .get(route("challenges.byArea", taget_id))
-        .then((response) => (challenges.value = response.data.challenges))
-        .catch((error) => {
-            console.log(error);
-        });
-};
+})
 
 const submit = () => {
+    console.log({ id: objetivo.value.id });
     try {
-        form.patch(route("opcion.update", opcion.value.id), {
+        form.patch(route("objetivo.update", objetivo.value.id), {
             onFinish: () => {
-                showToast("El registro ha sido creado", "success");
+                showToast("El registro ha sido actualizado", "success");
                 form.reset();
             },
         });
@@ -91,12 +43,6 @@ const submit = () => {
     }
 };
 
-onMounted(() => {
-    getAreas();
-    getDepartamentos(opcion.value.area_id);
-    getChallenges(opcion.value.departamento_id);
-})
-
 </script>
 
 <template>
@@ -106,17 +52,17 @@ onMounted(() => {
 
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
-                <h3>Opciones</h3>
+                <h3>Objetivos</h3>
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
-                <Link :href="route('opcion.index')" class="px-1">
-                <h3>Opciones -</h3>
+                <Link :href="route('objetivo.index')" class="px-1">
+                <h3>Objetivos -</h3>
                 </Link>
-                <Link :href="route('opcion.create')" class="active">
-                <h3>Nuevo</h3>
+                <Link :href="route('objetivo.update', objetivo.id)" class="active">
+                <h3>Editar</h3>
                 </Link>
             </div>
         </div>
@@ -132,86 +78,29 @@ onMounted(() => {
                                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
 
                                     <div class="mt-4">
-                                        <InputLabel for="area_id" value="Area: " />
-                                        <select ref="area_select" @change="onChangeArea($event)"
-                                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                            v-model="form.area_id" required>
-                                            <option value="" disabled selected>
-                                                Seleccione una opcion
-                                            </option>
-                                            <option v-for="area in areas" :key="area.id" :value="area.id">
-                                                {{ area.nombre }}
-                                            </option>
-                                        </select>
+
+                                        <InputLabel for="titulo" value="Titulo: " />
+                                        <TextInput id="titulo" v-model="form.titulo" type="text"
+                                            class="mt-1 block w-full" required autofocus autocomplete="titulo" />
+                                        <InputError class="mt-2" :message="form.errors.titulo" />
+
                                     </div>
                                     <div class="mt-4">
-                                        <InputLabel for="departamento_id" value="Departamento: " />
-
-                                        <select ref="departamento_select" @change="onChangeDepartamento($event)" class=" border-gray-300 focus:border-indigo-500 focus:ring-indigo-500
-                                            rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                            v-model="form.departamento_id" required>
-                                            <option value="" disabled selected>
-                                                Seleccione una opcion
-                                            </option>
-                                            <option v-for="departamento in departamentos" :key="departamento.id"
-                                                :value="departamento.id">
-                                                {{ departamento.nombre }}
-                                            </option>
-                                        </select>
+                                        <InputLabel for="titulo" value="Objetivo: " />
+                                        <TextInput id="objetivo" v-model="form.objetivo" type="text"
+                                            class="mt-1 block w-full" required autocomplete="objetivo" />
+                                        <InputError class="mt-2" :message="form.errors.objetivo" />
                                     </div>
 
-                                    <div class="mt-4">
-                                        <InputLabel for="challenge_id" value="Challenge: " />
-
-                                        <select ref="challenge_select"
-                                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                            v-model="form.challenge_id" required>
-                                            <option value="" disabled selected>
-                                                Seleccione una opcion
-                                            </option>
-                                            <option v-for="challenge in challenges" :key="challenge.id"
-                                                :value="challenge.id">
-                                                {{ challenge.challenge }}
-                                            </option>
-                                        </select>
-                                    </div>
-
-                                    <div class="mt-4">
-                                        <InputLabel for="madurez" value="Madurez: " />
-
-                                        <select ref="madurez_select"
-                                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                            v-model="form.madurez" required>
-                                            <option value="" disabled selected>
-                                                Seleccione una opcion
-                                            </option>
-                                            <option value="Nulo">Nulo</option>
-                                            <option value="Basico">Basico</option>
-                                            <option value="Maduro">Maduro</option>
-                                            <option value="Avanzado">Avanzado</option>
-                                        </select>
-                                    </div>
                                 </div>
 
-                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
-                                    <div class="mt-4">
-                                        <InputLabel for="formal" value="Formal: " />
-                                        <Textarea v-model="form.formal" rows="5" cols="30" />
-                                    </div>
-
-                                    <div class="mt-4">
-                                        <InputLabel for="informal" value="Informal: " />
-                                        <Textarea v-model="form.informal" rows="5" cols="30" />
-                                    </div>
-
-                                    <div class="flex items-center justify-end mt-4">
-                                        <PrimaryButton class="ms-4" :class="{
-                                            'opacity-25': form.processing,
-                                        }" :disabled="form.processing">
-                                            Actualizar
-                                        </PrimaryButton>
-                                    </div>
+                                <div class="px-4 my-4 pt-2 flex justify-end bg-white border-t border-gray-200">
+                                    <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing, }"
+                                        :disabled="form.processing">
+                                        guardar
+                                    </PrimaryButton>
                                 </div>
+
                             </form>
                         </div>
                     </div>

@@ -1,7 +1,6 @@
 <template>
 
     <img :src="logo_path" alt="Logo" />
-
 </template>
 
 <script setup>
