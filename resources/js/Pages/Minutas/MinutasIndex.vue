@@ -22,14 +22,14 @@ const first = ref(0);
 const globalFilter = ref("");
 const filters = ref({});
 const sortField = ref("id");
-const sortOrder = ref(1);
+const sortOrder = ref(-1);
 
 async function getItems(
     page = 1,
     rowsPerPage = rows.value,
     filter = "",
     sortField = "id",
-    sortOrder = 1
+    sortOrder = -1
 ) {
     try {
         const response = await axios.get("/api/minutas", {
@@ -39,6 +39,8 @@ async function getItems(
                 filter,
                 sortField,
                 sortOrder: sortOrder === 1 ? "asc" : "desc",
+                // sortOrder: sortOrder === 1 ? "desc" : " asc",
+
             },
         });
         items.value = response.data.data;
@@ -145,26 +147,27 @@ const onSort = (event) => {
                                     'area.nombre',
                                     'departamento.nombre',
                                     'alias',
+                                    'tareas',
                                     'notas',
+                                    'usuario.name',
                                 ]" :sortField="sortField" :sortOrder="sortOrder"
                                 class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
                                 <template #empty> Sin registros </template>
                                 <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
                                     sortable></Column>
-                                <Column field="area.nombre" header="Area" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                                <Column field="departamento.nombre" header="Pilar" headerStyle="width:4em;"
+                                <!-- <Column field="area.nombre" header="Area" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column> -->
+                                <Column field="departamento.nombre" header="Fujo de valor" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                 <Column field="alias" header="Alias" headerStyle="width:4em;" bodyClass="text-center"
                                     sortable></Column>
-                                <Column field="notas" header="Notas" headerStyle="width:4em;"
+                                <Column field="tareas" header="Treas" headerStyle="width:4em;" bodyClass="text-center"
+                                    sortable></Column>
+                                <Column field="usuario.name" header="Responsable" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">
-                                        <PrimaryButton class="m-2" :href="route(
-                                            'objetivo.edit',
-                                            slotProps.data.id
-                                        )">
+                                        <PrimaryButton class="m-2" :href="route('minutas.edit', slotProps.data.id)">
                                             Editar
                                         </PrimaryButton>
 

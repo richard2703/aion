@@ -21,7 +21,7 @@ class minutas extends Model
         'proceso',
         'procedimientos',
         'tareas',
-        'responsable',
+        'responsable_id',
         'notas',
         'estatus'
     ];
@@ -33,5 +33,10 @@ class minutas extends Model
     public function departamento(): BelongsTo
     {
         return $this->belongsTo(Departamento::class, 'departamento_id', 'id');
+    }
+
+    public function usuario(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'responsable_id', 'id');
     }
 }

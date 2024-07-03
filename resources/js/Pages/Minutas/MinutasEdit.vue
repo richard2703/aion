@@ -4,21 +4,33 @@ import Layout from "@/Layouts/Layout.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import TextInput from "@/Components/TextInput.vue";
 import { showToast } from "../utils/SweetAlert.service";
 import Textarea from 'primevue/textarea';
+import AutoComplete from 'primevue/autocomplete';
+
 
 
 const props = defineProps({
-    opcion: Object,
+    minuta: Object,
     areas: Array,
     departamentos: Array || null,
-    challenges: Array || null,
+    usuarios: Array || null,
+    user: Object,
 });
 
-const opcion = ref(props.opcion);
+const minuta = ref(props.minuta);
+const user = ref(props.user);
 const areas = ref(props.areas);
 const departamentos = ref(props.departamentos);
-const challenges = ref(props.challenges);
+const usuarios = ref(props.usuarios);
+const title = "minutero";
+const minutaArea = minuta.value.area_id;
+const filteredUsuarios = ref();
+const responsable_id = ref();
+
+// console.log(minuta.value.area_id);
+
 
 async function getAreas() {
     await axios
@@ -38,25 +50,42 @@ async function getDepartamentos(area_id) {
         });
 }
 
-async function getChallenges(departamento_id) {
+// async function getUsuarios(area_id) {
+//     await axios
+//         .get(route("usuarios.byArea", area_id))
+//         .then((response) => (usuarios.value = response.data.usuarios))
+//         .catch((error) => {
+//             console.log(error);
+//         });
+// }
+
+async function getUsuarios() {
+    console.log(minuta.value);
     await axios
-        .get(route("challenges.byArea", departamento_id))
-        .then((response) => (challenges.value = response.data.challenges))
+        .get("/api/usuarios/all/todo")
+        .then((response) => (usuarios.value = response.data))
         .catch((error) => {
             console.log(error);
         });
 }
 
 const form = useForm({
-    area_id: opcion.value.area_id,
-    departamento_id: opcion.value.departamento_id,
-    challenge_id: opcion.value.challenge_id,
-    madurez: opcion.value.madurez,
-    formal: opcion.value.formal,
-    informal: opcion.value.informal,
+    area_id: minuta.value.area_id,
+    departamento_id: minuta.value.departamento_id,
+    alias: minuta.value.alias,
+    tipo: minuta.value.tipo,
+    proceso_id: minuta.value.proceso_id,
+    procedimientos_id: minuta.value.procedimientos_id,
+    tareas: minuta.value.tareas,
+    responsable: minuta.value.responsable,
+    notas: minuta.value.notas,
+    estatus: minuta.value.estatus,
+    responsable_id: user.value.name,
+    // responsable_id: "",
+
 });
 
-const onChangeArea = async (event) => {
+const onChange = async (event) => {
     const taget_id = event.target.value;
     await axios
         .get(route("departamentos.byArea", taget_id))
@@ -64,13 +93,10 @@ const onChangeArea = async (event) => {
         .catch((error) => {
             console.log(error);
         });
-};
 
-const onChangeDepartamento = async (event) => {
-    const taget_id = event.target.value;
     await axios
-        .get(route("challenges.byArea", taget_id))
-        .then((response) => (challenges.value = response.data.challenges))
+        .get(route("usuarios.byArea", taget_id))
+        .then((response) => (usuarios.value = response.data.usuarios))
         .catch((error) => {
             console.log(error);
         });
@@ -78,7 +104,7 @@ const onChangeDepartamento = async (event) => {
 
 const submit = () => {
     try {
-        form.patch(route("opcion.update", opcion.value.id), {
+        form.patch(route("minutas.update", minuta.value.id), {
             onFinish: () => {
                 showToast("El registro ha sido creado", "success");
                 form.reset();
@@ -93,30 +119,44 @@ const submit = () => {
 
 onMounted(() => {
     getAreas();
-    getDepartamentos(opcion.value.area_id);
-    getChallenges(opcion.value.departamento_id);
+    getDepartamentos(minutaArea);
+    getUsuarios();
 })
+
+const search = (event) => {
+    console.log("buscando");
+    setTimeout(() => {
+        if (!event.query.trim().length) {
+            console.log(filteredUsuarios.value);
+            filteredUsuarios.value = [...usuarios.value];
+        } else {
+            filteredUsuarios.value = usuarios.value.filter((usuario) => {
+                return usuario.name.toLowerCase().startsWith(event.query.toLowerCase());
+            });
+        }
+    }, 250);
+}
 
 </script>
 
 <template>
-    <Layout>
+    <Layout :titulo="title">
 
-        <Head title="Challenges" />
+        <Head title="Minutas" />
 
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
-                <h3>Opciones</h3>
+                <h3>Editar Minuta</h3>
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
-                <Link :href="route('opcion.index')" class="px-1">
-                <h3>Opciones -</h3>
+                <Link :href="route('minutas.index')" class="px-1">
+                <h3>Minutas -</h3>
                 </Link>
-                <Link :href="route('opcion.create')" class="active">
-                <h3>Nuevo</h3>
+                <Link class="active">
+                <h3>Editar</h3>
                 </Link>
             </div>
         </div>
@@ -131,9 +171,11 @@ onMounted(() => {
 
                                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
 
+
+
                                     <div class="mt-4">
                                         <InputLabel for="area_id" value="Area: " />
-                                        <select ref="area_select" @change="onChangeArea($event)"
+                                        <select ref="area_select" @change="onChange($event)"
                                             class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
                                             v-model="form.area_id" required>
                                             <option value="" disabled selected>
@@ -145,10 +187,10 @@ onMounted(() => {
                                         </select>
                                     </div>
                                     <div class="mt-4">
-                                        <InputLabel for="departamento_id" value="Departamento: " />
+                                        <InputLabel for="departamento_id" value="Pilar: " />
 
-                                        <select ref="departamento_select" @change="onChangeDepartamento($event)" class=" border-gray-300 focus:border-indigo-500 focus:ring-indigo-500
-                                            rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                        <select ref="departamento_select"
+                                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
                                             v-model="form.departamento_id" required>
                                             <option value="" disabled selected>
                                                 Seleccione una opcion
@@ -161,56 +203,100 @@ onMounted(() => {
                                     </div>
 
                                     <div class="mt-4">
-                                        <InputLabel for="challenge_id" value="Challenge: " />
+                                        <InputLabel for="tipo" value="Tipo: " />
 
-                                        <select ref="challenge_select"
+                                        <select ref="departamento_select"
                                             class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                            v-model="form.challenge_id" required>
-                                            <option value="" disabled selected>
+                                            v-model="form.tipo" required>
+                                            <option value="" selected>
                                                 Seleccione una opcion
                                             </option>
-                                            <option v-for="challenge in challenges" :key="challenge.id"
-                                                :value="challenge.id">
-                                                {{ challenge.challenge }}
-                                            </option>
+                                            <option value="D.D.S" selected>
+                                                D.D.S </option>
+                                            <option value="W.D.S." selected>
+                                                W.D.S. </option>
+                                            <option value="M.D.S." selected>
+                                                M.D.S. </option>
+                                            <option value="R.O.B." selected>
+                                                R.O.B. </option>
                                         </select>
                                     </div>
 
-                                    <div class="mt-4">
-                                        <InputLabel for="madurez" value="Madurez: " />
+                                    <!-- <div class="mt-4">
+                                        <InputLabel for="proceso" value="proceso: " />
+                                        <TextInput id="proceso" v-model="form.proceso_id" type="text"
+                                            class="mt-1 block w-full" required autocomplete="new-challenge" />
+                                    </div>
 
-                                        <select ref="madurez_select"
+                                    <div class="mt-4">
+                                        <InputLabel for="procedimiento" value="procedimiento: " />
+                                        <TextInput id="cuerpo" v-model="form.procedimiento_id" type="text"
+                                            class="mt-1 block w-full" required autocomplete="new-challenge" />
+                                    </div> -->
+
+                                    <div class="mt-4">
+                                        <InputLabel for="alias" value="Alias: " />
+                                        <TextInput id="alias" v-model="form.alias" type="text" class="mt-1 block w-full"
+                                            required autocomplete="new-challenge" />
+                                    </div>
+
+                                    <div class="mt-4">
+                                        <InputLabel for="tarea" value="tareas: " />
+                                        <TextInput id="tareas" v-model="form.tareas" type="text"
+                                            class="mt-1 block w-full" required autocomplete="new-challenge" />
+                                    </div>
+
+                                    <!-- <div class="mt-4">
+                                        <InputLabel for="responsable" value="Responsable: " />
+                                        <select ref="departamento_select"
                                             class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                            v-model="form.madurez" required>
+                                            v-model="form.responsable_id">
                                             <option value="" disabled selected>
                                                 Seleccione una opcion
                                             </option>
-                                            <option value="Nulo">Nulo</option>
-                                            <option value="Basico">Basico</option>
-                                            <option value="Maduro">Maduro</option>
-                                            <option value="Avanzado">Avanzado</option>
+
+                                            <option v-for="usuario in usuarios" :key="usuario.id" :value="usuario.id">
+                                                {{ usuario.name }}
+                                            </option>
+                                        </select>
+                                    </div> -->
+
+                                    <div class="mt-4">
+                                        <InputLabel for="responsable" value="Responsable: " />
+                                        <AutoComplete v-model="form.responsable_id" optionLabel="name"
+                                            :suggestions="filteredUsuarios" forceSelection @complete="search"
+                                            placeholder="" />
+
+                                    </div>
+
+
+                                    <div class="mt-4">
+                                        <InputLabel for="notas" value="Notas: " />
+                                        <Textarea v-model="form.notas" rows="3" style="width: 100%; " />
+                                    </div>
+
+                                    <div class="mt-4">
+                                        <InputLabel for="estatus" value="Estatus: " />
+
+                                        <select ref="departamento_select"
+                                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                            v-model="form.estatus" required>
+                                            <option value="0" selected>
+                                                Retrasado </option>
+                                            <option value="1" selected>
+                                                Iniciado </option>
+                                            <option value="2" selected>
+                                                En proceso </option>
+                                            <option value="3" selected>
+                                                Terminado </option>
                                         </select>
                                     </div>
                                 </div>
-
-                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
-                                    <div class="mt-4">
-                                        <InputLabel for="formal" value="Formal: " />
-                                        <Textarea v-model="form.formal" rows="5" cols="30" />
-                                    </div>
-
-                                    <div class="mt-4">
-                                        <InputLabel for="informal" value="Informal: " />
-                                        <Textarea v-model="form.informal" rows="5" cols="30" />
-                                    </div>
-
-                                    <div class="flex items-center justify-end mt-4">
-                                        <PrimaryButton class="ms-4" :class="{
-                                            'opacity-25': form.processing,
-                                        }" :disabled="form.processing">
-                                            Actualizar
-                                        </PrimaryButton>
-                                    </div>
+                                <div class="px-4 my-4 pt-2 flex justify-end bg-white border-t border-gray-200">
+                                    <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing, }"
+                                        :disabled="form.processing">
+                                        guardar
+                                    </PrimaryButton>
                                 </div>
                             </form>
                         </div>
