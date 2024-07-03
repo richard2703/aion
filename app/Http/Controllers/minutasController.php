@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\minutas;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\User;
 
 class minutasController extends Controller
 {
@@ -30,18 +31,31 @@ class minutasController extends Controller
             $query->where(function ($q) use ($filter) {
                 $q->where('id', 'like', '%' . $filter . '%')
                     ->orWhere('alias', 'like', '%' . $filter . '%')
-                    ->orWhere('tareas', 'like', '%' . $filter . '%');
-                // ->orWhere('informal', 'like', '%' . $filter . '%');
-                // ->orWhereHas('challenge', function ($q) use ($filter) {
-                //     $q->where('challenges.challenge', 'like', '%' . $filter . '%');
-                // });
+                    ->orWhere('tareas', 'like', '%' . $filter . '%')
+                    ->orWhereHas('area', function ($q) use ($filter) {
+                        $q->where('areas.nombre', 'like', '%' . $filter . '%')
+                            ->orWhere('areas.descripcion', 'like', '%' . $filter . '%');
+                    })
+                    ->orWhereHas('departamento', function ($q) use ($filter) {
+                        $q->where('departamentos.nombre', 'like', '%' . $filter . '%')
+                            ->orWhere('departamentos.descripcion', 'like', '%' . $filter . '%');
+                    })
+                    ->orWhereHas('usuario', function ($q) use ($filter) {
+                        $q->where('Users.name', 'like', '%' . $filter . '%');
+                    });
             });
         }
 
-        // if (in_array($sortField, ['id', 'alias', 'formal', 'informal', 'challenge.challenge'])) {
-        //     if ($sortField == 'challenge.challenge') {
-        //         $query->join('challenges', 'models.challenge_id', '=', 'challenges.id')
-        //             ->orderBy('challenges.challenge', $sortOrder);
+        // if (in_array($sortField, ['id', 'tareas', 'departamento.nombre', 'departamento.nombre', 'usuario.name',])) {
+        //     if (strpos($sortField, 'area.') === 0) {
+        //         $query->join('areas', 'challenges.area_id', '=', 'areas.id')
+        //             ->orderBy('areas.' . substr($sortField, 5), $sortOrder);
+        //     } else if (strpos($sortField, 'departamento.') === 0) {
+        //         $query->join('departamentos', 'challenges.departamento_id', '=', 'departamentos.id')
+        //             ->orderBy('departamentos.' . substr($sortField, 12), $sortOrder);
+        //     } else if (strpos($sortField, 'usuario.') === 0) {
+        //         $query->join('usuarios', 'minutas.responsable_id', '=', 'responsable_id.id')
+        //             ->orderBy('Users.' . substr($sortField, 5), $sortOrder);
         //     } else {
         //         $query->orderBy($sortField, $sortOrder);
         //     }
@@ -51,7 +65,7 @@ class minutasController extends Controller
         }
 
         // $result = $query->with('challenge')->paginate($pageSize, ['*'], 'page', $page);
-        $result = $query->with('area', 'departamento')->paginate($pageSize, ['*'], 'page', $page);
+        $result = $query->with('area', 'departamento', 'usuario')->paginate($pageSize, ['*'], 'page', $page);
         return response()->json($result);
     }
 
@@ -65,10 +79,20 @@ class minutasController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
-        // $minuta = minutas::create($request->only(`alias`, `tipo`, `tareas`, `responsable`, `notas`, `estatus`));
-        $minuta = minutas::create($request->all());
+        $minuta = new minutas();
+        $minuta->area_id = $request->area_id;
+        $minuta->departamento_id = $request->departamento_id;
+        $minuta->alias = $request->alias;
+        $minuta->tipo = $request->tipo;
+        // $minuta->proceso_id = $request->proceso_id;
+        // $minuta->procedimientos_id = $request->procedimientos_id;
+        $minuta->tareas = $request->tareas;
+        $minuta->notas = $request->notas;
+        $minuta->estatus = $request->estatus;
+        $minuta->responsable_id = $request->responsable_id["id"];
+        $minuta->save();
 
+        // $minuta = minutas::create($request->all());
 
         return redirect()->route('minutas.index');
     }
@@ -84,17 +108,33 @@ class minutasController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(minutas $minutas)
+    public function edit(minutas $minuta)
     {
-        //
+        // dd($minuta);
+        $user = User::find($minuta->responsable_id);
+        return Inertia::render('Minutas/MinutasEdit', ['minuta' => $minuta, 'user' => $user]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, minutas $minutas)
+    public function update(Request $request, minutas $minuta)
     {
-        //
+        // $minuta->update($request->all());
+        $minuta->area_id = $request->area_id;
+        $minuta->departamento_id = $request->departamento_id;
+        $minuta->alias = $request->alias;
+        $minuta->tipo = $request->tipo;
+        // $minuta->proceso_id = $request->proceso_id;
+        // $minuta->procedimientos_id = $request->procedimientos_id;
+        $minuta->tareas = $request->tareas;
+        $minuta->notas = $request->notas;
+        $minuta->estatus = $request->estatus;
+        if (isset($request->responsable_id["id"])) {
+            $minuta->responsable_id = $request->responsable_id["id"];
+        }
+        $minuta->save();
+        return redirect()->route('minutas.index');
     }
 
     /**

@@ -7,15 +7,21 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { showToast } from "../utils/SweetAlert.service";
 import Textarea from 'primevue/textarea';
+import AutoComplete from 'primevue/autocomplete';
 
 
 const props = defineProps({
     areas: Array,
     departamentos: Array || null,
+    usuarios: Array,
 });
 
 const areas = ref(props.areas);
 const departamentos = ref(props.departamentos);
+const usuarios = ref(props.usuarios);
+const filteredUsuarios = ref();
+const responsable_id = ref();
+
 const title = "minutero";
 
 
@@ -28,6 +34,16 @@ async function getAreas() {
         });
 }
 
+async function getUsuarios() {
+    await axios
+        .get("/api/usuarios/all/todo")
+        .then((response) => (usuarios.value = response.data))
+        .catch((error) => {
+            console.log(error);
+        });
+
+}
+
 const form = useForm({
     area_id: "",
     departamento_id: "",
@@ -36,9 +52,9 @@ const form = useForm({
     proceso_id: "",
     procedimientos_id: "",
     tareas: "",
-    responsable: "",
     notas: "",
     estatus: "",
+    responsable_id: "",
 });
 
 const onChange = async (event) => {
@@ -49,6 +65,13 @@ const onChange = async (event) => {
         .catch((error) => {
             console.log(error);
         });
+
+    // await axios
+    //     .get(route("usuarios.byArea", taget_id))
+    //     .then((response) => (usuarios.value = response.data.usuarios))
+    //     .catch((error) => {
+    //         console.log(error);
+    //     });
 };
 
 const submit = () => {
@@ -68,7 +91,22 @@ const submit = () => {
 
 onMounted(() => {
     getAreas();
+    getUsuarios();
 })
+
+const search = (event) => {
+    console.log("buscando");
+    setTimeout(() => {
+        if (!event.query.trim().length) {
+            console.log(filteredUsuarios.value);
+            filteredUsuarios.value = [...usuarios.value];
+        } else {
+            filteredUsuarios.value = usuarios.value.filter((usuario) => {
+                return usuario.name.toLowerCase().startsWith(event.query.toLowerCase());
+            });
+        }
+    }, 250);
+}
 
 </script>
 
@@ -103,11 +141,8 @@ onMounted(() => {
                             <form @submit.prevent="submit">
 
                                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
-
-
-
                                     <div class="mt-4">
-                                        <InputLabel for="area_id" value="Area: " />
+                                        <InputLabel for="area_id" value="Pilar: " />
                                         <select ref="area_select" @change="onChange($event)"
                                             class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
                                             v-model="form.area_id" required>
@@ -120,7 +155,7 @@ onMounted(() => {
                                         </select>
                                     </div>
                                     <div class="mt-4">
-                                        <InputLabel for="departamento_id" value="Pilar: " />
+                                        <InputLabel for="departamento_id" value="Flujo de valor: " />
 
                                         <select ref="departamento_select"
                                             class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
@@ -174,18 +209,36 @@ onMounted(() => {
                                     </div>
 
                                     <div class="mt-4">
-                                        <InputLabel for="tarea" value="tareas: " />
+                                        <InputLabel for="tarea" value="Tareas: " />
                                         <TextInput id="tareas" v-model="form.tareas" type="text"
                                             class="mt-1 block w-full" required autocomplete="new-challenge" />
                                     </div>
 
+
                                     <!-- <div class="mt-4">
                                         <InputLabel for="responsable" value="Responsable: " />
-                                        <TextInput id="Explicacion" v-model="form.responsable" type="text"
-                                            class="mt-1 block w-full" required autocomplete="new-challenge" />
+                                        <select ref="departamento_select"
+                                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                            v-model="form.responsable_id">
+                                            <option value="" disabled selected>
+                                                Seleccione una opcion
+                                            </option>
+
+                                            <option v-for="usuario in usuarios" :key="usuario.id" :value="usuario.id">
+                                                {{ usuario.name }}
+                                            </option>
+                                        </select>
                                     </div> -->
 
                                     <div class="mt-4">
+                                        <InputLabel for="responsable" value="Responsable: " />
+                                        <AutoComplete v-model="form.responsable_id" optionLabel="name"
+                                            :suggestions="filteredUsuarios" forceSelection @complete="search"
+                                            placeholder="" />
+
+                                    </div>
+
+                                    <div class=" mt-4">
                                         <InputLabel for="notas" value="Notas: " />
                                         <Textarea v-model="form.notas" rows="3" style="width: 100%; " />
                                     </div>

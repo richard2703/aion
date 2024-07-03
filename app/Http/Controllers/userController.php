@@ -20,7 +20,19 @@ class userController extends Controller
         ]);
     }
 
-    public function findAll(Request $request)
+    function byArea($area_id)
+    {
+        return response()->json(['usuarios' => User::where('area_id', $area_id)->get()]);
+    }
+
+    function all()
+    {
+        // dd("all");
+        $usuarios = User::get();
+
+        return response()->json($usuarios);
+    }
+    function findAll(Request $request)
     {
         $query = User::query();
         $pageSize = $request->get('rows', 10);
