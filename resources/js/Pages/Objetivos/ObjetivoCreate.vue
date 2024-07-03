@@ -1,11 +1,10 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import Layout from "@/Layouts/Layout.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { showToast } from "../utils/SweetAlert.service";
-import Textarea from 'primevue/textarea';
 import TextInput from "@/Components/TextInput.vue";
 import InputError from "@/Components/InputError.vue";
 
@@ -17,13 +16,12 @@ const props = defineProps({
 });
 
 const title = "Objetivos";
-const areas = ref(props.areas);
 const departamentos = ref(props.departamentos);
 const challenges = ref(props.challenges);
 
 const form = useForm({
-    titulo: "",
     objetivo: "",
+    meta: "",
 });
 
 const onChangeArea = async (event) => {
@@ -61,9 +59,7 @@ const submit = () => {
     }
 };
 
-onMounted(() => {
-    // getAreas();
-})
+
 
 </script>
 
@@ -96,29 +92,17 @@ onMounted(() => {
                             <form @submit.prevent="submit">
 
                                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
-
                                     <div class="mt-4">
-
-                                        <InputLabel for="titulo" value="Titulo: " />
-                                        <TextInput id="titulo" v-model="form.titulo" type="text"
-                                            class="mt-1 block w-full" required autofocus autocomplete="titulo" />
-                                        <InputError class="mt-2" :message="form.errors.titulo" />
-                                        <!-- <select ref="area_select" @change="onChangeArea($event)"
-                                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                            v-model="form.area_id" required>
-                                            <option value="" disabled selected>
-                                                Seleccione una opcion
-                                            </option>
-                                            <option v-for="area in areas" :key="area.id" :value="area.id">
-                                                {{ area.nombre }}
-                                            </option>
-                                        </select> -->
+                                        <InputLabel for="objetivo" value="Objetivo: " />
+                                        <TextInput id="objetivo" v-model="form.objetivo" type="text"
+                                            class="mt-1 block w-full" required autofocus autocomplete="objetivo" />
+                                        <InputError class="mt-2" :message="form.errors.objetivo" />
                                     </div>
                                     <div class="mt-4">
-                                        <InputLabel for="titulo" value="Objetivo: " />
-                                        <TextInput id="objetivo" v-model="form.objetivo" type="text"
-                                            class="mt-1 block w-full" required autocomplete="objetivo" />
-                                        <InputError class="mt-2" :message="form.errors.objetivo" />
+                                        <InputLabel for="meta" value="Meta: " />
+                                        <TextInput id="meta" v-model="form.meta" type="text" class="mt-1 block w-full"
+                                            required autocomplete="meta" />
+                                        <InputError class="mt-2" :message="form.errors.meta" />
                                     </div>
 
                                 </div>
