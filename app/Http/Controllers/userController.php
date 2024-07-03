@@ -20,7 +20,7 @@ class userController extends Controller
         ]);
     }
 
-    function findAll(Request $request)
+    public function findAll(Request $request)
     {
         $query = User::query();
         $pageSize = $request->get('rows', 10);
@@ -28,6 +28,7 @@ class userController extends Controller
         $filter = $request->get('filter', '');
         $sortField = $request->get('sortField', 'id');
         $sortOrder = $request->get('sortOrder', 'asc');
+
         if ($filter) {
             $query->where(function ($q) use ($filter) {
                 $q->where('users.id', 'like', '%' . $filter . '%')
@@ -47,9 +48,11 @@ class userController extends Controller
         if (in_array($sortField, ['id', 'name', 'email', 'area.nombre', 'departamento.nombre'])) {
             if (strpos($sortField, 'area.') === 0) {
                 $query->join('areas', 'users.area_id', '=', 'areas.id')
+                    ->select('users.*', 'areas.nombre as area_nombre') // Select distinct columns
                     ->orderBy('areas.' . substr($sortField, 5), $sortOrder);
             } else if (strpos($sortField, 'departamento.') === 0) {
                 $query->join('departamentos', 'users.departamento_id', '=', 'departamentos.id')
+                    ->select('users.*', 'departamentos.nombre as departamento_nombre') // Select distinct columns
                     ->orderBy('departamentos.' . substr($sortField, 12), $sortOrder);
             } else {
                 $query->orderBy($sortField, $sortOrder);
@@ -60,6 +63,7 @@ class userController extends Controller
 
         return response()->json($users);
     }
+
 
     function create()
     {

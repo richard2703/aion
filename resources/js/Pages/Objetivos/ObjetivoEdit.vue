@@ -19,7 +19,7 @@ const title = "Objetivos";
 
 
 const form = useForm({
-    titulo: objetivo.value.titulo,
+    meta: objetivo.value.meta,
     objetivo: objetivo.value.objetivo,
 });
 onMounted(() => {
@@ -74,24 +74,19 @@ const submit = () => {
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto">
                             <form @submit.prevent="submit">
-
                                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
-
-                                    <div class="mt-4">
-
-                                        <InputLabel for="titulo" value="Titulo: " />
-                                        <TextInput id="titulo" v-model="form.titulo" type="text"
-                                            class="mt-1 block w-full" required autofocus autocomplete="titulo" />
-                                        <InputError class="mt-2" :message="form.errors.titulo" />
-
-                                    </div>
                                     <div class="mt-4">
                                         <InputLabel for="titulo" value="Objetivo: " />
                                         <TextInput id="objetivo" v-model="form.objetivo" type="text"
-                                            class="mt-1 block w-full" required autocomplete="objetivo" />
+                                            class="mt-1 block w-full" required autofocus autocomplete="objetivo" />
                                         <InputError class="mt-2" :message="form.errors.objetivo" />
                                     </div>
-
+                                    <div class="mt-4">
+                                        <InputLabel for="meta" value="Meta: " />
+                                        <TextInput id="meta" v-model="form.meta" type="text" class="mt-1 block w-full"
+                                            required autocomplete="meta" />
+                                        <InputError class="mt-2" :message="form.errors.meta" />
+                                    </div>
                                 </div>
 
                                 <div class="px-4 my-4 pt-2 flex justify-end bg-white border-t border-gray-200">
@@ -100,7 +95,6 @@ const submit = () => {
                                         guardar
                                     </PrimaryButton>
                                 </div>
-
                             </form>
                         </div>
                     </div>

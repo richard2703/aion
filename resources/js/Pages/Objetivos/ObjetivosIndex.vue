@@ -49,25 +49,6 @@ async function getItems(
     }
 }
 
-// const deleteOpcion = async (id) => {
-//     try {
-//         const result = await confirmDialog(
-//             "Estas seguro?",
-//             "Ya no podras revertir esto!",
-//             "warning"
-//         );
-//         if (result.isConfirmed) {
-//             await axios.delete(route("opcion.destroy", id));
-//             opciones.value = opciones.value.filter((opcion) => opcion.id !== id);
-//             showToast("El registro ha sido eliminado", "success");
-
-//         }
-//     } catch (error) {
-//         console.log(error);
-
-//     }
-// };
-
 
 const deleteItems = async (id) => {
     try {
@@ -162,23 +143,17 @@ const onSort = (event) => {
                                 :first="first" @page="onPage" @sort="onSort" :rowsPerPageOptions="[5, 10, 20, 50]"
                                 tableStyle="min-width: 50rem" :filters="filters" :globalFilterFields="[
                                     'id',
-                                    'titulo',
                                     'objetivo',
+                                    'meta',
                                 ]" :sortField="sortField" :sortOrder="sortOrder"
                                 class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
                                 <template #empty> Sin registros </template>
                                 <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
                                     sortable></Column>
-                                <Column field="titulo" header="Titulo" headerStyle="width:4em;" bodyClass="text-center"
-                                    sortable></Column>
                                 <Column field="objetivo" header="Objetivo" headerStyle="width:4em;"
+                                    bodyClass="text-center" sortable></Column>
+                                <Column field="meta" header="Meta" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                                <!-- <Column field="formal" header="Formal" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                                <Column field="informal" header="Informal" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center
-                                    ;" bodyClass="text-center" sortable></Column> -->
-
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">
                                         <PrimaryButton class="m-2" :href="route(

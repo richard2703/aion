@@ -13,13 +13,12 @@ class objetivosController extends Controller
      */
     public function index()
     {
-        // dd("objetivos");
         return Inertia::render('Objetivos/ObjetivosIndex');
     }
 
-    function findAll(Request $request)
+    public function findAll(Request $request)
     {
-        $query = objetivos::query(); // Replace 'Model' with the actual model name
+        $query = objetivos::query();
         $pageSize = $request->get('rows', 10);
         $page = $request->get('page', 1);
         $filter = $request->get('filter', '');
@@ -29,33 +28,20 @@ class objetivosController extends Controller
         if ($filter) {
             $query->where(function ($q) use ($filter) {
                 $q->where('id', 'like', '%' . $filter . '%')
-                    ->orWhere('titulo', 'like', '%' . $filter . '%')
-                    ->orWhere('objetivo', 'like', '%' . $filter . '%');
-                // ->orWhere('informal', 'like', '%' . $filter . '%');
-                // ->orWhereHas('challenge', function ($q) use ($filter) {
-                //     $q->where('challenges.challenge', 'like', '%' . $filter . '%');
-                // });
+                    ->orWhere('objetivo', 'like', '%' . $filter . '%')
+                    ->orWhere('meta', 'like', '%' . $filter . '%');
             });
         }
 
-        // if (in_array($sortField, ['id', 'alias', 'formal', 'informal', 'challenge.challenge'])) {
-        //     if ($sortField == 'challenge.challenge') {
-        //         $query->join('challenges', 'models.challenge_id', '=', 'challenges.id')
-        //             ->orderBy('challenges.challenge', $sortOrder);
-        //     } else {
-        //         $query->orderBy($sortField, $sortOrder);
-        //     }
-        // }
-        if (in_array($sortField, ['id', 'titulo', 'objetivo'])) {
+        if (in_array($sortField, ['id', 'meta', 'objetivo'])) {
             $query->orderBy($sortField, $sortOrder);
         }
 
-        // $result = $query->with('challenge')->paginate($pageSize, ['*'], 'page', $page);
         $result = $query->paginate($pageSize, ['*'], 'page', $page);
-
 
         return response()->json($result);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -70,7 +56,7 @@ class objetivosController extends Controller
      */
     public function store(Request $request)
     {
-        $objetivos = objetivos::create($request->only('titulo', 'objetivo'));
+        $objetivos = objetivos::create($request->only('meta', 'objetivo'));
         return redirect()->route('objetivo.index');
     }
 
@@ -97,7 +83,7 @@ class objetivosController extends Controller
     public function update(Request $request, objetivos $objetivo)
     {
         //
-        $objetivo->update($request->only('titulo', 'objetivo'));
+        $objetivo->update($request->only('meta', 'objetivo'));
         return redirect()->route('objetivo.index');
     }
 

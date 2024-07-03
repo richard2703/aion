@@ -11,6 +11,6 @@ class objetivos extends Model
     protected $table = 'objetivos';
 
     protected $fillable = [
-        'titulo', 'objetivo'
+        'objetivo', 'meta'
     ];
 }

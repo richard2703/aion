@@ -14,9 +14,9 @@ class opcionController extends Controller
         return Inertia::render('Opcion/OpcionIndex');
     }
 
-    function findAll(Request $request)
+    public function findAll(Request $request)
     {
-        $query = Opcion::query(); // Replace 'Model' with the actual model name
+        $query = Opcion::query();
         $pageSize = $request->get('rows', 10);
         $page = $request->get('page', 1);
         $filter = $request->get('filter', '');
@@ -25,10 +25,10 @@ class opcionController extends Controller
 
         if ($filter) {
             $query->where(function ($q) use ($filter) {
-                $q->where('id', 'like', '%' . $filter . '%')
-                    ->orWhere('alias', 'like', '%' . $filter . '%')
-                    ->orWhere('formal', 'like', '%' . $filter . '%')
-                    ->orWhere('informal', 'like', '%' . $filter . '%')
+                $q->where('opciones.id', 'like', '%' . $filter . '%')
+                    ->orWhere('opciones.alias', 'like', '%' . $filter . '%')
+                    ->orWhere('opciones.formal', 'like', '%' . $filter . '%')
+                    ->orWhere('opciones.informal', 'like', '%' . $filter . '%')
                     ->orWhereHas('challenge', function ($q) use ($filter) {
                         $q->where('challenges.challenge', 'like', '%' . $filter . '%');
                     });
@@ -37,7 +37,8 @@ class opcionController extends Controller
 
         if (in_array($sortField, ['id', 'alias', 'formal', 'informal', 'challenge.challenge'])) {
             if ($sortField == 'challenge.challenge') {
-                $query->join('challenges', 'models.challenge_id', '=', 'challenges.id')
+                $query->join('challenges', 'opciones.challenge_id', '=', 'challenges.id')
+                    ->select('opciones.*', 'challenges.challenge as challenge_name') // Select distinct columns
                     ->orderBy('challenges.challenge', $sortOrder);
             } else {
                 $query->orderBy($sortField, $sortOrder);
@@ -48,6 +49,7 @@ class opcionController extends Controller
 
         return response()->json($result);
     }
+
 
 
     public function create()

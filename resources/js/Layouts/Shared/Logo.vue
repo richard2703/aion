@@ -12,7 +12,6 @@ onMounted(() => {
 
 const item = ref({});
 const logo_path = ref();
-const proposito = ref();
 
 const props = defineProps({
     item: Object || null,
@@ -23,9 +22,7 @@ const getItem = () => {
         .get("/api/config-dashboard")
         .then((response) => {
             item.value = response.data;
-            proposito.value = item.value.proposito;
-            logo_path.value = item.value.logo_path;
-
+            logo_path.value = item.value[0].logo_path;
         })
         .catch((error) => {
             console.error('Error fetching item:', error);

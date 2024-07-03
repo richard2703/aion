@@ -50,6 +50,7 @@ class departamentoController extends Controller
         if (in_array($sortField, ['id', 'nombre', 'descripcion', 'area.nombre'])) {
             if (strpos($sortField, 'area.') === 0) {
                 $query->join('areas', 'departamentos.area_id', '=', 'areas.id')
+                    ->select('departamentos.*', 'areas.nombre as area_nombre') // Select distinct columns
                     ->orderBy('areas.' . substr($sortField, 5), $sortOrder);
             } else {
                 $query->orderBy($sortField, $sortOrder);
@@ -70,8 +71,6 @@ class departamentoController extends Controller
         $departamentos = $query->with('area')->get();
         return response()->json($departamentos);
     }
-
-
 
     function create()
     {
