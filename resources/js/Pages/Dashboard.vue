@@ -13,11 +13,13 @@ onMounted(() => {
 
 const props = defineProps({
     item: Object || null,
+    objetivos: Object || null
 });
 
 const chartData = ref();
 const chartOptions = ref();
 const item = ref({});
+const objetivos = ref({});
 const banner_path = ref();
 const proposito = ref();
 
@@ -69,8 +71,10 @@ const getItem = () => {
         .get("/api/config-dashboard")
         .then((response) => {
             item.value = response.data;
-            proposito.value = item.value.proposito;
-            banner_path.value = item.value.banner_path;
+            objetivos.value = item.value[1];
+            console.log({ objetivo: objetivos.value });
+            proposito.value = item.value[0].proposito;
+            banner_path.value = item.value[0].banner_path;
             // Set other form fields here as needed
         })
         .catch((error) => {
@@ -107,32 +111,58 @@ const getItem = () => {
                                     <img class="h-96" :src="banner_path" alt="Banner actual" srcset="">
                                 </div>
                                 <div class="bg-gray-300 ">
-                                    <h2 class="text-center font-bold text-2xl">Propósito</h2>
+                                    <h2 class="text-center py-4 font-bold text-3xl">Propósito</h2>
                                     <p class="italic m-4 text-lg">{{ proposito }}</p>
                                 </div>
                             </div>
                             <br>
                             <div class="grid  grid-cols-1 bg-gray-300">
                                 <div class="bg-gray-300 ">
-                                    <h2 class="text-center font-bold text-2xl">Metromap</h2>
+                                    <h2 class="text-center py-4 font-bold text-3xl">Metromap</h2>
                                     <img class="w-full" src="../../img/metromaps/metromap.png" alt="">
-
                                 </div>
                             </div>
                             <br>
                             <div class="grid sm:grid-cols-1 md:grid-cols-2 gap-4 bg-gray-300">
-                                <div class="bg-gray-300 ">
-                                    <h2 class="text-center font-bold text-2xl">Autoevaluación</h2>
-                                    <Chart type="radar" :data="chartData" :options="chartOptions" class="" />
+                                <div class="bg-gray-300">
+                                    <h2 class="text-center py-4 font-bold text-3xl">Autoevaluación</h2>
+                                    <Chart type="radar" :data="chartData" :options="chartOptions" class="h-96 m-4" />
+                                    <table class="w-full table-auto border-collapse border border-slate-400 m-4">
+                                        <tr>
+                                            <td class="text-center border border-slate-500">GyC</td>
+                                            <td class="text-center border border-slate-500 bg-yellow-400">80 %</td>
+                                            <td class="text-center border border-slate-500">Intermediate</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center border border-slate-500">MyV</td>
+                                            <td class="text-center border border-slate-500 bg-yellow-400">80 %</td>
+                                            <td class="text-center border border-slate-500">Intermediate</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center border border-slate-500">Ops</td>
+                                            <td class="text-center border border-slate-500 bg-green-400">90 %</td>
+                                            <td class="text-center border border-slate-500">Mature</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center border border-slate-500">IT</td>
+                                            <td class="text-center border border-slate-500 bg-yellow-400">81 %</td>
+                                            <td class="text-center border border-slate-500">Intermediate</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center border border-slate-500">Admon</td>
+                                            <td class="text-center border border-slate-500 bg-red-400">67 %</td>
+                                            <td class="text-center border border-slate-500">Basic</td>
+                                        </tr>
+
+                                    </table>
                                 </div>
                                 <div class="bg-gray-300 ">
-                                    <h2 class="text-center font-bold text-2xl">Objetivos</h2>
+                                    <h2 class="text-center py-4 font-bold text-3xl">Objetivos</h2>
                                     <ul>
-                                        <li>Objetivo 1</li>
-                                        <li>Objetivo 2</li>
-                                        <li>Objetivo 3</li>
-                                        <li>Objetivo 4</li>
-                                        <li>Objetivo 5</li>
+                                        <li v-for="objetivo in objetivos"
+                                            class="m-4 py-2 text-lg list-disc list-inside">{{
+                                                objetivo.objetivo }}
+                                        </li>
                                     </ul>
                                 </div>
                                 <br>

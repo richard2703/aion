@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\objetivos;
 use App\Models\Personalizar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -12,11 +13,15 @@ class dashboardController extends Controller
     public function getConfig()
     {
         $personalizar = Personalizar::first();
+        $objetivos = objetivos::all();
+
 
         $personalizar->logo_path = Storage::disk('public')->url($personalizar->logo);
         $personalizar->banner_path = Storage::disk('public')->url($personalizar->banner);
 
-        return response()->json($personalizar);
+
+
+        return response()->json([$personalizar, $objetivos]);
     }
 
 
