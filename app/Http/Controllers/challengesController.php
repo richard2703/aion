@@ -22,7 +22,7 @@ class challengesController extends Controller
         return response()->json(['challenges' => Challenge::where('departamento_id', $departamento_id)->get()]);
     }
 
-    function findAll(Request $request)
+    public function findAll(Request $request)
     {
         $query = Challenge::query();
         $pageSize = $request->get('rows', 10);
@@ -30,6 +30,7 @@ class challengesController extends Controller
         $filter = $request->get('filter', '');
         $sortField = $request->get('sortField', 'id');
         $sortOrder = $request->get('sortOrder', 'asc');
+
         if ($filter) {
             $query->where(function ($q) use ($filter) {
                 $q->where('challenges.id', 'like', '%' . $filter . '%')
@@ -48,19 +49,22 @@ class challengesController extends Controller
         if (in_array($sortField, ['id', 'challenge', 'area.nombre', 'departamento.nombre'])) {
             if (strpos($sortField, 'area.') === 0) {
                 $query->join('areas', 'challenges.area_id', '=', 'areas.id')
+                    ->select('challenges.*', 'areas.nombre as area_nombre') // Select distinct columns
                     ->orderBy('areas.' . substr($sortField, 5), $sortOrder);
             } else if (strpos($sortField, 'departamento.') === 0) {
                 $query->join('departamentos', 'challenges.departamento_id', '=', 'departamentos.id')
+                    ->select('challenges.*', 'departamentos.nombre as departamento_nombre') // Select distinct columns
                     ->orderBy('departamentos.' . substr($sortField, 12), $sortOrder);
             } else {
                 $query->orderBy($sortField, $sortOrder);
             }
         }
 
-        $challenge = $query->with('area', 'departamento')->paginate($pageSize, ['*'], 'page', $page);
+        $challenges = $query->with('area', 'departamento')->paginate($pageSize, ['*'], 'page', $page);
 
-        return response()->json($challenge);
+        return response()->json($challenges);
     }
+
 
     public function create()
     {

@@ -16,7 +16,7 @@ class objetivosController extends Controller
         return Inertia::render('Objetivos/ObjetivosIndex');
     }
 
-    function findAll(Request $request)
+    public function findAll(Request $request)
     {
         $query = objetivos::query();
         $pageSize = $request->get('rows', 10);
@@ -39,9 +39,9 @@ class objetivosController extends Controller
 
         $result = $query->paginate($pageSize, ['*'], 'page', $page);
 
-
         return response()->json($result);
     }
+
 
     /**
      * Show the form for creating a new resource.
