@@ -14,10 +14,13 @@ class dashboardController extends Controller
     {
         $personalizar = Personalizar::first();
         $objetivos = objetivos::all();
-
+        // $logo = ("public/storage/$personalizar->logo");
+        // $banner = ("public/storage/$personalizar->banner");
         $personalizar->logo_path = Storage::disk('public')->url($personalizar->logo);
         $personalizar->banner_path = Storage::disk('public')->url($personalizar->banner);
-
+        // $personalizar->logo_path = asset($logo);
+        // $personalizar->banner_path = asset($banner);
+        // dd($logo);
         // return response()->json($personalizar);
         return response()->json([$personalizar, $objetivos]);
     }
