@@ -71,12 +71,11 @@ const getItem = () => {
         .get("/api/config-dashboard")
         .then((response) => {
             item.value = response.data;
-            form.proposito = item.value.proposito;
-            logo_path.value = item.value.logo_path;
-            banner_path.value = item.value.banner_path;
-            // Set other form fields here as needed
+            form.proposito = item.value[0].proposito;
+            logo_path.value = item.value[0].logo_path;
+            banner_path.value = item.value[0].banner_path;
 
-            ({ logo_path: logo_path.value, banner_path: banner_path.value });
+            ({ logo_path: logo_path.value[0], banner_path: banner_path.value[0] });
         })
         .catch((error) => {
             console.error('Error fetching item:', error);
@@ -97,12 +96,11 @@ const submit = async () => {
     formData.append('proposito', form.proposito);
     formData.append('logo', form.logo);
     formData.append('banner', form.banner);
-
     try {
         let response;
-        if (item.value.id) {
+        if (item.value[0].id) {
             // Update existing item
-            response = await axios.post(`/dashboard/${item.value.id}/update`, formData, {
+            response = await axios.post(`/dashboard/${item.value[0].id}/update`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
