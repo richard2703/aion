@@ -87,4 +87,12 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('/minutas/{minuta}/edit', [App\Http\Controllers\minutasController::class, 'edit'])->name('minutas.edit');
     Route::patch('/minutas/{minuta}/update', [App\Http\Controllers\minutasController::class, 'update'])->name('minutas.update');
     Route::delete('/minutas/{minuta}/destroy', [App\Http\Controllers\minutasController::class, 'destroy'])->name('minutas.destroy');
+
+    // Proceso
+    Route::get('/procesos', [App\Http\Controllers\procesoController::class, 'index'])->name('proceso.index');
+    Route::get('/proceso/create', [App\Http\Controllers\procesoController::class, 'create'])->name('proceso.create');
+    Route::post('/proceso/store', [App\Http\Controllers\procesoController::class, 'store'])->name('proceso.store');
+    Route::get('/proceso/{proceso}/edit', [App\Http\Controllers\procesoController::class, 'edit'])->name('proceso.edit');
+    Route::patch('/proceso/{proceso}/update', [App\Http\Controllers\procesoController::class, 'update'])->name('proceso.update');
+    Route::delete('/proceso/{proceso}/destroy', [App\Http\Controllers\procesoController::class, 'destroy'])->name('proceso.destroy');
 });
