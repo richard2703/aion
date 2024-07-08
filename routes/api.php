@@ -29,5 +29,6 @@ Route::get('/objetivos', [App\Http\Controllers\objetivosController::class, 'find
 Route::get('/minutas', [App\Http\Controllers\minutasController::class, 'findAll'])->name('minutas.findAll');
 Route::get('/procesos', [App\Http\Controllers\procesoController::class, 'findAll'])->name('procesos.findAll');
 Route::get('/procedimientos', [App\Http\Controllers\ProcedimientoController::class, 'findAll'])->name('procedimientos.findAll');
+Route::get('/estandares', [App\Http\Controllers\EstandarController::class, 'findAll'])->name('estandares.findAll');
 
 // Route::get('/objetivos/{objetivos_id}', [App\Http\Controllers\objetivosController::class, 'byDepartamento'])->name('challenges.byArea');

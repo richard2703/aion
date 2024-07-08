@@ -97,10 +97,18 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::delete('/proceso/{proceso}/destroy', [App\Http\Controllers\procesoController::class, 'destroy'])->name('proceso.destroy');
 
     // Procedimiento
-    Route::get('/procedimiento', [App\Http\Controllers\procedimientoController::class, 'index'])->name('procedimiento.index');
+    Route::get('/procedimientos', [App\Http\Controllers\procedimientoController::class, 'index'])->name('procedimiento.index');
     Route::get('/procedimiento/create', [App\Http\Controllers\procedimientoController::class, 'create'])->name('procedimiento.create');
     Route::post('/procedimiento/store', [App\Http\Controllers\procedimientoController::class, 'store'])->name('procedimiento.store');
     Route::get('/procedimiento/{procedimiento}/edit', [App\Http\Controllers\procedimientoController::class, 'edit'])->name('procedimiento.edit');
     Route::patch('/procedimiento/{procedimiento}/update', [App\Http\Controllers\procedimientoController::class, 'update'])->name('procedimiento.update');
     Route::delete('/procedimiento/{procedimiento}/destroy', [App\Http\Controllers\procedimientoController::class, 'destroy'])->name('procedimiento.destroy');
+
+    // Estandar
+    Route::get('/estandares', [App\Http\Controllers\EstandarController::class, 'index'])->name('estandar.index');
+    Route::get('/estandar/create', [App\Http\Controllers\EstandarController::class, 'create'])->name('estandar.create');
+    Route::post('/estandar/store', [App\Http\Controllers\EstandarController::class, 'store'])->name('estandar.store');
+    Route::get('/estandar/{estandar}/edit', [App\Http\Controllers\EstandarController::class, 'edit'])->name('estandar.edit');
+    Route::patch('/estandar/{estandar}/update', [App\Http\Controllers\EstandarController::class, 'update'])->name('estandar.update');
+    Route::delete('/estandar/{estandar}/destroy', [App\Http\Controllers\EstandarController::class, 'destroy'])->name('estandar.destroy');
 });

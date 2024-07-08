@@ -9,45 +9,35 @@ import { showToast } from "../utils/SweetAlert.service";
 import Textarea from 'primevue/textarea';
 
 const props = defineProps({
-    procesos: Array
+    procedimientos: Array
 });
 
-const procesos = ref(props.procesos);
+const procedimientos = ref(props.procedimientos);
 
 const form = useForm({
-    proceso_id: "",
+    procedimiento_id: "",
     nombre: "",
     descripcion: "",
     link_externo: "",
 });
 
 onMounted(() => {
-    getProcesos();
+    getProcedimientos();
 });
 
-async function getProcesos() {
+async function getProcedimientos() {
     await axios
-        .get("/api/procesos")
-        .then((response) => (procesos.value = response.data.data))
+        .get("/api/procedimientos")
+        .then((response) => (procedimientos.value = response.data.data))
         .catch((error) => {
             console.log(error);
         });
 }
 
 
-const onChange = async (event) => {
-    const taget_id = event.target.value;
-    await axios
-        .get(route("departamentos.byArea", taget_id))
-        .then((response) => (departamentos.value = response.data.departamentos))
-        .catch((error) => {
-            console.log(error);
-        });
-};
-
 const submit = () => {
     try {
-        form.post(route("procedimiento.store"), {
+        form.post(route("estandar.store"), {
             onFinish: () => {
                 showToast("El registro ha sido creado", "success");
                 form.reset();
@@ -68,16 +58,16 @@ const submit = () => {
         <Head title="Procesos" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
-                <h3>Procedimientos</h3>
+                <h3>Estandares</h3>
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
-                <Link :href="route('procedimiento.index')" class="px-1">
-                <h3>Procedimientos -</h3>
+                <Link :href="route('estandar.index')" class="px-1">
+                <h3>Estandares -</h3>
                 </Link>
-                <Link :href="route('procedimiento.create')" class="active">
+                <Link :href="route('estandar.create')" class="active">
                 <h3>Nuevo</h3>
                 </Link>
             </div>
@@ -93,15 +83,16 @@ const submit = () => {
 
                                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
                                     <div class="mt-4">
-                                        <InputLabel for="proceso_id" value="Proceso: " />
+                                        <InputLabel for="procedimiento_id" value="Procedimiento: " />
                                         <select ref="area_select" @change="onChange($event)"
                                             class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                            v-model="form.proceso_id" required>
+                                            v-model="form.procedimiento_id" required>
                                             <option value="" disabled selected>
                                                 Seleccione una opcion
                                             </option>
-                                            <option v-for="proceso in procesos" :key="proceso.id" :value="proceso.id">
-                                                {{ proceso.nombre }}
+                                            <option v-for="procedimiento in procedimientos" :key="procedimiento.id"
+                                                :value="procedimiento.id">
+                                                {{ procedimiento.nombre }}
                                             </option>
                                         </select>
                                     </div>

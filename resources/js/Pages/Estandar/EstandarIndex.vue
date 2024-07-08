@@ -10,10 +10,10 @@ import Column from "primevue/column";
 import InputText from "primevue/inputtext";
 
 const props = defineProps({
-    procedimientos: Array,
+    estandares: Array,
 });
-const title = "Procedimientos";
-const procedimientos = ref(props.procedimientos);
+const title = "Estandares";
+const estandares = ref(props.estandares);
 const totalRecords = ref(0);
 const rows = ref(10);
 const first = ref(0);
@@ -23,10 +23,10 @@ const sortField = ref("id");
 const sortOrder = ref(1);
 
 onMounted(() => {
-    getProcedimientos();
+    getEstandares();
 });
 
-async function getProcedimientos(
+async function getEstandares(
     page = 1,
     rowsPerPage = rows.value,
     filter = "",
@@ -34,7 +34,7 @@ async function getProcedimientos(
     sortOrder = 1
 ) {
     try {
-        const response = await axios.get("/api/procedimientos", {
+        const response = await axios.get("/api/estandares", {
             params: {
                 page,
                 rows: rowsPerPage,
@@ -43,7 +43,7 @@ async function getProcedimientos(
                 sortOrder: sortOrder === 1 ? "asc" : "desc",
             },
         });
-        procedimientos.value = response.data.data;
+        estandares.value = response.data.data;
         totalRecords.value = response.data.total;
         first.value = (response.data.current_page - 1) * rows.value;
     } catch (error) {
@@ -51,7 +51,7 @@ async function getProcedimientos(
     }
 }
 
-const deleteProcedimiento = async (id) => {
+const deleteEstandar = async (id) => {
     try {
         const result = await confirmDialog(
             "Estas seguro?",
@@ -59,8 +59,8 @@ const deleteProcedimiento = async (id) => {
             "warning"
         );
         if (result.isConfirmed) {
-            await axios.delete(route("procedimiento.destroy", id));
-            procedimientos.value = procedimientos.value.filter((procedimiento) => procedimiento.id !== id);
+            await axios.delete(route("estandar.destroy", id));
+            estandares.value = estandares.value.filter((estandar) => estandar.id !== id);
             showToast("El registro ha sido eliminado", "success");
 
         }
@@ -74,13 +74,13 @@ watch(globalFilter, (newValue) => {
     filters.value = {
         global: { value: newValue, matchMode: "contains" },
     };
-    getProcedimientos(1, rows.value, newValue, sortField.value, sortOrder.value);
+    getEstandares(1, rows.value, newValue, sortField.value, sortOrder.value);
 });
 
 const onPage = (event) => {
     const page = event.page + 1;
     rows.value = event.rows;
-    getProcedimientos(
+    getEstandares(
         page,
         rows.value,
         globalFilter.value,
@@ -92,7 +92,7 @@ const onPage = (event) => {
 const onSort = (event) => {
     sortField.value = event.sortField || "id";
     sortOrder.value = event.sortOrder;
-    getProcedimientos(
+    getEstandares(
         1,
         rows.value,
         globalFilter.value,
@@ -111,17 +111,17 @@ const onSort = (event) => {
 <template>
     <Layout :titulo="title">
 
-        <Head title="Procedimientos" />
+        <Head title="estandares" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
-                <h3>Procedimientos</h3>
+                <h3>Estandares</h3>
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
                 <Link class="active">
-                <h3>Procedimientos</h3>
+                <h3>Estandares</h3>
                 </Link>
             </div>
         </div>
@@ -130,17 +130,18 @@ const onSort = (event) => {
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div>
                     <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
-                        <PrimaryButton :href="route('procedimiento.create')">Nuevo</PrimaryButton>
+                        <PrimaryButton :href="route('estandar.create')">Nuevo</PrimaryButton>
                     </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto overflow-x-auto">
                             <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
-                            <DataTable :value="procedimientos" paginator :rows="rows" :totalRecords="totalRecords"
+                            <DataTable :value="estandares" paginator :rows="rows" :totalRecords="totalRecords"
                                 :lazy="true" :first="first" @page="onPage" @sort="onSort"
                                 :rowsPerPageOptions="[5, 10, 20, 50]" tableStyle="min-width: 50rem" :filters="filters"
                                 :globalFilterFields="[
                                     'id',
                                     'nombre',
+                                    'procedimiento.nombre',
                                     'descripcion',
                                     'link_externo',
                                 ]" :sortField="sortField" :sortOrder="sortOrder"
@@ -148,9 +149,10 @@ const onSort = (event) => {
                                 <template #empty> No data found. </template>
                                 <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
                                     sortable></Column>
-                                <Column field="proceso.nombre" header="Proceso" headerStyle="width:4em;"
-                                    bodyClass="text-center" sortable></Column>
-                                <Column field="nombre" header="Procedimiento" headerStyle="width:4em;"
+                                <Column field="procedimiento.nombre" header="Procedimiento" headerStyle="width:4em;"
+                                    bodyClass="text-center" sortable>
+                                </Column>
+                                <Column field="nombre" header="Estandar" headerStyle="width:4em;"
                                     bodyClass="text-center" sortable></Column>
                                 <Column field="descripcion" header="Descripción" headerStyle="width:4em;"
                                     bodyClass="text-center" sortable></Column>
@@ -160,14 +162,14 @@ const onSort = (event) => {
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">
                                         <PrimaryButton class="m-2" :href="route(
-                                            'procedimiento.edit',
+                                            'estandar.edit',
                                             slotProps.data.id
                                         )">
                                             Editar
                                         </PrimaryButton>
 
                                         <PrimaryButton class="m-2" @click.prevent="
-                                            deleteProcedimiento(slotProps.data.id)
+                                            deleteEstandar(slotProps.data.id)
                                             ">
                                             Borrar
                                         </PrimaryButton>
