@@ -95,4 +95,12 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('/proceso/{proceso}/edit', [App\Http\Controllers\procesoController::class, 'edit'])->name('proceso.edit');
     Route::patch('/proceso/{proceso}/update', [App\Http\Controllers\procesoController::class, 'update'])->name('proceso.update');
     Route::delete('/proceso/{proceso}/destroy', [App\Http\Controllers\procesoController::class, 'destroy'])->name('proceso.destroy');
+
+    // Procedimiento
+    Route::get('/procedimiento', [App\Http\Controllers\procedimientoController::class, 'index'])->name('procedimiento.index');
+    Route::get('/procedimiento/create', [App\Http\Controllers\procedimientoController::class, 'create'])->name('procedimiento.create');
+    Route::post('/procedimiento/store', [App\Http\Controllers\procedimientoController::class, 'store'])->name('procedimiento.store');
+    Route::get('/procedimiento/{procedimiento}/edit', [App\Http\Controllers\procedimientoController::class, 'edit'])->name('procedimiento.edit');
+    Route::patch('/procedimiento/{procedimiento}/update', [App\Http\Controllers\procedimientoController::class, 'update'])->name('procedimiento.update');
+    Route::delete('/procedimiento/{procedimiento}/destroy', [App\Http\Controllers\procedimientoController::class, 'destroy'])->name('procedimiento.destroy');
 });
