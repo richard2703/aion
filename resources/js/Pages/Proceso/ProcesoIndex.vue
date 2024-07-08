@@ -59,7 +59,7 @@ const deleteProceso = async (id) => {
             "warning"
         );
         if (result.isConfirmed) {
-            await axios.delete(route("challenge.destroy", id));
+            await axios.delete(route("proceso.destroy", id));
             procesos.value = procesos.value.filter((proceso) => proceso.id !== id);
             showToast("El registro ha sido eliminado", "success");
 
@@ -74,13 +74,13 @@ watch(globalFilter, (newValue) => {
     filters.value = {
         global: { value: newValue, matchMode: "contains" },
     };
-    getChallenges(1, rows.value, newValue, sortField.value, sortOrder.value);
+    getProcesos(1, rows.value, newValue, sortField.value, sortOrder.value);
 });
 
 const onPage = (event) => {
     const page = event.page + 1;
     rows.value = event.rows;
-    getChallenges(
+    getProcesos(
         page,
         rows.value,
         globalFilter.value,
@@ -100,7 +100,6 @@ const onSort = (event) => {
         sortOrder.value
     );
 };
-console.log({ procesos: procesos.value });
 </script>
 
 <style scoped>
@@ -112,7 +111,7 @@ console.log({ procesos: procesos.value });
 <template>
     <Layout :titulo="title">
 
-        <Head title="Departamento" />
+        <Head title="Procesos" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
                 <h3>Procesos</h3>
@@ -131,7 +130,7 @@ console.log({ procesos: procesos.value });
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div>
                     <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
-                        <PrimaryButton :href="route('challenge.create')">Nuevo</PrimaryButton>
+                        <PrimaryButton :href="route('proceso.create')">Nuevo</PrimaryButton>
                     </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto overflow-x-auto">
@@ -156,22 +155,22 @@ console.log({ procesos: procesos.value });
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                 <Column field="nombre" header="Proceso" headerStyle="width:4em;" bodyClass="text-center"
                                     sortable></Column>
-                                <Column field="descripcion" header="Descripcio" headerStyle="width:4em;"
+                                <Column field="descripcion" header="Descripción" headerStyle="width:4em;"
                                     bodyClass="text-center" sortable></Column>
-                                <Column field="link" header="Link" headerStyle="width:4em;" bodyClass="text-center"
-                                    sortable></Column>
+                                <Column field="link_externo" header="Link" headerStyle="width:4em;"
+                                    bodyClass="text-center" sortable></Column>
 
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">
                                         <PrimaryButton class="m-2" :href="route(
-                                            'challenge.edit',
+                                            'proceso.edit',
                                             slotProps.data.id
                                         )">
                                             Editar
                                         </PrimaryButton>
 
                                         <PrimaryButton class="m-2" @click.prevent="
-                                            deleteChallenge(slotProps.data.id)
+                                            deleteProceso(slotProps.data.id)
                                             ">
                                             Borrar
                                         </PrimaryButton>

@@ -27,17 +27,14 @@ class procesoController extends Controller
         $sortOrder = $request->get('sortOrder', 'asc');
 
         if ($filter) {
-
             $query->where(function ($q) use ($filter) {
                 $q->where('procesos.id', 'like', '%' . $filter . '%')
                     ->orWhere('procesos.nombre', 'like', '%' . $filter . '%')
-                    ->orWhere('procesos.descripcion', 'like', '%' . $filter . '%') // Se omite el filtro por link externo
-
+                    ->orWhere('procesos.descripcion', 'like', '%' . $filter . '%')
                     ->orWhereHas('area', function ($q) use ($filter) {
                         $q->where('areas.nombre', 'like', '%' . $filter . '%')
                             ->orWhere('areas.descripcion', 'like', '%' . $filter . '%');
                     })
-
                     ->orWhereHas('departamento', function ($q) use ($filter) {
                         $q->where('departamentos.nombre', 'like', '%' . $filter . '%')
                             ->orWhere('departamentos.descripcion', 'like', '%' . $filter . '%');
@@ -45,23 +42,54 @@ class procesoController extends Controller
             });
         }
 
-        if (in_array($sortField, ['id', 'challenge', 'nombre', 'descripcion', 'link_externo', 'area.nombre', 'departamento.nombre'])) {
-
+        if (in_array($sortField, ['id', 'nombre', 'descripcion', 'area.nombre', 'departamento.nombre'])) {
             if (strpos($sortField, 'area.') === 0) {
-                $query->join('areas', 'challenges.area_id', '=', 'areas.id')
-                    ->select('challenges.*', 'areas.nombre as area_nombre') // Select distinct columns
-                    ->orderBy('areas.' . substr($sortField, 5), $sortOrder);
+                $query->join('areas', 'procesos.area_id', '=', 'areas.id')
+                    ->select('procesos.*', 'areas.nombre as area_nombre') // Select distinct columns
+                    ->orderBy('areas.nombre', $sortOrder);
             } else if (strpos($sortField, 'departamento.') === 0) {
-                $query->join('departamentos', 'challenges.departamento_id', '=', 'departamentos.id')
-                    ->select('challenges.*', 'departamentos.nombre as departamento_nombre') // Select distinct columns
-                    ->orderBy('departamentos.' . substr($sortField, 12), $sortOrder);
+                $query->join('departamentos', 'procesos.departamento_id', '=', 'departamentos.id')
+                    ->select('procesos.*', 'departamentos.nombre as departamento_nombre') // Select distinct columns
+                    ->orderBy('departamentos.nombre', $sortOrder);
             } else {
-                $query->orderBy($sortField, $sortOrder);
+                $query->orderBy('procesos.' . $sortField, $sortOrder);
             }
         }
 
-        $challenges = $query->with('area', 'departamento')->paginate($pageSize, ['*'], 'page', $page);
+        $procesos = $query->with('area', 'departamento')->paginate($pageSize, ['*'], 'page', $page);
 
-        return response()->json($challenges);
+        return response()->json($procesos);
+    }
+
+
+
+    function create()
+    {
+        return Inertia::render('Proceso/ProcesoCreate');
+    }
+
+    function edit(Proceso $proceso)
+    {
+        return Inertia::render('Proceso/ProcesoEdit', [
+            'proceso' => $proceso,
+        ]);
+    }
+
+    function store(Request $request)
+    {
+        $proceso = Proceso::create($request->only(['area_id', 'departamento_id', 'nombre', 'descripcion', 'link_externo']));
+        return redirect()->route('proceso.index');
+    }
+
+    function update(Request $request, Proceso $proceso)
+    {
+        $proceso->update($request->only(['area_id', 'departamento_id', 'nombre', 'descripcion', 'link_externo']));
+        return redirect()->route('proceso.index');
+    }
+
+    function destroy(Proceso $proceso)
+    {
+        $proceso->delete();
+        return response()->json(['success' => true]);
     }
 }
