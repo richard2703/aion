@@ -111,4 +111,12 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('/estandar/{estandar}/edit', [App\Http\Controllers\EstandarController::class, 'edit'])->name('estandar.edit');
     Route::patch('/estandar/{estandar}/update', [App\Http\Controllers\EstandarController::class, 'update'])->name('estandar.update');
     Route::delete('/estandar/{estandar}/destroy', [App\Http\Controllers\EstandarController::class, 'destroy'])->name('estandar.destroy');
+
+    // KPI
+    Route::get('/kpis', [App\Http\Controllers\kpiController::class, 'index'])->name('kpi.index');
+    Route::get('/kpi/create', [App\Http\Controllers\kpiController::class, 'create'])->name('kpi.create');
+    Route::post('/kpi/store', [App\Http\Controllers\kpiController::class, 'store'])->name('kpi.store');
+    Route::get('/kpi/{kpi}/edit', [App\Http\Controllers\kpiController::class, 'edit'])->name('kpi.edit');
+    Route::patch('/kpi/{kpi}/update', [App\Http\Controllers\kpiController::class, 'update'])->name('kpi.update');
+    Route::delete('/kpi/{kpi}/destroy', [App\Http\Controllers\kpiController::class, 'destroy'])->name('kpi.destroy');
 });
