@@ -59,7 +59,7 @@ const deleteItems = async (id) => {
             "warning"
         );
         if (result.isConfirmed) {
-            await axios.delete(route("objetivo.destroy", id));
+            await axios.delete(route("minutas.destroy", id));
             items.value = items.value.filter((item) => item.id !== id);
             showToast("El registro ha sido eliminado", "success");
 

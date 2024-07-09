@@ -61,10 +61,10 @@ class kpiController extends Controller
         return Inertia::render('Kpi/KpiCreate');
     }
 
-    public function edit(Kpis $kpis)
+    public function edit(Kpis $kpi)
     {
-        return Inertia::render('Kpis/KpisEdit', [
-            'Kpis' => $kpis
+        return Inertia::render('Kpi/KpiEdit', [
+            'kpi' => $kpi
         ]);
     }
 
@@ -74,15 +74,15 @@ class kpiController extends Controller
         return redirect()->route('kpi.index');
     }
 
-    public function update(Request $request, Kpis $kpis)
+    public function update(Request $request, Kpis $kpi)
     {
-        $kpis->update($request->only('procedimiento_id', 'nombre', 'descripcion', 'link_externo'));
+        $kpi->update($request->only('procedimiento_id', 'nombre', 'descripcion', 'link_externo'));
         return redirect()->route('kpi.index');
     }
 
-    public function destroy(Kpis $kpis)
+    public function destroy(Kpis $kpi)
     {
-        $kpis->delete();
+        $kpi->delete();
         return response()->json(['success' => true]);
     }
 }
