@@ -60,6 +60,7 @@
             </li> -->
 
             <!-- Other Menu Items -->
+
             <li>
                 <div class="mb-4 administrador">
                     <div>Administracion</div>
@@ -154,6 +155,34 @@
                     </div>
                     </Link>
                 </div>
+            </li>
+            <li v-if="$page.props.auth.user.roles.includes('admin')">
+                <a class="group flex items-center py-3 cursor-pointer" @click="toggleMenu('rolesypermisos')">
+                    <icon name="users" class="mr-2 w-4 h-4" :class="title === 'rolesypermisos' ? 'activo flex'
+                        : 'inactivo flex'" />
+                    <div :class="title === 'rolesypermisos' ? 'activo flex'
+                        : 'inactivo flex'">
+                        Roles y permisos
+                    </div>
+                    <icon name="cheveron-down" class="ml-auto w-4 h-4" :class="isOpen('rolesypermisos') ? 'rotate-180' : '', title === 'rolesypermisos' ? 'activo flex'
+                        : 'inactivo flex'" />
+                </a>
+                <ul v-show="isOpen('rolesypermisos')" class="pl-6 space-y-2">
+                    <li>
+                        <Link class="group flex items-center py-2" href="/users" :class="subTitle === 'roles' ? 'activo flex'
+                            : 'inactivo flex'">
+                        <icon name="circle" class="mr-2 w-3 h-3" />
+                        <div>Roles</div>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link class="group flex items-center py-2" href="/users/create" :class="subTitle === 'permisos' ? 'activo flex'
+                            : 'inactivo flex'">
+                        <icon name="circle" class="mr-2 w-3 h-3" />
+                        <div>Permisos</div>
+                        </Link>
+                    </li>
+                </ul>
             </li>
         </ul>
     </div>
