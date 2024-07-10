@@ -169,14 +169,14 @@
                 </a>
                 <ul v-show="isOpen('rolesypermisos')" class="pl-6 space-y-2">
                     <li>
-                        <Link class="group flex items-center py-2" href="/users" :class="subTitle === 'roles' ? 'activo flex'
+                        <Link class="group flex items-center py-2" :href="route('roles.index')" :class="subTitle === 'roles' ? 'activo flex'
                             : 'inactivo flex'">
                         <icon name="circle" class="mr-2 w-3 h-3" />
                         <div>Roles</div>
                         </Link>
                     </li>
                     <li>
-                        <Link class="group flex items-center py-2" href="/users/create" :class="subTitle === 'permisos' ? 'activo flex'
+                        <Link class="group flex items-center py-2" :href="route('permisos.index')" :class="subTitle === 'permisos' ? 'activo flex'
                             : 'inactivo flex'">
                         <icon name="circle" class="mr-2 w-3 h-3" />
                         <div>Permisos</div>

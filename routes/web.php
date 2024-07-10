@@ -45,7 +45,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('/user/create', [App\Http\Controllers\userController::class, 'create'])->name('user.create');
     Route::post('/user/store', [App\Http\Controllers\userController::class, 'store'])->name('user.store');
     // Route::get('/user/{id}', [App\Http\Controllers\userController::class, 'show'])->name('user.show');
-    Route::get('/user/{id}/edit', [App\Http\Controllers\userController::class, 'edit'])->name('user.edit');
+    Route::get('/user/{user}/edit', [App\Http\Controllers\userController::class, 'edit'])->name('user.edit');
     Route::patch('/user/{id}/update', [App\Http\Controllers\userController::class, 'update'])->name('user.update');
     Route::patch('/user/{id}/updatePassword', [App\Http\Controllers\userController::class, 'updatePassword'])->name('user.updatePassword');
     Route::delete('/user/{id}/destroy', [App\Http\Controllers\userController::class, 'destroy'])->name('user.destroy');
@@ -89,4 +89,16 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::delete('/minutas/{minuta}/destroy', [App\Http\Controllers\minutasController::class, 'destroy'])->name('minutas.destroy');
 
     Route::get('admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin.index');
+
+    Route::get('roles', [App\Http\Controllers\rolesController::class, 'index'])->name('roles.index');
+    Route::get('roles/create', [App\Http\Controllers\rolesController::class, 'create'])->name('roles.create');
+    Route::post('roles/store', [App\Http\Controllers\rolesController::class, 'store'])->name('roles.store');
+    Route::get('roles/{rol}/edit', [App\Http\Controllers\rolesController::class, 'edit'])->name('roles.edit');
+    Route::patch('roles/{role}/update', [App\Http\Controllers\rolesController::class, 'update'])->name('roles.update');
+
+
+
+    Route::get('permisos', [App\Http\Controllers\permisosController::class, 'index'])->name('permisos.index');
+    Route::get('permisos/create', [App\Http\Controllers\permisosController::class, 'create'])->name('permisos.create');
+    Route::post('permisos/store', [App\Http\Controllers\permisosController::class, 'store'])->name('permisos.store');
 });

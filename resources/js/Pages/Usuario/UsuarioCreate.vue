@@ -11,10 +11,12 @@ import { showToast } from "../utils/SweetAlert.service";
 const props = defineProps({
     areas: Array,
     departamentos: Array || null,
+    roles: Array,
 });
 
 const areas = ref(props.areas);
 const departamentos = ref(props.departamentos);
+const roles = ref(props.roles);
 
 async function getAreas() {
     await axios
@@ -32,12 +34,13 @@ const form = useForm({
     password_confirmation: "",
     area_id: "",
     departamento_id: "",
+    roles: [],
 });
 
 const onChange = async (event) => {
-    const taget_id = event.target.value;
+    const target_id = event.target.value;
     await axios
-        .get(route("departamentos.byArea", taget_id))
+        .get(route("departamentos.byArea", target_id))
         .then((response) => (departamentos.value = response.data.departamentos))
         .catch((error) => {
             console.log(error);
@@ -118,9 +121,9 @@ onMounted(() => {
                                         </option>
                                     </select>
                                 </div>
+
                                 <div class="mt-4">
                                     <InputLabel for="departamento_id" value="Departamento: " />
-
                                     <select ref="departamento_select"
                                         class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
                                         v-model="form.departamento_id" required>
@@ -135,6 +138,19 @@ onMounted(() => {
                                 </div>
 
                                 <div class="mt-4">
+                                    <InputLabel value="Roles: " />
+                                    <div>
+                                        <div v-for="role in roles" :key="role.id" class="mt-2">
+                                            <label class="flex items-center">
+                                                <input type="checkbox" v-model="form.roles" :value="role.id"
+                                                    class="form-checkbox" />
+                                                <span class="ml-2">{{ role.name }}</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mt-4">
                                     <InputLabel for="password" value="Password" />
                                     <TextInput id="password" v-model="form.password" type="password"
                                         class="mt-1 block w-full" required autocomplete="new-password" />
@@ -146,38 +162,13 @@ onMounted(() => {
                                     <TextInput id="password_confirmation" v-model="form.password_confirmation"
                                         type="password" class="mt-1 block w-full" required
                                         autocomplete="new-password" />
-                                    <InputError class="mt-2" :message="form.errors.password_confirmation
-                                        " />
-                                </div>
-
-                                <div v-if="
-                                    $page.props.jetstream
-                                        .hasTermsAndPrivacyPolicyFeature
-                                " class="mt-4">
-                                    <InputLabel for="terms">
-                                        <div class="flex items-center">
-                                            <Checkbox id="terms" v-model:checked="form.terms" name="terms" required />
-
-                                            <div class="ms-2">
-                                                I agree to the
-                                                <a target="_blank" :href="route('terms.show')"
-                                                    class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Terms
-                                                    of Service</a>
-                                                and
-                                                <a target="_blank" :href="route('policy.show')"
-                                                    class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Privacy
-                                                    Policy</a>
-                                            </div>
-                                        </div>
-                                        <InputError class="mt-2" :message="form.errors.terms" />
-                                    </InputLabel>
+                                    <InputError class="mt-2" :message="form.errors.password_confirmation" />
                                 </div>
 
                                 <div class="flex items-center justify-end mt-4">
-                                    <PrimaryButton class="ms-4" :class="{
-                                        'opacity-25': form.processing,
-                                    }" :disabled="form.processing">
-                                        guardar
+                                    <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }"
+                                        :disabled="form.processing">
+                                        Guardar
                                     </PrimaryButton>
                                 </div>
                             </form>
