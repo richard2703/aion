@@ -7,24 +7,22 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Departamento extends Model
+class Procedimiento extends Model
 {
     use HasFactory;
     use SoftDeletes;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    protected $table = 'procedimientos';
+
     protected $fillable = [
+        'proceso_id',
         'nombre',
         'descripcion',
-        'area_id'
+        'link_externo',
     ];
 
-    public function area(): BelongsTo
+    public function proceso(): BelongsTo
     {
-        return $this->belongsTo(Area::class, 'area_id', 'id');
+        return $this->belongsTo(Proceso::class, 'proceso_id', 'id');
     }
 }

@@ -1,7 +1,7 @@
 <script setup>
-import { Head, Link } from "@inertiajs/vue3";
-import { ref, onMounted, watch } from "vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
+import { ref, onMounted, watch } from 'vue';
+import { Head, Link } from '@inertiajs/vue3';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
 import axios from "axios";
 import Layout from "@/Layouts/Layout.vue";
 import { confirmDialog, showToast } from "../utils/SweetAlert.service";
@@ -10,40 +10,40 @@ import Column from "primevue/column";
 import InputText from "primevue/inputtext";
 
 const props = defineProps({
-    items: Array,
+    kpis: Array,
 });
-
-const title = "minutero";
-const opciones = ref([]);
-const items = ref([]);
+const title = "KPI";
+const kpis = ref(props.kpis);
 const totalRecords = ref(0);
 const rows = ref(10);
 const first = ref(0);
 const globalFilter = ref("");
 const filters = ref({});
 const sortField = ref("id");
-const sortOrder = ref(-1);
+const sortOrder = ref(1);
 
-async function getItems(
+onMounted(() => {
+    getKpis();
+});
+
+async function getKpis(
     page = 1,
     rowsPerPage = rows.value,
     filter = "",
     sortField = "id",
-    sortOrder = -1
+    sortOrder = 1
 ) {
     try {
-        const response = await axios.get("/api/minutas", {
+        const response = await axios.get("/api/kpis", {
             params: {
                 page,
                 rows: rowsPerPage,
                 filter,
                 sortField,
                 sortOrder: sortOrder === 1 ? "asc" : "desc",
-                // sortOrder: sortOrder === 1 ? "desc" : " asc",
-
             },
         });
-        items.value = response.data.data;
+        kpis.value = response.data.data;
         totalRecords.value = response.data.total;
         first.value = (response.data.current_page - 1) * rows.value;
     } catch (error) {
@@ -51,7 +51,7 @@ async function getItems(
     }
 }
 
-const deleteItems = async (id) => {
+const deleteKpi = async (id) => {
     try {
         const result = await confirmDialog(
             "Estas seguro?",
@@ -59,8 +59,8 @@ const deleteItems = async (id) => {
             "warning"
         );
         if (result.isConfirmed) {
-            await axios.delete(route("minutas.destroy", id));
-            items.value = items.value.filter((item) => item.id !== id);
+            await axios.delete(route("kpi.destroy", id));
+            kpis.value = kpis.value.filter((kpi) => kpi.id !== id);
             showToast("El registro ha sido eliminado", "success");
 
         }
@@ -70,21 +70,17 @@ const deleteItems = async (id) => {
     }
 };
 
-onMounted(() => {
-    getItems();
-});
-
 watch(globalFilter, (newValue) => {
     filters.value = {
         global: { value: newValue, matchMode: "contains" },
     };
-    getItems(1, rows.value, newValue, sortField.value, sortOrder.value);
+    getKpis(1, rows.value, newValue, sortField.value, sortOrder.value);
 });
 
 const onPage = (event) => {
     const page = event.page + 1;
     rows.value = event.rows;
-    getItems(
+    getKpis(
         page,
         rows.value,
         globalFilter.value,
@@ -96,7 +92,7 @@ const onPage = (event) => {
 const onSort = (event) => {
     sortField.value = event.sortField || "id";
     sortOrder.value = event.sortOrder;
-    getItems(
+    getKpis(
         1,
         rows.value,
         globalFilter.value,
@@ -104,7 +100,6 @@ const onSort = (event) => {
         sortOrder.value
     );
 };
-
 </script>
 
 <style scoped>
@@ -116,17 +111,17 @@ const onSort = (event) => {
 <template>
     <Layout :titulo="title">
 
-        <Head title="Departamento" />
+        <Head title="KPI's" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
-                <h3>Minutas</h3>
+                <h3>KPI's</h3>
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
                 <Link class="active">
-                <h3>Minutas</h3>
+                <h3>KPI's</h3>
                 </Link>
             </div>
         </div>
@@ -135,44 +130,45 @@ const onSort = (event) => {
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div>
                     <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
-                        <PrimaryButton :href="route('minutas.create')">Nuevo</PrimaryButton>
+                        <PrimaryButton :href="route('kpi.create')">Nuevo</PrimaryButton>
                     </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto overflow-x-auto">
                             <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
-                            <DataTable :value="items" paginator :rows="rows" :totalRecords="totalRecords" :lazy="true"
+                            <DataTable :value="kpis" paginator :rows="rows" :totalRecords="totalRecords" :lazy="true"
                                 :first="first" @page="onPage" @sort="onSort" :rowsPerPageOptions="[5, 10, 20, 50]"
                                 tableStyle="min-width: 50rem" :filters="filters" :globalFilterFields="[
                                     'id',
-                                    'area.nombre',
-                                    'departamento.nombre',
-                                    'alias',
-                                    'tareas',
-                                    'notas',
-                                    'usuario.name',
+                                    'nombre',
+                                    'procedimiento.nombre',
+                                    'descripcion',
+                                    'link_externo',
                                 ]" :sortField="sortField" :sortOrder="sortOrder"
                                 class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
-                                <template #empty> Sin registros </template>
+                                <template #empty> No data found. </template>
                                 <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
                                     sortable></Column>
-                                <!-- <Column field="area.nombre" header="Area" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column> -->
-                                <Column field="departamento.nombre" header="Fujo de valor" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                                <Column field="alias" header="Alias" headerStyle="width:4em;" bodyClass="text-center"
+                                <Column field="procedimiento.nombre" header="Procedimiento" headerStyle="width:4em;"
+                                    bodyClass="text-center" sortable>
+                                </Column>
+                                <Column field="nombre" header="KPI" headerStyle="width:4em;" bodyClass="text-center"
                                     sortable></Column>
-                                <Column field="tareas" header="Treas" headerStyle="width:4em;" bodyClass="text-center"
-                                    sortable></Column>
-                                <Column field="usuario.name" header="Responsable" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+                                <Column field="descripcion" header="Descripción" headerStyle="width:4em;"
+                                    bodyClass="text-center" sortable></Column>
+                                <Column field="link_externo" header="Link" headerStyle="width:4em;"
+                                    bodyClass="text-center" sortable></Column>
+
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">
-                                        <PrimaryButton class="m-2" :href="route('minutas.edit', slotProps.data.id)">
+                                        <PrimaryButton class="m-2" :href="route(
+                                            'kpi.edit',
+                                            slotProps.data.id
+                                        )">
                                             Editar
                                         </PrimaryButton>
 
                                         <PrimaryButton class="m-2" @click.prevent="
-                                            deleteItems(slotProps.data.id)
+                                            deleteKpi(slotProps.data.id)
                                             ">
                                             Borrar
                                         </PrimaryButton>

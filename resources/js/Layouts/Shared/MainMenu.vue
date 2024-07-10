@@ -166,6 +166,39 @@
                     </Link>
                 </div>
             </li>
+
+            <li>
+                <div class="mb-4">
+                    <Link class="group flex items-center py-3" :href="route('procedimiento.index')">
+                    <div :class="title === 'Procedimientos' ? 'activo flex' : 'inactivo flex'">
+                        <icon name="office" class="mr-2 w-4 h-4" />
+                        Procedimientos
+                    </div>
+                    </Link>
+                </div>
+            </li>
+
+            <li>
+                <div class="mb-4">
+                    <Link class="group flex items-center py-3" :href="route('estandar.index')">
+                    <div :class="title === 'Estandares' ? 'activo flex' : 'inactivo flex'">
+                        <icon name="office" class="mr-2 w-4 h-4" />
+                        Estandares
+                    </div>
+                    </Link>
+                </div>
+            </li>
+
+            <li>
+                <div class="mb-4">
+                    <Link class="group flex items-center py-3" :href="route('kpi.index')">
+                    <div :class="title === 'KPI' ? 'activo flex' : 'inactivo flex'">
+                        <icon name="office" class="mr-2 w-4 h-4" />
+                        KPI's
+                    </div>
+                    </Link>
+                </div>
+            </li>
         </ul>
     </div>
 </template>
