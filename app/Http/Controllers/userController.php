@@ -4,10 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\UpdateUserPassword;
+use App\Models\Area;
+use App\Models\Departamento;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
+use Spatie\Permission\Models\Role;
+
 
 class userController extends Controller
 {
@@ -79,29 +83,62 @@ class userController extends Controller
 
     function create()
     {
-        return Inertia::render('Usuario/UsuarioCreate');
+        // return Inertia::render('Usuario/UsuarioCreate');
+        $roles = Role::all();
+        return Inertia::render('Usuario/UsuarioCreate', [
+            'roles' => $roles,
+        ]);
     }
 
     function store(Request $request)
     {
 
-        $createNewUser = new CreateNewUser();
-        $createNewUser->create($request->all());
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'area_id' => $request->area_id,
+            'departamento_id' => $request->departamento_id,
+        ]);
+
+        // Asigna los roles al usuario
+        $user->syncRoles($request->roles);
+
 
         return redirect()->route('user.index');
     }
 
-    function edit($id)
+    function edit(User $user)
     {
+        // dd($user);
+        // return Inertia::render('Usuario/UsuarioEdit', [
+        //     'usuario' => $user,
+        // ]);
+
+        $areas = Area::all(); // Suponiendo que tienes un modelo Area
+        $departamentos = Departamento::where('area_id', $user->area_id)->get(); // Suponiendo que tienes un modelo Departamento
+        // $roles = Role::all();
+
+        // $user = $user->role->pluck('id')->toArray();
+
+
         return Inertia::render('Usuario/UsuarioEdit', [
-            'usuario' => User::find($id),
+            'usuario' => $user,
+            'areas' => $areas,
+            'roles' => Role::all(), // Obtener todos los roles disponibles
+            'roles_usuario' => $user->roles()->pluck('id'), // Obtener los nombres de los roles asignados al usuario
+            'departamentos' => $departamentos,
         ]);
     }
 
     function update(Request $request, $id)
     {
+        // dd($request);
         $user = User::find($id);
         $user->update($request->only('name', 'email', 'area_id', 'departamento_id'));
+        $roles = Role::whereIn('id', $request->input('selectedRoles', []))->get();
+        $user->syncRoles($roles);
+
         return redirect()->route('user.index');
     }
     function updatePassword(Request $request, $id)

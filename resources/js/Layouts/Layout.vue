@@ -32,7 +32,7 @@
                                         class="mr-1 text-gray-700 group-hover:text-indigo-600 focus:text-indigo-600 whitespace-nowrap">
                                         <!-- <span>{{ auth.user.first_name }}</span> -->
                                         <span>
-                                            {{ $page.props.auth.user.name }}
+                                            {{ $page.props.auth.user.user.name }}
                                         </span>
 
                                         <!-- <span class="hidden md:inline">&nbsp;{{ auth.user.last_name }}</span> -->
@@ -75,6 +75,7 @@ import Logo from "@/Layouts/Shared/Logo.vue";
 import Dropdown from "@/Layouts/Shared/Dropdown.vue";
 import MainMenu from "@/Layouts/Shared/MainMenu.vue";
 import "../../css/general.css";
+
 
 export default {
     components: {
