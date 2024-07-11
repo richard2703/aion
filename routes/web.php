@@ -96,6 +96,30 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::patch('/proceso/{proceso}/update', [App\Http\Controllers\procesoController::class, 'update'])->name('proceso.update');
     Route::delete('/proceso/{proceso}/destroy', [App\Http\Controllers\procesoController::class, 'destroy'])->name('proceso.destroy');
 
+    // Procedimiento
+    Route::get('/procedimientos', [App\Http\Controllers\procedimientoController::class, 'index'])->name('procedimiento.index');
+    Route::get('/procedimiento/create', [App\Http\Controllers\procedimientoController::class, 'create'])->name('procedimiento.create');
+    Route::post('/procedimiento/store', [App\Http\Controllers\procedimientoController::class, 'store'])->name('procedimiento.store');
+    Route::get('/procedimiento/{procedimiento}/edit', [App\Http\Controllers\procedimientoController::class, 'edit'])->name('procedimiento.edit');
+    Route::patch('/procedimiento/{procedimiento}/update', [App\Http\Controllers\procedimientoController::class, 'update'])->name('procedimiento.update');
+    Route::delete('/procedimiento/{procedimiento}/destroy', [App\Http\Controllers\procedimientoController::class, 'destroy'])->name('procedimiento.destroy');
+
+    // Estandar
+    Route::get('/estandares', [App\Http\Controllers\EstandarController::class, 'index'])->name('estandar.index');
+    Route::get('/estandar/create', [App\Http\Controllers\EstandarController::class, 'create'])->name('estandar.create');
+    Route::post('/estandar/store', [App\Http\Controllers\EstandarController::class, 'store'])->name('estandar.store');
+    Route::get('/estandar/{estandar}/edit', [App\Http\Controllers\EstandarController::class, 'edit'])->name('estandar.edit');
+    Route::patch('/estandar/{estandar}/update', [App\Http\Controllers\EstandarController::class, 'update'])->name('estandar.update');
+    Route::delete('/estandar/{estandar}/destroy', [App\Http\Controllers\EstandarController::class, 'destroy'])->name('estandar.destroy');
+
+    // KPI
+    Route::get('/kpis', [App\Http\Controllers\kpiController::class, 'index'])->name('kpi.index');
+    Route::get('/kpi/create', [App\Http\Controllers\kpiController::class, 'create'])->name('kpi.create');
+    Route::post('/kpi/store', [App\Http\Controllers\kpiController::class, 'store'])->name('kpi.store');
+    Route::get('/kpi/{kpi}/edit', [App\Http\Controllers\kpiController::class, 'edit'])->name('kpi.edit');
+    Route::patch('/kpi/{kpi}/update', [App\Http\Controllers\kpiController::class, 'update'])->name('kpi.update');
+    Route::delete('/kpi/{kpi}/destroy', [App\Http\Controllers\kpiController::class, 'destroy'])->name('kpi.destroy');
+
     Route::get('admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin.index');
 
     Route::get('roles', [App\Http\Controllers\rolesController::class, 'index'])->name('roles.index');
