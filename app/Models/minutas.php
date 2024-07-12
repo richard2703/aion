@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class minutas extends Model
@@ -17,13 +18,10 @@ class minutas extends Model
     protected $fillable = [
         'area_id',
         'departamento_id',
+        'lider_id',
+        'proceso_id',
         'alias',
         'tipo',
-        'pilar',
-        'proceso',
-        'procedimientos',
-        'tareas',
-        'responsable_id',
         'notas',
         'estatus'
     ];
@@ -37,8 +35,17 @@ class minutas extends Model
         return $this->belongsTo(Departamento::class, 'departamento_id', 'id');
     }
 
-    public function usuario(): BelongsTo
+    public function proceso(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'responsable_id', 'id');
+        return $this->belongsTo(Proceso::class, 'proceso_id', 'id');
     }
+    public function lider(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'lider_id', 'id');
+    }
+
+    // public function tareas(): HasMany
+    // {
+    //     return $this->hasMany(tarea::class, 'minuta_id', 'id');
+    // }
 }

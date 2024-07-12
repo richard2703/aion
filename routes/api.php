@@ -32,4 +32,8 @@ Route::get('/procedimientos', [App\Http\Controllers\ProcedimientoController::cla
 Route::get('/estandares', [App\Http\Controllers\EstandarController::class, 'findAll'])->name('estandares.findAll');
 Route::get('/kpis', [App\Http\Controllers\kpiController::class, 'findAll'])->name('kpis.findAll');
 
+Route::get('/asistentes/{id}', [App\Http\Controllers\asistenteController::class, 'findByMinutaId'])->name('asistente.findByMinutaId');
+
 // Route::get('/objetivos/{objetivos_id}', [App\Http\Controllers\objetivosController::class, 'byDepartamento'])->name('challenges.byArea');
+Route::post('/asistente/store', [App\Http\Controllers\asistenteController::class, 'store'])->name('asistentes.store');
+Route::delete('/asistente/{asistente}', [App\Http\Controllers\asistenteController::class, 'destroy'])->name('asistente.delete');
