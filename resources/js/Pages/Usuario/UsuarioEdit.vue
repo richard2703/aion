@@ -12,17 +12,29 @@ const props = defineProps({
     usuario: Object,
     areas: Array,
     departamentos: Array || null,
+    roles: Array,
+    roles_usuario: Array
 });
+
 const usuario = ref(props.usuario);
 const areas = ref(props.areas);
 const departamentos = ref(props.departamentos);
+const roles = ref(props.roles);
+
+
 const userArea = usuario.value.area_id;
+
 const profileForm = useForm({
     name: usuario.value.name,
     email: usuario.value.email,
     area_id: usuario.value.area_id,
     departamento_id: usuario.value.departamento_id,
+    // roles: usuario.value.roles.map(role => role.name),
+    roles: usuario.value.roles ? usuario.value.roles.map(role => role.name) : [],
+    selectedRoles: props.roles_usuario,
+
 });
+
 const passwordForm = useForm({
     password: "",
     password_confirmation: "",
@@ -120,7 +132,7 @@ onMounted(() => {
                 <Link :href="route('user.index')" class="px-1">
                 <h3>Usuarios -</h3>
                 </Link>
-                <Link :href="route('user.create')" class="active">
+                <Link :href="route('user.edit', usuario.id)" class="active">
                 <h3>Actualizar</h3>
                 </Link>
             </div>
@@ -174,6 +186,7 @@ onMounted(() => {
                                     </div>
                                 </div>
 
+                                <!-- Area -->
                                 <div class="mt-4">
                                     <InputLabel for="area_id" value="Area: " />
                                     <select ref="area_select" @change="onChange($event)"
@@ -187,9 +200,10 @@ onMounted(() => {
                                         </option>
                                     </select>
                                 </div>
+
+                                <!-- Departamento -->
                                 <div class="mt-4">
                                     <InputLabel for="departamento_id" value="Departamento: " />
-
                                     <select ref="departamento_select"
                                         class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
                                         v-model="profileForm.departamento_id" required>
@@ -202,6 +216,44 @@ onMounted(() => {
                                         </option>
                                     </select>
                                 </div>
+
+                                <!-- Roles -->
+                                <!-- <div class="mt-4">
+                                    <InputLabel for="roles" value="Roles: " />
+                                    <select multiple
+                                        class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                        v-model="profileForm.roles" required>
+                                        <option v-for="role in roles" :key="role.name" :value="role.name">
+                                            {{ role.name }}
+                                        </option>
+                                    </select>
+                                </div> -->
+
+                                <div class="mt-4">
+                                    <InputLabel for="roles" value="Roles: " />
+                                    <div>
+                                        <div v-for="role in roles" :key="role.id" class="mt-2">
+                                            <label class="flex items-center">
+                                                <input type="checkbox" v-model="profileForm.selectedRoles"
+                                                    :value="role.id" class="form-checkbox" />
+                                                <span class="ml-2">{{ role.name }}</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- <div class="mt-4">
+                                        <InputLabel value="Permisos: " />
+                                        <div>
+                                            <div v-for="permiso in props.permissions" :key="permiso.id" class="mt-2">
+                                                <label class="flex items-center">
+                                                    <input type="checkbox" v-model="form.selectedPermisos"
+                                                        :value="permiso.id" class="form-checkbox" />
+                                                    <span class="ml-2">{{ permiso.name }}</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div> -->
 
                                 <div class="flex items-center justify-end mt-4">
                                     <PrimaryButton class="ms-4" :class="{
@@ -225,11 +277,9 @@ onMounted(() => {
 
                                 <div class="col-span-6 sm:col-span-4">
                                     <InputLabel for="password_confirmation" value="Confirm Password" />
-                                    <TextInput id="password_confirmation" v-model="passwordForm.password_confirmation
-                                        " type="password" class="mt-1 block w-full" autocomplete="new-password" />
-                                    <InputError :message="passwordForm.errors
-                                        .password_confirmation
-                                        " class="mt-2" />
+                                    <TextInput id="password_confirmation" v-model="passwordForm.password_confirmation"
+                                        type="password" class="mt-1 block w-full" autocomplete="new-password" />
+                                    <InputError :message="passwordForm.errors.password_confirmation" class="mt-2" />
                                 </div>
 
                                 <div class="flex items-center justify-end mt-4">

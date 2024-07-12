@@ -28,6 +28,7 @@
         "@primevue/themes": "^4.0.0-rc.2",
         "chart": "^0.1.2",
         "chart.js": "^4.4.3",
+        "laravel-permission-to-vuejs": "^3.0.2",
         "primeicons": "^7.0.0",
         "primevue": "^4.0.0-rc.2",
         "sweetalert2": "^11.11.1"

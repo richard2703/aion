@@ -30,6 +30,20 @@
                 </div>
             </li>
 
+            <li>
+                <div class="mb-4">
+                    <Link class="group flex items-center py-3" :href="route('tareas.index')">
+                    <div :class="title === 'tareas'
+                        ? 'activo flex'
+                        : 'inactivo flex'
+                        ">
+                        <icon name="office" class="mr-2 w-4 h-4" />
+                        Tareas
+                    </div>
+                    </Link>
+                </div>
+            </li>
+
             <!-- Usuarios Menu Item with Submenus -->
             <!-- <li>
                 <a class="group flex items-center py-3 cursor-pointer" @click="toggleMenu('usuarios')">
@@ -60,145 +74,176 @@
             </li> -->
 
             <!-- Other Menu Items -->
-            <li>
-                <div class="mb-4 administrador">
-                    <div>Administracion</div>
-                </div>
-            </li>
-            <li>
-                <div class="mb-4">
-                    <Link class="group flex items-center py-3" href="/areas">
-                    <div :class="title === 'areas'
-                        ? 'activo flex'
-                        : 'inactivo flex'
-                        ">
-                        <icon name="office" class="mr-2 w-4 h-4" />
-                        Areas
+            <div v-if="$page.props.auth.user.roles.includes('admin')">
+                <li>
+                    <div class="mb-4 administrador">
+                        <div>Administracion</div>
                     </div>
-                    </Link>
-                </div>
-            </li>
-            <li>
-                <div class="mb-4">
-                    <Link class="group flex items-center py-3" href="/departamentos">
-                    <div :class="title === 'departamentos'
-                        ? 'activo flex'
-                        : 'inactivo flex'
-                        ">
-                        <icon name="office" class="mr-2 w-4 h-4" />
-                        Departamentos
+                </li>
+                <li>
+                    <div class="mb-4">
+                        <Link class="group flex items-center py-3" href="/areas">
+                        <div :class="title === 'areas'
+                            ? 'activo flex'
+                            : 'inactivo flex'
+                            ">
+                            <icon name="office" class="mr-2 w-4 h-4" />
+                            Areas
+                        </div>
+                        </Link>
                     </div>
-                    </Link>
-                </div>
-            </li>
-            <li>
-                <div class="mb-4">
-                    <Link class="group flex items-center py-3" :href="route('user.index')">
-                    <div :class="title === 'usuarios'
-                        ? 'activo flex'
-                        : 'inactivo flex'
-                        ">
-                        <icon name="users" class="mr-2 w-4 h-4" />
-                        Usuarios
+                </li>
+                <li>
+                    <div class="mb-4">
+                        <Link class="group flex items-center py-3" href="/departamentos">
+                        <div :class="title === 'departamentos'
+                            ? 'activo flex'
+                            : 'inactivo flex'
+                            ">
+                            <icon name="office" class="mr-2 w-4 h-4" />
+                            Departamentos
+                        </div>
+                        </Link>
                     </div>
-                    </Link>
-                </div>
-            </li>
+                </li>
+                <li>
+                    <div class="mb-4">
+                        <Link class="group flex items-center py-3" :href="route('user.index')">
+                        <div :class="title === 'usuarios'
+                            ? 'activo flex'
+                            : 'inactivo flex'
+                            ">
+                            <icon name="users" class="mr-2 w-4 h-4" />
+                            Usuarios
+                        </div>
+                        </Link>
+                    </div>
+                </li>
 
-            <li>
-                <div class="mb-4">
-                    <Link class="group flex items-center py-3" :href="route('challenge.index')">
-                    <div :class="title === 'Challenges'
-                        ? 'activo flex'
-                        : 'inactivo flex'
-                        ">
-                        <icon name="office" class="mr-2 w-4 h-4" />
-                        Challenges
+                <li>
+                    <div class="mb-4">
+                        <Link class="group flex items-center py-3" :href="route('challenge.index')">
+                        <div :class="title === 'Challenges'
+                            ? 'activo flex'
+                            : 'inactivo flex'
+                            ">
+                            <icon name="office" class="mr-2 w-4 h-4" />
+                            Challenges
+                        </div>
+                        </Link>
                     </div>
-                    </Link>
-                </div>
-            </li>
+                </li>
 
-            <li>
-                <div class="mb-4">
-                    <Link class="group flex items-center py-3" :href="route('opcion.index')">
-                    <div :class="title === 'Opciones'
-                        ? 'activo flex'
-                        : 'inactivo flex'
-                        ">
-                        <icon name="office" class="mr-2 w-4 h-4" />
-                        Opciones
+                <li>
+                    <div class="mb-4">
+                        <Link class="group flex items-center py-3" :href="route('opcion.index')">
+                        <div :class="title === 'Opciones'
+                            ? 'activo flex'
+                            : 'inactivo flex'
+                            ">
+                            <icon name="office" class="mr-2 w-4 h-4" />
+                            Opciones
+                        </div>
+                        </Link>
                     </div>
-                    </Link>
-                </div>
-            </li>
-            <li>
-                <div class="mb-4">
-                    <Link class="group flex items-center py-3" :href="route('config.index')">
-                    <div :class="title === 'Configuraciones'
-                        ? 'activo flex'
-                        : 'inactivo flex'
-                        ">
-                        <icon name="office" class="mr-2 w-4 h-4" />
-                        Configuraciones
+                </li>
+                <li>
+                    <div class="mb-4">
+                        <Link class="group flex items-center py-3" :href="route('config.index')">
+                        <div :class="title === 'Configuraciones'
+                            ? 'activo flex'
+                            : 'inactivo flex'
+                            ">
+                            <icon name="office" class="mr-2 w-4 h-4" />
+                            Configuraciones
+                        </div>
+                        </Link>
                     </div>
-                    </Link>
-                </div>
-            </li>
-            <li>
-                <div class="mb-4">
-                    <Link class="group flex items-center py-3" :href="route('objetivo.index')">
-                    <div :class="title === 'Objetivos' ? 'activo flex' : 'inactivo flex'">
-                        <icon name="office" class="mr-2 w-4 h-4" />
-                        Objetivo
+                </li>
+                <li>
+                    <div class="mb-4">
+                        <Link class="group flex items-center py-3" :href="route('objetivo.index')">
+                        <div :class="title === 'Objetivos' ? 'activo flex' : 'inactivo flex'">
+                            <icon name="office" class="mr-2 w-4 h-4" />
+                            Objetivo
+                        </div>
+                        </Link>
                     </div>
-                    </Link>
-                </div>
-            </li>
+                </li>
 
-            <li>
-                <div class="mb-4">
-                    <Link class="group flex items-center py-3" :href="route('proceso.index')">
-                    <div :class="title === 'Procesos' ? 'activo flex' : 'inactivo flex'">
-                        <icon name="office" class="mr-2 w-4 h-4" />
-                        Procesos
+                <li>
+                    <div class="mb-4">
+                        <Link class="group flex items-center py-3" :href="route('proceso.index')">
+                        <div :class="title === 'Procesos' ? 'activo flex' : 'inactivo flex'">
+                            <icon name="office" class="mr-2 w-4 h-4" />
+                            Procesos
+                        </div>
+                        </Link>
                     </div>
-                    </Link>
-                </div>
-            </li>
 
-            <li>
-                <div class="mb-4">
-                    <Link class="group flex items-center py-3" :href="route('procedimiento.index')">
-                    <div :class="title === 'Procedimientos' ? 'activo flex' : 'inactivo flex'">
-                        <icon name="office" class="mr-2 w-4 h-4" />
-                        Procedimientos
-                    </div>
-                    </Link>
-                </div>
-            </li>
+                </li>
 
-            <li>
-                <div class="mb-4">
-                    <Link class="group flex items-center py-3" :href="route('estandar.index')">
-                    <div :class="title === 'Estandares' ? 'activo flex' : 'inactivo flex'">
-                        <icon name="office" class="mr-2 w-4 h-4" />
-                        Estandares
+                <li>
+                    <div class="mb-4">
+                        <Link class="group flex items-center py-3" :href="route('procedimiento.index')">
+                        <div :class="title === 'Procedimientos' ? 'activo flex' : 'inactivo flex'">
+                            <icon name="office" class="mr-2 w-4 h-4" />
+                            Procedimientos
+                        </div>
+                        </Link>
                     </div>
-                    </Link>
-                </div>
-            </li>
+                </li>
 
-            <li>
-                <div class="mb-4">
-                    <Link class="group flex items-center py-3" :href="route('kpi.index')">
-                    <div :class="title === 'KPI' ? 'activo flex' : 'inactivo flex'">
-                        <icon name="office" class="mr-2 w-4 h-4" />
-                        KPI's
+                <li>
+                    <div class="mb-4">
+                        <Link class="group flex items-center py-3" :href="route('estandar.index')">
+                        <div :class="title === 'Estandares' ? 'activo flex' : 'inactivo flex'">
+                            <icon name="office" class="mr-2 w-4 h-4" />
+                            Estandares
+                        </div>
+                        </Link>
                     </div>
-                    </Link>
-                </div>
-            </li>
+                </li>
+
+                <li>
+                    <div class="mb-4">
+                        <Link class="group flex items-center py-3" :href="route('kpi.index')">
+                        <div :class="title === 'KPI' ? 'activo flex' : 'inactivo flex'">
+                            <icon name="office" class="mr-2 w-4 h-4" />
+                            KPI's
+                        </div>
+                        </Link>
+                    </div>
+                </li>
+                <li v-if="$page.props.auth.user.roles.includes('admin')">
+                    <a class="group flex items-center py-3 cursor-pointer" @click="toggleMenu('rolesypermisos')">
+                        <icon name="users" class="mr-2 w-4 h-4" :class="title === 'rolesypermisos' ? 'activo flex'
+                            : 'inactivo flex'" />
+                        <div :class="title === 'rolesypermisos' ? 'activo flex'
+                            : 'inactivo flex'">
+                            Roles y permisos
+                        </div>
+                        <icon name="cheveron-down" class="ml-auto w-4 h-4" :class="isOpen('rolesypermisos') ? 'rotate-180' : '', title === 'rolesypermisos' ? 'activo flex'
+                            : 'inactivo flex'" />
+                    </a>
+                    <ul v-show="isOpen('rolesypermisos')" class="pl-6 space-y-2">
+                        <li>
+                            <Link class="group flex items-center py-2" :href="route('roles.index')" :class="subTitle === 'roles' ? 'activo flex'
+                                : 'inactivo flex'">
+                            <icon name="circle" class="mr-2 w-3 h-3" />
+                            <div>Roles</div>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link class="group flex items-center py-2" :href="route('permisos.index')" :class="subTitle === 'permisos' ? 'activo flex'
+                                : 'inactivo flex'">
+                            <icon name="circle" class="mr-2 w-3 h-3" />
+                            <div>Permisos</div>
+                            </Link>
+                        </li>
+                    </ul>
+                </li>
+            </div>
         </ul>
     </div>
 </template>
