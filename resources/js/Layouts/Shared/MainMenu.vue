@@ -30,6 +30,20 @@
                 </div>
             </li>
 
+            <li>
+                <div class="mb-4">
+                    <Link class="group flex items-center py-3" :href="route('tareas.index')">
+                    <div :class="title === 'tareas'
+                        ? 'activo flex'
+                        : 'inactivo flex'
+                        ">
+                        <icon name="office" class="mr-2 w-4 h-4" />
+                        Tareas
+                    </div>
+                    </Link>
+                </div>
+            </li>
+
             <!-- Usuarios Menu Item with Submenus -->
             <!-- <li>
                 <a class="group flex items-center py-3 cursor-pointer" @click="toggleMenu('usuarios')">
