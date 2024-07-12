@@ -128,9 +128,14 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('roles/{rol}/edit', [App\Http\Controllers\rolesController::class, 'edit'])->name('roles.edit');
     Route::patch('roles/{role}/update', [App\Http\Controllers\rolesController::class, 'update'])->name('roles.update');
 
-
-
     Route::get('permisos', [App\Http\Controllers\permisosController::class, 'index'])->name('permisos.index');
     Route::get('permisos/create', [App\Http\Controllers\permisosController::class, 'create'])->name('permisos.create');
     Route::post('permisos/store', [App\Http\Controllers\permisosController::class, 'store'])->name('permisos.store');
+
+    //Tareas
+    Route::get('tareas', [App\Http\Controllers\tareasController::class, 'index'])->name('tareas.index');
+    Route::get('tareas/nueva', [App\Http\Controllers\tareasController::class, 'create'])->name('tareas.create');
+    Route::post('tareas/store', [App\Http\Controllers\tareasController::class, 'store'])->name('tareas.store');
+    Route::get('tareas/{tarea}/editar', [App\Http\Controllers\tareasController::class, 'edit'])->name('tareas.edit');
+    Route::patch('tareas/{tarea}/update', [App\Http\Controllers\tareasController::class, 'update'])->name('tareas.update');
 });
