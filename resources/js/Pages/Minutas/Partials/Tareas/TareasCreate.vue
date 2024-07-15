@@ -44,8 +44,18 @@
 
                         <div class="mt-4 z-30">
                             <InputLabel for="responsable_id" value="Responsable:" />
-                            <AutoComplete v-model="form.responsable_id" optionLabel="name"
-                                :suggestions="filteredUsuarios" forceSelection @complete="search" placeholder="" />
+                            <!-- <AutoComplete v-model="form.responsable_id" optionLabel="name"
+                                :suggestions="filteredUsuarios" forceSelection @complete="search" placeholder="" /> -->
+                            <select ref="departamento_select"
+                                class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                v-model="form.responsable_id" required>
+                                <option value="" disabled selected>
+                                    Seleccione una opcion
+                                </option>
+                                <option v-for="usuario in usuarios" :key="usuario.id" :value="usuario.id">
+                                    {{ usuario.name }}
+                                </option>
+                            </select>
                         </div>
 
                         <div class="mt-4">
