@@ -34,6 +34,7 @@ Route::get('/kpis', [App\Http\Controllers\kpiController::class, 'findAll'])->nam
 Route::get('/roles', [App\Http\Controllers\rolesController::class, 'findAll'])->name('roles.findAll');
 Route::get('/permisos', [App\Http\Controllers\permisosController::class, 'findAll'])->name('permisos.findAll');
 Route::get('/permisos/all', [App\Http\Controllers\permisosController::class, 'all'])->name('permisos.All');
+Route::get('/tareas/{minuta_id}', [App\Http\Controllers\tareasController::class, 'byMinuta'])->name('tareas.byMinuta');
 
 
 

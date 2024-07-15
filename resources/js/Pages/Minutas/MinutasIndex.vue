@@ -162,9 +162,11 @@ const onSort = (event) => {
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                 <Column field="alias" header="Alias" headerStyle="width:4em;" bodyClass="text-center"
                                     sortable></Column>
-                                <Column field="tareas" header="Treas" headerStyle="width:4em;" bodyClass="text-center"
-                                    sortable></Column>
+                                <Column field="proceso.nombre" header="Proceso" headerStyle="width:4em;"
+                                    bodyClass="text-center" sortable></Column>
                                 <Column field="lider.name" header="Lider" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+                                <Column field="created_at" header="fecha" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">

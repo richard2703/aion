@@ -66,7 +66,7 @@ class minutasController extends Controller
         }
 
         // $result = $query->with('challenge')->paginate($pageSize, ['*'], 'page', $page);
-        $result = $query->with('area', 'departamento', 'lider')->paginate($pageSize, ['*'], 'page', $page);
+        $result = $query->with('area', 'departamento', 'lider', 'proceso')->paginate($pageSize, ['*'], 'page', $page);
         return response()->json($result);
     }
 
@@ -117,7 +117,7 @@ class minutasController extends Controller
      */
     public function edit(minutas $minuta)
     {
-        // dd($minuta);
+        $minuta->load('lider', 'area', 'departamento', 'proceso');
         $user = User::find($minuta->responsable_id);
         return Inertia::render('Minutas/MinutasEdit', ['minuta' => $minuta, 'user' => $user]);
     }
@@ -127,20 +127,19 @@ class minutasController extends Controller
      */
     public function update(Request $request, minutas $minuta)
     {
-        // $minuta->update($request->all());
         $minuta->area_id = $request->area_id;
         $minuta->departamento_id = $request->departamento_id;
+        $minuta->proceso_id = $request->proceso_id["id"]; // Asegúrate de ajustar según la estructura de tu solicitud
+        $minuta->lider_id = $request->lider_id["id"]; // Asegúrate de ajustar según la estructura de tu solicitud
         $minuta->alias = $request->alias;
         $minuta->tipo = $request->tipo;
-        // $minuta->proceso_id = $request->proceso_id;
-        // $minuta->procedimientos_id = $request->procedimientos_id;
-        $minuta->tareas = $request->tareas;
         $minuta->notas = $request->notas;
         $minuta->estatus = $request->estatus;
-        if (isset($request->responsable_id["id"])) {
-            $minuta->responsable_id = $request->responsable_id["id"];
-        }
+
+        // Guardar los cambios en la base de datos
         $minuta->save();
+
+        // Redireccionar a la ruta deseada después de la actualización
         return redirect()->route('minutas.index');
     }
 

@@ -216,7 +216,7 @@ const search = (event) => {
                                             required autocomplete="new-challenge" />
                                     </div>
 
-                                    <div class="mt-4">
+                                    <!-- <div class="mt-4">
                                         <InputLabel for="estatus" value="Estatus: " />
 
                                         <select ref="departamento_select"
@@ -231,7 +231,7 @@ const search = (event) => {
                                             <option value="3" selected>
                                                 Terminado </option>
                                         </select>
-                                    </div>
+                                    </div> -->
 
                                     <div class=" mt-4">
                                         <InputLabel for="notas" value="Notas: " />

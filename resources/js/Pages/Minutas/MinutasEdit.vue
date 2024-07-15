@@ -8,28 +8,26 @@ import TextInput from "@/Components/TextInput.vue";
 import { showToast } from "../utils/SweetAlert.service";
 import Textarea from 'primevue/textarea';
 import AutoComplete from 'primevue/autocomplete';
-
+import Select from 'primevue/select';
 
 
 const props = defineProps({
     minuta: Object,
     areas: Array,
     departamentos: Array || null,
-    usuarios: Array || null,
-    user: Object,
+    procesos: Array,
+    usuarios: Array,
 });
 
 const minuta = ref(props.minuta);
-const user = ref(props.user);
 const areas = ref(props.areas);
 const departamentos = ref(props.departamentos);
+const procesos = ref(props.procesos);
 const usuarios = ref(props.usuarios);
-const title = "minutero";
-const minutaArea = minuta.value.area_id;
 const filteredUsuarios = ref();
 const responsable_id = ref();
 
-// console.log(minuta.value.area_id);
+const title = "minutero";
 
 
 async function getAreas() {
@@ -50,39 +48,35 @@ async function getDepartamentos(area_id) {
         });
 }
 
-// async function getUsuarios(area_id) {
-//     await axios
-//         .get(route("usuarios.byArea", area_id))
-//         .then((response) => (usuarios.value = response.data.usuarios))
-//         .catch((error) => {
-//             console.log(error);
-//         });
-// }
+async function getProcesos() {
+    await axios
+        .get("/api/procesos")
+        .then((response) => (procesos.value = response.data.data))
+        .catch((error) => {
+            console.log(error);
+        });
+}
 
 async function getUsuarios() {
-    console.log(minuta.value);
     await axios
         .get("/api/usuarios/all/todo")
         .then((response) => (usuarios.value = response.data))
         .catch((error) => {
             console.log(error);
         });
+
 }
 
+console.log({ lider: minuta });
 const form = useForm({
     area_id: minuta.value.area_id,
     departamento_id: minuta.value.departamento_id,
-    alias: minuta.value.alias,
+    proceso_id: '',
+    lider_id: '',
     tipo: minuta.value.tipo,
-    proceso_id: minuta.value.proceso_id,
-    procedimientos_id: minuta.value.procedimientos_id,
-    tareas: minuta.value.tareas,
-    responsable: minuta.value.responsable,
+    alias: minuta.value.alias,
     notas: minuta.value.notas,
     estatus: minuta.value.estatus,
-    responsable_id: user.value.name,
-    // responsable_id: "",
-
 });
 
 const onChange = async (event) => {
@@ -94,12 +88,6 @@ const onChange = async (event) => {
             console.log(error);
         });
 
-    await axios
-        .get(route("usuarios.byArea", taget_id))
-        .then((response) => (usuarios.value = response.data.usuarios))
-        .catch((error) => {
-            console.log(error);
-        });
 };
 
 const submit = () => {
@@ -119,10 +107,11 @@ const submit = () => {
 
 onMounted(() => {
     getAreas();
-    getDepartamentos(minutaArea);
+    getDepartamentos(minuta.value.area_id);
     getUsuarios();
+    getProcesos();
 })
-
+console.log({ procesos: procesos });
 const search = (event) => {
     console.log("buscando");
     setTimeout(() => {
@@ -170,11 +159,8 @@ const search = (event) => {
                             <form @submit.prevent="submit">
 
                                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
-
-
-
                                     <div class="mt-4">
-                                        <InputLabel for="area_id" value="Area: " />
+                                        <InputLabel for="area_id" value="Pilar: " />
                                         <select ref="area_select" @change="onChange($event)"
                                             class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
                                             v-model="form.area_id" required>
@@ -187,7 +173,7 @@ const search = (event) => {
                                         </select>
                                     </div>
                                     <div class="mt-4">
-                                        <InputLabel for="departamento_id" value="Pilar: " />
+                                        <InputLabel for="departamento_id" value="Flujo de valor: " />
 
                                         <select ref="departamento_select"
                                             class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
@@ -222,17 +208,20 @@ const search = (event) => {
                                         </select>
                                     </div>
 
-                                    <!-- <div class="mt-4">
-                                        <InputLabel for="proceso" value="proceso: " />
-                                        <TextInput id="proceso" v-model="form.proceso_id" type="text"
-                                            class="mt-1 block w-full" required autocomplete="new-challenge" />
+                                    <div class="mt-4">
+                                        <InputLabel for="proceso_id" value="Proceso: " />
+                                        <Select v-model="form.proceso_id" editable
+                                            :virtualScrollerOptions="{ itemSize: 38 }" :options="procesos"
+                                            optionLabel="nombre" placeholder="Seleccione una opcion"
+                                            class="w-full md:w-56" />
                                     </div>
 
                                     <div class="mt-4">
-                                        <InputLabel for="procedimiento" value="procedimiento: " />
-                                        <TextInput id="cuerpo" v-model="form.procedimiento_id" type="text"
-                                            class="mt-1 block w-full" required autocomplete="new-challenge" />
-                                    </div> -->
+                                        <InputLabel for="lider" value="Lider: " />
+                                        <AutoComplete v-model="form.lider_id" optionLabel="name"
+                                            :suggestions="filteredUsuarios" forceSelection @complete="search"
+                                            placeholder="" />
+                                    </div>
 
                                     <div class="mt-4">
                                         <InputLabel for="alias" value="Alias: " />
@@ -240,42 +229,7 @@ const search = (event) => {
                                             required autocomplete="new-challenge" />
                                     </div>
 
-                                    <div class="mt-4">
-                                        <InputLabel for="tarea" value="tareas: " />
-                                        <TextInput id="tareas" v-model="form.tareas" type="text"
-                                            class="mt-1 block w-full" required autocomplete="new-challenge" />
-                                    </div>
-
                                     <!-- <div class="mt-4">
-                                        <InputLabel for="responsable" value="Responsable: " />
-                                        <select ref="departamento_select"
-                                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                            v-model="form.responsable_id">
-                                            <option value="" disabled selected>
-                                                Seleccione una opcion
-                                            </option>
-
-                                            <option v-for="usuario in usuarios" :key="usuario.id" :value="usuario.id">
-                                                {{ usuario.name }}
-                                            </option>
-                                        </select>
-                                    </div> -->
-
-                                    <div class="mt-4">
-                                        <InputLabel for="responsable" value="Responsable: " />
-                                        <AutoComplete v-model="form.responsable_id" optionLabel="name"
-                                            :suggestions="filteredUsuarios" forceSelection @complete="search"
-                                            placeholder="" />
-
-                                    </div>
-
-
-                                    <div class="mt-4">
-                                        <InputLabel for="notas" value="Notas: " />
-                                        <Textarea v-model="form.notas" rows="3" style="width: 100%; " />
-                                    </div>
-
-                                    <div class="mt-4">
                                         <InputLabel for="estatus" value="Estatus: " />
 
                                         <select ref="departamento_select"
@@ -290,6 +244,11 @@ const search = (event) => {
                                             <option value="3" selected>
                                                 Terminado </option>
                                         </select>
+                                    </div> -->
+
+                                    <div class=" mt-4">
+                                        <InputLabel for="notas" value="Notas: " />
+                                        <Textarea v-model="form.notas" rows="3" style="width: 100%; " />
                                     </div>
                                 </div>
                                 <div class="px-4 my-4 pt-2 flex justify-end bg-white border-t border-gray-200">

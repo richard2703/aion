@@ -19,3 +19,8 @@
         scrollbar-width: none;  /* Firefox */
   }
 }
+
+.p-autocomplete-overlay {
+    position: relative;
+    z-index: 9998!important;
+}
