@@ -16,11 +16,13 @@ class asistenteController extends Controller
 
     public function store(Request $request)
     {
+        // return response()->json(['success' => true], 200);
 
-        return response()->json($request->all());
         $asistente = new Asistente();
         $asistente->minuta_id = $request->minuta_id;
         $asistente->user_id = $request->user_id['id'];
+        // $asistente->minuta_id = 3;
+        // $asistente->user_id = 1;
         $asistente->save();
         return response()->json(['success' => true]);
     }

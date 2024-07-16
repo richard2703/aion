@@ -172,9 +172,12 @@ const search = (event) => {
 
 const submit = async () => {
     try {
+        console.log(form.data());
+
         await form.post(route("tareas.store"), {
             onFinish: () => {
                 showToast("El registro ha sido creado", "success");
+                emit('tareaGuardada');
                 closeModal();
             },
         });
@@ -195,5 +198,3 @@ onMounted(() => {
     getUsuarios();
 });
 </script>
-
-<style></style>

@@ -49,7 +49,7 @@
                                     </div>
                                     <div class="mt-4 flex">
                                         <InputLabel for="fecha" value="Fecha: " />&nbsp;
-                                        <InputLabel for="fecha" :value="minuta.created_at" />
+                                        <InputLabel for="fecha" :value="formatearFecha(minuta.created_at)" />
                                     </div>
                                     <div class="mt-4 flex">
                                         <InputLabel for="nota" value="Notas: " />&nbsp;
@@ -114,6 +114,9 @@
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                 <Column field="minuta.alias" header="Minuta" headerStyle="width:4em;"
                                     bodyClass="text-center" sortable></Column>
+                                <Column field="responsable.name" header="Responsable" headerStyle="width:4em;"
+                                    bodyClass="text-center" sortable>
+                                </Column>
                                 <Column field="fecha" header="Fecha de entrega" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                 <Column header="" headerStyle="width:4em;">
@@ -140,9 +143,15 @@
 
 
             <!-- Modal component -->
-            <Modal :show="isModalVisible" :modalData="minuta" maxWidth="lg" @close="isModalVisible.value = false">
+            <!-- <Modal :show="isModalVisible" :modalData="minuta" maxWidth="lg" @close="isModalVisible.value = false">
                 <template v-slot="{ modalData }">
                     <TareasCreate class="z-50" :minuta="modalData" @close="isModalVisible = false" />
+                </template>
+            </Modal> -->
+            <Modal :show="isModalVisible" :modalData="minuta" maxWidth="lg" @close="isModalVisible = false">
+                <template v-slot="{ modalData }">
+                    <TareasCreate class="z-50" :minuta="modalData" @close="isModalVisible = false"
+                        @tareaGuardada="actualizarTareas" />
                 </template>
             </Modal>
         </div>
@@ -163,6 +172,8 @@ import Modal from "@/Components/Modal.vue";
 import TareasCreate from "@/Pages/Minutas/Partials/Tareas/TareasCreate.vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
+import { format } from 'date-fns';
+
 
 onMounted(() => {
     getUsuarios();
@@ -186,6 +197,14 @@ const asistentes = ref();
 const newAsistente = ref(true);
 const filteredUsuarios = ref();
 const tareas = ref();
+
+const formatearFecha = (fecha) => {
+    return format(new Date(fecha), 'dd/MM/yyyy');
+};
+
+const actualizarTareas = () => {
+    getTareas(minuta.value.id);
+};
 
 async function getUsuarios() {
     await axios
@@ -224,6 +243,7 @@ const search = (event) => {
 const submit = async () => {
     try {
         await axios.post("/api/asistente/store", form.data()).then(() => {
+            console.log(form.data());
             showToast("El registro ha sido creado", "success");
             form.reset();
             newAsistente.value = true;

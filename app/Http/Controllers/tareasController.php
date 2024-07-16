@@ -19,7 +19,7 @@ class tareasController extends Controller
 
     public function findAll(Request $request)
     {
-        $query = Tarea::query();
+        $query = tareas::query();
         $pageSize = $request->get('rows', 10);
         $page = $request->get('page', 1);
         $filter = $request->get('filter', '');
@@ -102,6 +102,7 @@ class tareasController extends Controller
             'departamento_id' => $request->departamento_id,
             'minuta_id' => $request->minuta_id,
             'tarea' => $request->tarea,
+            'responsable_id' => $request->responsable_id,
             'fecha' => $request->fecha,
             'nota' => $request->nota,
         ];
