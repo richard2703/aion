@@ -84,6 +84,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('/minutas', [App\Http\Controllers\minutasController::class, 'index'])->name('minutas.index');
     Route::get('/minutas/create', [App\Http\Controllers\minutasController::class, 'create'])->name('minutas.create');
     Route::post('/minutas/store', [App\Http\Controllers\minutasController::class, 'store'])->name('minutas.store');
+    Route::get('/minutas/{minuta}', [App\Http\Controllers\minutasController::class, 'show'])->name('minutas.show');
     Route::get('/minutas/{minuta}/edit', [App\Http\Controllers\minutasController::class, 'edit'])->name('minutas.edit');
     Route::patch('/minutas/{minuta}/update', [App\Http\Controllers\minutasController::class, 'update'])->name('minutas.update');
     Route::delete('/minutas/{minuta}/destroy', [App\Http\Controllers\minutasController::class, 'destroy'])->name('minutas.destroy');
@@ -138,4 +139,5 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::post('tareas/store', [App\Http\Controllers\tareasController::class, 'store'])->name('tareas.store');
     Route::get('tareas/{tarea}/editar', [App\Http\Controllers\tareasController::class, 'edit'])->name('tareas.edit');
     Route::patch('tareas/{tarea}/update', [App\Http\Controllers\tareasController::class, 'update'])->name('tareas.update');
+    Route::delete('tarea/{tarea}/destroy', [App\Http\Controllers\tareasController::class, 'destroy'])->name('tarea.destroy');
 });

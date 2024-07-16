@@ -44,6 +44,7 @@ async function getItems(
             },
         });
         items.value = response.data.data;
+        console.log({ minutas: items.value });
         totalRecords.value = response.data.total;
         first.value = (response.data.current_page - 1) * rows.value;
     } catch (error) {
@@ -59,7 +60,7 @@ const deleteItems = async (id) => {
             "warning"
         );
         if (result.isConfirmed) {
-            await axios.delete(route("objetivo.destroy", id));
+            await axios.delete(route("minutas.destroy", id));
             items.value = items.value.filter((item) => item.id !== id);
             showToast("El registro ha sido eliminado", "success");
 
@@ -149,7 +150,7 @@ const onSort = (event) => {
                                     'alias',
                                     'tareas',
                                     'notas',
-                                    'usuario.name',
+                                    'lider.name',
                                 ]" :sortField="sortField" :sortOrder="sortOrder"
                                 class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
                                 <template #empty> Sin registros </template>
@@ -161,14 +162,20 @@ const onSort = (event) => {
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                 <Column field="alias" header="Alias" headerStyle="width:4em;" bodyClass="text-center"
                                     sortable></Column>
-                                <Column field="tareas" header="Treas" headerStyle="width:4em;" bodyClass="text-center"
-                                    sortable></Column>
-                                <Column field="usuario.name" header="Responsable" headerStyle="width:4em;"
+                                <Column field="proceso.nombre" header="Proceso" headerStyle="width:4em;"
+                                    bodyClass="text-center" sortable></Column>
+                                <Column field="lider.name" header="Lider" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+                                <Column field="created_at" header="fecha" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">
                                         <PrimaryButton class="m-2" :href="route('minutas.edit', slotProps.data.id)">
                                             Editar
+                                        </PrimaryButton>
+
+                                        <PrimaryButton class="m-2" :href="route('minutas.show', slotProps.data.id)">
+                                            Detalles
                                         </PrimaryButton>
 
                                         <PrimaryButton class="m-2" @click.prevent="

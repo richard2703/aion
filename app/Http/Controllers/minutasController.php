@@ -6,6 +6,7 @@ use App\Models\minutas;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\User;
+use Carbon\Carbon;
 
 class minutasController extends Controller
 {
@@ -40,7 +41,7 @@ class minutasController extends Controller
                         $q->where('departamentos.nombre', 'like', '%' . $filter . '%')
                             ->orWhere('departamentos.descripcion', 'like', '%' . $filter . '%');
                     })
-                    ->orWhereHas('usuario', function ($q) use ($filter) {
+                    ->orWhereHas('lider', function ($q) use ($filter) {
                         $q->where('Users.name', 'like', '%' . $filter . '%');
                     });
             });
@@ -65,7 +66,7 @@ class minutasController extends Controller
         }
 
         // $result = $query->with('challenge')->paginate($pageSize, ['*'], 'page', $page);
-        $result = $query->with('area', 'departamento', 'usuario')->paginate($pageSize, ['*'], 'page', $page);
+        $result = $query->with('area', 'departamento', 'lider', 'proceso')->paginate($pageSize, ['*'], 'page', $page);
         return response()->json($result);
     }
 
@@ -79,30 +80,36 @@ class minutasController extends Controller
      */
     public function store(Request $request)
     {
+
         $minuta = new minutas();
         $minuta->area_id = $request->area_id;
         $minuta->departamento_id = $request->departamento_id;
+        $minuta->proceso_id = $request->proceso_id["id"];
+        $minuta->lider_id = $request->lider_id["id"];
         $minuta->alias = $request->alias;
         $minuta->tipo = $request->tipo;
-        // $minuta->proceso_id = $request->proceso_id;
-        // $minuta->procedimientos_id = $request->procedimientos_id;
-        $minuta->tareas = $request->tareas;
         $minuta->notas = $request->notas;
         $minuta->estatus = $request->estatus;
-        $minuta->responsable_id = $request->responsable_id["id"];
         $minuta->save();
 
-        // $minuta = minutas::create($request->all());
-
-        return redirect()->route('minutas.index');
+        return redirect()->route('minutas.show', $minuta->id);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(minutas $minutas)
+    public function show(minutas $minuta)
     {
-        //
+        // Carga las relaciones necesarias
+        $minuta->load('lider', 'area', 'departamento', 'proceso');
+
+        // Format the date
+        $dateFromDatabase = $minuta->created_at;
+        $formattedDate = Carbon::parse($dateFromDatabase)->format('Y-m-d');
+
+        $minuta->fecha = $formattedDate; // add the formatted date to the object
+
+        return Inertia::render('Minutas/MinutasShow', ['minuta' => $minuta]);
     }
 
     /**
@@ -110,7 +117,7 @@ class minutasController extends Controller
      */
     public function edit(minutas $minuta)
     {
-        // dd($minuta);
+        $minuta->load('lider', 'area', 'departamento', 'proceso');
         $user = User::find($minuta->responsable_id);
         return Inertia::render('Minutas/MinutasEdit', ['minuta' => $minuta, 'user' => $user]);
     }
@@ -120,28 +127,29 @@ class minutasController extends Controller
      */
     public function update(Request $request, minutas $minuta)
     {
-        // $minuta->update($request->all());
         $minuta->area_id = $request->area_id;
         $minuta->departamento_id = $request->departamento_id;
+        $minuta->proceso_id = $request->proceso_id["id"]; // Asegúrate de ajustar según la estructura de tu solicitud
+        $minuta->lider_id = $request->lider_id["id"]; // Asegúrate de ajustar según la estructura de tu solicitud
         $minuta->alias = $request->alias;
         $minuta->tipo = $request->tipo;
-        // $minuta->proceso_id = $request->proceso_id;
-        // $minuta->procedimientos_id = $request->procedimientos_id;
-        $minuta->tareas = $request->tareas;
         $minuta->notas = $request->notas;
         $minuta->estatus = $request->estatus;
-        if (isset($request->responsable_id["id"])) {
-            $minuta->responsable_id = $request->responsable_id["id"];
-        }
+
+        // Guardar los cambios en la base de datos
         $minuta->save();
+
+        // Redireccionar a la ruta deseada después de la actualización
         return redirect()->route('minutas.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(minutas $minutas)
+    public function destroy(minutas $minuta)
     {
         //
+        $minuta->delete();
+        return response()->json(['success' => true]);
     }
 }

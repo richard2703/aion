@@ -19,8 +19,8 @@ class tareas extends Model
         'area_id',
         'departamento_id',
         'minuta_id',
-        'tarea',
         'responsable_id',
+        'tarea',
         'fecha',
         'notas',
     ];
