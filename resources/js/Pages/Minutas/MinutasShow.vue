@@ -114,9 +114,6 @@
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                 <Column field="minuta.alias" header="Minuta" headerStyle="width:4em;"
                                     bodyClass="text-center" sortable></Column>
-                                <Column field="responsable.name" header="Responsable" headerStyle="width:4em;"
-                                    bodyClass="text-center" sortable>
-                                </Column>
                                 <Column field="fecha" header="Fecha de entrega" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                 <Column header="" headerStyle="width:4em;">

@@ -102,7 +102,6 @@ class tareasController extends Controller
             'departamento_id' => $request->departamento_id,
             'minuta_id' => $request->minuta_id,
             'tarea' => $request->tarea,
-            'responsable_id' => $request->responsable_id['id'],
             'fecha' => $request->fecha,
             'nota' => $request->nota,
         ];

@@ -16,6 +16,8 @@ class asistenteController extends Controller
 
     public function store(Request $request)
     {
+
+        return response()->json($request->all());
         $asistente = new Asistente();
         $asistente->minuta_id = $request->minuta_id;
         $asistente->user_id = $request->user_id['id'];
