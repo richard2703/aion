@@ -3,7 +3,7 @@ import { ref, onMounted } from "vue";
 import { Head, Link } from "@inertiajs/vue3";
 import Layout from "@/Layouts/Layout.vue";
 import Chart from 'primevue/chart';
-
+import tablapilares from "@/Pages/utils/tablapilares.vue";
 
 onMounted(() => {
     chartData.value = setChartData();
@@ -22,6 +22,8 @@ const item = ref({});
 const objetivos = ref({});
 const banner_path = ref();
 const proposito = ref();
+const template = ref('');
+const selectedPilar = ref(null);
 
 const setChartData = () => {
     const documentStyle = getComputedStyle(document.documentElement);
@@ -82,6 +84,17 @@ const getItem = () => {
         });
 };
 
+const getPilar = async (pilar) => {
+    if (template.value === 'open' && selectedPilar.value === pilar) {
+        template.value = 'close';
+        return;
+    }
+    template.value = 'open';
+    selectedPilar.value = pilar;
+
+};
+
+
 
 </script>
 
@@ -116,13 +129,89 @@ const getItem = () => {
                                 </div>
                             </div>
                             <br>
-                            <div class="grid  grid-cols-1 bg-gray-300">
+                            <div class="grid  grid-cols-1  bg-gray-300">
                                 <div class="bg-gray-300 ">
                                     <h2 class="text-center py-4 font-bold text-3xl">Metromap</h2>
-                                    <img class="w-full" src="../../img/metromaps/metromap.png" alt="">
                                 </div>
                             </div>
-                            <br>
+                            <div class="grid  grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 bg-gray-300">
+                                <div class="bg-gray-300 ">
+                                    <!-- <h2 class="text-center py-4 font-bold text-3xl">Metromap</h2> -->
+                                    <button @click="getPilar(1)">
+                                        <img class="w-full" src="../../img/metromaps/gyc.jpg" alt="">
+                                    </button>
+                                </div>
+                                <div class="bg-gray-300 ">
+                                    <button @click="getPilar(2)">
+                                        <img class="w-full" src="../../img/metromaps/ti.jpg" alt="">
+                                    </button>
+                                </div>
+                                <div class="bg-gray-300 ">
+                                    <button @click="getPilar(3)">
+                                        <img class="w-full" src="../../img/metromaps/ops.jpg" alt="">
+                                    </button>
+                                </div>
+                                <div class="bg-gray-300 ">
+                                    <button @click="getPilar(4)">
+                                        <img class="w-full" src="../../img/metromaps/ventas.jpg" alt="">
+                                    </button>
+                                </div>
+                                <div class="bg-gray-300 ">
+                                    <button @click="getPilar(5)">
+                                        <img class="w-full" src="../../img/metromaps/admin.jpg" alt="">
+                                    </button>
+                                </div>
+                            </div>
+
+                            <tablapilares :pilar="selectedPilar" v-if="template === 'open'" />
+
+                            <!-- <div v-if="template === 'open'"
+                                class="grid sm:grid-cols-1 md:grid-cols-2 gap-4 bg-gray-300 my-8">
+                                <div class="bg-gray-300">
+                                    <h2 class="text-center py-4 font-bold text-3xl">Autoevaluación</h2>
+                                    <Chart type="radar" :data="chartData" :options="chartOptions" class="h-96 m-4" />
+                                    <table class="w-full table-auto border-collapse border border-slate-400 m-4">
+                                        <tr>
+                                            <td class="text-center border border-slate-500">GyC</td>
+                                            <td class="text-center border border-slate-500 bg-yellow-400">80 %</td>
+                                            <td class="text-center border border-slate-500">Intermediate</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center border border-slate-500">MyV</td>
+                                            <td class="text-center border border-slate-500 bg-yellow-400">80 %</td>
+                                            <td class="text-center border border-slate-500">Intermediate</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center border border-slate-500">Ops</td>
+                                            <td class="text-center border border-slate-500 bg-green-400">90 %</td>
+                                            <td class="text-center border border-slate-500">Mature</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center border border-slate-500">IT</td>
+                                            <td class="text-center border border-slate-500 bg-yellow-400">81 %</td>
+                                            <td class="text-center border border-slate-500">Intermediate</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center border border-slate-500">Admon</td>
+                                            <td class="text-center border border-slate-500 bg-red-400">67 %</td>
+                                            <td class="text-center border border-slate-500">Basic</td>
+                                        </tr>
+
+                                    </table>
+                                </div>
+                                <div class="bg-gray-300 ">
+                                    <h2 class="text-center py-4 font-bold text-3xl">Objetivos</h2>
+                                    <ul>
+                                        <li v-for="objetivo in objetivos"
+                                            class="m-4 py-2 text-lg list-disc list-inside">{{
+                                                objetivo.objetivo }}
+                                        </li>
+                                    </ul>
+                                </div>
+                                <br>
+
+                            </div> -->
+                            <!-- <br> -->
                             <div class="grid sm:grid-cols-1 md:grid-cols-2 gap-4 bg-gray-300">
                                 <div class="bg-gray-300">
                                     <h2 class="text-center py-4 font-bold text-3xl">Autoevaluación</h2>

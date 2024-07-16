@@ -25,6 +25,55 @@ class departamentoController extends Controller
         return response()->json(['departamentos' => Departamento::where('area_id', $area_id)->get()]);
     }
 
+    public function find(Request $request)
+    {
+        $query = Departamento::query();
+        $pilar = $request->get('pilar');
+        $pageSize = $request->get('rows');
+        $page = $request->get('page');
+        $filter = $request->get('filter', '');
+        $sortField = $request->get('sortField', 'id');
+        $sortOrder = $request->get('sortOrder', 'asc');
+
+        // Filtrar por pilar (area_id)
+        if ($pilar) {
+            $query->where('area_id', $pilar);
+        }
+
+        // Filtros de búsqueda
+        if ($filter) {
+            $query->where(function ($q) use ($filter) {
+                $q->where('departamentos.id', 'like', '%' . $filter . '%')
+                    ->orWhere('departamentos.nombre', 'like', '%' . $filter . '%')
+                    ->orWhere('departamentos.descripcion', 'like', '%' . $filter . '%')
+                    ->orWhereHas('area', function ($q) use ($filter) {
+                        $q->where('areas.id', 'like', '%' . $filter . '%')
+                            ->orWhere('areas.descripcion', 'like', '%' . $filter . '%');
+                    });
+            });
+        }
+
+        // Ordenamiento
+        if (in_array($sortField, ['id', 'nombre', 'descripcion', 'area.nombre'])) {
+            if (strpos($sortField, 'area.') === 0) {
+                $query->join('areas', 'departamentos.area_id', '=', 'areas.id')
+                    ->select('departamentos.*', 'areas.nombre as area_nombre') // Select distinct columns
+                    ->orderBy('areas.' . substr($sortField, 5), $sortOrder);
+            } else {
+                $query->orderBy($sortField, $sortOrder);
+            }
+        }
+
+        // Paginación y resultados
+        if ($pageSize && $page) {
+            $departamentos = $query->with(['area', 'procesos.procedimientos'])->paginate($pageSize, ['*'], 'page', $page);
+        } else {
+            $departamentos = $query->with(['area', 'procesos.procedimientos'])->get();
+        }
+
+        return response()->json($departamentos);
+    }
+
     public function findAll(Request $request)
     {
         $query = Departamento::query();

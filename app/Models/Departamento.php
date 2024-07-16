@@ -25,4 +25,9 @@ class Departamento extends Model
     {
         return $this->belongsTo(Area::class, 'area_id', 'id');
     }
+
+    public function procesos()
+    {
+        return $this->hasMany(Proceso::class);
+    }
 }

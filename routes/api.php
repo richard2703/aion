@@ -14,9 +14,11 @@ Route::get('/hello', function (Request $request) {
 Route::get('/areas', [App\Http\Controllers\areaController::class, 'findAll'])->name('areas.findAll');
 Route::get('/departamentos/{area_id}', [App\Http\Controllers\departamentoController::class, 'byArea'])->name('departamentos.byArea');
 Route::get('/departamentos', [App\Http\Controllers\departamentoController::class, 'findAll'])->name('departamentos.findAll');
+Route::get('/departamentos/find/todo', [App\Http\Controllers\departamentoController::class, 'find'])->name('departamentos.find');
 Route::get('/usuarios', [App\Http\Controllers\userController::class, 'findAll'])->name('users.findAll');
 Route::get('/usuarios/all/todo', [App\Http\Controllers\userController::class, 'all'])->name('users.all');
 Route::get('/usuarios/{area_id}', [App\Http\Controllers\userController::class, 'byArea'])->name('usuarios.byArea');
+
 
 
 Route::get('/challenges', [App\Http\Controllers\challengesController::class, 'findAll'])->name('challenges.findAll');
