@@ -137,6 +137,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('tareas', [App\Http\Controllers\tareasController::class, 'index'])->name('tareas.index');
     Route::get('tareas/nueva', [App\Http\Controllers\tareasController::class, 'create'])->name('tareas.create');
     Route::post('tareas/store', [App\Http\Controllers\tareasController::class, 'store'])->name('tareas.store');
+    Route::get('tareas/{tarea}/show', [App\Http\Controllers\tareasController::class, 'show'])->name('tareas.show');
     Route::get('tareas/{tarea}/editar', [App\Http\Controllers\tareasController::class, 'edit'])->name('tareas.edit');
     Route::patch('tareas/{tarea}/update', [App\Http\Controllers\tareasController::class, 'update'])->name('tareas.update');
     Route::delete('tarea/{tarea}/destroy', [App\Http\Controllers\tareasController::class, 'destroy'])->name('tarea.destroy');

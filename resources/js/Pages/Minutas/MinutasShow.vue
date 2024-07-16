@@ -97,7 +97,8 @@
                             <div class="flex justify-between">
                                 <h2>Tareas</h2>
                                 <!-- Trigger to open modal -->
-                                <PrimaryButton class=" mb-4 float-right" @click="openModal">Nueva Tarea</PrimaryButton>
+                                <PrimaryButton class=" mb-4 float-right" @click="openModal('create')">Nueva Tarea
+                                </PrimaryButton>
                             </div>
 
                             <DataTable :value="tareas" :lazy="true" tableStyle="min-width: 50rem"
@@ -107,20 +108,24 @@
                                     sortable></Column>
                                 <Column field="tarea" header="Titulo" headerStyle="width:4em;" bodyClass="text-center"
                                     sortable></Column>
-                                <!-- <Column field="area.nombre" header="Area" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column> -->
+                                <Column field="estatus.titulo" header="Estatus" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                 <Column field="departamento.nombre" header="Fujo de valor" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                 <Column field="responsable.name" header="Responsable" headerStyle="width:4em;"
                                     bodyClass="text-center" sortable>
                                 </Column>
-                                <Column field="fecha" header="Fecha de entrega" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+                                <Column header="Fecha de entrega" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable>
+                                    <template #body="slotProps">
+                                        {{ formatearFecha(slotProps.data.fecha) }}
+                                    </template>
+                                </Column>
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">
-                                        <!-- <PrimaryButton class="m-2" :href="route('minutas.edit', slotProps.data.id)">
+                                        <PrimaryButton class="m-2" @click="openModal('edit', slotProps.data.id)">
                                             Editar
-                                        </PrimaryButton> -->
+                                        </PrimaryButton>
 
                                         <PrimaryButton class="m-2" @click.prevent="
                                             deleteTarea(slotProps.data.id)
@@ -140,15 +145,20 @@
 
 
             <!-- Modal component -->
-            <!-- <Modal :show="isModalVisible" :modalData="minuta" maxWidth="lg" @close="isModalVisible.value = false">
+
+            <Modal :show="isCreateModalVisible" :modalData="minuta" maxWidth="lg" @close="isCreateModalVisible = false">
                 <template v-slot="{ modalData }">
-                    <TareasCreate class="z-50" :minuta="modalData" @close="isModalVisible = false" />
-                </template>
-            </Modal> -->
-            <Modal :show="isModalVisible" :modalData="minuta" maxWidth="lg" @close="isModalVisible = false">
-                <template v-slot="{ modalData }">
-                    <TareasCreate class="z-50" :minuta="modalData" @close="isModalVisible = false"
+                    <TareasCreate class="z-50" :minuta="modalData" @close="isCreateModalVisible = false"
                         @tareaGuardada="actualizarTareas" />
+                </template>
+            </Modal>
+
+            <Modal :show="isEditModalVisible" :modalData="{ tarea, minuta }" maxWidth="lg"
+                @close="isEditModalVisible.value = false">
+                <template v-slot="{ modalData }">
+
+                    <TareasEdit class="z-50" :minuta="modalData.minuta" :task="modalData.tarea"
+                        @close="isEditModalVisible = false" />
                 </template>
             </Modal>
         </div>
@@ -170,6 +180,7 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import { confirmDialog, showToast } from "../utils/SweetAlert.service";
 import TareasCreate from "@/Pages/Minutas/Partials/Tareas/TareasCreate.vue";
+import TareasEdit from "@/Pages/Minutas/Partials/Tareas/TareasEdit.vue";
 
 
 onMounted(() => {
@@ -195,6 +206,8 @@ const newAsistente = ref(true);
 const filteredUsuarios = ref();
 const tareas = ref();
 
+
+console.log(tareas);
 const formatearFecha = (fecha) => {
     return format(new Date(fecha), 'dd/MM/yyyy');
 };
@@ -291,14 +304,27 @@ const deleteTarea = async (id) => {
 
     }
 }
-console.log({ tareas: tareas });
-const isModalVisible = ref(false);
+const isCreateModalVisible = ref(false);
+const isEditModalVisible = ref(false);
+const tarea = ref({});
+const task_id = ref();
 
-const openModal = () => {
-    isModalVisible.value = true;
+const openModal = async (tipo, id) => {
+    if (tipo === 'create') {
+        isCreateModalVisible.value = true;
+    } else {
+        await axios.get(route("tareas.show", id)).then((response) => {
+            tarea.value = response.data;
+        })
+        isEditModalVisible.value = true;
+    }
 };
 
-const closeModal = () => {
-    isModalVisible.value = false;
+const closeModal = (tipo) => {
+    if (tipo === 'create') {
+        isCreateModalVisible.value = false;
+    } else {
+        isEditModalVisible.value = false;
+    }
 };
 </script>

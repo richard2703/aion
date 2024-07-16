@@ -72,16 +72,17 @@
                                 v-model="form.estatus_id" required>
                                 <option value="" selected disabled>
                                     Seleccione una opcion </option>
-                                <option value="1">
+                                <option value=1>
                                     Retrasado </option>
-                                <option value="2">
+                                <option value=2>
                                     Iniciado </option>
-                                <option value="3">
+                                <option value=3>
                                     En proceso </option>
-                                <option value="4">
+                                <option value=4>
                                     Terminado </option>
                             </select>
                         </div>
+
                         <div class="mt-4">
                             <InputLabel for="fecha" value="Fecha de entrega:" />
                             <TextInput id="fecha" v-model="form.fecha" type="date" class="mt-1 block w-full" required
@@ -124,27 +125,31 @@ const props = defineProps({
     areas: Array,
     departamentos: Array || null,
     minuta: Object,
+    task: Object,
 });
 
 // Define emits
 const emit = defineEmits(['close']);
 
+const task = ref(props.task);
+const tarea = ref({});
 const areas = ref(props.areas);
 const departamentos = ref(props.departamentos);
 const minuta = ref(props.minuta);
 
 const usuarios = ref([]);
 const filteredUsuarios = ref([]);
+console.log({ tareaBeforeForm: task.value, minuta: minuta.value });
 
 const form = useForm({
     area_id: minuta.value.area_id,
     departamento_id: minuta.value.departamento_id,
     minuta_id: minuta.value.id,
-    responsable_id: "",
-    tarea: "",
-    fecha: "",
-    nota: "",
-    estatus_id: "",
+    responsable_id: task.value.responsable_id,
+    tarea: task.value.tarea,
+    fecha: task.value.fecha,
+    nota: task.value.nota,
+    estatus_id: task.value.estatus,
 });
 
 const onChange = async (event) => {
@@ -194,7 +199,7 @@ const submit = async () => {
     try {
         console.log(form.data());
 
-        await form.post(route("tareas.store"), {
+        await form.patch(route("tareas.update", task.value.id), {
             onFinish: () => {
                 showToast("El registro ha sido creado", "success");
                 emit('tareaGuardada');

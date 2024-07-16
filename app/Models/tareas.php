@@ -22,7 +22,8 @@ class tareas extends Model
         'responsable_id',
         'tarea',
         'fecha',
-        'notas',
+        'nota',
+        'estatus_id',
     ];
 
     public function area(): BelongsTo
@@ -43,5 +44,10 @@ class tareas extends Model
     public function responsable(): BelongsTo
     {
         return $this->belongsTo(User::class, 'responsable_id', 'id');
+    }
+
+    public function estatus()
+    {
+        return $this->belongsTo(Estatus::class, 'estatus_id', 'id');
     }
 }

@@ -78,7 +78,7 @@ class tareasController extends Controller
             $query->orderBy('id', $sortOrder);
         }
 
-        $tareas = $query->with('area', 'departamento', 'minuta', 'responsable')->paginate($pageSize, ['*'], 'page', $page);
+        $tareas = $query->with('area', 'departamento', 'minuta', 'responsable', 'estatus')->paginate($pageSize, ['*'], 'page', $page);
 
         return response()->json($tareas);
     }
@@ -105,6 +105,7 @@ class tareasController extends Controller
             'responsable_id' => $request->responsable_id,
             'fecha' => $request->fecha,
             'nota' => $request->nota,
+            'estatus_id' => $request->estatus_id,
         ];
 
         tareas::create($data);
@@ -113,15 +114,16 @@ class tareasController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(tareas $tareas)
+    public function show(tareas $tarea)
     {
-        //
+        $tarea->load('area', 'departamento', 'minuta', 'responsable', 'estatus');
+        return response()->json($tarea);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(tareas $tareas)
+    public function edit(tareas $tarea)
     {
         //
     }
@@ -138,7 +140,7 @@ class tareasController extends Controller
             'tarea',
             'responsable_id',
             'fecha',
-            'notas',
+            'nota',
             'estatus',
         ));
     }
@@ -154,6 +156,6 @@ class tareasController extends Controller
 
     public function byMinuta($minuta_id)
     {
-        return response()->json(tareas::with('area', 'departamento', 'minuta', 'responsable')->where('minuta_id', $minuta_id)->get());
+        return response()->json(tareas::with('area', 'departamento', 'minuta', 'responsable', 'estatus')->where('minuta_id', $minuta_id)->get());
     }
 }
