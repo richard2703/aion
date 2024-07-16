@@ -34,8 +34,8 @@
                             </select>
                         </div>
 
-                        <div>
-                            <InputLabel for="minuta_id" value="Minuta:" />
+                        <div class="mt-4">
+                            <InputLabel for="minuta_id" value="Reunión:" />
                             <TextInput id="minuta_id" type="text" :value="minuta.alias" class="mt-1 block w-full"
                                 disabled />
                             <TextInput id="minuta_id" v-model="form.minuta_id" type="text"

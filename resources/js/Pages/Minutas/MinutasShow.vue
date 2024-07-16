@@ -25,10 +25,10 @@
                     <div
                         class="px-4 my-4 py-2 flex justify-end bg-white border-b border-gray-200 grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4">
                         <div class="px-4 py-2 bg-white">
-                            <Fieldset legend="Detalles de Minuta">
+                            <Fieldset legend="Información general">
                                 <div class="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4">
                                     <div class="mt-4 flex">
-                                        <InputLabel for="alias" value="Minuta: " />&nbsp;
+                                        <InputLabel for="alias" value="Titulo: " />&nbsp;
                                         <InputLabel for="alias" :value="minuta.alias" />
                                     </div>
                                     <div class="mt-4 flex">
@@ -40,11 +40,7 @@
                                         <InputLabel for="flujo_valor" :value="minuta.departamento.nombre" />
                                     </div>
                                     <div class="mt-4 flex">
-                                        <InputLabel for="lider" value="Lider de Minuta: " />&nbsp;
-                                        <InputLabel for="lider" :value="minuta.lider.name" />
-                                    </div>
-                                    <div class="mt-4 flex">
-                                        <InputLabel for="tipo" value="Tipo de Minuta: " />&nbsp;
+                                        <InputLabel for="tipo" value="Tipo: " />&nbsp;
                                         <InputLabel for="tipo" :value="minuta.tipo" />
                                     </div>
                                     <div class="mt-4 flex">
@@ -59,11 +55,11 @@
                             </Fieldset>
                         </div>
                         <div>
-                            <Fieldset legend="Asistentes a la minuta">
+                            <Fieldset legend="Asistentes">
                                 <div
                                     class="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4 flex justify-between">
                                     <div class="flex">
-                                        <InputLabel for="lider" value="Lider de Minuta: " />&nbsp;
+                                        <InputLabel for="lider" value="Lider: " />&nbsp;
                                         <InputLabel for="lider" :value="minuta.lider.name" />
                                     </div>
                                     <div>
@@ -72,17 +68,18 @@
                                         <PrimaryButton v-if="!newAsistente" @click="newAsistente = !newAsistente"
                                             class="float-right">menos</PrimaryButton>
                                     </div>
+                                    <div v-if="!newAsistente">
+                                        <form @submit.prevent="submit" class="flex">
+                                            <AutoComplete v-model="form.user_id" optionLabel="name"
+                                                :suggestions="filteredUsuarios" forceSelection @complete="search"
+                                                placeholder="" />
+                                            <PrimaryButton class="float-right">ok</PrimaryButton>
+                                        </form>
+                                    </div>
                                 </div>
-                                <div v-if="!newAsistente">
-                                    <form @submit.prevent="submit" class="flex">
-                                        <AutoComplete v-model="form.user_id" optionLabel="name"
-                                            :suggestions="filteredUsuarios" forceSelection @complete="search"
-                                            placeholder="" />
-                                        <PrimaryButton class="float-right">ok</PrimaryButton>
-                                    </form>
-                                </div>
+
                                 <div class="mt-4">
-                                    <InputLabel for="asistentes" value="Asistentes de Minuta: " /><br>
+                                    <InputLabel for="asistentes" value="Asistentes: " /><br>
                                     <div class="mx-2">
                                         <ul v-for="asistente in asistentes" :key="asistente.id">
                                             <li>{{ asistente.user.name }}&nbsp;
@@ -103,17 +100,17 @@
                                 <PrimaryButton class=" mb-4 float-right" @click="openModal">Nueva Tarea</PrimaryButton>
                             </div>
 
-                            <DataTable :value="tareas" :lazy="true" tableStyle="min-width: 50rem" sortOrder="desc"
+                            <DataTable :value="tareas" :lazy="true" tableStyle="min-width: 50rem"
                                 class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
                                 <template #empty> Sin registros </template>
                                 <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
                                     sortable></Column>
-                                <Column field="area.nombre" header="Area" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+                                <Column field="tarea" header="Titulo" headerStyle="width:4em;" bodyClass="text-center"
+                                    sortable></Column>
+                                <!-- <Column field="area.nombre" header="Area" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column> -->
                                 <Column field="departamento.nombre" header="Fujo de valor" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                                <Column field="minuta.alias" header="Minuta" headerStyle="width:4em;"
-                                    bodyClass="text-center" sortable></Column>
                                 <Column field="responsable.name" header="Responsable" headerStyle="width:4em;"
                                     bodyClass="text-center" sortable>
                                 </Column>
@@ -159,20 +156,20 @@
 </template>
 
 <script setup>
-import { Head, Link, useForm } from "@inertiajs/vue3";
 import { ref, onMounted } from "vue";
-import { confirmDialog, showToast } from "../utils/SweetAlert.service";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
-import InputLabel from "@/Components/InputLabel.vue";
+import { Head, Link, useForm } from "@inertiajs/vue3";
 import axios from "axios";
-import Layout from "@/Layouts/Layout.vue";
 import Fieldset from 'primevue/fieldset';
 import AutoComplete from 'primevue/autocomplete';
-import Modal from "@/Components/Modal.vue";
-import TareasCreate from "@/Pages/Minutas/Partials/Tareas/TareasCreate.vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { format } from 'date-fns';
+import Layout from "@/Layouts/Layout.vue";
+import Modal from "@/Components/Modal.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import InputLabel from "@/Components/InputLabel.vue";
+import { confirmDialog, showToast } from "../utils/SweetAlert.service";
+import TareasCreate from "@/Pages/Minutas/Partials/Tareas/TareasCreate.vue";
 
 
 onMounted(() => {
