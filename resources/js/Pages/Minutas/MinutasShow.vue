@@ -25,7 +25,7 @@
                     <div
                         class="px-4 my-4 py-2 flex justify-end bg-white border-b border-gray-200 grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4">
                         <div class="px-4 py-2 bg-white">
-                            <Fieldset legend="Información general">
+                            <Fieldset legend="Información general" class="h-80 overflow-y-auto">
                                 <div class="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4">
                                     <div class="mt-4 flex">
                                         <InputLabel for="alias" value="Titulo: " />&nbsp;
@@ -55,26 +55,30 @@
                             </Fieldset>
                         </div>
                         <div>
-                            <Fieldset legend="Asistentes">
+                            <Fieldset legend="Asistentes" class="h-80 overflow-y-auto">
+                                <div class="float-right">
+                                    <PrimaryButton class="pi pi-plus" v-if="newAsistente"
+                                        @click="newAsistente = !newAsistente">
+                                    </PrimaryButton>
+                                    <PrimaryButton class="pi pi-minus" v-if="!newAsistente"
+                                        @click="newAsistente = !newAsistente">
+                                    </PrimaryButton>
+                                </div>
                                 <div
                                     class="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4 flex justify-between">
-                                    <div class="flex">
+                                    <div class="flex gap-2">
                                         <InputLabel for="lider" value="Lider: " />&nbsp;
-                                        <InputLabel for="lider" :value="minuta.lider.name" />
-                                    </div>
-                                    <div>
-                                        <PrimaryButton v-if="newAsistente" @click="newAsistente = !newAsistente"
-                                            class="float-right">mas</PrimaryButton>
-                                        <PrimaryButton v-if="!newAsistente" @click="newAsistente = !newAsistente"
-                                            class="float-right">menos</PrimaryButton>
-                                    </div>
-                                    <div v-if="!newAsistente">
-                                        <form @submit.prevent="submit" class="flex">
-                                            <AutoComplete v-model="form.user_id" optionLabel="name"
-                                                :suggestions="filteredUsuarios" forceSelection @complete="search"
-                                                placeholder="" />
-                                            <PrimaryButton class="float-right">ok</PrimaryButton>
-                                        </form>
+                                        <div class="flex">
+                                            <InputLabel for="lider" :value="minuta.lider.name" />
+                                        </div>
+                                        <div v-if="!newAsistente">
+                                            <form @submit.prevent="submit" class="flex">
+                                                <AutoComplete v-model="form.user_id" optionLabel="name"
+                                                    :suggestions="filteredUsuarios" forceSelection @complete="search"
+                                                    placeholder="" />
+                                                <PrimaryButton class="float-right pi pi-check"></PrimaryButton>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -83,8 +87,8 @@
                                     <div class="mx-2">
                                         <ul v-for="asistente in asistentes" :key="asistente.id">
                                             <li>{{ asistente.user.name }}&nbsp;
-                                                <button class="float-right mx-4"
-                                                    @click="deleteAsistente(asistente.id)">x</button>
+                                                <button class="float-right mx-4 pi pi-times text-red-500"
+                                                    @click="deleteAsistente(asistente.id)"></button>
                                             </li>
                                         </ul>
                                     </div>
@@ -97,7 +101,7 @@
                             <div class="flex justify-between">
                                 <h2>Tareas</h2>
                                 <!-- Trigger to open modal -->
-                                <PrimaryButton class=" mb-4 float-right" @click="openModal('create')">Nueva Tarea
+                                <PrimaryButton class=" mb-4 float-right pi pi-plus" @click="openModal('create')">
                                 </PrimaryButton>
                             </div>
 
@@ -121,17 +125,21 @@
                                         {{ formatearFecha(slotProps.data.fecha) }}
                                     </template>
                                 </Column>
+                                <Column field="nota" header="Notas" headerStyle="width:4em;" bodyClass="text-center"
+                                    sortable>
+                                </Column>
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">
-                                        <PrimaryButton class="m-2" @click="openModal('edit', slotProps.data.id)">
-                                            Editar
-                                        </PrimaryButton>
+                                        <div class="flex justify-center">
+                                            <PrimaryButton class="m-2 pi pi-pen-to-square"
+                                                @click="openModal('edit', slotProps.data.id)">
+                                            </PrimaryButton>
 
-                                        <PrimaryButton class="m-2" @click.prevent="
-                                            deleteTarea(slotProps.data.id)
-                                            ">
-                                            Borrar
-                                        </PrimaryButton>
+                                            <PrimaryButton class="m-2 pi pi-trash" @click.prevent="
+                                                deleteTarea(slotProps.data.id)
+                                                ">
+                                            </PrimaryButton>
+                                        </div>
                                     </template>
                                 </Column>
                             </DataTable>
@@ -158,7 +166,7 @@
                 <template v-slot="{ modalData }">
 
                     <TareasEdit class="z-50" :minuta="modalData.minuta" :task="modalData.tarea"
-                        @close="isEditModalVisible = false" />
+                        @close="isEditModalVisible = false" @tareaGuardada="actualizarTareas" />
                 </template>
             </Modal>
         </div>

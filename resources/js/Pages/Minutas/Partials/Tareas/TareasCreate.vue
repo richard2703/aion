@@ -72,13 +72,13 @@
                                 v-model="form.estatus_id" required>
                                 <option value="" selected disabled>
                                     Seleccione una opcion </option>
-                                <option value="1">
+                                <option value=1>
                                     Retrasado </option>
-                                <option value="2">
+                                <option value=2>
                                     Iniciado </option>
-                                <option value="3">
+                                <option value=3>
                                     En proceso </option>
-                                <option value="4">
+                                <option value=4>
                                     Terminado </option>
                             </select>
                         </div>

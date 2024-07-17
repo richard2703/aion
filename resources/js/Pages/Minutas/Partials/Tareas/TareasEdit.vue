@@ -3,7 +3,7 @@
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
             <div class="px-4 py-2 bg-white border-b border-gray-200">
                 <div class="container mx-auto">
-                    <h2 class="text-center text-2xl">Nueva Tarea</h2>
+                    <h2 class="text-center text-2xl">Editar Tarea</h2>
                     <form @submit.prevent="submit">
                         <div class="mt-4">
                             <InputLabel for="minuta_id" value="Reunión:" />
@@ -149,7 +149,7 @@ const form = useForm({
     tarea: task.value.tarea,
     fecha: task.value.fecha,
     nota: task.value.nota,
-    estatus_id: task.value.estatus,
+    estatus_id: task.value.estatus.id,
 });
 
 const onChange = async (event) => {

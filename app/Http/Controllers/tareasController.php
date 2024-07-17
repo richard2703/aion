@@ -141,7 +141,7 @@ class tareasController extends Controller
             'responsable_id',
             'fecha',
             'nota',
-            'estatus',
+            'estatus_id',
         ));
     }
 
