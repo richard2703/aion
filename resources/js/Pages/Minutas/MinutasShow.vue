@@ -100,40 +100,108 @@
                         <div class="container mx-auto">
                             <div class="flex justify-between">
                                 <h2>Tareas</h2>
-
-                                <div class="card flex justify-center">
-
-
-                                    <Popover ref="op">
-                                        <div class="flex flex-col gap-4 w-[25rem]">
-                                            <div>
-                                                <span class="font-medium block mb-2">Share this document</span>
-                                                Seccion 1
-
-                                            </div>
-                                            <div>
-                                                <span class="font-medium block mb-2">Invite Member</span>
-                                                seccion 2
-                                            </div>
-                                            <div>
-                                                <span class="font-medium block mb-2">Team Members</span>
-                                                seccion 3
-                                            </div>
-                                        </div>
-                                    </Popover>
-                                </div>
-
                             </div>
 
                             <div class="container mx-auto overflow-x-auto gap-4">
                                 <div class="flex gap-4">
                                     <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
-                                    <PrimaryButton class=" mb-4 float-right pi pi-filter" @click="toggle">
+                                    <PrimaryButton class=" mb-4 float-right pi pi-filter" @click="openFilter">
+                                    </PrimaryButton>
+                                    <PrimaryButton v-if="customFilter" class=" mb-4 float-right pi pi-times"
+                                        @click="clearFilter">
                                     </PrimaryButton>
                                     <!-- Trigger to open modal -->
                                     <PrimaryButton class=" mb-4 float-right pi pi-plus" @click="openModal('create')">
                                     </PrimaryButton>
                                 </div>
+
+
+                                <!-- formulario de filtrado de tareas -->
+                                <div v-if="customFilter" class="">
+                                    <form @submit.prevent="filterTable(minuta.id)">
+                                        <div class="m-4 border rounded-lg border-gray-200 flex gap-2 grid grid-cols-4">
+                                            <div class="m-4">
+                                                <InputLabel for="area_id" value="Area: " />
+                                                <select ref="area_select"
+                                                    class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                                    v-model="formFilter.area_id">
+                                                    <option value="" disabled selected>
+                                                        Seleccione una opcion
+                                                    </option>
+                                                    <option v-for="area in areas" :key="area.id" :value="area.id">
+                                                        {{ area.nombre }}
+                                                    </option>
+                                                </select>
+                                            </div>
+
+                                            <div class="m-4">
+                                                <InputLabel for="departamento_id" value="Departamento: " />
+                                                <select ref="departamento_select"
+                                                    class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                                    v-model="formFilter.departamento_id">
+                                                    <option value="" disabled selected>
+                                                        Seleccione una opcion
+                                                    </option>
+                                                    <option v-for="departamento in departamentos" :key="departamento.id"
+                                                        :value="departamento.id">
+                                                        {{ departamento.nombre }}
+                                                    </option>
+                                                </select>
+                                            </div>
+
+                                            <div class="m-4">
+                                                <InputLabel for="responsable_id" value="Responsable: " />
+                                                <select ref="responsable_select"
+                                                    class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                                    v-model="formFilter.responsable_id">
+                                                    <option value="" disabled selected>
+                                                        Seleccione una opcion
+                                                    </option>
+                                                    <option v-for="usuario in usuarios" :key="usuario.id"
+                                                        :value="usuario.id">{{
+                                                            usuario.name }}</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="m-4">
+                                                <InputLabel for="estatus_id" value="Estatus: " />
+                                                <select ref="estatus_select"
+                                                    class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                                    v-model="formFilter.estatus_id">
+                                                    <option value="" selected disabled>
+                                                        Seleccione una opcion </option>
+                                                    <option value=1>
+                                                        Retrasado </option>
+                                                    <option value=2>
+                                                        Iniciado </option>
+                                                    <option value=3>
+                                                        En proceso </option>
+                                                    <option value=4>
+                                                        Terminado </option>
+                                                </select>
+                                            </div>
+
+                                            <div class="m-4">
+                                                <InputLabel for="fecha" value="Fecha de entrega de: " />
+                                                <TextInput id="fecha" v-model="formFilter.fecha_from" type="date"
+                                                    class="mt-1 block w-full" autocomplete="fecha" />
+                                            </div>
+
+                                            <div class="m-4">
+                                                <InputLabel for="created_at" value="Fecha de entrega hasta: " />
+                                                <TextInput id="fecha" v-model="formFilter.fecha_to" type="date"
+                                                    class="mt-1 block w-full" autocomplete="fecha" />
+                                            </div>
+
+                                            <div class="m-4">
+                                                <PrimaryButton class="m-4 float-right pi pi-search" type="submit">
+                                                </PrimaryButton>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+
                                 <DataTable :value="tareas" paginator :rows="rows" :totalRecords="totalRecords"
                                     :lazy="true" :first="first" @page="onPage" @sort="onSort"
                                     :rowsPerPageOptions="[5, 10, 20, 50]" tableStyle="min-width: 50rem"
@@ -231,11 +299,9 @@ import InputLabel from "@/Components/InputLabel.vue";
 import { confirmDialog, showToast } from "../utils/SweetAlert.service";
 import TareasCreate from "@/Pages/Minutas/Partials/Tareas/TareasCreate.vue";
 import TareasEdit from "@/Pages/Minutas/Partials/Tareas/TareasEdit.vue";
-import Button from "primevue/button";
-import Popover from "primevue/popover";
-import InputGroup from 'primevue/inputgroup';
-import InputGroupAddon from 'primevue/inputgroupaddon';
 import InputText from "primevue/inputtext";
+import TextInput from "@/Components/TextInput.vue";
+
 
 
 
@@ -243,15 +309,27 @@ onMounted(() => {
     getUsuarios();
     getAsistentes(minuta.value.id);
     getTareas(minuta.value.id);
+    getAreas();
+    getDepartamentos();
 });
 
 const props = defineProps({
     minuta: Object,
+
 });
 
 const form = useForm({
     user_id: "",
     minuta_id: props.minuta.id,
+});
+
+const formFilter = useForm({
+    area_id: "",
+    departamento_id: "",
+    responsable_id: "",
+    estatus_id: "",
+    fecha_from: "",
+    fecha_to: "",
 });
 
 const title = "minutero";
@@ -261,7 +339,15 @@ const asistentes = ref();
 const newAsistente = ref(true);
 const filteredUsuarios = ref();
 const tareas = ref();
+const isCreateModalVisible = ref(false);
+const isEditModalVisible = ref(false);
+const tarea = ref({});
+const task_id = ref();
+const areas = ref();
+const departamentos = ref();
+const customFilter = ref(false);
 
+//filtro global y paginado
 const totalRecords = ref(0);
 const rows = ref(10);
 const first = ref(0);
@@ -271,7 +357,7 @@ const sortField = ref("id");
 const sortOrder = ref(1);
 
 
-console.log(tareas);
+
 const formatearFecha = (fecha) => {
     return format(new Date(fecha), 'dd/MM/yyyy');
 };
@@ -298,6 +384,28 @@ async function getAsistentes(minuta_id) {
         });
 }
 
+async function getAreas() {
+    await axios
+        .get("/api/areas")
+        .then((response) => {
+            areas.value = response.data;
+            formFilter.reset();
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+async function getDepartamentos() {
+    await axios
+        .get(route("departamentos.findAll"))
+        .then((response) => (departamentos.value = response.data))
+        .catch((error) => {
+            console.log(error);
+        });
+
+}
+
 const search = (event) => {
     setTimeout(() => {
         const query = event.query.trim().toLowerCase();
@@ -317,7 +425,6 @@ const search = (event) => {
 const submit = async () => {
     try {
         await axios.post("/api/asistente/store", form.data()).then(() => {
-            console.log(form.data());
             showToast("El registro ha sido creado", "success");
             form.reset();
             newAsistente.value = true;
@@ -327,6 +434,29 @@ const submit = async () => {
         showToast("Ocurrio un error", "error");
         console.error(error);
     }
+};
+
+const filterTable = async (minuta_id) => {
+    await axios
+        .get(`/api/tareas/${minuta_id}`, {
+            params: {
+                formFilter: formFilter.data(),
+            },
+        })
+        .then((response) => (tareas.value = response.data.data))
+        .catch((error) => {
+            console.log(error);
+        });
+};
+
+const openFilter = () => {
+    customFilter.value = !customFilter.value
+
+};
+const clearFilter = () => {
+    formFilter.reset();
+    // customFilter.value = !customFilter.value
+    getTareas(minuta.value.id);
 };
 
 const deleteAsistente = async (id) => {
@@ -363,7 +493,6 @@ const getTareas = async (
         .catch((error) => {
             console.log(error);
         });
-    console.log({ tareasFunction: tareas.value });
 }
 
 watch(globalFilter, (newValue) => {
@@ -417,10 +546,7 @@ const deleteTarea = async (id) => {
 
     }
 }
-const isCreateModalVisible = ref(false);
-const isEditModalVisible = ref(false);
-const tarea = ref({});
-const task_id = ref();
+
 
 const openModal = async (tipo, id) => {
     if (tipo === 'create') {
@@ -441,15 +567,4 @@ const closeModal = (tipo) => {
     }
 };
 
-// filter stuff
-const op = ref();
-const members = ref([
-    { name: 'Amy Elsner', image: 'amyelsner.png', email: 'amy@email.com', role: 'Owner' },
-    { name: 'Bernardo Dominic', image: 'bernardodominic.png', email: 'bernardo@email.com', role: 'Editor' },
-    { name: 'Ioni Bowcher', image: 'ionibowcher.png', email: 'ioni@email.com', role: 'Viewer' }
-]);
-
-const toggle = (event) => {
-    op.value.toggle(event);
-}
 </script>

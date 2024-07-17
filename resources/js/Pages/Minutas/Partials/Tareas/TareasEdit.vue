@@ -149,7 +149,7 @@ const form = useForm({
     tarea: task.value.tarea,
     fecha: task.value.fecha,
     nota: task.value.nota,
-    estatus_id: task.value.estatus.id,
+    estatus_id: task.value.estatus ? task.value.estatus.id : 1,
 });
 
 const onChange = async (event) => {
