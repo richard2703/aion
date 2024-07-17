@@ -14,7 +14,6 @@ Route::get('/hello', function (Request $request) {
 Route::get('/areas', [App\Http\Controllers\areaController::class, 'findAll'])->name('areas.findAll');
 Route::get('/departamentos/{area_id}', [App\Http\Controllers\departamentoController::class, 'byArea'])->name('departamentos.byArea');
 Route::get('/departamentos', [App\Http\Controllers\departamentoController::class, 'findAll'])->name('departamentos.findAll');
-Route::get('/departamentos/find/todo', [App\Http\Controllers\departamentoController::class, 'find'])->name('departamentos.find');
 Route::get('/usuarios', [App\Http\Controllers\userController::class, 'findAll'])->name('users.findAll');
 Route::get('/usuarios/all/todo', [App\Http\Controllers\userController::class, 'all'])->name('users.all');
 Route::get('/usuarios/{area_id}', [App\Http\Controllers\userController::class, 'byArea'])->name('usuarios.byArea');
@@ -36,6 +35,13 @@ Route::get('/kpis', [App\Http\Controllers\kpiController::class, 'findAll'])->nam
 Route::get('/roles', [App\Http\Controllers\rolesController::class, 'findAll'])->name('roles.findAll');
 Route::get('/permisos', [App\Http\Controllers\permisosController::class, 'findAll'])->name('permisos.findAll');
 Route::get('/permisos/all', [App\Http\Controllers\permisosController::class, 'all'])->name('permisos.All');
+
+Route::get('/getDepartamentos', [App\Http\Controllers\homeMetroController::class, 'getDepartamentos'])->name('getDepartamentos.find');
+Route::get('/getProcesos', [App\Http\Controllers\homeMetroController::class, 'getProcesos'])->name('getProcesos.find');
+Route::get('/getProcedimientos', [App\Http\Controllers\homeMetroController::class, 'getProcedimientos'])->name('getProcedimientos.find');
+Route::get('/getEstandares', [App\Http\Controllers\homeMetroController::class, 'getEstandares'])->name('getEstandares.find');
+
+
 
 
 

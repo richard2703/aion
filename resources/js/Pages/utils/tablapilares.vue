@@ -10,11 +10,22 @@ const props = defineProps({
 });
 
 const departamentos = ref([]);
+const departamento = ref({});
+const procesos = ref([]);
+const proceso = ref({});
+const procedimientos = ref([]);
+const procedimiento = ref({});
+const estandares = ref([]);
 const totalRecords = ref(0);
 const rows = ref(10);
 const first = ref(0);
 const globalFilter = ref("");
+const globalFilterProcesos = ref("");
+const globalFilterProcedimientos = ref("");
+const globalFilterEstandares = ref("");
 const filters = ref({});
+const filtersProcesos = ref({});
+
 const sortField = ref("id");
 const sortOrder = ref(1);
 
@@ -26,7 +37,7 @@ const getDepartamentos = async (
     sortOrder = 1
 ) => {
     try {
-        const response = await axios.get("/api/departamentos/find/todo", {
+        const response = await axios.get("/api/getDepartamentos", {
             params: {
                 page,
                 rows: rowsPerPage,
@@ -36,7 +47,6 @@ const getDepartamentos = async (
                 pilar: props.pilar,
             },
         });
-        console.log(response.data);
         departamentos.value = response.data.data;
         totalRecords.value = response.data.total;
         first.value = (response.data.current_page - 1) * rows.value;
@@ -45,21 +55,86 @@ const getDepartamentos = async (
     }
 };
 
-const deleteDepartamento = async (id) => {
-    try {
-        const result = await confirmDialog(
-            "Estas seguro?",
-            "Ya no podras revertir esto!",
-            "warning"
-        );
-        if (result.isConfirmed) {
-            await axios.delete(route("departamento.destroy", id));
+const getProcesos = async (
+    departamento,
+    page = 1,
+    rowsPerPage = rows.value,
+    filter = "",
+    sortField = "id",
+    sortOrder = 1,
 
-            departamentos.value = departamentos.value.filter(
-                (departamento) => departamento.id !== id
-            );
-            showToast("El registro ha sido eliminado", "success");
-        }
+) => {
+    try {
+
+        const response = await axios.get("/api/getProcesos", {
+            params: {
+                page,
+                rows: rowsPerPage,
+                filter,
+                sortField,
+                sortOrder: sortOrder === 1 ? "asc" : "desc",
+                departamento,
+            },
+        });
+        procesos.value = response.data.data;
+        totalRecords.value = response.data.total;
+        first.value = (response.data.current_page - 1) * rows.value;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const getProcedimientos = async (
+    proceso,
+    page = 1,
+    rowsPerPage = rows.value,
+    filter = "",
+    sortField = "id",
+    sortOrder = 1
+) => {
+    try {
+        const response = await axios.get("/api/getProcedimientos", {
+            params: {
+                page,
+                rows: rowsPerPage,
+                filter,
+                sortField,
+                sortOrder: sortOrder === 1 ? "asc" : "desc",
+                proceso,
+            },
+        });
+        procedimientos.value = response.data.data;
+        totalRecords.value = response.data.total;
+        first.value = (response.data.current_page - 1) * rows.value;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const getEstandares = async (
+    procedimiento,
+    page = 1,
+    rowsPerPage = rows.value,
+    filter = "",
+    sortField = "id",
+    sortOrder = 1
+
+) => {
+    try {
+        const response = await axios.get("/api/getEstandares", {
+            params: {
+                page,
+                rows: rowsPerPage,
+                filter,
+                sortField,
+                sortOrder: sortOrder === 1 ? "asc" : "desc",
+                procedimiento,
+            },
+        });
+        console.log(response.data);
+        estandares.value = response.data.data;
+        totalRecords.value = response.data.total;
+        first.value = (response.data.current_page - 1) * rows.value;
     } catch (error) {
         console.error(error);
     }
@@ -98,6 +173,28 @@ watch(globalFilter, (newValue) => {
         global: { value: newValue, matchMode: "contains" },
     };
     getDepartamentos(1, rows.value, newValue, sortField.value, sortOrder.value);
+
+});
+
+watch(globalFilterProcesos, (newValue) => {
+    filters.value = {
+        global: { value: newValue, matchMode: "contains" },
+    };
+    getProcesos(departamento.value, 1, rows.value, newValue, sortField.value, sortOrder.value);
+});
+
+watch(globalFilterProcedimientos, (newValue) => {
+    filters.value = {
+        global: { value: newValue, matchMode: "contains" },
+    };
+    getProcedimientos(proceso.value, 1, rows.value, newValue, sortField.value, sortOrder.value);
+});
+
+watch(globalFilterEstandares, (newValue) => {
+    filters.value = {
+        global: { value: newValue, matchMode: "contains" },
+    };
+    getEstandares(procedimiento.value, 1, rows.value, newValue, sortField.value, sortOrder.value);
 });
 
 watch(() => props.pilar, (newPilar) => {
@@ -116,52 +213,113 @@ watch(() => props.pilar, (newPilar) => {
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
             <div>
                 <div class="px-4 py-2 bg-white border-b border-gray-200">
-                    <div class="container mx-auto overflow-x-auto">
-                        <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
+                    <div class="container mx-auto overflow-x-auto grid  grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 mb-3">
+                        <div>
+                            <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
+                            <DataTable :value="departamentos" paginator :rows="rows" :totalRecords="totalRecords"
+                                :lazy="true" :first="first" @page="onPage" @sort="onSort"
+                                :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters" :globalFilterFields="[
+                                    'nombre',
+                                ]" :sortField="sortField" :sortOrder="sortOrder"
+                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+                                <template #empty> No data found. </template>
+                                <Column field="nombre" header="Departamento" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable>
+                                    <template #body="slotProps">
+                                        <button
+                                            @click="getProcesos(departamento.value = slotProps.data.id, 1, rows, newValue, sortField, sortOrder)">
+                                            {{ slotProps.data.nombre }}
+                                        </button>
+                                    </template>
+                                </Column>
+                            </DataTable>
+                        </div>
+                        <div>
+                            <InputText v-model="globalFilterProcesos" placeholder="Buscar..." class="mb-3" />
+                            <DataTable :value="procesos" paginator :rows="rows" :totalRecords="totalRecords"
+                                :lazy="true" :first="first" @page="onPage" @sort="onSort"
+                                :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters" :globalFilterFields="[
+                                    'nombre',
+                                ]" :sortField="sortField" :sortOrder="sortOrder"
+                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+                                <template #empty> No data found. </template>
+                                <Column field="nombre" header="Procesos" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable>
+                                    <template #body="slotProps">
+                                        <button
+                                            @click="getProcedimientos(proceso.value = slotProps.data.id, 1, rows, newValue, sortField, sortOrder)">
+                                            {{ slotProps.data.nombre }}
+                                        </button>
+                                    </template>
+                                </Column>
+                                <Column field="link_externo" header="Link" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable>
+                                    <!-- <template #body="slotProps">
+                                        <button @click="getEstandares(slotProps.data.id)">
+                                            {{ slotProps.data.nombre }}
+                                        </button>
+                                    </template> -->
+                                </Column>
+                            </DataTable>
+                        </div>
 
-                        <DataTable :value="departamentos" paginator :rows="rows" :totalRecords="totalRecords"
-                            :lazy="true" :first="first" @page="onPage" @sort="onSort"
-                            :rowsPerPageOptions="[5, 10, 20, 50]" tableStyle="min-width: 50rem" :filters="filters"
-                            :globalFilterFields="[
-                                'id',
-                                'nombre',
-                                'area.nombre',
-                                'descripcion',
-                            ]" :sortField="sortField" :sortOrder="sortOrder"
-                            class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
-                            <template #empty> No data found. </template>
-                            <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
-                                sortable></Column>
-                            <Column field="area.nombre" header="Area" headerStyle="width:4em;"
-                                bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                            <Column field="nombre" header="Departamento" headerStyle="width:4em;"
-                                bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                            <Column field="descripcion" header="Descripcion" headerStyle="width:4em;"
-                                bodyClass="text-center" sortable></Column>
-                            <Column header="Proceso" headerStyle="width:4em;" bodyStyle="text-align:center;">
-                                <template #body="slotProps">
-                                    <ul>
-                                        <li v-for="proceso in slotProps.data.procesos" :key="proceso.id">
-                                            {{ proceso.nombre }}
-                                        </li>
-                                    </ul>
-                                </template>
-                            </Column>
-                            <Column header="Procedimiento" headerStyle="width:4em;" bodyStyle="text-align:center;">
-                                <template #body="slotProps">
-                                    <ul>
-                                        <li v-for="proceso in slotProps.data.procesos" :key="proceso.id">
-                                            <ul>
-                                                <li v-for="procedimiento in proceso.procedimientos"
-                                                    :key="procedimiento.id">
-                                                    {{ procedimiento.nombre }}
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </template>
-                            </Column>
-                        </DataTable>
+                    </div>
+                    <div class="container mx-auto overflow-x-auto grid  grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
+                        <div>
+                            <InputText v-model="globalFilterProcedimientos" placeholder="Buscar..." class="mb-3" />
+                            <DataTable :value="procedimientos" paginator :rows="rows" :totalRecords="totalRecords"
+                                :lazy="true" :first="first" @page="onPage" @sort="onSort"
+                                :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters" :globalFilterFields="[
+                                    'nombre',
+                                ]" :sortField="sortField" :sortOrder="sortOrder"
+                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+                                <template #empty> No data found. </template>
+                                <Column field="nombre" header="Procedmientos" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable>
+                                    <template #body="slotProps">
+                                        <button
+                                            @click="getEstandares(procedimiento.value = slotProps.data.id, 1, rows, newValue, sortField, sortOrder)">
+                                            {{ slotProps.data.nombre }}
+                                        </button>
+                                    </template>
+                                </Column>
+                                <Column field="link_externo" header="Link" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable>
+                                    <!-- <template #body="slotProps">
+                                        <button @click="getEstandares(slotProps.data.id)">
+                                            {{ slotProps.data.nombre }}
+                                        </button>
+                                    </template> -->
+                                </Column>
+                            </DataTable>
+                        </div>
+                        <div>
+                            <InputText v-model="globalFilterEstandares" placeholder="Buscar..." class="mb-3" />
+                            <DataTable :value="estandares" paginator :rows="rows" :totalRecords="totalRecords"
+                                :lazy="true" :first="first" @page="onPage" @sort="onSort"
+                                :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters" :globalFilterFields="[
+                                    'nombre',
+                                ]" :sortField="sortField" :sortOrder="sortOrder"
+                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+                                <template #empty> No data found. </template>
+                                <Column field="nombre" header="Estandares" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable>
+                                    <!-- <template #body="slotProps">
+                                        <button @click="getEstandares(slotProps.data.id)">
+                                            {{ slotProps.data.nombre }}
+                                        </button>s
+                                    </template> -->
+                                </Column>
+                                <Column field="link_externo" header="Link" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable>
+                                    <!-- <template #body="slotProps">
+                                        <button @click="getEstandares(slotProps.data.id)">
+                                            {{ slotProps.data.nombre }}
+                                        </button>
+                                    </template> -->
+                                </Column>
+                            </DataTable>
+                        </div>
                     </div>
                 </div>
             </div>
