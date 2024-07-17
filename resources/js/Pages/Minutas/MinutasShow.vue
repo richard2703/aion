@@ -100,49 +100,91 @@
                         <div class="container mx-auto">
                             <div class="flex justify-between">
                                 <h2>Tareas</h2>
-                                <!-- Trigger to open modal -->
-                                <PrimaryButton class=" mb-4 float-right pi pi-plus" @click="openModal('create')">
-                                </PrimaryButton>
+
+                                <div class="card flex justify-center">
+
+
+                                    <Popover ref="op">
+                                        <div class="flex flex-col gap-4 w-[25rem]">
+                                            <div>
+                                                <span class="font-medium block mb-2">Share this document</span>
+                                                Seccion 1
+
+                                            </div>
+                                            <div>
+                                                <span class="font-medium block mb-2">Invite Member</span>
+                                                seccion 2
+                                            </div>
+                                            <div>
+                                                <span class="font-medium block mb-2">Team Members</span>
+                                                seccion 3
+                                            </div>
+                                        </div>
+                                    </Popover>
+                                </div>
+
                             </div>
 
-                            <DataTable :value="tareas" :lazy="true" tableStyle="min-width: 50rem"
-                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
-                                <template #empty> Sin registros </template>
-                                <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
-                                    sortable></Column>
-                                <Column field="tarea" header="Titulo" headerStyle="width:4em;" bodyClass="text-center"
-                                    sortable></Column>
-                                <Column field="estatus.titulo" header="Estatus" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                                <Column field="departamento.nombre" header="Fujo de valor" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                                <Column field="responsable.name" header="Responsable" headerStyle="width:4em;"
-                                    bodyClass="text-center" sortable>
-                                </Column>
-                                <Column header="Fecha de entrega" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable>
-                                    <template #body="slotProps">
-                                        {{ formatearFecha(slotProps.data.fecha) }}
-                                    </template>
-                                </Column>
-                                <Column field="nota" header="Notas" headerStyle="width:4em;" bodyClass="text-center"
-                                    sortable>
-                                </Column>
-                                <Column header="" headerStyle="width:4em;">
-                                    <template #body="slotProps" class="text-center">
-                                        <div class="flex justify-center">
-                                            <PrimaryButton class="m-2 pi pi-pen-to-square"
-                                                @click="openModal('edit', slotProps.data.id)">
-                                            </PrimaryButton>
+                            <div class="container mx-auto overflow-x-auto gap-4">
+                                <div class="flex gap-4">
+                                    <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
+                                    <PrimaryButton class=" mb-4 float-right pi pi-filter" @click="toggle">
+                                    </PrimaryButton>
+                                    <!-- Trigger to open modal -->
+                                    <PrimaryButton class=" mb-4 float-right pi pi-plus" @click="openModal('create')">
+                                    </PrimaryButton>
+                                </div>
+                                <DataTable :value="tareas" paginator :rows="rows" :totalRecords="totalRecords"
+                                    :lazy="true" :first="first" @page="onPage" @sort="onSort"
+                                    :rowsPerPageOptions="[5, 10, 20, 50]" tableStyle="min-width: 50rem"
+                                    :filters="filters" :globalFilterFields="[
+                                        'id',
+                                        'tarea',
+                                        'area.nombre',
+                                        'departamento.nombre',
+                                        'responsable.name',
+                                        'fecha_entrega',
+                                        'estatus.titulo',
+                                    ]" :sortField="sortField" :sortOrder="sortOrder"
+                                    class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+                                    <template #empty> No data found. </template>
+                                    <Column field="id" header="ID" headerStyle="width:4em;"
+                                        bodyStyle="text-align:center;" sortable></Column>
+                                    <Column field="tarea" header="Titulo" headerStyle="width:4em;"
+                                        bodyClass="text-center" sortable></Column>
+                                    <Column field="estatus.titulo" header="Estatus" headerStyle="width:4em;"
+                                        bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+                                    <Column field="departamento.nombre" header="Fujo de valor" headerStyle="width:4em;"
+                                        bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+                                    <Column field="responsable.name" header="Responsable" headerStyle="width:4em;"
+                                        bodyClass="text-center" sortable>
+                                    </Column>
+                                    <Column field="fecha" header="Fecha de entrega" headerStyle="width:4em;"
+                                        bodyStyle="text-align:center;" bodyClass="text-center" sortable>
+                                        <template #body="slotProps">
+                                            {{ formatearFecha(slotProps.data.fecha) }}
+                                        </template>
+                                    </Column>
+                                    <Column field="nota" header="Notas" headerStyle="width:4em;" bodyClass="text-center"
+                                        sortable>
+                                    </Column>
+                                    <Column header="" headerStyle="width:4em;">
+                                        <template #body="slotProps" class="text-center">
+                                            <div class="flex justify-center">
+                                                <PrimaryButton class="m-2 pi pi-pen-to-square"
+                                                    @click="openModal('edit', slotProps.data.id)">
+                                                </PrimaryButton>
 
-                                            <PrimaryButton class="m-2 pi pi-trash" @click.prevent="
-                                                deleteTarea(slotProps.data.id)
-                                                ">
-                                            </PrimaryButton>
-                                        </div>
-                                    </template>
-                                </Column>
-                            </DataTable>
+                                                <PrimaryButton class="m-2 pi pi-trash" @click.prevent="
+                                                    deleteTarea(slotProps.data.id)
+                                                    ">
+                                                </PrimaryButton>
+                                            </div>
+                                        </template>
+                                    </Column>
+                                </DataTable>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -162,7 +204,7 @@
             </Modal>
 
             <Modal :show="isEditModalVisible" :modalData="{ tarea, minuta }" maxWidth="lg"
-                @close="isEditModalVisible.value = false">
+                @close="isEditModalVisible = false">
                 <template v-slot="{ modalData }">
 
                     <TareasEdit class="z-50" :minuta="modalData.minuta" :task="modalData.tarea"
@@ -174,7 +216,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import axios from "axios";
 import Fieldset from 'primevue/fieldset';
@@ -189,6 +231,12 @@ import InputLabel from "@/Components/InputLabel.vue";
 import { confirmDialog, showToast } from "../utils/SweetAlert.service";
 import TareasCreate from "@/Pages/Minutas/Partials/Tareas/TareasCreate.vue";
 import TareasEdit from "@/Pages/Minutas/Partials/Tareas/TareasEdit.vue";
+import Button from "primevue/button";
+import Popover from "primevue/popover";
+import InputGroup from 'primevue/inputgroup';
+import InputGroupAddon from 'primevue/inputgroupaddon';
+import InputText from "primevue/inputtext";
+
 
 
 onMounted(() => {
@@ -213,6 +261,14 @@ const asistentes = ref();
 const newAsistente = ref(true);
 const filteredUsuarios = ref();
 const tareas = ref();
+
+const totalRecords = ref(0);
+const rows = ref(10);
+const first = ref(0);
+const globalFilter = ref("");
+const filters = ref({});
+const sortField = ref("id");
+const sortOrder = ref(1);
 
 
 console.log(tareas);
@@ -285,14 +341,63 @@ const deleteAsistente = async (id) => {
     }
 };
 
-const getTareas = async (minuta_id) => {
+const getTareas = async (
+    minuta_id = minuta.value.id,
+    page = 1,
+    rowsPerPage = rows.value,
+    filter = "",
+    sortField = "id",
+    sortOrder = 1
+) => {
     await axios
-        .get(`/api/tareas/${minuta_id}`)
-        .then((response) => (tareas.value = response.data))
+        .get(`/api/tareas/${minuta_id}`, {
+            params: {
+                page,
+                rows: rowsPerPage,
+                filter,
+                sortField,
+                sortOrder: sortOrder === 1 ? "asc" : "desc",
+            },
+        })
+        .then((response) => (tareas.value = response.data.data))
         .catch((error) => {
             console.log(error);
         });
+    console.log({ tareasFunction: tareas.value });
 }
+
+watch(globalFilter, (newValue) => {
+    filters.value = {
+        global: { value: newValue, matchMode: "contains" },
+    };
+    getTareas(minuta.value.id, 1, rows.value, newValue, sortField.value, sortOrder.value);
+});
+
+const onPage = (event) => {
+    const page = event.page + 1;
+    rows.value = event.rows;
+    getTareas(
+        minuta.value.id,
+        page,
+        rows.value,
+        globalFilter.value,
+        sortField.value,
+        sortOrder.value
+    );
+};
+
+const onSort = (event) => {
+    sortField.value = event.sortField || "id";
+    sortOrder.value = event.sortOrder;
+    getTareas(
+        minuta.value.id,
+        1,
+        rows.value,
+        globalFilter.value,
+        sortField.value,
+        sortOrder.value
+    );
+};
 
 const deleteTarea = async (id) => {
     try {
@@ -335,4 +440,16 @@ const closeModal = (tipo) => {
         isEditModalVisible.value = false;
     }
 };
+
+// filter stuff
+const op = ref();
+const members = ref([
+    { name: 'Amy Elsner', image: 'amyelsner.png', email: 'amy@email.com', role: 'Owner' },
+    { name: 'Bernardo Dominic', image: 'bernardodominic.png', email: 'bernardo@email.com', role: 'Editor' },
+    { name: 'Ioni Bowcher', image: 'ionibowcher.png', email: 'ioni@email.com', role: 'Viewer' }
+]);
+
+const toggle = (event) => {
+    op.value.toggle(event);
+}
 </script>
