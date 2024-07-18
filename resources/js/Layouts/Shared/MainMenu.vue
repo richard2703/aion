@@ -83,12 +83,12 @@
                 <li>
                     <div class="mb-4">
                         <Link class="group flex items-center py-3" href="/areas">
-                        <div :class="title === 'areas'
+                        <div :class="title === 'Pilares'
                             ? 'activo flex'
                             : 'inactivo flex'
                             ">
                             <icon name="office" class="mr-2 w-4 h-4" />
-                            Areas
+                            Pilares
                         </div>
                         </Link>
                     </div>
@@ -96,12 +96,12 @@
                 <li>
                     <div class="mb-4">
                         <Link class="group flex items-center py-3" href="/departamentos">
-                        <div :class="title === 'departamentos'
+                        <div :class="title === 'Flujos de valor'
                             ? 'activo flex'
                             : 'inactivo flex'
                             ">
                             <icon name="office" class="mr-2 w-4 h-4" />
-                            Departamentos
+                            Flujos de valor
                         </div>
                         </Link>
                     </div>

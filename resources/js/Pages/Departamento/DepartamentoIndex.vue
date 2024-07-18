@@ -13,7 +13,7 @@ const props = defineProps({
     departamentos: Array,
 });
 
-const title = "departamentos";
+const title = "Flujos de valor";
 const departamentos = ref([]);
 const totalRecords = ref(0);
 const rows = ref(10);
@@ -113,17 +113,17 @@ watch(globalFilter, (newValue) => {
 <template>
     <Layout :titulo="title">
 
-        <Head title="Departamento" />
+        <Head title="Flujos de valor" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
-                <h3>Departamentos</h3>
+                <h3>Flujos de valor</h3>
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
                 <Link class="active">
-                <h3>Departamentos</h3>
+                <h3>Flujo de valor</h3>
                 </Link>
             </div>
         </div>
@@ -151,9 +151,9 @@ watch(globalFilter, (newValue) => {
                                 <template #empty> No data found. </template>
                                 <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
                                     sortable></Column>
-                                <Column field="area.nombre" header="Area" headerStyle="width:4em;"
+                                <Column field="area.nombre" header="Pilar" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                                <Column field="nombre" header="Departamento" headerStyle="width:4em;"
+                                <Column field="nombre" header="Flujo de valor" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                 <Column field="descripcion" header="Descripcion" headerStyle="width:4em;"
                                     bodyClass="text-center" sortable></Column>

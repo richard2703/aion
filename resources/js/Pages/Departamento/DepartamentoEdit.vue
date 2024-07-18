@@ -59,17 +59,17 @@ getAreas();
 <template>
     <Layout>
 
-        <Head title="Usuarios" />
+        <Head title="Flujos de valor" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
-                <h3>Departamentos</h3>
+                <h3>Flujos de valor</h3>
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
                 <Link :href="route('departamento.index')" class="px-1">
-                <h3>Departamentos -</h3>
+                <h3>Flujos de valor -</h3>
                 </Link>
                 <Link :href="route('departamento.create')" class="active">
                 <h3>Actualizar</h3>
@@ -92,7 +92,7 @@ getAreas();
                                     </div>
 
                                     <div>
-                                        <InputLabel for="area_id" value="Area: " />
+                                        <InputLabel for="area_id" value="Pilar: " />
                                         <select ref="select"
                                             class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
                                             v-model="form.area_id" required>
