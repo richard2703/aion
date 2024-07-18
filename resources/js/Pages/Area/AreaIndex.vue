@@ -23,7 +23,7 @@ const globalFilter = ref("");
 const filters = ref({});
 const sortField = ref("id"); // Valor predeterminado
 const sortOrder = ref(1);
-const title = "areas";
+const title = "Pilares";
 
 // Función para obtener áreas
 async function getAreas(
@@ -118,17 +118,17 @@ watch(globalFilter, (newValue) => {
 <template>
     <Layout :titulo="title">
 
-        <Head title="Area" />
+        <Head title="Pilar" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
-                <h3>Areas</h3>
+                <h3>Pilares</h3>
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
                 <Link class="active">
-                <h3>Areas</h3>
+                <h3>Pilares</h3>
                 </Link>
             </div>
         </div>
@@ -154,7 +154,7 @@ watch(globalFilter, (newValue) => {
                                 <template #empty> No data found. </template>
                                 <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
                                     sortable></Column>
-                                <Column field="nombre" header="Area" headerStyle="width:4em;"
+                                <Column field="nombre" header="Pilar" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                 <Column field="descripcion" header="Descripcion" headerStyle="width:4em;"
                                     bodyClass="text-center" sortable></Column>

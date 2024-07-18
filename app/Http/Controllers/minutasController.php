@@ -127,10 +127,14 @@ class minutasController extends Controller
      */
     public function update(Request $request, minutas $minuta)
     {
+        if (is_array($request->lider_id)) {
+            $minuta->lider_id = $request->lider_id["id"];
+        }
+        if (is_array($request->proceso_id)) {
+            $minuta->proceso_id = $request->proceso_id["id"];
+        }
         $minuta->area_id = $request->area_id;
         $minuta->departamento_id = $request->departamento_id;
-        $minuta->proceso_id = $request->proceso_id["id"]; // Asegúrate de ajustar según la estructura de tu solicitud
-        $minuta->lider_id = $request->lider_id["id"]; // Asegúrate de ajustar según la estructura de tu solicitud
         $minuta->alias = $request->alias;
         $minuta->tipo = $request->tipo;
         $minuta->notas = $request->notas;

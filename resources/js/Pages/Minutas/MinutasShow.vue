@@ -25,7 +25,7 @@
                     <div
                         class="px-4 my-4 py-2 flex justify-end bg-white border-b border-gray-200 grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4">
                         <div class="px-4 py-2 bg-white">
-                            <Fieldset legend="Información general">
+                            <Fieldset legend="Información general" class="h-80 overflow-y-auto">
                                 <div class="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4">
                                     <div class="mt-4 flex">
                                         <InputLabel for="alias" value="Titulo: " />&nbsp;
@@ -55,26 +55,30 @@
                             </Fieldset>
                         </div>
                         <div>
-                            <Fieldset legend="Asistentes">
+                            <Fieldset legend="Asistentes" class="h-80 overflow-y-auto">
+                                <div class="float-right">
+                                    <PrimaryButton class="pi pi-plus" v-if="newAsistente"
+                                        @click="newAsistente = !newAsistente">
+                                    </PrimaryButton>
+                                    <PrimaryButton class="pi pi-minus" v-if="!newAsistente"
+                                        @click="newAsistente = !newAsistente">
+                                    </PrimaryButton>
+                                </div>
                                 <div
                                     class="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4 flex justify-between">
-                                    <div class="flex">
+                                    <div class="flex gap-2">
                                         <InputLabel for="lider" value="Lider: " />&nbsp;
-                                        <InputLabel for="lider" :value="minuta.lider.name" />
-                                    </div>
-                                    <div>
-                                        <PrimaryButton v-if="newAsistente" @click="newAsistente = !newAsistente"
-                                            class="float-right">mas</PrimaryButton>
-                                        <PrimaryButton v-if="!newAsistente" @click="newAsistente = !newAsistente"
-                                            class="float-right">menos</PrimaryButton>
-                                    </div>
-                                    <div v-if="!newAsistente">
-                                        <form @submit.prevent="submit" class="flex">
-                                            <AutoComplete v-model="form.user_id" optionLabel="name"
-                                                :suggestions="filteredUsuarios" forceSelection @complete="search"
-                                                placeholder="" />
-                                            <PrimaryButton class="float-right">ok</PrimaryButton>
-                                        </form>
+                                        <div class="flex">
+                                            <InputLabel for="lider" :value="minuta.lider.name" />
+                                        </div>
+                                        <div v-if="!newAsistente">
+                                            <form @submit.prevent="submit" class="flex">
+                                                <AutoComplete v-model="form.user_id" optionLabel="name"
+                                                    :suggestions="filteredUsuarios" forceSelection @complete="search"
+                                                    placeholder="" />
+                                                <PrimaryButton class="float-right pi pi-check"></PrimaryButton>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -83,8 +87,8 @@
                                     <div class="mx-2">
                                         <ul v-for="asistente in asistentes" :key="asistente.id">
                                             <li>{{ asistente.user.name }}&nbsp;
-                                                <button class="float-right mx-4"
-                                                    @click="deleteAsistente(asistente.id)">x</button>
+                                                <button class="float-right mx-4 pi pi-times text-red-500"
+                                                    @click="deleteAsistente(asistente.id)"></button>
                                             </li>
                                         </ul>
                                     </div>
@@ -96,40 +100,167 @@
                         <div class="container mx-auto">
                             <div class="flex justify-between">
                                 <h2>Tareas</h2>
-                                <!-- Trigger to open modal -->
-                                <PrimaryButton class=" mb-4 float-right" @click="openModal">Nueva Tarea</PrimaryButton>
                             </div>
 
-                            <DataTable :value="tareas" :lazy="true" tableStyle="min-width: 50rem"
-                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
-                                <template #empty> Sin registros </template>
-                                <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
-                                    sortable></Column>
-                                <Column field="tarea" header="Titulo" headerStyle="width:4em;" bodyClass="text-center"
-                                    sortable></Column>
-                                <!-- <Column field="area.nombre" header="Area" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column> -->
-                                <Column field="departamento.nombre" header="Fujo de valor" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                                <Column field="responsable.name" header="Responsable" headerStyle="width:4em;"
-                                    bodyClass="text-center" sortable>
-                                </Column>
-                                <Column field="fecha" header="Fecha de entrega" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                                <Column header="" headerStyle="width:4em;">
-                                    <template #body="slotProps" class="text-center">
-                                        <!-- <PrimaryButton class="m-2" :href="route('minutas.edit', slotProps.data.id)">
-                                            Editar
-                                        </PrimaryButton> -->
+                            <div class="container mx-auto overflow-x-auto gap-4">
+                                <div class="flex gap-4">
+                                    <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
+                                    <PrimaryButton class=" mb-4 float-right pi pi-filter" @click="openFilter">
+                                    </PrimaryButton>
+                                    <PrimaryButton v-if="customFilter" class=" mb-4 float-right pi pi-times"
+                                        @click="clearFilter">
+                                    </PrimaryButton>
+                                    <!-- Trigger to open modal -->
+                                    <PrimaryButton class=" mb-4 float-right pi pi-plus" @click="openModal('create')">
+                                    </PrimaryButton>
+                                </div>
 
-                                        <PrimaryButton class="m-2" @click.prevent="
-                                            deleteTarea(slotProps.data.id)
-                                            ">
-                                            Borrar
-                                        </PrimaryButton>
-                                    </template>
-                                </Column>
-                            </DataTable>
+
+                                <!-- formulario de filtrado de tareas -->
+                                <div v-if="customFilter" class="">
+                                    <form @submit.prevent="filterTable(minuta.id)">
+                                        <div class="m-4 border rounded-lg border-gray-200 flex gap-2 grid grid-cols-4">
+                                            <div class="m-4">
+                                                <InputLabel for="area_id" value="Area: " />
+                                                <select ref="area_select"
+                                                    class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                                    v-model="formFilter.area_id">
+                                                    <option value="" disabled selected>
+                                                        Seleccione una opcion
+                                                    </option>
+                                                    <option v-for="area in areas" :key="area.id" :value="area.id">
+                                                        {{ area.nombre }}
+                                                    </option>
+                                                </select>
+                                            </div>
+
+                                            <div class="m-4">
+                                                <InputLabel for="departamento_id" value="Departamento: " />
+                                                <select ref="departamento_select"
+                                                    class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                                    v-model="formFilter.departamento_id">
+                                                    <option value="" disabled selected>
+                                                        Seleccione una opcion
+                                                    </option>
+                                                    <option v-for="departamento in departamentos" :key="departamento.id"
+                                                        :value="departamento.id">
+                                                        {{ departamento.nombre }}
+                                                    </option>
+                                                </select>
+                                            </div>
+
+                                            <div class="m-4">
+                                                <InputLabel for="responsable_id" value="Responsable: " />
+                                                <select ref="responsable_select"
+                                                    class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                                    v-model="formFilter.responsable_id">
+                                                    <option value="" disabled selected>
+                                                        Seleccione una opcion
+                                                    </option>
+                                                    <option v-for="usuario in usuarios" :key="usuario.id"
+                                                        :value="usuario.id">{{
+                                                            usuario.name }}</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="m-4">
+                                                <InputLabel for="estatus_id" value="Estatus: " />
+                                                <select ref="estatus_select"
+                                                    class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                                    v-model="formFilter.estatus_id">
+                                                    <option value="" selected disabled>
+                                                        Seleccione una opcion </option>
+                                                    <option value=1>
+                                                        Retrasado </option>
+                                                    <option value=2>
+                                                        Iniciado </option>
+                                                    <option value=3>
+                                                        En proceso </option>
+                                                    <option value=4>
+                                                        Terminado </option>
+                                                </select>
+                                            </div>
+
+                                            <div class="m-4">
+                                                <InputLabel for="fecha" value="Fecha de entrega de: " />
+                                                <TextInput id="fecha" v-model="formFilter.fecha_from" type="date"
+                                                    class="mt-1 block w-full" autocomplete="fecha" />
+                                            </div>
+
+                                            <div class="m-4">
+                                                <InputLabel for="created_at" value="Fecha de entrega hasta: " />
+                                                <TextInput id="fecha" v-model="formFilter.fecha_to" type="date"
+                                                    class="mt-1 block w-full" autocomplete="fecha" />
+                                            </div>
+
+                                            <div class="m-4">
+                                                <PrimaryButton class="m-4 float-right pi pi-search" type="submit">
+                                                </PrimaryButton>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+
+                                <DataTable :value="tareas" paginator :rows="rows" :totalRecords="totalRecords"
+                                    :lazy="true" :first="first" @page="onPage" @sort="onSort"
+                                    :rowsPerPageOptions="[5, 10, 20, 50]" tableStyle="min-width: 50rem"
+                                    :filters="filters" :globalFilterFields="[
+                                        'id',
+                                        'tarea',
+                                        'area.nombre',
+                                        'departamento.nombre',
+                                        'responsable.name',
+                                        'fecha_entrega',
+                                        'estatus.titulo',
+                                    ]" :sortField="sortField" :sortOrder="sortOrder"
+                                    class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+                                    <template #empty> No data found. </template>
+                                    <Column field="id" header="ID" headerStyle="width:4em;"
+                                        bodyStyle="text-align:center;" sortable></Column>
+                                    <Column field="tarea" header="Titulo" headerStyle="width:4em;"
+                                        bodyClass="text-center" sortable></Column>
+                                    <Column field="estatus.titulo" header="Estatus" headerStyle="width:4em;"
+                                        bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+                                    <Column field="estatus.titulo" header="Estatus" headerStyle="width:4em;"
+                                        bodyStyle="text-align:center;" bodyClass="text-center" sortable>
+                                        <template #body="slotProps">
+                                            <span :class="getStatusClass(slotProps.data.estatus.titulo)">
+                                                {{ slotProps.data.estatus.titulo }}
+                                            </span>
+                                        </template>
+                                    </Column>
+                                    <Column field="departamento.nombre" header="Fujo de valor" headerStyle="width:4em;"
+                                        bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+                                    <Column field="responsable.name" header="Responsable" headerStyle="width:4em;"
+                                        bodyClass="text-center" sortable>
+                                    </Column>
+                                    <Column field="fecha" header="Fecha de entrega" headerStyle="width:4em;"
+                                        bodyStyle="text-align:center;" bodyClass="text-center" sortable>
+                                        <template #body="slotProps">
+                                            {{ formatearFecha(slotProps.data.fecha) }}
+                                        </template>
+                                    </Column>
+                                    <Column field="nota" header="Notas" headerStyle="width:4em;" bodyClass="text-center"
+                                        sortable>
+                                    </Column>
+                                    <Column header="" headerStyle="width:4em;">
+                                        <template #body="slotProps" class="text-center">
+                                            <div class="flex justify-center">
+                                                <PrimaryButton class="m-2 pi pi-pen-to-square"
+                                                    @click="openModal('edit', slotProps.data.id)">
+                                                </PrimaryButton>
+
+                                                <PrimaryButton class="m-2 pi pi-trash" @click.prevent="
+                                                    deleteTarea(slotProps.data.id)
+                                                    ">
+                                                </PrimaryButton>
+                                            </div>
+                                        </template>
+                                    </Column>
+                                </DataTable>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -140,15 +271,20 @@
 
 
             <!-- Modal component -->
-            <!-- <Modal :show="isModalVisible" :modalData="minuta" maxWidth="lg" @close="isModalVisible.value = false">
+
+            <Modal :show="isCreateModalVisible" :modalData="minuta" maxWidth="lg" @close="isCreateModalVisible = false">
                 <template v-slot="{ modalData }">
-                    <TareasCreate class="z-50" :minuta="modalData" @close="isModalVisible = false" />
-                </template>
-            </Modal> -->
-            <Modal :show="isModalVisible" :modalData="minuta" maxWidth="lg" @close="isModalVisible = false">
-                <template v-slot="{ modalData }">
-                    <TareasCreate class="z-50" :minuta="modalData" @close="isModalVisible = false"
+                    <TareasCreate class="z-50" :minuta="modalData" @close="isCreateModalVisible = false"
                         @tareaGuardada="actualizarTareas" />
+                </template>
+            </Modal>
+
+            <Modal :show="isEditModalVisible" :modalData="{ tarea, minuta }" maxWidth="lg"
+                @close="isEditModalVisible = false">
+                <template v-slot="{ modalData }">
+
+                    <TareasEdit class="z-50" :minuta="modalData.minuta" :task="modalData.tarea"
+                        @close="isEditModalVisible = false" @tareaGuardada="actualizarTareas" />
                 </template>
             </Modal>
         </div>
@@ -156,7 +292,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import axios from "axios";
 import Fieldset from 'primevue/fieldset';
@@ -170,21 +306,38 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import { confirmDialog, showToast } from "../utils/SweetAlert.service";
 import TareasCreate from "@/Pages/Minutas/Partials/Tareas/TareasCreate.vue";
+import TareasEdit from "@/Pages/Minutas/Partials/Tareas/TareasEdit.vue";
+import InputText from "primevue/inputtext";
+import TextInput from "@/Components/TextInput.vue";
+
+
 
 
 onMounted(() => {
     getUsuarios();
     getAsistentes(minuta.value.id);
     getTareas(minuta.value.id);
+    getAreas();
+    getDepartamentos();
 });
 
 const props = defineProps({
     minuta: Object,
+
 });
 
 const form = useForm({
     user_id: "",
     minuta_id: props.minuta.id,
+});
+
+const formFilter = useForm({
+    area_id: "",
+    departamento_id: "",
+    responsable_id: "",
+    estatus_id: "",
+    fecha_from: "",
+    fecha_to: "",
 });
 
 const title = "minutero";
@@ -194,6 +347,35 @@ const asistentes = ref();
 const newAsistente = ref(true);
 const filteredUsuarios = ref();
 const tareas = ref();
+const isCreateModalVisible = ref(false);
+const isEditModalVisible = ref(false);
+const tarea = ref({});
+const task_id = ref();
+const areas = ref();
+const departamentos = ref();
+const customFilter = ref(false);
+
+//filtro global y paginado
+const totalRecords = ref(0);
+const rows = ref(10);
+const first = ref(0);
+const globalFilter = ref("");
+const filters = ref({});
+const sortField = ref("id");
+const sortOrder = ref(1);
+
+const getStatusClass = (status) => {
+    switch (status) {
+        case 'Terminado':
+            return 'bg-green-200 text-green-800';
+        case 'Retrasado':
+            return 'bg-red-200 text-red-800';
+        case 'En proceso':
+            return 'bg-yellow-200 text-yellow-800';
+        default:
+            return 'bg-gray-200 text-gray-800';
+    }
+};
 
 const formatearFecha = (fecha) => {
     return format(new Date(fecha), 'dd/MM/yyyy');
@@ -221,6 +403,28 @@ async function getAsistentes(minuta_id) {
         });
 }
 
+async function getAreas() {
+    await axios
+        .get("/api/areas")
+        .then((response) => {
+            areas.value = response.data;
+            formFilter.reset();
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+async function getDepartamentos() {
+    await axios
+        .get(route("departamentos.findAll"))
+        .then((response) => (departamentos.value = response.data))
+        .catch((error) => {
+            console.log(error);
+        });
+
+}
+
 const search = (event) => {
     setTimeout(() => {
         const query = event.query.trim().toLowerCase();
@@ -240,7 +444,6 @@ const search = (event) => {
 const submit = async () => {
     try {
         await axios.post("/api/asistente/store", form.data()).then(() => {
-            console.log(form.data());
             showToast("El registro ha sido creado", "success");
             form.reset();
             newAsistente.value = true;
@@ -250,6 +453,29 @@ const submit = async () => {
         showToast("Ocurrio un error", "error");
         console.error(error);
     }
+};
+
+const filterTable = async (minuta_id) => {
+    await axios
+        .get(`/api/tareas/${minuta_id}`, {
+            params: {
+                formFilter: formFilter.data(),
+            },
+        })
+        .then((response) => (tareas.value = response.data.data))
+        .catch((error) => {
+            console.log(error);
+        });
+};
+
+const openFilter = () => {
+    customFilter.value = !customFilter.value
+
+};
+const clearFilter = () => {
+    formFilter.reset();
+    // customFilter.value = !customFilter.value
+    getTareas(minuta.value.id);
 };
 
 const deleteAsistente = async (id) => {
@@ -264,14 +490,62 @@ const deleteAsistente = async (id) => {
     }
 };
 
-const getTareas = async (minuta_id) => {
+const getTareas = async (
+    minuta_id = minuta.value.id,
+    page = 1,
+    rowsPerPage = rows.value,
+    filter = "",
+    sortField = "id",
+    sortOrder = 1
+) => {
     await axios
-        .get(`/api/tareas/${minuta_id}`)
-        .then((response) => (tareas.value = response.data))
+        .get(`/api/tareas/${minuta_id}`, {
+            params: {
+                page,
+                rows: rowsPerPage,
+                filter,
+                sortField,
+                sortOrder: sortOrder === 1 ? "asc" : "desc",
+            },
+        })
+        .then((response) => (tareas.value = response.data.data))
         .catch((error) => {
             console.log(error);
         });
 }
+
+watch(globalFilter, (newValue) => {
+    filters.value = {
+        global: { value: newValue, matchMode: "contains" },
+    };
+    getTareas(minuta.value.id, 1, rows.value, newValue, sortField.value, sortOrder.value);
+});
+
+const onPage = (event) => {
+    const page = event.page + 1;
+    rows.value = event.rows;
+    getTareas(
+        minuta.value.id,
+        page,
+        rows.value,
+        globalFilter.value,
+        sortField.value,
+        sortOrder.value
+    );
+};
+
+const onSort = (event) => {
+    sortField.value = event.sortField || "id";
+    sortOrder.value = event.sortOrder;
+    getTareas(
+        minuta.value.id,
+        1,
+        rows.value,
+        globalFilter.value,
+        sortField.value,
+        sortOrder.value
+    );
+};
 
 const deleteTarea = async (id) => {
     try {
@@ -291,14 +565,25 @@ const deleteTarea = async (id) => {
 
     }
 }
-console.log({ tareas: tareas });
-const isModalVisible = ref(false);
 
-const openModal = () => {
-    isModalVisible.value = true;
+
+const openModal = async (tipo, id) => {
+    if (tipo === 'create') {
+        isCreateModalVisible.value = true;
+    } else {
+        await axios.get(route("tareas.show", id)).then((response) => {
+            tarea.value = response.data;
+        })
+        isEditModalVisible.value = true;
+    }
 };
 
-const closeModal = () => {
-    isModalVisible.value = false;
+const closeModal = (tipo) => {
+    if (tipo === 'create') {
+        isCreateModalVisible.value = false;
+    } else {
+        isEditModalVisible.value = false;
+    }
 };
+
 </script>

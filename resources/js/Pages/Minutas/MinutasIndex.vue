@@ -8,6 +8,7 @@ import { confirmDialog, showToast } from "../utils/SweetAlert.service";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import InputText from "primevue/inputtext";
+import { format } from 'date-fns';
 
 const props = defineProps({
     items: Array,
@@ -106,6 +107,10 @@ const onSort = (event) => {
     );
 };
 
+const formatearFecha = (fecha) => {
+    return format(new Date(fecha), 'dd/MM/yyyy');
+};
+
 </script>
 
 <style scoped>
@@ -166,8 +171,12 @@ const onSort = (event) => {
                                     bodyClass="text-center" sortable></Column>
                                 <Column field="lider.name" header="Lider" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                                <Column field="created_at" header="fecha" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+                                <Column header="fecha" headerStyle="width:4em;" bodyStyle="text-align:center;"
+                                    bodyClass="text-center" sortable>
+                                    <template #body="slotProps">
+                                        {{ formatearFecha(slotProps.data.created_at) }}
+                                    </template>
+                                </Column>
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">
                                         <PrimaryButton class="m-2" :href="route('minutas.edit', slotProps.data.id)">

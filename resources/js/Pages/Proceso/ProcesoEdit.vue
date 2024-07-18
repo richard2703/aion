@@ -107,7 +107,7 @@ const submit = () => {
 
                                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
                                     <div class="mt-4">
-                                        <InputLabel for="area_id" value="Area: " />
+                                        <InputLabel for="area_id" value="Pilar: " />
                                         <select ref="area_select" @change="onChange($event)"
                                             class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
                                             v-model="form.area_id" required>

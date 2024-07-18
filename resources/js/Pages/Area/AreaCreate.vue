@@ -26,19 +26,19 @@ const submit = async () => {
 </script>
 
 <template>
-    <Layout title="Area">
+    <Layout title="Pilar">
 
         <Head title="Usuarios" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
-                <h3>Areas</h3>
+                <h3>Pilares</h3>
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
                 <Link :href="route('area.index')" class="px-1">
-                <h3>Areas -</h3>
+                <h3>Pilares -</h3>
                 </Link>
                 <Link :href="route('area.create')" class="active">
                 <h3>Nuevo</h3>

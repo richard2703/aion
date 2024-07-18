@@ -71,8 +71,8 @@ console.log({ lider: minuta });
 const form = useForm({
     area_id: minuta.value.area_id,
     departamento_id: minuta.value.departamento_id,
-    proceso_id: '',
-    lider_id: '',
+    proceso_id: minuta.value.proceso.nombre,
+    lider_id: minuta.value.lider.name,
     tipo: minuta.value.tipo,
     alias: minuta.value.alias,
     notas: minuta.value.notas,

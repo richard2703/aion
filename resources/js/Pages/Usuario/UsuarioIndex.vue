@@ -158,9 +158,9 @@ watch(globalFilter, (newValue) => {
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                 <Column field="email" header="Email" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                                <Column field="area.nombre" header="Area" headerStyle="width:4em;"
+                                <Column field="area.nombre" header="Pilar" headerStyle="width:4em;"
                                     bodyClass="text-center" sortable></Column>
-                                <Column field="departamento.nombre" header="Departamento" headerStyle="width:4em;"
+                                <Column field="departamento.nombre" header="Flujo de valor" headerStyle="width:4em;"
                                     bodyClass="text-center" sortable>
                                 </Column>
 

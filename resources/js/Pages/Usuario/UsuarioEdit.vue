@@ -188,7 +188,7 @@ onMounted(() => {
 
                                 <!-- Area -->
                                 <div class="mt-4">
-                                    <InputLabel for="area_id" value="Area: " />
+                                    <InputLabel for="area_id" value="Pilar: " />
                                     <select ref="area_select" @change="onChange($event)"
                                         class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
                                         v-model="profileForm.area_id" required>
@@ -203,7 +203,7 @@ onMounted(() => {
 
                                 <!-- Departamento -->
                                 <div class="mt-4">
-                                    <InputLabel for="departamento_id" value="Departamento: " />
+                                    <InputLabel for="departamento_id" value="Flujo de valor: " />
                                     <select ref="departamento_select"
                                         class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
                                         v-model="profileForm.departamento_id" required>
