@@ -37,6 +37,11 @@ const getDepartamentos = async (
     sortOrder = 1
 ) => {
     try {
+        procesos.value = [];
+        proceso.value = {};
+        procedimientos.value = [];
+        procedimiento.value = {};
+        estandares.value = [];
         const response = await axios.get("/api/getDepartamentos", {
             params: {
                 page,
@@ -65,7 +70,11 @@ const getProcesos = async (
 
 ) => {
     try {
-
+        procesos.value = [];
+        proceso.value = {};
+        procedimientos.value = [];
+        procedimiento.value = {};
+        estandares.value = [];
         const response = await axios.get("/api/getProcesos", {
             params: {
                 page,
@@ -93,6 +102,9 @@ const getProcedimientos = async (
     sortOrder = 1
 ) => {
     try {
+        procedimientos.value = [];
+        procedimiento.value = {};
+        estandares.value = [];
         const response = await axios.get("/api/getProcedimientos", {
             params: {
                 page,
@@ -121,6 +133,8 @@ const getEstandares = async (
 
 ) => {
     try {
+
+        estandares.value = [];
         const response = await axios.get("/api/getEstandares", {
             params: {
                 page,
@@ -213,8 +227,9 @@ watch(() => props.pilar, (newPilar) => {
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
             <div>
                 <div class="px-4 py-2 bg-white border-b border-gray-200">
-                    <div class="container mx-auto overflow-x-auto grid  grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 mb-3">
-                        <div>
+                    <div
+                        class="container mx-auto overflow-x-auto grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-4 mb-3">
+                        <div class="sm:col-span-1 lg:col-span-1">
                             <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
                             <DataTable :value="departamentos" paginator :rows="rows" :totalRecords="totalRecords"
                                 :lazy="true" :first="first" @page="onPage" @sort="onSort"
@@ -222,8 +237,8 @@ watch(() => props.pilar, (newPilar) => {
                                     'nombre',
                                 ]" :sortField="sortField" :sortOrder="sortOrder"
                                 class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
-                                <template #empty> No data found. </template>
-                                <Column field="nombre" header="Departamento" headerStyle="width:4em;"
+                                <template #empty> Sin Registros. </template>
+                                <Column field="nombre" header="Flujo de valor" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable>
                                     <template #body="slotProps">
                                         <button
@@ -234,7 +249,7 @@ watch(() => props.pilar, (newPilar) => {
                                 </Column>
                             </DataTable>
                         </div>
-                        <div>
+                        <div class="sm:col-span-2 lg:col-span-2">
                             <InputText v-model="globalFilterProcesos" placeholder="Buscar..." class="mb-3" />
                             <DataTable :value="procesos" paginator :rows="rows" :totalRecords="totalRecords"
                                 :lazy="true" :first="first" @page="onPage" @sort="onSort"
@@ -242,7 +257,7 @@ watch(() => props.pilar, (newPilar) => {
                                     'nombre',
                                 ]" :sortField="sortField" :sortOrder="sortOrder"
                                 class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
-                                <template #empty> No data found. </template>
+                                <template #empty> Sin Registros. </template>
                                 <Column field="nombre" header="Procesos" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable>
                                     <template #body="slotProps">
@@ -254,15 +269,15 @@ watch(() => props.pilar, (newPilar) => {
                                 </Column>
                                 <Column field="link_externo" header="Link" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable>
-                                    <!-- <template #body="slotProps">
-                                        <button @click="getEstandares(slotProps.data.id)">
-                                            {{ slotProps.data.nombre }}
-                                        </button>
-                                    </template> -->
+                                    <template #body="slotProps">
+                                        <a :href="slotProps.data.link_externo" target="_blank"
+                                            rel="noopener noreferrer">
+                                            {{ slotProps.data.link_externo }}
+                                        </a>
+                                    </template>
                                 </Column>
                             </DataTable>
                         </div>
-
                     </div>
                     <div class="container mx-auto overflow-x-auto grid  grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
                         <div>
@@ -273,7 +288,7 @@ watch(() => props.pilar, (newPilar) => {
                                     'nombre',
                                 ]" :sortField="sortField" :sortOrder="sortOrder"
                                 class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
-                                <template #empty> No data found. </template>
+                                <template #empty> Sin Registros. </template>
                                 <Column field="nombre" header="Procedmientos" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable>
                                     <template #body="slotProps">
@@ -285,11 +300,12 @@ watch(() => props.pilar, (newPilar) => {
                                 </Column>
                                 <Column field="link_externo" header="Link" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable>
-                                    <!-- <template #body="slotProps">
-                                        <button @click="getEstandares(slotProps.data.id)">
-                                            {{ slotProps.data.nombre }}
-                                        </button>
-                                    </template> -->
+                                    <template #body="slotProps">
+                                        <a :href="slotProps.data.link_externo" target="_blank"
+                                            rel="noopener noreferrer">
+                                            {{ slotProps.data.link_externo }}
+                                        </a>
+                                    </template>
                                 </Column>
                             </DataTable>
                         </div>
@@ -301,7 +317,7 @@ watch(() => props.pilar, (newPilar) => {
                                     'nombre',
                                 ]" :sortField="sortField" :sortOrder="sortOrder"
                                 class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
-                                <template #empty> No data found. </template>
+                                <template #empty> Sin Registros. </template>
                                 <Column field="nombre" header="Estandares" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable>
                                     <!-- <template #body="slotProps">
@@ -312,11 +328,12 @@ watch(() => props.pilar, (newPilar) => {
                                 </Column>
                                 <Column field="link_externo" header="Link" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable>
-                                    <!-- <template #body="slotProps">
-                                        <button @click="getEstandares(slotProps.data.id)">
-                                            {{ slotProps.data.nombre }}
-                                        </button>
-                                    </template> -->
+                                    <template #body="slotProps">
+                                        <a :href="slotProps.data.link_externo" target="_blank"
+                                            rel="noopener noreferrer">
+                                            {{ slotProps.data.link_externo }}
+                                        </a>
+                                    </template>
                                 </Column>
                             </DataTable>
                         </div>
