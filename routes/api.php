@@ -19,6 +19,7 @@ Route::get('/usuarios/all/todo', [App\Http\Controllers\userController::class, 'a
 Route::get('/usuarios/{area_id}', [App\Http\Controllers\userController::class, 'byArea'])->name('usuarios.byArea');
 
 
+
 Route::get('/challenges', [App\Http\Controllers\challengesController::class, 'findAll'])->name('challenges.findAll');
 
 Route::get('/config-dashboard', [App\Http\Controllers\dashboardController::class, 'getConfig'])->name('config.getConfig');
@@ -35,6 +36,13 @@ Route::get('/roles', [App\Http\Controllers\rolesController::class, 'findAll'])->
 Route::get('/permisos', [App\Http\Controllers\permisosController::class, 'findAll'])->name('permisos.findAll');
 Route::get('/permisos/all', [App\Http\Controllers\permisosController::class, 'all'])->name('permisos.All');
 Route::get('/tareas/{minuta_id}', [App\Http\Controllers\tareasController::class, 'byMinuta'])->name('tareas.byMinuta');
+
+Route::get('/getDepartamentos', [App\Http\Controllers\homeMetroController::class, 'getDepartamentos'])->name('getDepartamentos.find');
+Route::get('/getProcesos', [App\Http\Controllers\homeMetroController::class, 'getProcesos'])->name('getProcesos.find');
+Route::get('/getProcedimientos', [App\Http\Controllers\homeMetroController::class, 'getProcedimientos'])->name('getProcedimientos.find');
+Route::get('/getEstandares', [App\Http\Controllers\homeMetroController::class, 'getEstandares'])->name('getEstandares.find');
+
+
 
 
 
