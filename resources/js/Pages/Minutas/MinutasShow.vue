@@ -222,6 +222,14 @@
                                         bodyClass="text-center" sortable></Column>
                                     <Column field="estatus.titulo" header="Estatus" headerStyle="width:4em;"
                                         bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+                                    <Column field="estatus.titulo" header="Estatus" headerStyle="width:4em;"
+                                        bodyStyle="text-align:center;" bodyClass="text-center" sortable>
+                                        <template #body="slotProps">
+                                            <span :class="getStatusClass(slotProps.data.estatus.titulo)">
+                                                {{ slotProps.data.estatus.titulo }}
+                                            </span>
+                                        </template>
+                                    </Column>
                                     <Column field="departamento.nombre" header="Fujo de valor" headerStyle="width:4em;"
                                         bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                     <Column field="responsable.name" header="Responsable" headerStyle="width:4em;"
@@ -356,7 +364,18 @@ const filters = ref({});
 const sortField = ref("id");
 const sortOrder = ref(1);
 
-
+const getStatusClass = (status) => {
+    switch (status) {
+        case 'Terminado':
+            return 'bg-green-200 text-green-800';
+        case 'Retrasado':
+            return 'bg-red-200 text-red-800';
+        case 'En proceso':
+            return 'bg-yellow-200 text-yellow-800';
+        default:
+            return 'bg-gray-200 text-gray-800';
+    }
+};
 
 const formatearFecha = (fecha) => {
     return format(new Date(fecha), 'dd/MM/yyyy');
