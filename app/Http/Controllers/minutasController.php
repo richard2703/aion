@@ -140,8 +140,10 @@ class minutasController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(minutas $minutas)
+    public function destroy(minutas $minuta)
     {
         //
+        $minuta->delete();
+        return response()->json(['success' => true]);
     }
 }
