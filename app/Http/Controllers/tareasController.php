@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\tareas;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class tareasController extends Controller
@@ -19,12 +20,43 @@ class tareasController extends Controller
 
     public function findAll(Request $request)
     {
+        $user_rol = $request->user()->roles()->first()->name;
+        $user_id = $request->user()->id;
+
+
         $query = tareas::query();
         $pageSize = $request->get('rows', 10);
         $page = $request->get('page', 1);
         $filter = $request->get('filter', '');
         $sortField = $request->get('sortField', 'id');
         $sortOrder = $request->get('sortOrder', 'asc');
+
+        if ($request->formFilter) {
+            $area_id = $request->formFilter['area_id'];
+            $departamento_id = $request->formFilter['departamento_id'];
+            $responsable_id = $request->formFilter['responsable_id'];
+            $estatus_id = $request->formFilter['estatus_id'];
+            $fecha_from = $request->formFilter['fecha_from'];
+            $fecha_to = $request->formFilter['fecha_to'];
+
+            $query->where(function ($q) use ($area_id, $departamento_id, $responsable_id, $estatus_id, $fecha_from, $fecha_to) {
+                if ($area_id) {
+                    $q->orWhere('tareas.area_id', '=', $area_id);
+                }
+                if ($departamento_id) {
+                    $q->orWhere('tareas.departamento_id', '=', $departamento_id);
+                }
+                if ($responsable_id) {
+                    $q->orWhere('tareas.responsable_id', '=', $responsable_id);
+                }
+                if ($estatus_id) {
+                    $q->orWhere('tareas.estatus_id', '=', $estatus_id);
+                }
+                if ($fecha_from && $fecha_to) {
+                    $q->orWhereBetween('tareas.fecha', [$fecha_from, $fecha_to]);
+                }
+            });
+        }
 
         // Filter logic
         if ($filter) {
@@ -86,7 +118,12 @@ class tareasController extends Controller
             $query->orderBy('id', $sortOrder);
         }
 
-        $tareas = $query->with('area', 'departamento', 'minuta', 'responsable', 'estatus')->paginate($pageSize, ['*'], 'page', $page);
+        if ($user_rol == 'admin') {
+            $tareas = $query->with('area', 'departamento', 'minuta', 'responsable', 'estatus')->paginate($pageSize, ['*'], 'page', $page);
+        } else {
+
+            $tareas = $query->with('area', 'departamento', 'minuta', 'responsable', 'estatus')->where('responsable_id', $user_id)->paginate($pageSize, ['*'], 'page', $page);
+        }
 
         return response()->json($tareas);
     }
@@ -97,7 +134,7 @@ class tareasController extends Controller
      */
     public function create()
     {
-        return Inertia::render('minutas/minutasCreate');
+        return Inertia::render('Tareas/TareasCreate');
     }
 
     /**
@@ -134,6 +171,8 @@ class tareasController extends Controller
     public function edit(tareas $tarea)
     {
         //
+
+        return Inertia::render('Tareas/TareasEdit', ['tarea' => $tarea]);
     }
 
     /**

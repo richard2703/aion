@@ -20,10 +20,10 @@ class tareas extends Model
         'departamento_id',
         'minuta_id',
         'responsable_id',
+        'estatus_id',
         'tarea',
         'fecha',
         'nota',
-        'estatus_id',
     ];
 
     public function area(): BelongsTo
