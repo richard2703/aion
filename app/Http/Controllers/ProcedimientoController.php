@@ -14,6 +14,11 @@ class ProcedimientoController extends Controller
         return Inertia::render('Procedimiento/ProcedimientoIndex');
     }
 
+    function byProceso($proceso_id)
+    {
+        return response()->json(['procedimientos' => Procedimiento::where('proceso_id', $proceso_id)->get()]);
+    }
+
     public function findAll(Request $request)
     {
         $query = Procedimiento::query();

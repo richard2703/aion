@@ -148,14 +148,21 @@ const onSort = (event) => {
                                 <template #empty> No data found. </template>
                                 <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
                                     sortable></Column>
+                                <Column field="area.nombre" header="Pilar" headerStyle="width:4em;"
+                                    bodyClass="text-center" sortable>
+                                </Column>
+                                <Column field="departamento.nombre" header="Flujo de valor" headerStyle="width:4em;"
+                                    bodyClass="text-center" sortable>
+                                </Column>
+                                <Column field="proceso.nombre" header="Proceso" headerStyle="width:4em;"
+                                    bodyClass="text-center" sortable>
+                                </Column>
                                 <Column field="procedimiento.nombre" header="Procedimiento" headerStyle="width:4em;"
                                     bodyClass="text-center" sortable>
                                 </Column>
-                                <Column field="nombre" header="KPI" headerStyle="width:4em;" bodyClass="text-center"
+                                <Column field="titulo" header="KPI" headerStyle="width:4em;" bodyClass="text-center"
                                     sortable></Column>
                                 <Column field="descripcion" header="Descripción" headerStyle="width:4em;"
-                                    bodyClass="text-center" sortable></Column>
-                                <Column field="link_externo" header="Link" headerStyle="width:4em;"
                                     bodyClass="text-center" sortable></Column>
 
                                 <Column header="" headerStyle="width:4em;">

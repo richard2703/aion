@@ -15,12 +15,29 @@ class Kpis extends Model
     protected $table = 'kpis';
 
     protected $fillable = [
+        'titulo',
+        'area_id',
+        'departamento_id',
+        'proceso_id',
         'procedimiento_id',
-        'nombre',
+        'actual',
+        'objetivo',
+        'medicion',
         'descripcion',
-        'link_externo',
     ];
 
+    public function area(): BelongsTo
+    {
+        return $this->belongsTo(Area::class, 'area_id', 'id');
+    }
+    public function departamento(): BelongsTo
+    {
+        return $this->belongsTo(Departamento::class, 'departamento_id', 'id');
+    }
+    public function proceso(): BelongsTo
+    {
+        return $this->belongsTo(Proceso::class, 'proceso_id', 'id');
+    }
     public function procedimiento(): BelongsTo
     {
         return $this->belongsTo(Procedimiento::class, 'procedimiento_id', 'id');

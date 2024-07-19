@@ -51,7 +51,7 @@ class kpiController extends Controller
             $query->orderBy('id', $sortOrder);
         }
 
-        $kpis = $query->with('procedimiento')->paginate($pageSize, ['*'], 'page', $page);
+        $kpis = $query->with('area', 'departamento', 'proceso', 'procedimiento')->paginate($pageSize, ['*'], 'page', $page);
 
         return response()->json($kpis);
     }
@@ -70,7 +70,29 @@ class kpiController extends Controller
 
     public function store(Request $request)
     {
-        $kpis = Kpis::create($request->only(['procedimiento_id', 'nombre', 'descripcion', 'link_externo']));
+        // dd($request);
+        $kpis = new Kpis();
+        $kpis->titulo = $request->titulo;
+        $kpis->actual = $request->actual;
+        $kpis->objetivo = $request->objetivo;
+        $kpis->descripcion = $request->descripcion;
+        $kpis->medicion = $request->medicion;
+        $kpis->regla = $request->regla;
+        $kpis->area_id = $request->area_id;
+        $kpis->departamento_id = $request->departamento_id;
+        $kpis->proceso_id = $request->proceso_id;
+        $kpis->procedimiento_id = $request->procedimiento_id;
+        $kpis->tipo = 1;
+        if ($request->departamento_id !== null) {
+            $kpis->tipo = 2;
+        }
+        if ($request->proceso_id !== null) {
+            $kpis->tipo = 3;
+        }
+        if ($request->procedimiento_id !== null) {
+            $kpis->tipo = 4;
+        }
+        $kpis->save();
         return redirect()->route('kpi.index');
     }
 
