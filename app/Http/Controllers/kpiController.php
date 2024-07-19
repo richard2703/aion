@@ -98,7 +98,29 @@ class kpiController extends Controller
 
     public function update(Request $request, Kpis $kpi)
     {
-        $kpi->update($request->only('procedimiento_id', 'nombre', 'descripcion', 'link_externo'));
+        // $kpi->update($request->only('procedimiento_id', 'nombre', 'descripcion', 'link_externo'));
+        // return redirect()->route('kpi.index');
+        $kpi->titulo = $request->titulo;
+        $kpi->actual = $request->actual;
+        $kpi->objetivo = $request->objetivo;
+        $kpi->descripcion = $request->descripcion;
+        $kpi->medicion = $request->medicion;
+        $kpi->regla = $request->regla;
+        $kpi->area_id = $request->area_id;
+        $kpi->departamento_id = $request->departamento_id;
+        $kpi->proceso_id = $request->proceso_id;
+        $kpi->procedimiento_id = $request->procedimiento_id;
+        $kpi->tipo = 1;
+        if ($request->departamento_id !== null) {
+            $kpi->tipo = 2;
+        }
+        if ($request->proceso_id !== null) {
+            $kpi->tipo = 3;
+        }
+        if ($request->procedimiento_id !== null) {
+            $kpi->tipo = 4;
+        }
+        $kpi->save();
         return redirect()->route('kpi.index');
     }
 

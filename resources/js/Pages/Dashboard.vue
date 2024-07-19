@@ -147,12 +147,12 @@ const getPilar = async (pilar) => {
                                     </button>
                                 </div>
                                 <div class="bg-gray-300 ">
-                                    <button @click="getPilar(3)">
+                                    <button @click="getPilar(4)">
                                         <img class="w-full" src="../../img/metromaps/ops.jpg" alt="">
                                     </button>
                                 </div>
                                 <div class="bg-gray-300 ">
-                                    <button @click="getPilar(4)">
+                                    <button @click="getPilar(3)">
                                         <img class="w-full" src="../../img/metromaps/ventas.jpg" alt="">
                                     </button>
                                 </div>
