@@ -87,7 +87,7 @@ async function getProcedimientos(eventOrValue) {
 
 const submit = () => {
     try {
-        form.post(route("kpi.update"), {
+        form.patch(route("kpi.update", kpi.value.id), {
             onFinish: () => {
                 showToast("El registro ha sido creado", "success");
                 form.reset();
