@@ -1,8 +1,9 @@
 <script setup>
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import { ref, onMounted, watch } from "vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
 import axios from "axios";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import InputLabel from "@/Components/InputLabel.vue";
 import Layout from "@/Layouts/Layout.vue";
 import { confirmDialog, showToast } from "../utils/SweetAlert.service";
 import DataTable from "primevue/datatable";
@@ -210,7 +211,7 @@ const clearFilter = () => {
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div>
                     <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
-                        <PrimaryButton :href="route('tareas.create')">Nuevo</PrimaryButton>
+                        <PrimaryButton class="pi pi-plus m-4" :href="route('tareas.create')"></PrimaryButton>
                     </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto overflow-x-auto gap-4">
@@ -229,7 +230,7 @@ const clearFilter = () => {
                                 <form @submit.prevent="filterTable()">
                                     <div class="m-4 border rounded-lg border-gray-200 flex gap-2 grid grid-cols-4">
                                         <div class="m-4">
-                                            <InputLabel for="area_id" value="Area: " />
+                                            <InputLabel for="area_id" value="Pilar: " />
                                             <select ref="area_select"
                                                 class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
                                                 v-model="formFilter.area_id">
@@ -243,7 +244,7 @@ const clearFilter = () => {
                                         </div>
 
                                         <div class="m-4">
-                                            <InputLabel for="departamento_id" value="Departamento: " />
+                                            <InputLabel for="departamento_id" value="Flujo de valor: " />
                                             <select ref="departamento_select"
                                                 class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
                                                 v-model="formFilter.departamento_id">
