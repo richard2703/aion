@@ -247,7 +247,7 @@
                                     <Column header="" headerStyle="width:4em;">
                                         <template #body="slotProps" class="text-center">
                                             <div class="flex justify-center">
-                                                <PrimaryButton class="m-2 pi pi-pen-to-square"
+                                                <PrimaryButton class="m-2 pi pi-file-edit"
                                                     @click="openModal('edit', slotProps.data.id)">
                                                 </PrimaryButton>
 

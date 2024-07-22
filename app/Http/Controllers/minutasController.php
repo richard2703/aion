@@ -28,11 +28,46 @@ class minutasController extends Controller
         $sortField = $request->get('sortField', 'id');
         $sortOrder = $request->get('sortOrder', 'asc');
 
+        // Apply box filters
+        if ($request->formFilter) {
+
+            $area_id = $request->formFilter['area_id'];
+            $departamento_id = $request->formFilter['departamento_id'];
+            $lider_id = $request->formFilter['lider_id'];
+            $tipo = $request->formFilter['tipo'];
+            $proceso_id = $request->formFilter['proceso_id'];
+            $fecha_from = $request->formFilter['fecha_from'];
+            $fecha_to = $request->formFilter['fecha_to'];
+
+            $query->where(function ($q) use ($tipo, $area_id, $departamento_id, $lider_id, $proceso_id, $fecha_from, $fecha_to) {
+                if ($area_id) {
+                    $q->orWhere('minutas.area_id', '=', $area_id);
+                }
+                if ($departamento_id) {
+                    $q->orWhere('minutas.departamento_id', '=', $departamento_id);
+                }
+                if ($lider_id) {
+                    $q->orWhere('minutas.lider_id', '=', $lider_id);
+                }
+                if ($tipo) {
+                    $q->orWhere('minutas.tipo', '=', $tipo);
+                }
+                if ($proceso_id) {
+                    $q->orWhere('minutas.proceso_id', '=', $proceso_id);
+                }
+                if ($fecha_from && $fecha_to) {
+                    $q->orWhereBetween('minutas.created_at', [$fecha_from, $fecha_to]);
+                }
+            });
+        }
+        ////
+
+        // Apply global search
         if ($filter) {
             $query->where(function ($q) use ($filter) {
                 $q->where('id', 'like', '%' . $filter . '%')
                     ->orWhere('alias', 'like', '%' . $filter . '%')
-                    ->orWhere('tareas', 'like', '%' . $filter . '%')
+                    ->orWhere('created_at', 'like', '%' . $filter . '%')
                     ->orWhereHas('area', function ($q) use ($filter) {
                         $q->where('areas.nombre', 'like', '%' . $filter . '%')
                             ->orWhere('areas.descripcion', 'like', '%' . $filter . '%');
@@ -47,22 +82,33 @@ class minutasController extends Controller
             });
         }
 
-        // if (in_array($sortField, ['id', 'tareas', 'departamento.nombre', 'departamento.nombre', 'usuario.name',])) {
-        //     if (strpos($sortField, 'area.') === 0) {
-        //         $query->join('areas', 'challenges.area_id', '=', 'areas.id')
-        //             ->orderBy('areas.' . substr($sortField, 5), $sortOrder);
-        //     } else if (strpos($sortField, 'departamento.') === 0) {
-        //         $query->join('departamentos', 'challenges.departamento_id', '=', 'departamentos.id')
-        //             ->orderBy('departamentos.' . substr($sortField, 12), $sortOrder);
-        //     } else if (strpos($sortField, 'usuario.') === 0) {
-        //         $query->join('usuarios', 'minutas.responsable_id', '=', 'responsable_id.id')
-        //             ->orderBy('Users.' . substr($sortField, 5), $sortOrder);
-        //     } else {
-        //         $query->orderBy($sortField, $sortOrder);
-        //     }
+        // if (in_array($sortField, ['id', 'titulo', 'objetivo'])) {
+        //     $query->orderBy($sortField, $sortOrder);
         // }
-        if (in_array($sortField, ['id', 'titulo', 'objetivo'])) {
-            $query->orderBy($sortField, $sortOrder);
+        // Sorting logic
+        if (in_array($sortField, ['id', 'alias', 'created_at', 'tipo', 'area.nombre', 'departamento.nombre', 'lider.name', 'proceso.nombre'])) {
+            if (strpos($sortField, 'area.') === 0) {
+                $query->join('areas', 'minutas.area_id', '=', 'areas.id')
+                    ->select('minutas.*', 'areas.nombre as area_nombre') // Select distinct columns
+                    ->orderBy('areas.nombre', $sortOrder);
+            } else if (strpos($sortField, 'departamento.') === 0) {
+                $query->join('departamentos', 'minutas.departamento_id', '=', 'departamentos.id')
+                    ->select('minutas.*', 'departamentos.nombre as departamento_nombre') // Select distinct columns
+                    ->orderBy('departamentos.nombre', $sortOrder);
+            } else if (strpos($sortField, 'lider.') === 0) {
+                $query->join('users', 'minutas.lider_id', '=', 'users.id')
+                    ->select('minutas.*', 'users.name as lider_name') // Select distinct columns
+                    ->orderBy('users.name', $sortOrder);
+            } else if (strpos($sortField, 'proceso.') === 0) {
+                $query->join('procesos', 'minutas.proceso_id', '=', 'procesos.id')
+                    ->select('minutas.*', 'procesos.nombre as procesos_nombre') // Select distinct columns
+                    ->orderBy('procesos.nombre', $sortOrder);
+            } else {
+                $query->orderBy('minutas.' . $sortField, $sortOrder);
+            }
+        } else {
+            // Default sorting if the provided sortField is not allowed
+            $query->orderBy('id', $sortOrder);
         }
 
         // $result = $query->with('challenge')->paginate($pageSize, ['*'], 'page', $page);

@@ -1,5 +1,5 @@
 <script setup>
-import { Head, Link } from "@inertiajs/vue3";
+import { Head, Link, useForm } from "@inertiajs/vue3";
 import { ref, onMounted, watch } from "vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import axios from "axios";
@@ -9,14 +9,16 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import InputText from "primevue/inputtext";
 import { format } from 'date-fns';
-
-const props = defineProps({
-    items: Array,
-});
+import InputLabel from "@/Components/InputLabel.vue";
+import TextInput from "@/Components/TextInput.vue";
 
 const title = "minutero";
-const opciones = ref([]);
 const items = ref([]);
+const areas = ref([]);
+const departamentos = ref([]);
+const procesos = ref([]);
+const usuarios = ref([]);
+const customFilter = ref(false);
 const totalRecords = ref(0);
 const rows = ref(10);
 const first = ref(0);
@@ -25,13 +27,17 @@ const filters = ref({});
 const sortField = ref("id");
 const sortOrder = ref(-1);
 
-async function getItems(
-    page = 1,
-    rowsPerPage = rows.value,
-    filter = "",
-    sortField = "id",
-    sortOrder = -1
-) {
+const formFilter = useForm({
+    area_id: "",
+    departamento_id: "",
+    lider_id: "",
+    tipo: "",
+    proceso_id: "",
+    fecha_from: "",
+    fecha_to: "",
+});
+
+async function getItems(page = 1, rowsPerPage = rows.value, filter = "", sortField = "id", sortOrder = -1) {
     try {
         const response = await axios.get("/api/minutas", {
             params: {
@@ -40,40 +46,77 @@ async function getItems(
                 filter,
                 sortField,
                 sortOrder: sortOrder === 1 ? "asc" : "desc",
-                // sortOrder: sortOrder === 1 ? "desc" : " asc",
-
             },
         });
         items.value = response.data.data;
-        console.log({ minutas: items.value });
         totalRecords.value = response.data.total;
         first.value = (response.data.current_page - 1) * rows.value;
+
+        // Fetch tareas and tareasTerminadas for each item
+        for (let item of items.value) {
+            item.tareas = await getTareas(item.id);
+            item.tareasTerminadas = await getTareasTerminadas(item.id);
+        }
     } catch (error) {
         console.error(error);
     }
 }
 
+const getAreas = async () => {
+    try {
+        const response = await axios.get("/api/areas");
+        areas.value = response.data;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const getDepartamentos = async () => {
+    try {
+        const response = await axios.get("/api/departamentos");
+        departamentos.value = response.data;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+async function getProcesos() {
+    await axios
+        .get("/api/procesos")
+        .then((response) => (procesos.value = response.data.data))
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+async function getUsuarios() {
+    await axios
+        .get("/api/usuarios/all/todo")
+        .then((response) => (usuarios.value = response.data))
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
 const deleteItems = async (id) => {
     try {
-        const result = await confirmDialog(
-            "Estas seguro?",
-            "Ya no podras revertir esto!",
-            "warning"
-        );
+        const result = await confirmDialog("Estas seguro?", "Ya no podras revertir esto!", "warning");
         if (result.isConfirmed) {
             await axios.delete(route("minutas.destroy", id));
             items.value = items.value.filter((item) => item.id !== id);
             showToast("El registro ha sido eliminado", "success");
-
         }
     } catch (error) {
         console.log(error);
-
     }
 };
 
 onMounted(() => {
     getItems();
+    getAreas();
+    getDepartamentos();
+    getProcesos();
+    getUsuarios();
 });
 
 watch(globalFilter, (newValue) => {
@@ -86,36 +129,78 @@ watch(globalFilter, (newValue) => {
 const onPage = (event) => {
     const page = event.page + 1;
     rows.value = event.rows;
-    getItems(
-        page,
-        rows.value,
-        globalFilter.value,
-        sortField.value,
-        sortOrder.value
-    );
+    getItems(page, rows.value, globalFilter.value, sortField.value, sortOrder.value);
 };
 
 const onSort = (event) => {
-    sortField.value = event.sortField || "id";
+    sortField.value = event.sortField;
     sortOrder.value = event.sortOrder;
-    getItems(
-        1,
-        rows.value,
-        globalFilter.value,
-        sortField.value,
-        sortOrder.value
-    );
+    getItems(1, rows.value, globalFilter.value, sortField.value, sortOrder.value);
 };
 
-const formatearFecha = (fecha) => {
-    return format(new Date(fecha), 'dd/MM/yyyy');
+const openFilter = () => {
+    customFilter.value = true;
 };
 
+const clearFilter = () => {
+    formFilter.reset();
+    customFilter.value = false;
+    getItems();
+};
+
+const filterTable = () => {
+    customFilter.value = false;
+    getItems();
+};
+
+const formatearFecha = (dateString) => {
+    return format(new Date(dateString), 'dd/MM/yyyy');
+};
+
+async function getTareas(minuta_id) {
+    try {
+        const response = await axios.get(`/api/tareas/counter/${minuta_id}`);
+        return response.data.count;
+    } catch (error) {
+        console.error(error);
+        return 0;
+    }
+}
+
+async function getTareasTerminadas(minuta_id) {
+    try {
+        const response = await axios.get(`/api/tareas/terminadas/counter/${minuta_id}`);
+        return response.data.count;
+    } catch (error) {
+        console.error(error);
+        return 0;
+    }
+}
 </script>
 
 <style scoped>
-.mb-3 {
-    margin-bottom: 1rem;
+.breadcrumbs {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.breadcrumbsTitulo h3 {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.breadcrumbs h3 {
+    font-size: 20px;
+}
+
+.breadcrumbs a {
+    color: #000;
+    text-decoration: none;
+}
+
+.breadcrumbs .active h3 {
+    font-weight: bold;
 }
 </style>
 
@@ -141,29 +226,45 @@ const formatearFecha = (fecha) => {
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div>
                     <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
-                        <PrimaryButton :href="route('minutas.create')">Nuevo</PrimaryButton>
+                        <PrimaryButton class="m-4 pi pi-plus" :href="route('minutas.create')"></PrimaryButton>
                     </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto overflow-x-auto">
-                            <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
+                            <div class="flex gap-4">
+                                <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
+                                <PrimaryButton class=" mb-4 float-right pi pi-filter" @click="openFilter">
+                                </PrimaryButton>
+                                <PrimaryButton v-if="customFilter" class=" mb-4 float-right pi pi-times"
+                                    @click="clearFilter"></PrimaryButton>
+                            </div>
+
+                            <!-- formulario de filtrado de tareas -->
+                            <div v-if="customFilter" class="">
+                                <form @submit.prevent="filterTable()">
+                                    <div class="m-4 border rounded-lg border-gray-200 flex gap-2 grid grid-cols-4">
+                                        <!-- Your filter form fields here -->
+                                    </div>
+                                </form>
+                            </div>
+
                             <DataTable :value="items" paginator :rows="rows" :totalRecords="totalRecords" :lazy="true"
                                 :first="first" @page="onPage" @sort="onSort" :rowsPerPageOptions="[5, 10, 20, 50]"
                                 tableStyle="min-width: 50rem" :filters="filters" :globalFilterFields="[
                                     'id',
-                                    'area.nombre',
                                     'departamento.nombre',
                                     'alias',
-                                    'tareas',
-                                    'notas',
+                                    'proceso.nombre',
                                     'lider.name',
+                                    'notas',
+                                    'created_at',
                                 ]" :sortField="sortField" :sortOrder="sortOrder"
                                 class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
                                 <template #empty> Sin registros </template>
                                 <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
                                     sortable></Column>
-                                <!-- <Column field="area.nombre" header="Area" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column> -->
                                 <Column field="departamento.nombre" header="Fujo de valor" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+                                <Column field="tipo" header="Tipo" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                 <Column field="alias" header="Alias" headerStyle="width:4em;" bodyClass="text-center"
                                     sortable></Column>
@@ -177,21 +278,29 @@ const formatearFecha = (fecha) => {
                                         {{ formatearFecha(slotProps.data.created_at) }}
                                     </template>
                                 </Column>
+                                <Column header="Tareas" headerStyle="width:4em;" bodyStyle="text-align:center;"
+                                    bodyClass="text-center" sortable>
+                                    <template #body="slotProps">
+                                        <span
+                                            v-if="slotProps.data.tareas !== undefined && slotProps.data.tareasTerminadas !== undefined">
+                                            {{ "(" + slotProps.data.tareasTerminadas + " / " + slotProps.data.tareas +
+                                                ")" }}
+                                        </span>
+                                        <span v-else>
+                                            Loading...
+                                        </span>
+                                    </template>
+                                </Column>
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">
-                                        <PrimaryButton class="m-2" :href="route('minutas.edit', slotProps.data.id)">
-                                            Editar
-                                        </PrimaryButton>
-
-                                        <PrimaryButton class="m-2" :href="route('minutas.show', slotProps.data.id)">
-                                            Detalles
-                                        </PrimaryButton>
-
-                                        <PrimaryButton class="m-2" @click.prevent="
-                                            deleteItems(slotProps.data.id)
-                                            ">
-                                            Borrar
-                                        </PrimaryButton>
+                                        <div class="flex justify-center">
+                                            <PrimaryButton class="pi pi-file-edit m-2"
+                                                :href="route('minutas.edit', slotProps.data.id)"></PrimaryButton>
+                                            <PrimaryButton class="pi pi-search m-2"
+                                                :href="route('minutas.show', slotProps.data.id)"></PrimaryButton>
+                                            <PrimaryButton class="pi pi-trash m-2"
+                                                @click.prevent="deleteItems(slotProps.data.id)"></PrimaryButton>
+                                        </div>
                                     </template>
                                 </Column>
                             </DataTable>
