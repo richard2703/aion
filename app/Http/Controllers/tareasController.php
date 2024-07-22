@@ -305,4 +305,23 @@ class tareasController extends Controller
 
         return response()->json($tareas);
     }
+
+    public function countTareas($minuta_id)
+    {
+        $tareas = new tareas;
+        $tareas->load('area', 'departamento', 'minuta', 'responsable', 'estatus');
+        $tareasCount = tareas::where('minuta_id', $minuta_id)->count();
+        return response()->json(['count' => $tareasCount]);
+    }
+
+    public function countTareasTerminadas($minuta_id)
+    {
+        $count = tareas::where('minuta_id', $minuta_id)
+            ->whereHas('estatus', function ($query) {
+                $query->where('titulo', 'Terminado');
+            })
+            ->count();
+
+        return response()->json(['count' => $count]);
+    }
 }
