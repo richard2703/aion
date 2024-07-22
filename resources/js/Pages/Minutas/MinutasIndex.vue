@@ -258,7 +258,7 @@ const onChange = async (event) => {
                                     <div class="m-4 border rounded-lg border-gray-200 flex gap-2 grid grid-cols-4">
                                         <div class="m-4">
                                             <InputLabel for="area_id" value="Pilar: " />
-                                            <select ref="area_select" @change="onChange($event)"
+                                            <select ref="area_select"
                                                 class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
                                                 v-model="formFilter.area_id">
                                                 <option value="" selected>
