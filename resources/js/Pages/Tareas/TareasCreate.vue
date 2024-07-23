@@ -74,9 +74,10 @@
 
                                 <div class="mt-4 z-30">
                                     <InputLabel for="responsable_id" value="Responsable:" />
-                                    <!-- <AutoComplete v-model="form.responsable_id" optionLabel="name"
-                                :suggestions="filteredUsuarios" forceSelection @complete="search" placeholder="" /> -->
-                                    <select ref="departamento_select"
+                                    <AutoComplete v-model="form.responsable_id" optionLabel="name"
+                                        :suggestions="filteredUsuarios" forceSelection @complete="search"
+                                        placeholder="" />
+                                    <!-- <select ref="departamento_select"
                                         class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
                                         v-model="form.responsable_id" required>
                                         <option value="" disabled selected>
@@ -85,7 +86,7 @@
                                         <option v-for="usuario in usuarios" :key="usuario.id" :value="usuario.id">
                                             {{ usuario.name }}
                                         </option>
-                                    </select>
+                                    </select> -->
                                 </div>
 
                                 <div class="mt-4">
@@ -93,6 +94,24 @@
                                     <TextInput id="tarea" v-model="form.tarea" type="text" class="mt-1 block w-full"
                                         required autocomplete="tarea" />
                                 </div>
+
+                                <div class="mt-4 z-30">
+                                    <InputLabel for="revisor_id" value="Cliente de la tarea:" />
+                                    <AutoComplete v-model="form.revisor_id" optionLabel="name"
+                                        :suggestions="filteredUsuarios" forceSelection @complete="search"
+                                        placeholder="" />
+                                    <!-- <select ref="revisor_select"
+                                        class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                        v-model="form.revisor_id" required>
+                                        <option value="" disabled selected>
+                                            Seleccione una opcion
+                                        </option>
+                                        <option v-for="usuario in usuarios" :key="usuario.id" :value="usuario.id">
+                                            {{ usuario.name }}
+                                        </option>
+                                    </select> -->
+                                </div>
+
                                 <div class="mt-4">
                                     <InputLabel for="estatus" value="Estatus: " />
                                     <select ref="departamento_select"
@@ -113,7 +132,7 @@
                                 <div class="mt-4">
                                     <InputLabel for="fecha" value="Fecha de entrega:" />
                                     <TextInput id="fecha" v-model="form.fecha" type="date" class="mt-1 block w-full"
-                                        required autocomplete="responsable_id" />
+                                        required autocomplete="fecha" />
                                 </div>
                                 <div class="mt-4">
                                     <InputLabel for="nota" value="Notas: " />
@@ -155,6 +174,8 @@ const areas = ref({});
 const minutas = ref({});
 const departamentos = ref({});
 const usuarios = ref([]);
+const filteredUsuarios = ref();
+
 
 
 const form = useForm({
@@ -162,6 +183,7 @@ const form = useForm({
     departamento_id: "",
     minuta_id: "",
     responsable_id: "",
+    revisor_id: "",
     tarea: "",
     fecha: "",
     nota: "",
@@ -222,7 +244,7 @@ const submit = async () => {
         await form.post(route("tareas.store"), {
             onFinish: () => {
                 showToast("El registro ha sido creado", "success");
-                window.location.href = route('tareas.index');
+                // window.location.href = route('tareas.index');
             },
         });
     } catch (error) {
@@ -230,5 +252,19 @@ const submit = async () => {
         console.error(error);
     }
 };
+
+const search = (event) => {
+    console.log("buscando");
+    setTimeout(() => {
+        if (!event.query.trim().length) {
+            console.log(filteredUsuarios.value);
+            filteredUsuarios.value = [...usuarios.value];
+        } else {
+            filteredUsuarios.value = usuarios.value.filter((usuario) => {
+                return usuario.name.toLowerCase().startsWith(event.query.toLowerCase());
+            });
+        }
+    }, 250);
+}
 
 </script>

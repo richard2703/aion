@@ -3,17 +3,17 @@ import { Head, Link, useForm } from "@inertiajs/vue3";
 import { ref, onMounted, watch } from "vue";
 import axios from "axios";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import InputLabel from "@/Components/InputLabel.vue";
 import Layout from "@/Layouts/Layout.vue";
 import { confirmDialog, showToast } from "../utils/SweetAlert.service";
+import { format } from 'date-fns';
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import InputText from "primevue/inputtext";
 import TextInput from "@/Components/TextInput.vue";
-import { format } from 'date-fns';
+import InputLabel from "@/Components/InputLabel.vue";
 
 const props = defineProps({
-    items: Array,
+    authUser: Array,
 });
 
 const title = "tareas";
@@ -21,16 +21,17 @@ const tareas = ref();
 const areas = ref();
 const departamentos = ref();
 const usuarios = ref(props.usuarios);
-const customFilter = ref(false);
+const authUser = ref(props.authUser);
 
 //filtro global y paginado
+const customFilter = ref(false);
 const totalRecords = ref(0);
 const rows = ref(10);
 const first = ref(0);
 const globalFilter = ref("");
 const filters = ref({});
 const sortField = ref("id");
-const sortOrder = ref(-1);
+const sortOrder = ref(1);
 
 const formFilter = useForm({
     area_id: "",
@@ -39,6 +40,10 @@ const formFilter = useForm({
     estatus_id: "",
     fecha_from: "",
     fecha_to: "",
+});
+
+const formValidate = useForm({
+    validacion: "",
 });
 
 onMounted(() => {
@@ -69,7 +74,11 @@ const getTareas = async (
                 sortOrder: sortOrder === 1 ? "asc" : "desc",
             },
         })
-        .then((response) => (tareas.value = response.data.data))
+        .then((response) => {
+            tareas.value = response.data.data
+            totalRecords.value = response.data.total
+            first.value = (response.data.current_page - 1) * rows.value
+        })
         .catch((error) => {
             console.log(error);
         });
@@ -181,6 +190,41 @@ const clearFilter = () => {
     getTareas();
 };
 
+const validateTarea = async (tarea, $event) => {
+    try {
+        if (tarea.revisor.name !== authUser.value.name) {
+            await confirmDialog(
+                "No autorizado",
+                "No eres el cliente de esta tarea!",
+                "error"
+            );
+
+            return $event.target.checked = false;
+        }
+
+        const result = await confirmDialog(
+            "Estas seguro?",
+            "La tarea se marcara como Terminda y no podras revertir esto!",
+            "warning"
+        );
+        if (result.isConfirmed) {
+            await axios.patch(route("tareas.validar", tarea.id), {
+                validacion: 1,
+                estatus_id: 4
+            }).then(() => {
+                showToast("El registro ha sido eliminado", "success");
+                getTareas();
+            });
+
+        } else {
+            $event.target.checked = false;
+        }
+    } catch (error) {
+        console.log(error);
+
+    }
+
+};
 </script>
 
 <style scoped>
@@ -316,7 +360,6 @@ const clearFilter = () => {
                                 tableStyle="min-width: 50rem" :filters="filters" :globalFilterFields="[
                                     'id',
                                     'tarea',
-                                    'area.nombre',
                                     'departamento.nombre',
                                     'responsable.name',
                                     'fecha_entrega',
@@ -341,19 +384,35 @@ const clearFilter = () => {
                                         {{ formatearFecha(slotProps.data.fecha) }}
                                     </template>
                                 </Column>
-                                <Column field="nota" header="Notas" headerStyle="width:4em;" bodyClass="text-center"
+                                <!-- <Column field="nota" header="Notas" headerStyle="width:4em;" bodyClass="text-center"
                                     sortable>
+                                </Column> -->
+                                <Column field="revisor.name" header="Cliente de la tarea" headerStyle="width:4em;"
+                                    bodyClass="text-center" sortable>
+                                </Column>
+                                <Column header="Validacion" headerStyle="width:4em;" bodyClass="justify-center"
+                                    sortable>
+                                    <template #body="slotProps">
+                                        <input type="checkbox" @change="validateTarea(slotProps.data, $event)"
+                                            :disabled="slotProps.data.validacion ? true : false"
+                                            :checked="slotProps.data.validacion ? true : false" /> Validar
+                                    </template>
                                 </Column>
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">
                                         <div class="flex justify-center">
-                                            <PrimaryButton class="m-2 pi pi-pen-to-square"
+                                            <PrimaryButton v-if="slotProps.data.validacion !== 1"
+                                                class="m-2 pi pi-pen-to-square"
                                                 :href="route('tareas.edit', slotProps.data.id)">
                                             </PrimaryButton>
 
-                                            <PrimaryButton class="m-2 pi pi-trash" @click.prevent="
-                                                deleteTarea(slotProps.data.id)
-                                                ">
+                                            <PrimaryButton class="pi pi-file-check m-2"
+                                                :href="route('tareas.detail', slotProps.data.id)"></PrimaryButton>
+
+                                            <PrimaryButton v-if="slotProps.data.validacion !== 1"
+                                                class="m-2 pi pi-trash" @click.prevent="
+                                                    deleteTarea(slotProps.data.id)
+                                                    ">
                                             </PrimaryButton>
                                         </div>
                                     </template>

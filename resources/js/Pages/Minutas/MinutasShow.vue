@@ -241,19 +241,36 @@
                                             {{ formatearFecha(slotProps.data.fecha) }}
                                         </template>
                                     </Column>
-                                    <Column field="nota" header="Notas" headerStyle="width:4em;" bodyClass="text-center"
+                                    <!-- <Column field="nota" header="Notas" headerStyle="width:4em;" bodyClass="text-center"
                                         sortable>
+                                    </Column> -->
+                                    <Column field="revisor.name" header="Cliente de la tarea" headerStyle="width:4em;"
+                                        bodyClass="text-center" sortable>
+                                    </Column>
+                                    <Column header="Validacion" headerStyle="width:4em;" bodyClass="justify-center"
+                                        sortable>
+                                        <template #body="slotProps">
+                                            <input type="checkbox" @change="validateTarea(slotProps.data, $event)"
+                                                :disabled="slotProps.data.validacion ? true : false"
+                                                :checked="slotProps.data.validacion ? true : false" /> Validar
+                                        </template>
                                     </Column>
                                     <Column header="" headerStyle="width:4em;">
                                         <template #body="slotProps" class="text-center">
                                             <div class="flex justify-center">
-                                                <PrimaryButton class="m-2 pi pi-file-edit"
+                                                <PrimaryButton v-if="slotProps.data.validacion !== 1"
+                                                    class="m-2 pi pi-file-edit"
                                                     @click="openModal('edit', slotProps.data.id)">
                                                 </PrimaryButton>
 
-                                                <PrimaryButton class="m-2 pi pi-trash" @click.prevent="
-                                                    deleteTarea(slotProps.data.id)
-                                                    ">
+                                                <PrimaryButton class="m-2 pi pi-file-check"
+                                                    @click="openModal('detail', slotProps.data.id)">
+                                                </PrimaryButton>
+
+                                                <PrimaryButton v-if="slotProps.data.validacion !== 1"
+                                                    class="m-2 pi pi-trash" @click.prevent="
+                                                        deleteTarea(slotProps.data.id)
+                                                        ">
                                                 </PrimaryButton>
                                             </div>
                                         </template>
@@ -287,6 +304,15 @@
                         @close="isEditModalVisible = false" @tareaGuardada="actualizarTareas" />
                 </template>
             </Modal>
+
+            <Modal :show="isDetailModalVisible" :modalData="{ tarea, minuta }" maxWidth="lg"
+                @close="isDetailModalVisible = false">
+                <template v-slot="{ modalData }">
+
+                    <TareasDetail class="z-50" :minuta="modalData.minuta" :task="modalData.tarea"
+                        @close="isDetailModalVisible = false" @tareaGuardada="actualizarTareas" />
+                </template>
+            </Modal>
         </div>
     </Layout>
 </template>
@@ -294,6 +320,7 @@
 <script setup>
 import { ref, onMounted, watch } from "vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
+import { usePage } from '@inertiajs/vue3';
 import axios from "axios";
 import Fieldset from 'primevue/fieldset';
 import AutoComplete from 'primevue/autocomplete';
@@ -307,6 +334,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import { confirmDialog, showToast } from "../utils/SweetAlert.service";
 import TareasCreate from "@/Pages/Minutas/Partials/Tareas/TareasCreate.vue";
 import TareasEdit from "@/Pages/Minutas/Partials/Tareas/TareasEdit.vue";
+import TareasDetail from "@/Pages/Minutas/Partials/Tareas/TareasDetail.vue";
 import InputText from "primevue/inputtext";
 import TextInput from "@/Components/TextInput.vue";
 
@@ -349,11 +377,13 @@ const filteredUsuarios = ref();
 const tareas = ref();
 const isCreateModalVisible = ref(false);
 const isEditModalVisible = ref(false);
+const isDetailModalVisible = ref(false);
 const tarea = ref({});
 const task_id = ref();
 const areas = ref();
 const departamentos = ref();
 const customFilter = ref(false);
+const page = usePage();
 
 //filtro global y paginado
 const totalRecords = ref(0);
@@ -508,7 +538,11 @@ const getTareas = async (
                 sortOrder: sortOrder === 1 ? "asc" : "desc",
             },
         })
-        .then((response) => (tareas.value = response.data.data))
+        .then((response) => {
+            tareas.value = response.data.data;
+            totalRecords.value = response.data.total;
+            first.value = (response.data.current_page - 1) * rows.value;
+        })
         .catch((error) => {
             console.log(error);
         });
@@ -570,11 +604,16 @@ const deleteTarea = async (id) => {
 const openModal = async (tipo, id) => {
     if (tipo === 'create') {
         isCreateModalVisible.value = true;
-    } else {
+    } else if (tipo === 'edit') {
         await axios.get(route("tareas.show", id)).then((response) => {
             tarea.value = response.data;
         })
         isEditModalVisible.value = true;
+    } else {
+        await axios.get(route("tareas.show", id)).then((response) => {
+            tarea.value = response.data;
+        })
+        isDetailModalVisible.value = true;
     }
 };
 
@@ -584,6 +623,42 @@ const closeModal = (tipo) => {
     } else {
         isEditModalVisible.value = false;
     }
+};
+
+const validateTarea = async (tarea, $event) => {
+    try {
+        if (tarea.revisor.name !== page.props.auth.user.user.name) {
+            await confirmDialog(
+                "No autorizado",
+                "No eres el cliente de esta tarea!",
+                "error"
+            );
+
+            return $event.target.checked = false;
+        }
+
+        const result = await confirmDialog(
+            "Estas seguro?",
+            "La tarea se marcara como Terminda y no podras revertir esto!",
+            "warning"
+        );
+        if (result.isConfirmed) {
+            await axios.patch(route("tareas.validar", tarea.id), {
+                validacion: 1,
+                estatus_id: 4
+            }).then(() => {
+                showToast("El registro ha sido eliminado", "success");
+                getTareas();
+            });
+
+        } else {
+            $event.target.checked = false;
+        }
+    } catch (error) {
+        console.log(error);
+
+    }
+
 };
 
 </script>

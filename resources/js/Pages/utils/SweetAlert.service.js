@@ -13,15 +13,17 @@ const Toast = Swal.mixin({
 });
 
 export const confirmDialog = (title, text, icon) => {
+
     return Swal.fire({
         title: title,
         text: text,
         icon: icon,
         position: 'center',
-        width: 400,
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
+        width: 300,
+        showConfirmButton: icon=="error" ? false : true,
+        showCancelButton: true ,
+        confirmButtonColor: '#262626',
+        cancelButtonColor: '#D3B553',
         cancelButtonText: 'Cancelar',
         confirmButtonText: 'Aceptar!'
     });

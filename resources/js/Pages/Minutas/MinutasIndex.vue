@@ -139,17 +139,26 @@ const onSort = (event) => {
 };
 
 const openFilter = () => {
-    customFilter.value = true;
+    customFilter.value = !customFilter.value
+
+};
+
+const filterTable = async () => {
+    await axios
+        .get(`/api/minutas`, {
+            params: {
+                formFilter: formFilter.data(),
+            },
+        })
+        .then((response) => (items.value = response.data.data))
+        .catch((error) => {
+            console.log(error);
+        });
 };
 
 const clearFilter = () => {
     formFilter.reset();
-    customFilter.value = false;
-    getItems();
-};
-
-const filterTable = () => {
-    customFilter.value = false;
+    // customFilter.value = !customFilter.value
     getItems();
 };
 
@@ -242,7 +251,115 @@ async function getTareasTerminadas(minuta_id) {
                             <div v-if="customFilter" class="">
                                 <form @submit.prevent="filterTable()">
                                     <div class="m-4 border rounded-lg border-gray-200 flex gap-2 grid grid-cols-4">
-                                        <!-- Your filter form fields here -->
+                                        <div class="m-4">
+                                            <InputLabel for="area_id" value="Pilar: " />
+                                            <select ref="area_select"
+                                                class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                                v-model="formFilter.area_id">
+                                                <option value="" selected>
+                                                    Seleccione una opcion
+                                                </option>
+                                                <option v-for="area in areas" :key="area.id" :value="area.id">
+                                                    {{ area.nombre }}
+                                                </option>
+                                            </select>
+                                        </div>
+
+                                        <div class="m-4">
+                                            <InputLabel for="departamento_id" value="Flujo de valor: " />
+                                            <select ref="departamento_select"
+                                                class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                                v-model="formFilter.departamento_id">
+                                                <option value="" selected>
+                                                    Seleccione una opcion
+                                                </option>
+                                                <option v-for="departamento in departamentos" :key="departamento.id"
+                                                    :value="departamento.id">
+                                                    {{ departamento.nombre }}
+                                                </option>
+                                            </select>
+                                        </div>
+
+                                        <div class="m-4">
+                                            <InputLabel for="lider_id" value="Lider: " />
+                                            <select ref="lider_select"
+                                                class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                                v-model="formFilter.lider_id">
+                                                <option value="" selected>
+                                                    Seleccione una opcion
+                                                </option>
+                                                <option v-for="usuario in usuarios" :key="usuario.id"
+                                                    :value="usuario.id">{{
+                                                        usuario.name }}</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="m-4">
+                                            <InputLabel for="tipo" value="Tipo: " />
+                                            <select ref="tipo_select"
+                                                class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                                v-model="formFilter.tipo">
+                                                <option value="" selected>
+                                                    Seleccione una opcion
+                                                </option>
+                                                <option value="D.D.S" selected>
+                                                    D.D.S </option>
+                                                <option value="W.D.S." selected>
+                                                    W.D.S. </option>
+                                                <option value="M.D.S." selected>
+                                                    M.D.S. </option>
+                                                <option value="R.O.B." selected>
+                                                    R.O.B. </option>
+                                            </select>
+                                        </div>
+
+                                        <div class="m-4">
+                                            <InputLabel for="proceso_id" value="Proceso: " />
+                                            <select ref="departamento_select"
+                                                class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                                v-model="formFilter.proceso_id">
+                                                <option value="" selected>
+                                                    Seleccione una opcion
+                                                </option>
+                                                <option v-for="proceso in procesos" :key="proceso.id"
+                                                    :value="proceso.id">
+                                                    {{ proceso.nombre }}
+                                                </option>
+                                            </select>
+                                            <!-- <Select v-model="formFilter.proceso_id" :options="procesos" filter
+                                                optionLabel="nombre" placeholder="Seleccione una opcion" class="w-full">
+                                                <template #value="slotProps">
+                                                    <div v-if="slotProps.value" class="flex items-center">
+                                                        <div>{{ slotProps.value.nombre }}</div>
+                                                    </div>
+                                                    <span v-else>
+                                                        {{ slotProps.placeholder }}
+                                                    </span>
+                                                </template>
+<template #option="slotProps">
+                                                    <div class="flex items-center">
+                                                        <div>{{ slotProps.option.nombre }}</div>
+                                                    </div>
+                                                </template>
+</Select> -->
+                                        </div>
+
+                                        <div class="m-4">
+                                            <InputLabel for="fecha" value="Fecha de entrega de: " />
+                                            <TextInput id="fecha" v-model="formFilter.fecha_from" type="date"
+                                                class="mt-1 block w-full" autocomplete="fecha" />
+                                        </div>
+
+                                        <div class="m-4">
+                                            <InputLabel for="created_at" value="Fecha de entrega hasta: " />
+                                            <TextInput id="fecha" v-model="formFilter.fecha_to" type="date"
+                                                class="mt-1 block w-full" autocomplete="fecha" />
+                                        </div>
+
+                                        <div class="m-4">
+                                            <PrimaryButton class="m-4 float-right pi pi-search" type="submit">
+                                            </PrimaryButton>
+                                        </div>
                                     </div>
                                 </form>
                             </div>
@@ -296,7 +413,7 @@ async function getTareasTerminadas(minuta_id) {
                                         <div class="flex justify-center">
                                             <PrimaryButton class="pi pi-file-edit m-2"
                                                 :href="route('minutas.edit', slotProps.data.id)"></PrimaryButton>
-                                            <PrimaryButton class="pi pi-search m-2"
+                                            <PrimaryButton class="pi pi-file-check m-2"
                                                 :href="route('minutas.show', slotProps.data.id)"></PrimaryButton>
                                             <PrimaryButton class="pi pi-trash m-2"
                                                 @click.prevent="deleteItems(slotProps.data.id)"></PrimaryButton>
