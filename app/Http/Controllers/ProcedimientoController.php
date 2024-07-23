@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Procedimiento;
+use App\Models\Proceso;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -69,8 +70,10 @@ class ProcedimientoController extends Controller
 
     public function edit(Procedimiento $procedimiento)
     {
+        $proceso = Proceso::find($procedimiento->proceso_id);
         return Inertia::render('Procedimiento/ProcedimientoEdit', [
-            'procedimiento' => $procedimiento
+            'procedimiento' => $procedimiento,
+            'proceso' => $proceso
         ]);
     }
 
