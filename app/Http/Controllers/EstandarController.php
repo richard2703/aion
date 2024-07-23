@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Estandar;
+use App\Models\Procedimiento;
+use App\Models\Proceso;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -64,8 +66,13 @@ class EstandarController extends Controller
 
     public function edit(Estandar $estandar)
     {
+        $procedimiento = Procedimiento::find($estandar->procedimiento_id);
+        $proceso = Proceso::find($procedimiento->proceso_id);
+
         return Inertia::render('Estandar/EstandarEdit', [
-            'estandar' => $estandar
+            'estandar' => $estandar,
+            'procedimiento' => $procedimiento,
+            'proceso' => $proceso
         ]);
     }
 
