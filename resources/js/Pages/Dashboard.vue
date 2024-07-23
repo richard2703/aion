@@ -22,6 +22,8 @@ const item = ref({});
 const objetivos = ref({});
 const banner_path = ref();
 const proposito = ref();
+const slogan = ref();
+const actuacion = ref();
 const template = ref('');
 const selectedPilar = ref(null);
 
@@ -74,8 +76,9 @@ const getItem = () => {
         .then((response) => {
             item.value = response.data;
             objetivos.value = item.value[1];
-            console.log({ objetivo: objetivos.value });
             proposito.value = item.value[0].proposito;
+            slogan.value = item.value[0].slogan;
+            actuacion.value = item.value[0].actuacion;
             banner_path.value = item.value[0].banner_path;
             // Set other form fields here as needed
         })
@@ -124,8 +127,18 @@ const getPilar = async (pilar) => {
                                     <img class="h-96" :src="banner_path" alt="Banner actual" srcset="">
                                 </div>
                                 <div class="bg-gray-300 ">
-                                    <h2 class="text-center py-4 font-bold text-3xl">Propósito</h2>
-                                    <p class="italic m-4 text-lg">{{ proposito }}</p>
+                                    <div>
+                                        <h2 class="text-center py-4 font-bold text-3xl">Propósito</h2>
+                                        <p class="italic m-4 text-lg">{{ proposito }}</p>
+                                    </div>
+                                    <div>
+                                        <h2 class="text-center py-4 font-bold text-3xl">Slogan</h2>
+                                        <p class="italic m-4 text-lg">{{ slogan }}</p>
+                                    </div>
+                                    <div>
+                                        <h2 class="text-center py-4 font-bold text-3xl">Principios de actuación</h2>
+                                        <p class="italic m-4 text-lg">{{ actuacion }}</p>
+                                    </div>
                                 </div>
                             </div>
                             <br>
@@ -147,13 +160,13 @@ const getPilar = async (pilar) => {
                                     </button>
                                 </div>
                                 <div class="bg-gray-300 ">
-                                    <button @click="getPilar(4)">
-                                        <img class="w-full" src="../../img/metromaps/ops.jpg" alt="">
+                                    <button @click="getPilar(3)">
+                                        <img class="w-full" src="../../img/metromaps/ventas.jpg" alt="">
                                     </button>
                                 </div>
                                 <div class="bg-gray-300 ">
-                                    <button @click="getPilar(3)">
-                                        <img class="w-full" src="../../img/metromaps/ventas.jpg" alt="">
+                                    <button @click="getPilar(4)">
+                                        <img class="w-full" src="../../img/metromaps/ops.jpg" alt="">
                                     </button>
                                 </div>
                                 <div class="bg-gray-300 ">
