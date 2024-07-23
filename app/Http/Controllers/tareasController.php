@@ -125,13 +125,15 @@ class tareasController extends Controller
         }
 
         if ($user_rol == 'admin') {
-            $tareas = $query->with('area', 'departamento', 'minuta', 'responsable', 'estatus', 'revisor')->paginate($pageSize, ['*'], 'page', $page);
+            $result = $query->with('area', 'departamento', 'minuta', 'responsable', 'estatus', 'revisor')->paginate($pageSize, ['*'], 'page', $page);
         } else {
 
-            $tareas = $query->with('area', 'departamento', 'minuta', 'responsable', 'estatus', 'revisor')->where('responsable_id', $user_id)->paginate($pageSize, ['*'], 'page', $page);
+            $result = $query->with('area', 'departamento', 'minuta', 'responsable', 'estatus', 'revisor')->where('responsable_id', $user_id)->paginate($pageSize, ['*'], 'page', $page);
         }
 
-        return response()->json($tareas);
+        // $result = $query->with('area', 'departamento', 'minuta', 'responsable', 'estatus', 'revisor')->paginate($pageSize, ['*'], 'page', $page);
+
+        return response()->json($result);
     }
 
 
@@ -148,16 +150,30 @@ class tareasController extends Controller
      */
     public function store(Request $request)
     {
+
         $data = [
             'area_id' => $request->area_id,
             'departamento_id' => $request->departamento_id,
             'minuta_id' => $request->minuta_id,
             'tarea' => $request->tarea,
-            'responsable_id' => $request->responsable_id,
             'fecha' => $request->fecha,
             'nota' => $request->nota,
             'estatus_id' => $request->estatus_id,
         ];
+
+        if (is_array($request->responsable_id)) {
+            $data['responsable_id'] = $request->responsable_id;
+        }
+        if (is_array($request->revisor_id)) {
+            $data['revisor_id'] = $request->revisor_id;
+        }
+
+        if (is_int($request->responsable_id)) {
+            $data['responsable_id'] = $request->responsable_id;
+        }
+        if (is_int($request->revisor_id)) {
+            $data['revisor_id'] = $request->revisor_id;
+        }
 
         tareas::create($data);
     }
@@ -167,7 +183,7 @@ class tareasController extends Controller
      */
     public function show(tareas $tarea)
     {
-        $tarea->load('area', 'departamento', 'minuta', 'responsable', 'estatus');
+        $tarea->load('area', 'departamento', 'minuta', 'responsable', 'estatus', 'revisor');
         return response()->json($tarea);
     }
 
@@ -177,8 +193,15 @@ class tareasController extends Controller
     public function edit(tareas $tarea)
     {
         //
-
+        $tarea->load('area', 'departamento', 'minuta', 'responsable', 'revisor', 'estatus');
         return Inertia::render('Tareas/TareasEdit', ['tarea' => $tarea]);
+    }
+
+    public function detail(tareas $tarea)
+    {
+        //
+        $tarea->load('area', 'departamento', 'minuta', 'responsable', 'revisor', 'estatus');
+        return Inertia::render('Tareas/TareaDetail', ['tarea' => $tarea]);
     }
 
     /**
@@ -186,16 +209,28 @@ class tareasController extends Controller
      */
     public function update(Request $request, tareas $tarea)
     {
-        $tarea->update($request->only(
-            'area_id',
-            'departamento_id',
-            'minuta_id',
-            'tarea',
-            'responsable_id',
-            'fecha',
-            'nota',
-            'estatus_id',
-        ));
+        if (is_array($request->responsable_id)) {
+            $tarea->responsable_id = $request->responsable_id["id"];
+        }
+        if (is_array($request->revisor_id)) {
+            $tarea->revisor_id = $request->revisor_id["id"];
+        }
+
+        if (is_int($request->responsable_id)) {
+            $tarea->responsable_id = $request->responsable_id;
+        }
+        if (is_int($request->revisor_id)) {
+            $tarea->revisor_id = $request->revisor_id;
+        }
+
+        $tarea->area_id = $request->area_id;
+        $tarea->departamento_id = $request->departamento_id;
+        $tarea->minuta_id = $request->minuta_id;
+        $tarea->tarea = $request->tarea;
+        $tarea->fecha = $request->fecha;
+        $tarea->nota = $request->nota;
+        $tarea->estatus_id = $request->estatus_id;
+        $tarea->save();
     }
 
     /**

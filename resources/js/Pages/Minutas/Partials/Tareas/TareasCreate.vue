@@ -65,6 +65,21 @@
                             <TextInput id="tarea" v-model="form.tarea" type="text" class="mt-1 block w-full" required
                                 autocomplete="tarea" />
                         </div>
+                        <div class="mt-4 z-30">
+                            <InputLabel for="revisor_id" value="Cliente de la tarea:" />
+                            <!-- <AutoComplete v-model="form.revisor_id" optionLabel="name"
+                                :suggestions="filteredUsuarios" forceSelection @complete="search" placeholder="" /> -->
+                            <select ref="departamento_select"
+                                class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                v-model="form.revisor_id" required>
+                                <option value="" disabled selected>
+                                    Seleccione una opcion
+                                </option>
+                                <option v-for="usuario in usuarios" :key="usuario.id" :value="usuario.id">
+                                    {{ usuario.name }}
+                                </option>
+                            </select>
+                        </div>
                         <div class="mt-4">
                             <InputLabel for="estatus" value="Estatus: " />
                             <select ref="departamento_select"
@@ -141,6 +156,7 @@ const form = useForm({
     departamento_id: minuta.value.departamento_id,
     minuta_id: minuta.value.id,
     responsable_id: "",
+    revisor_id: "",
     tarea: "",
     fecha: "",
     nota: "",

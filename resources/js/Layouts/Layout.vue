@@ -59,7 +59,6 @@
                     <main-menu class="hidden shrink-0 p-4 w-56 bg-neutral-800 overflow-y-auto no-scrollbar md:block"
                         :title="titulo" :subTitle="subTitulo" />
                     <div class="px-2 py-4 md:flex-1 md:p-4 md:overflow-y-auto" scroll-region>
-                        <flash-messages />
                         <slot />
                     </div>
                 </div>
