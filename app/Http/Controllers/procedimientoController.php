@@ -7,7 +7,7 @@ use App\Models\Proceso;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class ProcedimientoController extends Controller
+class procedimientoController extends Controller
 {
     //
     public function index()
