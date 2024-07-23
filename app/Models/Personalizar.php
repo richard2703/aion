@@ -15,6 +15,8 @@ class Personalizar extends Model
 
     protected $fillable = [
         'proposito',
+        'slogan',
+        'actuacion',
         'logo',
         'banner',
     ];

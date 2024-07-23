@@ -11,6 +11,16 @@
                                 <TextInput id="proposito" v-model="form.proposito" type="text" class="mt-1 block w-full"
                                     required autofocus autocomplete="proposito" />
                             </div>
+                            <div>
+                                <InputLabel for="slogan" value="Slogan: " />
+                                <TextInput id="slogan" v-model="form.slogan" type="text" class="mt-1 block w-full"
+                                    required autofocus autocomplete="slogan" />
+                            </div>
+                            <div>
+                                <InputLabel for="actuacion" value="Principios de actuacion: " />
+                                <TextInput id="actuacion" v-model="form.actuacion" type="text" class="mt-1 block w-full"
+                                    required autofocus autocomplete="actuacion" />
+                            </div>
 
                             <div>
                                 <InputLabel for="logo" value="Logo: " />
@@ -60,6 +70,8 @@ const logo_path = ref();
 
 const form = useForm({
     proposito: item.value?.proposito || '',
+    slogan: item.value?.slogan || '',
+    actuacion: item.value?.actuacion || '',
     logo: null,
     banner: null,
 });
@@ -72,10 +84,14 @@ const getItem = () => {
         .then((response) => {
             item.value = response.data;
             form.proposito = item.value[0].proposito;
+            form.slogan = item.value[0].slogan;
+            form.actuacion = item.value[0].actuacion;
             logo_path.value = item.value[0].logo_path;
             banner_path.value = item.value[0].banner_path;
 
             ({ logo_path: logo_path.value[0], banner_path: banner_path.value[0] });
+            console.log("item", item.value);
+
         })
         .catch((error) => {
             console.error('Error fetching item:', error);
@@ -94,6 +110,8 @@ onMounted(() => {
 const submit = async () => {
     const formData = new FormData();
     formData.append('proposito', form.proposito);
+    formData.append('slogan', form.slogan);
+    formData.append('actuacion', form.actuacion);
     formData.append('logo', form.logo);
     formData.append('banner', form.banner);
     try {

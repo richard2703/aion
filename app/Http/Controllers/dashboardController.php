@@ -14,10 +14,12 @@ class dashboardController extends Controller
     {
         $personalizar = Personalizar::first();
         $objetivos = objetivos::all();
-        // $logo = ("public/storage/$personalizar->logo");
-        // $banner = ("public/storage/$personalizar->banner");
+
         $personalizar->logo_path = Storage::disk('public')->url($personalizar->logo);
         $personalizar->banner_path = Storage::disk('public')->url($personalizar->banner);
+
+        // $logo = ("public/storage/$personalizar->logo");
+        // $banner = ("public/storage/$personalizar->banner");
         // $personalizar->logo_path = asset($logo);
         // $personalizar->banner_path = asset($banner);
         // dd($logo);
@@ -30,6 +32,9 @@ class dashboardController extends Controller
     {
         $data = [
             'proposito' => $request->proposito,
+            'slogan' => $request->slogan,
+            'actuacion' => $request->actuacion,
+
         ];
 
         // Handle file uploads
@@ -60,6 +65,8 @@ class dashboardController extends Controller
         $personalizar = Personalizar::findOrFail($id);
 
         $personalizar->proposito = $request->proposito;
+        $personalizar->slogan = $request->slogan;
+        $personalizar->actuacion = $request->actuacion;
 
         // Manejar la carga del logo
         if ($request->hasFile('logo')) {
