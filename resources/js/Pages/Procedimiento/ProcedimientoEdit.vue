@@ -9,14 +9,23 @@ import { showToast } from "../utils/SweetAlert.service";
 import Textarea from 'primevue/textarea';
 
 const props = defineProps({
-    procesos: Array,
-    procedimiento: Object
+    areas: Array,
+    departamentos: Array || null,
+    procesos: Array || null,
+    procedimiento: Object,
+    proceso: Object,
 });
 
+const areas = ref(props.areas);
+const departamentos = ref(props.departamentos);
 const procesos = ref(props.procesos);
 const procedimiento = ref(props.procedimiento);
+const proceso = ref(props.proceso);
 
 const form = useForm({
+    area_id: proceso.value.area_id,
+    departamento_id: proceso.value.departamento_id,
+    // proceso_id: kpi.value.proceso_id,
     proceso_id: procedimiento.value.proceso_id,
     nombre: procedimiento.value.nombre,
     descripcion: procedimiento.value.descripcion,
@@ -24,28 +33,43 @@ const form = useForm({
 });
 
 onMounted(() => {
-    getProcesos();
+    console.log('proceso', proceso.value);
+    getAreas();
+    getDepartamentos(proceso.value.area_id);
+    getProcesos(proceso.value.departamento_id);
+
+    // getProcesos();
 });
 
-async function getProcesos() {
+async function getAreas() {
     await axios
-        .get("/api/procesos")
-        .then((response) => (procesos.value = response.data.data))
+        .get("/api/areas")
+        .then((response) => (areas.value = response.data))
+        .catch((error) => {
+            console.log(error);
+        });
+}
+async function getDepartamentos(eventOrValue) {
+    const target_id = eventOrValue && eventOrValue.target ? eventOrValue.target.value : eventOrValue;
+    await axios
+        .get(route("departamentos.byArea", target_id))
+        .then((response) => (departamentos.value = response.data.departamentos))
         .catch((error) => {
             console.log(error);
         });
 }
 
 
-const onChange = async (event) => {
-    const taget_id = event.target.value;
+async function getProcesos(eventOrValue) {
+    const target_id = eventOrValue && eventOrValue.target ? eventOrValue.target.value : eventOrValue;
+
     await axios
-        .get(route("departamentos.byArea", taget_id))
-        .then((response) => (departamentos.value = response.data.departamentos))
+        .get(route("procesos.byDepartamento", target_id))
+        .then((response) => (procesos.value = response.data.procesos))
         .catch((error) => {
             console.log(error);
         });
-};
+}
 
 const submit = () => {
     try {
@@ -95,11 +119,41 @@ const submit = () => {
 
                                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
                                     <div class="mt-4">
-                                        <InputLabel for="proceso_id" value="Area: " />
-                                        <select ref="area_select" @change="onChange($event)"
+                                        <InputLabel for="area_id" value="Pilar: " />
+                                        <select ref="area_select" @change="getDepartamentos($event)"
                                             class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                            v-model="form.proceso_id" required>
+                                            v-model="form.area_id" required>
                                             <option value="" disabled selected>
+                                                Seleccione una opcion
+                                            </option>
+                                            <option v-for="area in areas" :key="area.id" :value="area.id">
+                                                {{ area.nombre }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="mt-4">
+                                        <InputLabel for="departamento_id" value="Flujo de valor: " />
+
+                                        <select ref="departamento_select" @change="getProcesos($event)"
+                                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                            v-model="form.departamento_id">
+                                            <option value="" selected>
+                                                Seleccione una opcion
+                                            </option>
+                                            <option v-for="departamento in departamentos" :key="departamento.id"
+                                                :value="departamento.id">
+                                                {{ departamento.nombre }}
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <div class="mt-4">
+                                        <InputLabel for="proceso_id" value="Proceso: " />
+
+                                        <select ref="proceso_select" @change="getProcedimientos($event)"
+                                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                            v-model="form.proceso_id">
+                                            <option value="" selected>
                                                 Seleccione una opcion
                                             </option>
                                             <option v-for="proceso in procesos" :key="proceso.id" :value="proceso.id">

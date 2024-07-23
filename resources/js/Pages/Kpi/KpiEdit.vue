@@ -21,6 +21,7 @@ const departamentos = ref(props.departamentos);
 const procesos = ref(props.procesos);
 const procedimientos = ref(props.procedimientos);
 const kpi = ref(props.kpi);
+
 const form = useForm({
     titulo: kpi.value.titulo,
     area_id: kpi.value.area_id,
@@ -35,7 +36,6 @@ const form = useForm({
 });
 
 onMounted(() => {
-    console.log(kpi.value);
     getAreas();
     getDepartamentos(kpi.value.area_id);
     getProcesos(kpi.value.departamento_id);
