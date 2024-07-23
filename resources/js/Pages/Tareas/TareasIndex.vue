@@ -14,6 +14,7 @@ import { format } from 'date-fns';
 
 const props = defineProps({
     items: Array,
+    authUser: Array,
 });
 
 const title = "tareas";
@@ -22,6 +23,7 @@ const areas = ref();
 const departamentos = ref();
 const usuarios = ref(props.usuarios);
 const customFilter = ref(false);
+const authUser = ref(props.authUser);
 
 //filtro global y paginado
 const totalRecords = ref(0);
@@ -39,6 +41,10 @@ const formFilter = useForm({
     estatus_id: "",
     fecha_from: "",
     fecha_to: "",
+});
+
+const formValidate = useForm({
+    validacion: "",
 });
 
 onMounted(() => {
@@ -181,6 +187,44 @@ const clearFilter = () => {
     getTareas();
 };
 
+// const isChecked = ref(false);
+// const isDisabled = ref(false);
+const validateTarea = async (tarea, $event) => {
+    try {
+        if (tarea.revisor.name !== authUser.value.name) {
+            await confirmDialog(
+                "No autorizado",
+                "No eres el cliente de esta tarea!",
+                "error"
+            );
+
+            return $event.target.checked = false;
+        }
+
+        const result = await confirmDialog(
+            "Estas seguro?",
+            "La tarea se marcara como Terminda y no podras revertir esto!",
+            "warning"
+        );
+        if (result.isConfirmed) {
+            await axios.patch(route("tareas.validar", tarea.id), {
+                validacion: 1,
+                estatus_id: 4
+            }).then(() => {
+                showToast("El registro ha sido eliminado", "success");
+                getTareas();
+            });
+
+        } else {
+            $event.target.checked = false;
+        }
+    } catch (error) {
+        console.log(error);
+
+    }
+
+};
+console.log({ authUser: authUser.value.name });
 </script>
 
 <style scoped>
@@ -206,7 +250,7 @@ const clearFilter = () => {
                 </Link>
             </div>
         </div>
-
+        {{ $page.props.auth.user }}
         <div class="py-2">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div>
@@ -344,9 +388,20 @@ const clearFilter = () => {
                                 <Column field="nota" header="Notas" headerStyle="width:4em;" bodyClass="text-center"
                                     sortable>
                                 </Column>
+                                <Column field="revisor.name" header="Cliente de la tarea" headerStyle="width:4em;"
+                                    bodyClass="text-center" sortable>
+                                </Column>
+                                <Column header="Validacion" headerStyle="width:4em;" bodyClass="justify-center"
+                                    sortable>
+                                    <template #body="slotProps">
+                                        <input type="checkbox" @change="validateTarea(slotProps.data, $event)"
+                                            :disabled="slotProps.data.validacion ? true : false"
+                                            :checked="slotProps.data.validacion ? true : false" /> Validar
+                                    </template>
+                                </Column>
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">
-                                        <div class="flex justify-center">
+                                        <div v-if="slotProps.data.validacion !== 1" class="flex justify-center">
                                             <PrimaryButton class="m-2 pi pi-pen-to-square"
                                                 :href="route('tareas.edit', slotProps.data.id)">
                                             </PrimaryButton>

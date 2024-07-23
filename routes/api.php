@@ -42,6 +42,8 @@ Route::get('/tareas', [App\Http\Controllers\tareasController::class, 'findAll'])
 Route::get('/tareas/{minuta_id}', [App\Http\Controllers\tareasController::class, 'byMinuta'])->name('tareas.byMinuta');
 Route::get('/tareas/counter/{minuta_id}', [App\Http\Controllers\tareasController::class, 'countTareas'])->name('tareas.counter');
 Route::get('/tareas/terminadas/counter/{minuta_id}', [App\Http\Controllers\tareasController::class, 'countTareasTerminadas'])->name('tareas.terminadas');
+Route::patch('/tareas/validar/{tarea}', [App\Http\Controllers\tareasController::class, 'validar'])->name('tareas.validar');
+
 
 Route::get('/getDepartamentos', [App\Http\Controllers\homeMetroController::class, 'getDepartamentos'])->name('getDepartamentos.find');
 Route::get('/getProcesos', [App\Http\Controllers\homeMetroController::class, 'getProcesos'])->name('getProcesos.find');
