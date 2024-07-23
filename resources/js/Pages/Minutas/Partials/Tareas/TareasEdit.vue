@@ -139,7 +139,6 @@ const minuta = ref(props.minuta);
 
 const usuarios = ref([]);
 const filteredUsuarios = ref([]);
-console.log({ tareaBeforeForm: task.value, minuta: minuta.value });
 
 const form = useForm({
     area_id: minuta.value.area_id,
@@ -197,7 +196,6 @@ const search = (event) => {
 
 const submit = async () => {
     try {
-        console.log(form.data());
 
         await form.patch(route("tareas.update", task.value.id), {
             onFinish: () => {

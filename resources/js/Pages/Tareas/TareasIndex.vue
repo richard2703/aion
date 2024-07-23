@@ -224,7 +224,6 @@ const validateTarea = async (tarea, $event) => {
     }
 
 };
-console.log({ authUser: authUser.value.name });
 </script>
 
 <style scoped>
@@ -250,7 +249,7 @@ console.log({ authUser: authUser.value.name });
                 </Link>
             </div>
         </div>
-        {{ $page.props.auth.user }}
+
         <div class="py-2">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div>
