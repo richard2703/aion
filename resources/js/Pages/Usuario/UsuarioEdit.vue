@@ -147,7 +147,7 @@ onMounted(() => {
                             <form @submit.prevent="submitProfile">
                                 <!-- Name -->
                                 <div class="col-span-6 sm:col-span-4">
-                                    <InputLabel for="name" value="Name" />
+                                    <InputLabel for="name" value="Nombre:" />
                                     <TextInput id="name" v-model="profileForm.name" type="text"
                                         class="mt-1 block w-full" required autocomplete="name" />
                                     <InputError :message="profileForm.errors.name" class="mt-2" />
@@ -155,7 +155,7 @@ onMounted(() => {
 
                                 <!-- Email -->
                                 <div class="col-span-6 sm:col-span-4">
-                                    <InputLabel for="email" value="Email" />
+                                    <InputLabel for="email" value="Correo electrónico:" />
                                     <TextInput id="email" v-model="profileForm.email" type="email"
                                         class="mt-1 block w-full" required autocomplete="username" />
                                     <InputError :message="profileForm.errors.email" class="mt-2" />
@@ -230,7 +230,7 @@ onMounted(() => {
                                 </div> -->
 
                                 <div class="mt-4">
-                                    <InputLabel for="roles" value="Roles: " />
+                                    <InputLabel for="roles" value="Rol: " />
                                     <div>
                                         <div v-for="role in roles" :key="role.id" class="mt-2">
                                             <label class="flex items-center">
@@ -256,38 +256,40 @@ onMounted(() => {
                                     </div> -->
 
                                 <div class="flex items-center justify-end mt-4">
-                                    <PrimaryButton class="ms-4" :class="{
+                                    <PrimaryButton class="ms-4 pi pi-save" :class="{
                                         'opacity-25':
                                             profileForm.processing,
                                     }" :disabled="profileForm.processing">
-                                        Actualizar
+
                                     </PrimaryButton>
                                 </div>
                             </form>
 
                             <SectionBorder />
 
+                            <h2 class="text-2xl my-4">Cambio de contraseña</h2>
+
                             <form @submit.prevent="submitPassword">
                                 <div class="col-span-6 sm:col-span-4">
-                                    <InputLabel for="password" value="New Password" />
+                                    <InputLabel for="password" value="Nueva contraseña" />
                                     <TextInput id="password" ref="passwordInput" v-model="passwordForm.password"
                                         type="password" class="mt-1 block w-full" autocomplete="new-password" />
                                     <InputError :message="passwordForm.errors.password" class="mt-2" />
                                 </div>
 
                                 <div class="col-span-6 sm:col-span-4">
-                                    <InputLabel for="password_confirmation" value="Confirm Password" />
+                                    <InputLabel for="password_confirmation" value="Confirmar contraseña" />
                                     <TextInput id="password_confirmation" v-model="passwordForm.password_confirmation"
                                         type="password" class="mt-1 block w-full" autocomplete="new-password" />
                                     <InputError :message="passwordForm.errors.password_confirmation" class="mt-2" />
                                 </div>
 
                                 <div class="flex items-center justify-end mt-4">
-                                    <PrimaryButton class="ms-4" :class="{
+                                    <PrimaryButton class="ms-4 pi pi-save" :class="{
                                         'opacity-25':
                                             passwordForm.processing,
                                     }" :disabled="passwordForm.processing">
-                                        Actualizar
+
                                     </PrimaryButton>
                                 </div>
                             </form>

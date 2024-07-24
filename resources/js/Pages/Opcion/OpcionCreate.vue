@@ -182,13 +182,14 @@ onMounted(() => {
                                         <Textarea v-model="form.informal" rows="5" cols="30" />
                                     </div>
 
-                                    <div class="flex items-center justify-end mt-4">
-                                        <PrimaryButton class="ms-4" :class="{
-                                            'opacity-25': form.processing,
-                                        }" :disabled="form.processing">
-                                            guardar
-                                        </PrimaryButton>
-                                    </div>
+
+                                </div>
+                                <div class="flex items-center justify-end mt-4">
+                                    <PrimaryButton class="ms-4 pi pi-save" :class="{
+                                        'opacity-25': form.processing,
+                                    }" :disabled="form.processing">
+
+                                    </PrimaryButton>
                                 </div>
                             </form>
                         </div>

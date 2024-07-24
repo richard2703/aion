@@ -95,14 +95,14 @@ onMounted(() => {
                         <div class="container mx-auto">
                             <form @submit.prevent="submit">
                                 <div>
-                                    <InputLabel for="name" value="Name" />
+                                    <InputLabel for="name" value="Nombre" />
                                     <TextInput id="name" v-model="form.name" type="text" class="mt-1 block w-full"
                                         required autofocus autocomplete="name" />
                                     <InputError class="mt-2" :message="form.errors.name" />
                                 </div>
 
                                 <div class="mt-4">
-                                    <InputLabel for="email" value="Email" />
+                                    <InputLabel for="email" value="Correo electronico" />
                                     <TextInput id="email" v-model="form.email" type="email" class="mt-1 block w-full"
                                         required autocomplete="username" />
                                     <InputError class="mt-2" :message="form.errors.email" />
@@ -166,9 +166,9 @@ onMounted(() => {
                                 </div>
 
                                 <div class="flex items-center justify-end mt-4">
-                                    <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }"
+                                    <PrimaryButton class="ms-4 pi pi-save" :class="{ 'opacity-25': form.processing }"
                                         :disabled="form.processing">
-                                        Guardar
+
                                     </PrimaryButton>
                                 </div>
                             </form>
