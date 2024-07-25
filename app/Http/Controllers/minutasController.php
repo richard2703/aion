@@ -130,7 +130,10 @@ class minutasController extends Controller
         $minuta = new minutas();
         $minuta->area_id = $request->area_id;
         $minuta->departamento_id = $request->departamento_id;
-        $minuta->proceso_id = $request->proceso_id["id"];
+        if (isset($request->proceso_id["id"])) {
+            # code...
+            $minuta->proceso_id = $request->proceso_id["id"];
+        }
         $minuta->lider_id = $request->lider_id["id"];
         $minuta->alias = $request->alias;
         $minuta->tipo = $request->tipo;
