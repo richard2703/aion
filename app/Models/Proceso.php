@@ -35,4 +35,9 @@ class Proceso extends Model
     {
         return $this->hasMany(Procedimiento::class);
     }
+
+    public function kpis()
+    {
+        return $this->hasMany(Kpis::class);
+    }
 }
