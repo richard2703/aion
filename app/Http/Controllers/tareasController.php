@@ -14,7 +14,9 @@ class tareasController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Tareas/TareasIndex');
+        return Inertia::render('Tareas/TareasIndex', [
+            'authUser' => auth()->user(),
+        ]);
     }
 
 
@@ -89,7 +91,7 @@ class tareasController extends Controller
         }
 
         // Sorting logic
-        if (in_array($sortField, ['id', 'tarea', 'fecha', 'nota', 'area.nombre', 'departamento.nombre', 'minuta.nombre', 'responsable.nombre'])) {
+        if (in_array($sortField, ['id', 'tarea', 'fecha', 'nota', 'area.nombre', 'departamento.nombre', 'minuta.nombre', 'responsable.name', 'revisor.name', 'estatus.titulo'])) {
             if (strpos($sortField, 'area.') === 0) {
                 $query->join('areas', 'tareas.area_id', '=', 'areas.id')
                     ->select('tareas.*', 'areas.nombre as area_nombre') // Select distinct columns
@@ -103,8 +105,12 @@ class tareasController extends Controller
                     ->select('tareas.*', 'minutas.alias as minuta_alias') // Select distinct columns
                     ->orderBy('minutas.alias', $sortOrder);
             } else if (strpos($sortField, 'responsable.') === 0) {
-                $query->join('responsables', 'tareas.responsable_id', '=', 'users.id')
+                $query->join('users', 'tareas.responsable_id', '=', 'users.id')
                     ->select('tareas.*', 'users.name as responsable_name') // Select distinct columns
+                    ->orderBy('users.name', $sortOrder);
+            } else if (strpos($sortField, 'revisor.') === 0) {
+                $query->join('users', 'tareas.revisor_id', '=', 'users.id')
+                    ->select('tareas.*', 'users.name as revisor_name') // Select distinct columns
                     ->orderBy('users.name', $sortOrder);
             } else if (strpos($sortField, 'estatus.') === 0) {
                 $query->join('estatus', 'tareas.estatus_id', '=', 'estaus.id')
@@ -119,13 +125,15 @@ class tareasController extends Controller
         }
 
         if ($user_rol == 'admin') {
-            $tareas = $query->with('area', 'departamento', 'minuta', 'responsable', 'estatus')->paginate($pageSize, ['*'], 'page', $page);
+            $result = $query->with('area', 'departamento', 'minuta', 'responsable', 'estatus', 'revisor')->paginate($pageSize, ['*'], 'page', $page);
         } else {
 
-            $tareas = $query->with('area', 'departamento', 'minuta', 'responsable', 'estatus')->where('responsable_id', $user_id)->paginate($pageSize, ['*'], 'page', $page);
+            $result = $query->with('area', 'departamento', 'minuta', 'responsable', 'estatus', 'revisor')->where('responsable_id', $user_id)->paginate($pageSize, ['*'], 'page', $page);
         }
 
-        return response()->json($tareas);
+        // $result = $query->with('area', 'departamento', 'minuta', 'responsable', 'estatus', 'revisor')->paginate($pageSize, ['*'], 'page', $page);
+
+        return response()->json($result);
     }
 
 
@@ -142,16 +150,30 @@ class tareasController extends Controller
      */
     public function store(Request $request)
     {
+
         $data = [
             'area_id' => $request->area_id,
             'departamento_id' => $request->departamento_id,
             'minuta_id' => $request->minuta_id,
             'tarea' => $request->tarea,
-            'responsable_id' => $request->responsable_id,
             'fecha' => $request->fecha,
             'nota' => $request->nota,
             'estatus_id' => $request->estatus_id,
         ];
+
+        if (is_array($request->responsable_id)) {
+            $data['responsable_id'] = $request->responsable_id;
+        }
+        if (is_array($request->revisor_id)) {
+            $data['revisor_id'] = $request->revisor_id;
+        }
+
+        if (is_int($request->responsable_id)) {
+            $data['responsable_id'] = $request->responsable_id;
+        }
+        if (is_int($request->revisor_id)) {
+            $data['revisor_id'] = $request->revisor_id;
+        }
 
         tareas::create($data);
     }
@@ -161,7 +183,7 @@ class tareasController extends Controller
      */
     public function show(tareas $tarea)
     {
-        $tarea->load('area', 'departamento', 'minuta', 'responsable', 'estatus');
+        $tarea->load('area', 'departamento', 'minuta', 'responsable', 'estatus', 'revisor');
         return response()->json($tarea);
     }
 
@@ -171,8 +193,15 @@ class tareasController extends Controller
     public function edit(tareas $tarea)
     {
         //
-
+        $tarea->load('area', 'departamento', 'minuta', 'responsable', 'revisor', 'estatus');
         return Inertia::render('Tareas/TareasEdit', ['tarea' => $tarea]);
+    }
+
+    public function detail(tareas $tarea)
+    {
+        //
+        $tarea->load('area', 'departamento', 'minuta', 'responsable', 'revisor', 'estatus');
+        return Inertia::render('Tareas/TareaDetail', ['tarea' => $tarea]);
     }
 
     /**
@@ -180,16 +209,41 @@ class tareasController extends Controller
      */
     public function update(Request $request, tareas $tarea)
     {
+        if (is_array($request->responsable_id)) {
+            $tarea->responsable_id = $request->responsable_id["id"];
+        }
+        if (is_array($request->revisor_id)) {
+            $tarea->revisor_id = $request->revisor_id["id"];
+        }
+
+        if (is_int($request->responsable_id)) {
+            $tarea->responsable_id = $request->responsable_id;
+        }
+        if (is_int($request->revisor_id)) {
+            $tarea->revisor_id = $request->revisor_id;
+        }
+
+        $tarea->area_id = $request->area_id;
+        $tarea->departamento_id = $request->departamento_id;
+        $tarea->minuta_id = $request->minuta_id;
+        $tarea->tarea = $request->tarea;
+        $tarea->fecha = $request->fecha;
+        $tarea->nota = $request->nota;
+        $tarea->estatus_id = $request->estatus_id;
+        $tarea->save();
+    }
+
+    /**
+     * Update the validacion field in storage.
+     */
+    public function validar(Request $request, tareas $tarea)
+    {
+
         $tarea->update($request->only(
-            'area_id',
-            'departamento_id',
-            'minuta_id',
-            'tarea',
-            'responsable_id',
-            'fecha',
-            'nota',
+            'validacion',
             'estatus_id',
         ));
+        return response()->json(['success' => true]);
     }
 
     /**
@@ -272,7 +326,7 @@ class tareasController extends Controller
         }
 
         // Sorting logic
-        if (in_array($sortField, ['id', 'tarea', 'fecha', 'nota', 'area.nombre', 'departamento.nombre', 'minuta.nombre', 'responsable.nombre'])) {
+        if (in_array($sortField, ['id', 'tarea', 'fecha', 'nota', 'area.nombre', 'departamento.nombre', 'minuta.nombre', 'responsable.nombre', 'revisor.name',  'estatus.titulo'])) {
             if (strpos($sortField, 'area.') === 0) {
                 $query->join('areas', 'tareas.area_id', '=', 'areas.id')
                     ->select('tareas.*', 'areas.nombre as area_nombre') // Select distinct columns
@@ -289,6 +343,10 @@ class tareasController extends Controller
                 $query->join('responsables', 'tareas.responsable_id', '=', 'users.id')
                     ->select('tareas.*', 'users.name as responsable_name') // Select distinct columns
                     ->orderBy('users.name', $sortOrder);
+            } else if (strpos($sortField, 'revisor.') === 0) {
+                $query->join('users', 'tareas.revisor_id', '=', 'users.id')
+                    ->select('tareas.*', 'users.name as revisor_name') // Select distinct columns
+                    ->orderBy('users.name', $sortOrder);
             } else if (strpos($sortField, 'estatus.') === 0) {
                 $query->join('estatus', 'tareas.estatus_id', '=', 'estaus.id')
                     ->select('tareas.*', 'estatus.tululo as estatus_tilulo') // Select distinct columns
@@ -301,7 +359,7 @@ class tareasController extends Controller
             $query->orderBy('id', $sortOrder);
         }
 
-        $tareas = $query->with('area', 'departamento', 'minuta', 'responsable', 'estatus')->where('minuta_id', $minuta_id)->paginate($pageSize, ['*'], 'page', $page);
+        $tareas = $query->with('area', 'departamento', 'minuta', 'responsable', 'revisor', 'estatus')->where('minuta_id', $minuta_id)->paginate($pageSize, ['*'], 'page', $page);
 
         return response()->json($tareas);
     }

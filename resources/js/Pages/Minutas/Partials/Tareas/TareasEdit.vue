@@ -65,6 +65,21 @@
                             <TextInput id="tarea" v-model="form.tarea" type="text" class="mt-1 block w-full" required
                                 autocomplete="tarea" />
                         </div>
+                        <div class="mt-4 z-30">
+                            <InputLabel for="revisor_id" value="Cliente de la tarea:" />
+                            <!-- <AutoComplete v-model="form.revisor_id" optionLabel="name"
+                                :suggestions="filteredUsuarios" forceSelection @complete="search" placeholder="" /> -->
+                            <select ref="departamento_select"
+                                class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                v-model="form.revisor_id" required>
+                                <option value="" disabled selected>
+                                    Seleccione una opcion
+                                </option>
+                                <option v-for="usuario in usuarios" :key="usuario.id" :value="usuario.id">
+                                    {{ usuario.name }}
+                                </option>
+                            </select>
+                        </div>
                         <div class="mt-4">
                             <InputLabel for="estatus" value="Estatus: " />
                             <select ref="departamento_select"
@@ -139,13 +154,13 @@ const minuta = ref(props.minuta);
 
 const usuarios = ref([]);
 const filteredUsuarios = ref([]);
-console.log({ tareaBeforeForm: task.value, minuta: minuta.value });
 
 const form = useForm({
     area_id: minuta.value.area_id,
     departamento_id: minuta.value.departamento_id,
     minuta_id: minuta.value.id,
     responsable_id: task.value.responsable_id,
+    revisor_id: task.value.revisor_id,
     tarea: task.value.tarea,
     fecha: task.value.fecha,
     nota: task.value.nota,
@@ -197,7 +212,6 @@ const search = (event) => {
 
 const submit = async () => {
     try {
-        console.log(form.data());
 
         await form.patch(route("tareas.update", task.value.id), {
             onFinish: () => {
