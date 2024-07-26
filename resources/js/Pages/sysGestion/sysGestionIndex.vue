@@ -309,7 +309,9 @@ const subTitle = "subTitle2"; // Este segundo es por siu viene de un menu desple
                                         <thead>
                                             <tr>
                                                 <th class="py-2 px-4 border" colspan="2">
-                                                    {{ departamento.departamento.nombre }}
+                                                    <!-- {{ departamento.departamento.nombre }} -->
+                                                    {{ departamento?.kpis[0]?.titulo || "sin valor" }}
+
                                                 </th>
                                             </tr>
                                         </thead>
@@ -321,8 +323,8 @@ const subTitle = "subTitle2"; // Este segundo es por siu viene de un menu desple
                                             <tr>
 
                                                 <td class="py-2 px-4 border bg-yellow-100">{{
-                                                    departamento.kpis[0].objetivo }}</td>
-                                                <td class="py-2 px-4 border"> {{ departamento.kpis[0].actual }}
+                                                    departamento?.kpis[0]?.objetivo }}</td>
+                                                <td class="py-2 px-4 border"> {{ departamento?.kpis[0]?.actual }}
                                                 </td>
                                             </tr>
                                         </tbody>
