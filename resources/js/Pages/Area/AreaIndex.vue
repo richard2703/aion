@@ -137,7 +137,7 @@ watch(globalFilter, (newValue) => {
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div>
                     <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
-                        <PrimaryButton :href="route('area.create')">Nuevo</PrimaryButton>
+                        <PrimaryButton :href="route('area.create')" class="m-4 pi pi-plus"></PrimaryButton>
                     </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto">
@@ -161,18 +161,18 @@ watch(globalFilter, (newValue) => {
 
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">
-                                        <PrimaryButton class="me-2" :href="route(
+                                        <PrimaryButton class="pi pi-file-edit me-2" :href="route(
                                             'area.edit',
                                             slotProps.data.id
                                         )
                                             ">
-                                            Editar
+
                                         </PrimaryButton>
 
-                                        <PrimaryButton class="me-2" @click.prevent="
+                                        <PrimaryButton class="pi pi-trash me-2" @click.prevent="
                                             deleteArea(slotProps.data.id)
                                             ">
-                                            Borrar
+
                                         </PrimaryButton>
                                     </template>
                                 </Column>

@@ -135,9 +135,9 @@ const onSort = (event) => {
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div>
                     <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
-                        <PrimaryButton :href="route('permisos.create')">Nuevo</PrimaryButton>
+                        <PrimaryButton :href="route('permisos.create')" class="m-4 pi pi-plus"></PrimaryButton>
                     </div>
-                    <div class="px-4 py-2 bg-white border-b border-gray-200">
+                    <div class="px-4 py-2 bg-white border-b bSrder-gray-200">
                         <div class="container mx-auto overflow-x-auto">
                             <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
                             <DataTable :value="items" paginator :rows="rows" :totalRecords="totalRecords" :lazy="true"
@@ -157,8 +157,9 @@ const onSort = (event) => {
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">
-                                        <PrimaryButton class="m-2" :href="route('minutas.edit', slotProps.data.id)">
-                                            Editar
+                                        <PrimaryButton class="m-2 pi pi-file-edit"
+                                            :href="route('minutas.edit', slotProps.data.id)">
+
                                         </PrimaryButton>
                                         <!--
                                         <PrimaryButton class="m-2" @click.prevent="

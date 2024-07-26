@@ -130,7 +130,7 @@ const onSort = (event) => {
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div>
                     <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
-                        <PrimaryButton :href="route('kpi.create')">Nuevo</PrimaryButton>
+                        <PrimaryButton :href="route('kpi.create')" class="m-4 pi pi-plus"></PrimaryButton>
                     </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto overflow-x-auto">
@@ -167,17 +167,15 @@ const onSort = (event) => {
 
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">
-                                        <PrimaryButton class="m-2" :href="route(
+                                        <PrimaryButton class="m-2 pi pi-file-edit" :href="route(
                                             'kpi.edit',
                                             slotProps.data.id
                                         )">
-                                            Editar
                                         </PrimaryButton>
 
-                                        <PrimaryButton class="m-2" @click.prevent="
+                                        <PrimaryButton class="m-2 pi pi-trash" @click.prevent="
                                             deleteKpi(slotProps.data.id)
                                             ">
-                                            Borrar
                                         </PrimaryButton>
                                     </template>
                                 </Column>

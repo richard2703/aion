@@ -135,7 +135,7 @@ watch(globalFilter, (newValue) => {
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div>
                     <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
-                        <PrimaryButton :href="route('user.create')">Nuevo</PrimaryButton>
+                        <PrimaryButton :href="route('user.create')" class="m-4 pi pi-plus"></PrimaryButton>
                     </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto overflow-x-auto">
@@ -154,9 +154,9 @@ watch(globalFilter, (newValue) => {
                                 <template #empty> No data found. </template>
                                 <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
                                     sortable></Column>
-                                <Column field="name" header="Name" headerStyle="width:4em;"
+                                <Column field="name" header="Nombre" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                                <Column field="email" header="Email" headerStyle="width:4em;"
+                                <Column field="email" header="Correo electrónico" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                 <Column field="area.nombre" header="Pilar" headerStyle="width:4em;"
                                     bodyClass="text-center" sortable></Column>
@@ -166,18 +166,18 @@ watch(globalFilter, (newValue) => {
 
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">
-                                        <PrimaryButton class="m-2" :href="route(
+                                        <PrimaryButton class="m-2 pi pi-file-edit" :href="route(
                                             'user.edit',
                                             slotProps.data.id
                                         )
                                             ">
-                                            Editar
+
                                         </PrimaryButton>
 
-                                        <PrimaryButton class="m-2" @click.prevent="
+                                        <PrimaryButton class="m-2 pi pi-trash" @click.prevent="
                                             deleteUser(slotProps.data.id)
                                             ">
-                                            Borrar
+
                                         </PrimaryButton>
                                     </template>
                                 </Column>

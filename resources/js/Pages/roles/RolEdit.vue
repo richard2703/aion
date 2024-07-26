@@ -84,9 +84,9 @@ const submit = () => {
                                     </div>
                                 </div>
                                 <div class="px-4 my-4 pt-2 flex justify-end bg-white border-t border-gray-200">
-                                    <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }"
+                                    <PrimaryButton class="ms-4 pi pi-save" :class="{ 'opacity-25': form.processing }"
                                         :disabled="form.processing">
-                                        Actualizar
+
                                     </PrimaryButton>
                                 </div>
                             </form>

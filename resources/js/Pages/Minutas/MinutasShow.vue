@@ -72,11 +72,11 @@
                                             <InputLabel for="lider" :value="minuta.lider.name" />
                                         </div>
                                         <div v-if="!newAsistente">
-                                            <form @submit.prevent="submit" class="flex">
+                                            <form @submit.prevent="submit" class="flex gap-2">
                                                 <AutoComplete v-model="form.user_id" optionLabel="name"
                                                     :suggestions="filteredUsuarios" forceSelection @complete="search"
                                                     placeholder="" />
-                                                <PrimaryButton class="float-right pi pi-check"></PrimaryButton>
+                                                <PrimaryButton class="float-right pi pi-save"></PrimaryButton>
                                             </form>
                                         </div>
                                     </div>
