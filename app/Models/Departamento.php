@@ -32,4 +32,8 @@ class Departamento extends Model
     {
         return $this->hasMany(Proceso::class);
     }
+    public function kpis()
+    {
+        return $this->hasMany(Kpis::class);
+    }
 }

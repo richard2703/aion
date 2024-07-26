@@ -126,7 +126,7 @@ const submit = () => {
 
                                         <select ref="departamento_select" @change="getProcesos($event)"
                                             class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                            v-model="form.departamento_id">
+                                            v-model="form.departamento_id" required>
                                             <option value="" selected>
                                                 Seleccione una opcion
                                             </option>
@@ -142,7 +142,7 @@ const submit = () => {
 
                                         <select ref="proceso_select" @change="getProcedimientos($event)"
                                             class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                            v-model="form.proceso_id">
+                                            v-model="form.proceso_id" required>
                                             <option value="" selected>
                                                 Seleccione una opcion
                                             </option>
