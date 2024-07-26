@@ -9,7 +9,7 @@
                         ? 'activo flex'
                         : 'inactivo flex'
                         ">
-                        <icon name="office" class="mr-2 w-4 h-4" />
+                        <i class="pi pi-home mr-2 w-4 h-4"></i>
                         Home
                     </div>
                     </Link>
@@ -23,7 +23,7 @@
                         ? 'activo flex'
                         : 'inactivo flex'
                         ">
-                        <icon name="office" class="mr-2 w-4 h-4" />
+                        <i class="pi pi-briefcase mr-2 w-4 h-4"></i>
                         Minutero
                     </div>
                     </Link>
@@ -37,7 +37,7 @@
                         ? 'activo flex'
                         : 'inactivo flex'
                         ">
-                        <icon name="office" class="mr-2 w-4 h-4" />
+                        <i class="pi pi-list mr-2 w-4 h-4"></i>
                         Tareas
                     </div>
                     </Link>
@@ -101,7 +101,7 @@
                             ? 'activo flex'
                             : 'inactivo flex'
                             ">
-                            <icon name="office" class="mr-2 w-4 h-4" />
+                            <i class="pi pi-building-columns mr-2 w-4 h-4"></i>
                             Pilares
                         </div>
                         </Link>
@@ -114,7 +114,7 @@
                             ? 'activo flex'
                             : 'inactivo flex'
                             ">
-                            <icon name="office" class="mr-2 w-4 h-4" />
+                            <i class="pi pi-building mr-2 w-4 h-4"></i>
                             Flujos de valor
                         </div>
                         </Link>
@@ -127,7 +127,7 @@
                             ? 'activo flex'
                             : 'inactivo flex'
                             ">
-                            <icon name="users" class="mr-2 w-4 h-4" />
+                            <i class="pi pi-users mr-2 w-4 h-4"></i>
                             Usuarios
                         </div>
                         </Link>
@@ -141,7 +141,7 @@
                             ? 'activo flex'
                             : 'inactivo flex'
                             ">
-                            <icon name="office" class="mr-2 w-4 h-4" />
+                            <i class="pi pi-verified mr-2 w-4 h-4"></i>
                             Challenges
                         </div>
                         </Link>
@@ -155,7 +155,7 @@
                             ? 'activo flex'
                             : 'inactivo flex'
                             ">
-                            <icon name="office" class="mr-2 w-4 h-4" />
+                            <i class="pi pi-question mr-2 w-4 h-4"></i>
                             Opciones
                         </div>
                         </Link>
@@ -168,7 +168,7 @@
                             ? 'activo flex'
                             : 'inactivo flex'
                             ">
-                            <icon name="office" class="mr-2 w-4 h-4" />
+                            <i class="pi pi-wrench mr-2 w-4 h-4"></i>
                             Configuraciones
                         </div>
                         </Link>
@@ -178,7 +178,7 @@
                     <div class="mb-4">
                         <Link class="group flex items-center py-3" :href="route('objetivo.index')">
                         <div :class="title === 'Objetivos' ? 'activo flex' : 'inactivo flex'">
-                            <icon name="office" class="mr-2 w-4 h-4" />
+                            <i class="pi pi-flag mr-2 w-4 h-4"></i>
                             Objetivo
                         </div>
                         </Link>
@@ -189,7 +189,7 @@
                     <div class="mb-4">
                         <Link class="group flex items-center py-3" :href="route('proceso.index')">
                         <div :class="title === 'Procesos' ? 'activo flex' : 'inactivo flex'">
-                            <icon name="office" class="mr-2 w-4 h-4" />
+                            <i class="pi pi-list-check mr-2 w-4 h-4"></i>
                             Procesos
                         </div>
                         </Link>
@@ -201,7 +201,7 @@
                     <div class="mb-4">
                         <Link class="group flex items-center py-3" :href="route('procedimiento.index')">
                         <div :class="title === 'Procedimientos' ? 'activo flex' : 'inactivo flex'">
-                            <icon name="office" class="mr-2 w-4 h-4" />
+                            <i class="pi pi-check-square mr-2 w-4 h-4"></i>
                             Procedimientos
                         </div>
                         </Link>
@@ -212,7 +212,7 @@
                     <div class="mb-4">
                         <Link class="group flex items-center py-3" :href="route('estandar.index')">
                         <div :class="title === 'Estandares' ? 'activo flex' : 'inactivo flex'">
-                            <icon name="office" class="mr-2 w-4 h-4" />
+                            <i class="pi pi-file mr-2 w-4 h-4"></i>
                             Estandares
                         </div>
                         </Link>
@@ -223,7 +223,7 @@
                     <div class="mb-4">
                         <Link class="group flex items-center py-3" :href="route('kpi.index')">
                         <div :class="title === 'KPI' ? 'activo flex' : 'inactivo flex'">
-                            <icon name="office" class="mr-2 w-4 h-4" />
+                            <i class="pi pi-chart-line mr-2 w-4 h-4"></i>
                             KPI's
                         </div>
                         </Link>
@@ -231,8 +231,9 @@
                 </li>
                 <li v-if="$page.props.auth.user.roles.includes('admin')">
                     <a class="group flex items-center py-3 cursor-pointer" @click="toggleMenu('rolesypermisos')">
-                        <icon name="users" class="mr-2 w-4 h-4" :class="title === 'rolesypermisos' ? 'activo flex'
-                            : 'inactivo flex'" />
+
+                        <i class="pi pi-lock mr-2 w-4 h-4" :class="title === 'rolesypermisos' ? 'activo flex'
+                            : 'inactivo flex'"></i>
                         <div :class="title === 'rolesypermisos' ? 'activo flex'
                             : 'inactivo flex'">
                             Roles y permisos

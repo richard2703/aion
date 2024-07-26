@@ -211,10 +211,10 @@ const submit = () => {
                                 </div>
                                 <hr>
                                 <div class="flex items-center justify-end mt-4">
-                                    <PrimaryButton class="ms-4" :class="{
+                                    <PrimaryButton class="ms-4 pi pi-save" :class="{
                                         'opacity-25': form.processing,
                                     }" :disabled="form.processing">
-                                        guardar
+
                                     </PrimaryButton>
                                 </div>
                             </form>
