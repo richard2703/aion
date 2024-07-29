@@ -47,16 +47,16 @@
 
                                 <hr class="my-4">
 
-                                <div class="mt-4 z-30">
-                                    <InputLabel for="responsable_id" value="Responsable:" />
-                                    <TextInput id="responsable" v-model="tarea.responsable.name" type="text"
-                                        class="mt-1 block w-full" disabled />
-                                </div>
-
                                 <div class="mt-4">
                                     <InputLabel for="tarea" value="Titulo:" />
                                     <TextInput id="tarea" v-model="tarea.tarea" type="text" class="mt-1 block w-full"
                                         disabled />
+                                </div>
+
+                                <div class="mt-4 z-30">
+                                    <InputLabel for="responsable_id" value="Responsable:" />
+                                    <TextInput id="responsable" v-model="tarea.responsable.name" type="text"
+                                        class="mt-1 block w-full" disabled />
                                 </div>
 
                                 <div class="mt-4 z-30">

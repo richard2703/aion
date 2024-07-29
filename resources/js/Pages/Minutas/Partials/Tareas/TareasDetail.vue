@@ -25,15 +25,14 @@
 
                         <hr class="my-4">
 
+                        <div class="mt-4">
+                            <InputLabel for="tarea" value="Titulo:" />
+                            <TextInput id="tarea" type="text" :value="task.tarea" class="mt-1 block w-full" disabled />
+                        </div>
                         <div class="mt-4 z-30">
                             <InputLabel for="responsable_id" value="Responsable:" />
                             <TextInput id="responsable" type="text" :value="task.responsable.name"
                                 class="mt-1 block w-full" disabled />
-                        </div>
-
-                        <div class="mt-4">
-                            <InputLabel for="tarea" value="Titulo:" />
-                            <TextInput id="tarea" type="text" :value="task.tarea" class="mt-1 block w-full" disabled />
                         </div>
                         <div class="mt-4 z-30">
                             <InputLabel for="revisor_id" value="Cliente de la tarea:" />

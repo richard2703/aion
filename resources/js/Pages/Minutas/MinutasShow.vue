@@ -241,9 +241,6 @@
                                             {{ formatearFecha(slotProps.data.fecha) }}
                                         </template>
                                     </Column>
-                                    <!-- <Column field="nota" header="Notas" headerStyle="width:4em;" bodyClass="text-center"
-                                        sortable>
-                                    </Column> -->
                                     <Column field="revisor.name" header="Cliente de la tarea" headerStyle="width:4em;"
                                         bodyClass="text-center" sortable>
                                     </Column>
