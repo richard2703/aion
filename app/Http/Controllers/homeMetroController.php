@@ -46,9 +46,9 @@ class homeMetroController extends Controller
         }
 
         if ($pageSize && $page) {
-            $departamentos = $query->paginate($pageSize, ['*'], 'page', $page);
+            $departamentos = $query->with('kpis')->paginate($pageSize, ['*'], 'page', $page);
         } else {
-            $departamentos = $query->get();
+            $departamentos = $query->with('kpis')->get();
         }
 
         return response()->json($departamentos);

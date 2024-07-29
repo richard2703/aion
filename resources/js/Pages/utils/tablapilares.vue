@@ -4,6 +4,8 @@ import axios from "axios";
 import InputText from "primevue/inputtext";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
+import InputLabel from "@/Components/InputLabel.vue";
+
 
 const props = defineProps({
     pilar: String,
@@ -53,6 +55,7 @@ const getDepartamentos = async (
             },
         });
         departamentos.value = response.data.data;
+        console.log(departamentos.value);
         totalRecords.value = response.data.total;
         first.value = (response.data.current_page - 1) * rows.value;
     } catch (error) {
@@ -245,6 +248,30 @@ watch(() => props.pilar, (newPilar) => {
                                             @click="getProcesos(departamento.value = slotProps.data.id, 1, rows, newValue, sortField, sortOrder)">
                                             {{ slotProps.data.nombre }}
                                         </button>
+                                    </template>
+                                </Column>
+                                <!-- <tr v-for="(procesoItem, index) in departamento.departamento.procesos"
+                                                :key="index">
+                                                <td class="py-2 px-4 border">
+                                                    <Link :href="route('proceso.edit', procesoItem.id)"
+                                                        class="text-blue-500 hover:underline">
+                                                    {{ procesoItem.nombre }}
+                                                    </Link>
+                                                </td>
+                                            </tr> -->
+                                <Column field="kpis" header="KPIs" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable>
+                                    <template #body="slotProps">
+                                        <div v-if="slotProps.data.kpis && slotProps.data.kpis.length">
+                                            <ul>
+                                                <li v-for="(kpi, index) in slotProps.data.kpis" :key="index">
+                                                    {{ kpi.titulo }}
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div v-else>
+                                            Sin KPIs
+                                        </div>
                                     </template>
                                 </Column>
                             </DataTable>

@@ -123,18 +123,21 @@ const getPilar = async (pilar) => {
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto">
                             <div class="grid sm:grid-cols-1 md:grid-cols-2 bg-gray-300">
-                                <div class="bg-gray-300 h-96">
+                                <div class="bg-gray-300">
                                     <img class="h-96" :src="banner_path" alt="Banner actual" srcset="">
+                                    <div>
+                                        <p class="italic m-4 text-lg">{{ slogan }}</p>
+                                    </div>
                                 </div>
                                 <div class="bg-gray-300 ">
                                     <div>
                                         <h2 class="text-center py-4 font-bold text-3xl">Propósito</h2>
                                         <p class="italic m-4 text-lg">{{ proposito }}</p>
                                     </div>
-                                    <div>
+                                    <!-- <div>
                                         <h2 class="text-center py-4 font-bold text-3xl">Slogan</h2>
                                         <p class="italic m-4 text-lg">{{ slogan }}</p>
-                                    </div>
+                                    </div> -->
                                     <div>
                                         <h2 class="text-center py-4 font-bold text-3xl">Principios de actuación</h2>
                                         <p class="italic m-4 text-lg">{{ actuacion }}</p>
