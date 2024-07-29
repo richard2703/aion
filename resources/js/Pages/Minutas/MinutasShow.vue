@@ -220,8 +220,7 @@
                                         bodyStyle="text-align:center;" sortable></Column>
                                     <Column field="tarea" header="Titulo" headerStyle="width:4em;"
                                         bodyClass="text-center" sortable></Column>
-                                    <Column field="estatus.titulo" header="Estatus" headerStyle="width:4em;"
-                                        bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+
                                     <Column field="estatus.titulo" header="Estatus" headerStyle="width:4em;"
                                         bodyStyle="text-align:center;" bodyClass="text-center" sortable>
                                         <template #body="slotProps">
