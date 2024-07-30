@@ -118,7 +118,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('/kpi/create', [App\Http\Controllers\kpiController::class, 'create'])->name('kpi.create');
     Route::post('/kpi/store', [App\Http\Controllers\kpiController::class, 'store'])->name('kpi.store');
     Route::get('/kpi/{kpi}/edit', [App\Http\Controllers\kpiController::class, 'edit'])->name('kpi.edit');
-    Route::patch('/kpi/{kpi}/update', [App\Http\Controllers\kpiController::class, 'update'])->name('kpi.update');
+    Route::post('/kpi/{kpi}/update', [App\Http\Controllers\kpiController::class, 'update'])->name('kpi.update');
     Route::delete('/kpi/{kpi}/destroy', [App\Http\Controllers\kpiController::class, 'destroy'])->name('kpi.destroy');
 
     Route::get('admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin.index');

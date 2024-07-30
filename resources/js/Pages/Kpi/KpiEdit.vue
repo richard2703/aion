@@ -85,20 +85,42 @@ async function getProcedimientos(eventOrValue) {
 }
 
 
-const submit = () => {
-    try {
-        form.patch(route("kpi.update", kpi.value.id), {
-            onFinish: () => {
-                showToast("El registro ha sido creado", "success");
-                form.reset();
-            },
-        });
+// const submit = () => {
+//     try {
+//         form.patch(route("kpi.update", kpi.value.id), {
+//             onFinish: () => {
+//                 showToast("El registro ha sido creado", "success");
+//                 form.reset();
+//             },
+//         });
 
-    } catch (error) {
-        showToast("Ocurrio un error", "error");
-        console.error(error);
-    }
-};
+//     } catch (error) {
+//         showToast("Ocurrio un error", "error");
+//         console.error(error);
+//     }
+// };
+
+async function submit() {
+    await axios
+        .post(route("kpi.update", kpi.value.id), form)
+        .then((response) => {
+            console.log('response', response.data.error);
+            if (response.data.error) {
+                console.log('entro');
+                showToast(response.data.error, "error");
+            } else {
+                showToast("El registro ha sido creado", "success");
+                window.location.href = route("kpi.index");
+
+                // setTimeout(() => {
+                //     window.location.href = route("kpi.index");
+                // }, 2000); // Retraso de 3 segundos para mostrar el toast completo
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
 
 </script>
 
@@ -200,7 +222,7 @@ const submit = () => {
                                     </div>
                                     <div class="my-4">
                                         <InputLabel for="objetivo" value="Objetivo: " />
-                                        <TextInput id="objetivo" v-model="form.objetivo" type="number"
+                                        <TextInput id="objetivo" v-model="form.objetivo" type="number" step="any"
                                             class="mt-1 block w-full" required autocomplete="new-challenge" />
                                     </div>
                                     <div class="my-4">
@@ -210,7 +232,7 @@ const submit = () => {
                                     </div>
                                     <div class="my-4">
                                         <InputLabel for="actual" value="Actual: " />
-                                        <TextInput id="actual" v-model="form.actual" type="number"
+                                        <TextInput id="actual" v-model="form.actual" type="number" step="any"
                                             class="mt-1 block w-full" required autocomplete="new-challenge" />
                                     </div>
                                     <div class="mt-4">

@@ -78,20 +78,51 @@ async function getProcedimientos(event) {
 }
 
 
-const submit = () => {
-    try {
-        form.post(route("kpi.store"), {
-            onFinish: () => {
-                showToast("El registro ha sido creado", "success");
-                form.reset();
-            },
-        });
+// const submit = () => {
+//     try {
+//         form.post(route("kpi.store"), {
+//             onSuccess: (response) => {
+//                 console.log('onSuccess', response);
+//                 showToast("El registro ha sido creado", "success");
+//                 form.reset();
+//             },
+//             onError: (errors) => {
+//                 console.log('onError', errors);
+//                 if (errors?.response?.status === 400) {
+//                     showToast(errors.response.data.error, "error");
+//                 } else {
+//                     showToast("Ocurrió un error", "error");
+//                 }
+//             },
+//         });
+//     } catch (error) {
+//         showToast("Ocurrió un error", "error");
+//         console.error(error);
+//     }
+// };
 
-    } catch (error) {
-        showToast("Ocurrio un error", "error");
-        console.error(error);
-    }
-};
+
+async function submit() {
+    await axios
+        .post(route("kpi.store"), form)
+        .then((response) => {
+            console.log('response', response.data.error);
+            if (response.data.error) {
+                console.log('entro');
+                showToast(response.data.error, "error");
+            } else {
+                showToast("El registro ha sido creado", "success");
+                window.location.href = route("kpi.index");
+
+                // setTimeout(() => {
+                //     window.location.href = route("kpi.index");
+                // }, 2000); // Retraso de 3 segundos para mostrar el toast completo
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
 
 </script>
 
@@ -193,7 +224,7 @@ const submit = () => {
                                     </div>
                                     <div class="my-4">
                                         <InputLabel for="objetivo" value="Objetivo: " />
-                                        <TextInput id="objetivo" v-model="form.objetivo" type="number"
+                                        <TextInput id="objetivo" v-model="form.objetivo" type="number" step="any"
                                             class="mt-1 block w-full" required autocomplete="new-challenge" />
                                     </div>
                                     <div class="my-4">
@@ -203,7 +234,7 @@ const submit = () => {
                                     </div>
                                     <div class="my-4">
                                         <InputLabel for="actual" value="Actual: " />
-                                        <TextInput id="actual" v-model="form.actual" type="number"
+                                        <TextInput id="actual" v-model="form.actual" type="number" step="any"
                                             class="mt-1 block w-full" required autocomplete="new-challenge" />
                                     </div>
                                     <div class="mt-4">
