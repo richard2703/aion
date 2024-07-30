@@ -26,6 +26,7 @@ const procesos = ref(props.procesos);
 const usuarios = ref(props.usuarios);
 const filteredUsuarios = ref();
 const responsable_id = ref();
+const tiposMinutas = ref([]);
 
 const title = "minutero";
 
@@ -66,6 +67,21 @@ async function getUsuarios() {
         });
 
 }
+
+const getTiposMinuta = async () => {
+    try {
+        await axios.get(route("tipo-minuta.index"))
+            .then((response) => {
+                tiposMinutas.value = response.data;
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        console.log(tiposMinutas);
+    } catch (error) {
+        console.error(error);
+    }
+};
 
 console.log({ lider: minuta });
 const form = useForm({
@@ -110,6 +126,7 @@ onMounted(() => {
     getDepartamentos(minuta.value.area_id);
     getUsuarios();
     getProcesos();
+    getTiposMinuta();
 })
 console.log({ procesos: procesos });
 const search = (event) => {
@@ -144,7 +161,7 @@ const search = (event) => {
                 <Link :href="route('minutas.index')" class="px-1">
                 <h3>Minutas -</h3>
                 </Link>
-                <Link class="active">
+                <Link :href="route('minutas.edit', minuta.id)" class="active">
                 <h3>Editar</h3>
                 </Link>
             </div>
@@ -187,49 +204,45 @@ const search = (event) => {
                                             </option>
                                         </select>
                                     </div>
-
                                     <div class="mt-4">
                                         <InputLabel for="tipo" value="Tipo: " />
 
-                                        <select ref="departamento_select"
+                                        <select ref="tipo_select"
                                             class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
                                             v-model="form.tipo" required>
-                                            <option value="" selected>
+                                            <option value="" disabled selected>
                                                 Seleccione una opcion
                                             </option>
-                                            <option value="D.D.S" selected>
-                                                D.D.S </option>
-                                            <option value="W.D.S." selected>
-                                                W.D.S. </option>
-                                            <option value="M.D.S." selected>
-                                                M.D.S. </option>
-                                            <option value="R.O.B." selected>
-                                                R.O.B. </option>
+                                            <option v-for="tipoMinuta in tiposMinutas" :key="tipoMinuta.id"
+                                                :value="tipoMinuta.id">
+                                                {{ tipoMinuta.titulo }}
+                                            </option>
                                         </select>
                                     </div>
+                                </div>
 
-                                    <div class="mt-4">
-                                        <InputLabel for="proceso_id" value="Proceso: " />
-                                        <Select v-model="form.proceso_id" editable
-                                            :virtualScrollerOptions="{ itemSize: 38 }" :options="procesos"
-                                            optionLabel="nombre" placeholder="Seleccione una opcion"
-                                            class="w-full md:w-56" />
-                                    </div>
+                                <div class="mt-4">
+                                    <InputLabel for="proceso_id" value="Proceso: " />
+                                    <Select v-model="form.proceso_id" editable
+                                        :virtualScrollerOptions="{ itemSize: 38 }" :options="procesos"
+                                        optionLabel="nombre" placeholder="Seleccione una opcion"
+                                        class="w-full md:w-56" />
+                                </div>
 
-                                    <div class="mt-4">
-                                        <InputLabel for="lider" value="Lider: " />
-                                        <AutoComplete v-model="form.lider_id" optionLabel="name"
-                                            :suggestions="filteredUsuarios" forceSelection @complete="search"
-                                            placeholder="" />
-                                    </div>
+                                <div class="mt-4">
+                                    <InputLabel for="lider" value="Lider: " />
+                                    <AutoComplete v-model="form.lider_id" optionLabel="name"
+                                        :suggestions="filteredUsuarios" forceSelection @complete="search"
+                                        placeholder="" />
+                                </div>
 
-                                    <div class="mt-4">
-                                        <InputLabel for="alias" value="Alias: " />
-                                        <TextInput id="alias" v-model="form.alias" type="text" class="mt-1 block w-full"
-                                            required autocomplete="new-challenge" />
-                                    </div>
+                                <div class="mt-4">
+                                    <InputLabel for="alias" value="Alias: " />
+                                    <TextInput id="alias" v-model="form.alias" type="text" class="mt-1 block w-full"
+                                        required autocomplete="new-challenge" />
+                                </div>
 
-                                    <!-- <div class="mt-4">
+                                <!-- <div class="mt-4">
                                         <InputLabel for="estatus" value="Estatus: " />
 
                                         <select ref="departamento_select"
@@ -246,17 +259,18 @@ const search = (event) => {
                                         </select>
                                     </div> -->
 
-                                    <div class=" mt-4">
-                                        <InputLabel for="notas" value="Notas: " />
-                                        <Textarea v-model="form.notas" rows="3" style="width: 100%; " />
-                                    </div>
+                                <div class=" mt-4">
+                                    <InputLabel for="notas" value="Notas: " />
+                                    <Textarea v-model="form.notas" rows="3" style="width: 100%; " />
                                 </div>
+
                                 <div class="px-4 my-4 pt-2 flex justify-end bg-white border-t border-gray-200">
                                     <PrimaryButton class="ms-4 pi pi-save" :class="{ 'opacity-25': form.processing, }"
                                         :disabled="form.processing">
 
                                     </PrimaryButton>
                                 </div>
+
                             </form>
                         </div>
                     </div>

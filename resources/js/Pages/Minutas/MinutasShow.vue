@@ -13,7 +13,7 @@
                 <Link :href="route('minutas.index')" class="px-1">
                 <h3>Minutas -</h3>
                 </Link>
-                <Link class="active">
+                <Link :href="route('minutas.show', minuta.id)" class="active">
                 <h3>Show</h3>
                 </Link>
             </div>
@@ -41,7 +41,7 @@
                                     </div>
                                     <div class="mt-4 flex">
                                         <InputLabel for="tipo" value="Tipo: " />&nbsp;
-                                        <InputLabel for="tipo" :value="minuta.tipo" />
+                                        <InputLabel for="tipo" :value="minuta.tipo_minuta.titulo" />
                                     </div>
                                     <div class="mt-4 flex">
                                         <InputLabel for="fecha" value="Fecha: " />&nbsp;

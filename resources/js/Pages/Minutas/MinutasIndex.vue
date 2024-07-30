@@ -225,7 +225,7 @@ async function getTareasTerminadas(minuta_id) {
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
-                <Link class="active">
+                <Link :href="route('minutas.index')" class="active">
                 <h3>Minutas</h3>
                 </Link>
             </div>
@@ -326,22 +326,6 @@ async function getTareasTerminadas(minuta_id) {
                                                     {{ proceso.nombre }}
                                                 </option>
                                             </select>
-                                            <!-- <Select v-model="formFilter.proceso_id" :options="procesos" filter
-                                                optionLabel="nombre" placeholder="Seleccione una opcion" class="w-full">
-                                                <template #value="slotProps">
-                                                    <div v-if="slotProps.value" class="flex items-center">
-                                                        <div>{{ slotProps.value.nombre }}</div>
-                                                    </div>
-                                                    <span v-else>
-                                                        {{ slotProps.placeholder }}
-                                                    </span>
-                                                </template>
-<template #option="slotProps">
-                                                    <div class="flex items-center">
-                                                        <div>{{ slotProps.option.nombre }}</div>
-                                                    </div>
-                                                </template>
-</Select> -->
                                         </div>
 
                                         <div class="m-4">
@@ -381,7 +365,7 @@ async function getTareasTerminadas(minuta_id) {
                                     sortable></Column>
                                 <Column field="departamento.nombre" header="Fujo de valor" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                                <Column field="tipo" header="Tipo" headerStyle="width:4em;"
+                                <Column field="tipo_minuta.titulo" header="Tipo" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                 <Column field="alias" header="Alias" headerStyle="width:4em;" bodyClass="text-center"
                                     sortable></Column>

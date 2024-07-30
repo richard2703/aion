@@ -208,7 +208,6 @@ const getMinutas = async () => {
     try {
         const response = await axios.get("/api/minutas");
         minutas.value = response.data.data;
-        console.log({ minutas: minutas.value });
     } catch (error) {
         console.error(error);
     }

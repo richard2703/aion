@@ -63,3 +63,10 @@ Route::delete('/asistente/{asistente}', [App\Http\Controllers\asistenteControlle
 
 Route::get('/sysgestion', [App\Http\Controllers\sysGestionController::class, 'kpis'])->name('sysgestion.kpis');
 Route::get('/sysgestion/{departamento_id}/departamento', [App\Http\Controllers\sysGestionController::class, 'departamento'])->name('sysgestion.departamento');
+
+// Tipos de minutas
+Route::get('/tipo-minuta', [App\Http\Controllers\tipoMinutaController::class, 'index'])->name('tipo-minuta.index');
+Route::get('/tipo-minuta/{tipoMinuta}/edit', [App\Http\Controllers\tipoMinutaController::class, 'edit'])->name('tipo-minuta.edit');
+Route::post('/tipo-minuta', [App\Http\Controllers\tipoMinutaController::class, 'store'])->name('tipo-minuta.store');
+Route::patch('/tipo-minuta{tipoMinuta}/update', [App\Http\Controllers\tipoMinutaController::class, 'update'])->name('tipo-minuta.update');
+Route::delete('/tipo-minuta/{tipoMinuta}/delete', [App\Http\Controllers\tipoMinutaController::class, 'destroy'])->name('tipo-minuta.destroy');

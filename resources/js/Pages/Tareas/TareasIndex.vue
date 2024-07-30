@@ -13,7 +13,7 @@ import TextInput from "@/Components/TextInput.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 
 const props = defineProps({
-    authUser: Array,
+    authUser: Object,
 });
 
 const title = "tareas";
@@ -245,7 +245,7 @@ const validateTarea = async (tarea, $event) => {
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
-                <Link class="active">
+                <Link :href="route('tareas.index')" class="active">
                 <h3>Tareas</h3>
                 </Link>
             </div>

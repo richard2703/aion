@@ -24,6 +24,7 @@ const procesos = ref(props.procesos);
 const usuarios = ref(props.usuarios);
 const filteredUsuarios = ref();
 const responsable_id = ref();
+const tiposMinutas = ref([]);
 
 const title = "minutero";
 
@@ -55,6 +56,21 @@ async function getUsuarios() {
         });
 
 }
+
+const getTiposMinuta = async () => {
+    try {
+        await axios.get(route("tipo-minuta.index"))
+            .then((response) => {
+                tiposMinutas.value = response.data;
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        console.log(tiposMinutas);
+    } catch (error) {
+        console.error(error);
+    }
+};
 
 const form = useForm({
     area_id: "",
@@ -97,6 +113,7 @@ onMounted(() => {
     getAreas();
     getUsuarios();
     getProcesos();
+    getTiposMinuta();
 })
 console.log({ procesos: procesos });
 const search = (event) => {
@@ -131,7 +148,7 @@ const search = (event) => {
                 <Link :href="route('minutas.index')" class="px-1">
                 <h3>Minutas -</h3>
                 </Link>
-                <Link class="active">
+                <Link :href="route('minutas.create')" class="active">
                 <h3>Nuevo</h3>
                 </Link>
             </div>
@@ -178,20 +195,16 @@ const search = (event) => {
                                     <div class="mt-4">
                                         <InputLabel for="tipo" value="Tipo: " />
 
-                                        <select ref="departamento_select"
+                                        <select ref="tipo_select"
                                             class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
                                             v-model="form.tipo" required>
-                                            <option value="" selected>
+                                            <option value="" disabled selected>
                                                 Seleccione una opcion
                                             </option>
-                                            <option value="D.D.S" selected>
-                                                D.D.S </option>
-                                            <option value="W.D.S." selected>
-                                                W.D.S. </option>
-                                            <option value="M.D.S." selected>
-                                                M.D.S. </option>
-                                            <option value="R.O.B." selected>
-                                                R.O.B. </option>
+                                            <option v-for="tipoMinuta in tiposMinutas" :key="tipoMinuta.id"
+                                                :value="tipoMinuta.id">
+                                                {{ tipoMinuta.titulo }}
+                                            </option>
                                         </select>
                                     </div>
 

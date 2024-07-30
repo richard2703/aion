@@ -111,7 +111,6 @@ const departamentos = ref({});
 const usuarios = ref([]);
 const filteredUsuarios = ref();
 
-console.log({ tarea: tarea.value });
 const form = useForm({
     area_id: tarea.value.area_id,
     departamento_id: tarea.value.departamento_id,
@@ -166,7 +165,6 @@ const getMinutas = async () => {
     try {
         const response = await axios.get("/api/minutas");
         minutas.value = response.data.data;
-        console.log({ minutas: minutas.value });
     } catch (error) {
         console.error(error);
     }
@@ -174,8 +172,6 @@ const getMinutas = async () => {
 
 const submit = async () => {
     try {
-        console.log(form.data());
-
         await form.patch(route("tareas.update", tarea.value.id), {
             onFinish: () => {
                 showToast("El registro ha sido creado", "success");
@@ -189,10 +185,8 @@ const submit = async () => {
 };
 
 const search = (event) => {
-    console.log("buscando");
     setTimeout(() => {
         if (!event.query.trim().length) {
-            console.log(filteredUsuarios.value);
             filteredUsuarios.value = [...usuarios.value];
         } else {
             filteredUsuarios.value = usuarios.value.filter((usuario) => {
