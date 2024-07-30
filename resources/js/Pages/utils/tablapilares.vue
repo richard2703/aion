@@ -4,6 +4,8 @@ import axios from "axios";
 import InputText from "primevue/inputtext";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
+import InputLabel from "@/Components/InputLabel.vue";
+
 
 const props = defineProps({
     pilar: String,
@@ -29,6 +31,11 @@ const filtersProcesos = ref({});
 const sortField = ref("id");
 const sortOrder = ref(1);
 
+const selectedDepartamento = ref(null);
+const selectedProceso = ref(null);
+const selectedProcedimiento = ref(null);
+const selectedEstandar = ref(null);
+
 const getDepartamentos = async (
     page = 1,
     rowsPerPage = rows.value,
@@ -53,6 +60,7 @@ const getDepartamentos = async (
             },
         });
         departamentos.value = response.data.data;
+        console.log(departamentos.value);
         totalRecords.value = response.data.total;
         first.value = (response.data.current_page - 1) * rows.value;
     } catch (error) {
@@ -91,6 +99,8 @@ const getProcesos = async (
     } catch (error) {
         console.error(error);
     }
+    selectedDepartamento.value = departamento;
+
 };
 
 const getProcedimientos = async (
@@ -121,6 +131,8 @@ const getProcedimientos = async (
     } catch (error) {
         console.error(error);
     }
+    selectedProceso.value = proceso;
+
 };
 
 const getEstandares = async (
@@ -152,6 +164,8 @@ const getEstandares = async (
     } catch (error) {
         console.error(error);
     }
+
+    selectedProcedimiento.value = procedimiento;
 };
 
 const onPage = (event) => {
@@ -220,6 +234,11 @@ watch(() => props.pilar, (newPilar) => {
 .mb-3 {
     margin-bottom: 1rem;
 }
+
+.selected {
+    background-color: #d3d3d3;
+    /* Cambia este color según tus preferencias */
+}
 </style>
 
 <template>
@@ -242,9 +261,39 @@ watch(() => props.pilar, (newPilar) => {
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable>
                                     <template #body="slotProps">
                                         <button
-                                            @click="getProcesos(departamento.value = slotProps.data.id, 1, rows, newValue, sortField, sortOrder)">
+                                            v-bind:class="[selectedDepartamento == slotProps.data.id ? 'selected' : '']"
+                                            @click=" getProcesos(departamento.value = slotProps.data.id, 1, rows,
+                                                newValue, sortField, sortOrder)">
                                             {{ slotProps.data.nombre }}
                                         </button>
+                                        <!-- <button :class="{ 'selected': selectedDepartamento.value === slotProps.data.id }"
+                                            @click="selectDepartamento(slotProps.data.id)">
+                                            {{ slotProps.data.nombre }}
+                                        </button> -->
+                                    </template>
+                                </Column>
+                                <!-- <tr v-for="(procesoItem, index) in departamento.departamento.procesos"
+                                                :key="index">
+                                                <td class="py-2 px-4 border">
+                                                    <Link :href="route('proceso.edit', procesoItem.id)"
+                                                        class="text-blue-500 hover:underline">
+                                                    {{ procesoItem.nombre }}
+                                                    </Link>
+                                                </td>
+                                            </tr> -->
+                                <Column field="kpis" header="KPIs" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable>
+                                    <template #body="slotProps">
+                                        <div v-if="slotProps.data.kpis && slotProps.data.kpis.length">
+                                            <ul>
+                                                <li v-for="(kpi, index) in slotProps.data.kpis" :key="index">
+                                                    {{ kpi.titulo }}
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div v-else>
+                                            Sin KPIs
+                                        </div>
                                     </template>
                                 </Column>
                             </DataTable>
@@ -261,7 +310,7 @@ watch(() => props.pilar, (newPilar) => {
                                 <Column field="nombre" header="Procesos" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable>
                                     <template #body="slotProps">
-                                        <button
+                                        <button v-bind:class="[selectedProceso == slotProps.data.id ? 'selected' : '']"
                                             @click="getProcedimientos(proceso.value = slotProps.data.id, 1, rows, newValue, sortField, sortOrder)">
                                             {{ slotProps.data.nombre }}
                                         </button>
@@ -293,6 +342,7 @@ watch(() => props.pilar, (newPilar) => {
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable>
                                     <template #body="slotProps">
                                         <button
+                                            v-bind:class="[selectedProcedimiento == slotProps.data.id ? 'selected' : '']"
                                             @click="getEstandares(procedimiento.value = slotProps.data.id, 1, rows, newValue, sortField, sortOrder)">
                                             {{ slotProps.data.nombre }}
                                         </button>
