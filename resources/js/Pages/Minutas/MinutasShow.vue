@@ -221,8 +221,6 @@
                                     <Column field="tarea" header="Titulo" headerStyle="width:4em;"
                                         bodyClass="text-center" sortable></Column>
                                     <Column field="estatus.titulo" header="Estatus" headerStyle="width:4em;"
-                                        bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                                    <Column field="estatus.titulo" header="Estatus" headerStyle="width:4em;"
                                         bodyStyle="text-align:center;" bodyClass="text-center" sortable>
                                         <template #body="slotProps">
                                             <span :class="getStatusClass(slotProps.data.estatus.titulo)">
@@ -244,8 +242,7 @@
                                     <Column field="revisor.name" header="Cliente de la tarea" headerStyle="width:4em;"
                                         bodyClass="text-center" sortable>
                                     </Column>
-                                    <Column header="Validacion" headerStyle="width:4em;" bodyClass="justify-center"
-                                        sortable>
+                                    <Column header="Validacion" headerStyle="width:4em;" bodyClass="justify-center">
                                         <template #body="slotProps">
                                             <input type="checkbox" @change="validateTarea(slotProps.data, $event)"
                                                 :disabled="slotProps.data.validacion ? true : false"

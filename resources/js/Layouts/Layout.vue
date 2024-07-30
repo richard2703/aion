@@ -48,6 +48,8 @@
 
                                     <Link class="block px-6 py-2 hover:text-white hover:bg-neutral-500"
                                         href="/user/profile"><i class="pi pi-user mr-2"></i> Perfil</Link>
+                                    <Link class="block px-6 py-2 hover:text-white hover:bg-neutral-500"
+                                        href="/tareas/mis-tareas"><i class="pi pi-list mr-2"></i> Mis Tareas</Link>
                                     <Link class="block px-6 py-2 w-full text-left hover:text-white hover:bg-neutral-500"
                                         href="/logout" method="post" as="button"><i
                                         class="pi pi-sign-out mr-2"></i>Cerrar sesión</Link>
