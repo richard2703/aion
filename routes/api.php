@@ -64,4 +64,4 @@ Route::delete('/asistente/{asistente}', [App\Http\Controllers\asistenteControlle
 Route::get('/sysgestion', [App\Http\Controllers\sysGestionController::class, 'kpis'])->name('sysgestion.kpis');
 Route::get('/sysgestion/{departamento_id}/departamento', [App\Http\Controllers\sysGestionController::class, 'departamento'])->name('sysgestion.departamento');
 
-Route::get('/registros_kpi', [App\Http\Controllers\registros_kpisController::class, 'promedio'])->name('registros_kpi.promedio');
+Route::get('/sysgestion/{id}/registros_kpi', [App\Http\Controllers\registros_kpisController::class, 'registros'])->name('registros_kpi.registros');

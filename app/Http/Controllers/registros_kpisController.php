@@ -6,6 +6,7 @@ use App\Models\Kpis;
 use App\Models\registros_kpi;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class registros_kpisController extends Controller
 {
@@ -44,5 +45,18 @@ class registros_kpisController extends Controller
             // ->get();
             ->avg('actual');
         return response()->json(['promedio' => $promedio], 200);
+    }
+
+    public function registros($id)
+    {
+        $registros = registros_kpi::select(
+            'kpi_id',
+            'actual',
+            DB::raw("DATE_FORMAT(created_at, '%d %m %y') as mes")
+        )->where('kpi_id', $id)->get();
+
+        Carbon::setLocale('es');
+
+        return response()->json($registros);
     }
 }

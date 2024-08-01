@@ -38,16 +38,19 @@ let viejo = ref();
 //datos para tabla
 const chartData = ref();
 const chartOptions = ref();
+const registros = ref([5, 7, 9, 12]);
+const titulos = ref(['Enero', 'Febrero', 'Marzo', 'Abril']);
+const kpiTitulos = ref(['Contrataciones']);
 
 const setChartData = () => {
     return {
-        labels: ['Enero', 'Febrero', 'Marzo', 'Abril'],
+        labels: titulos,
         datasets: [
             {
-                label: 'Contrataciones',
-                data: [5, 7, 3, 4],
-                backgroundColor: ['rgba(249, 115, 22, 0.2)', 'rgba(6, 182, 212, 0.2)', 'rgb(107, 114, 128, 0.2)', 'rgba(139, 92, 246 0.2)'],
-                borderColor: ['rgb(249, 115, 22)', 'rgb(6, 182, 212)', 'rgb(107, 114, 128)', 'rgb(139, 92, 246)'],
+                label: kpiTitulos,
+                data: registros,
+                backgroundColor: ['rgba(249, 115, 22, 0.2)'],
+                borderColor: ['rgb(249, 115, 22)'],
                 borderWidth: 1
             }
         ]
@@ -173,11 +176,36 @@ async function sysGestion(
         .then((response) => {
             (departamento.value = response.data)
             console.log('departamento', departamento.value);
+            registros.value = departamento.value.registros.map(record => record.actual);
+            // titulos.value = departamento.value.registros.map(record => record.created_at);
+            titulos.value = departamento.value.registros.map(record => record.mes);
+
+            console.log('registros', registros.value);
         })
         .catch((error) => {
             console.log(error);
         });
 
+}
+
+
+
+async function getRegistros(kpi_id,) {
+    console.log('kpi_id', kpi_id);
+
+    await axios
+        .get(route("registros_kpi.registros", kpi_id))
+        .then((response) => {
+            // (departamento.value = response.data)
+            console.log('resopnse', response.data);
+            registros.value = response.data.map(record => record.actual);
+            titulos.value = response.data.map(record => record.mes);
+
+            // console.log('registros', registros.value);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 }
 
 const test = () => {
@@ -389,8 +417,9 @@ const subTitle = "subTitle2"; // Este segundo es por siu viene de un menu desple
                                             <tr>
                                                 <th class="py-2 px-4 border" colspan="2">
                                                     <!-- {{ departamento.departamento.nombre }} -->
-                                                    {{ kpiItem?.titulo || "sin valor" }}
-
+                                                    <button @click="getRegistros(kpiItem.id)"> {{ kpiItem?.titulo ||
+                                                        "sin valor"
+                                                        }}</button>
                                                 </th>
                                             </tr>
                                         </thead>
@@ -401,8 +430,9 @@ const subTitle = "subTitle2"; // Este segundo es por siu viene de un menu desple
                                             </tr>
                                             <tr>
 
-                                                <td class="py-2 px-4 border bg-yellow-100">{{
-                                                    kpiItem?.objetivo }}</td>
+                                                <td class="py-2 px-4 border bg-yellow-100">
+                                                    {{ kpiItem?.objetivo }}
+                                                </td>
                                                 <td class="py-2 px-4 border" style="text-align-last: justify;"> {{
                                                     formatNumber(kpiItem?.actual) }}
                                                     <PrimaryButton class="pi pi-filter"

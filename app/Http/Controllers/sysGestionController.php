@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Departamento;
 use App\Models\Kpis;
 use App\Models\Proceso;
+use App\Models\registros_kpi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Carbon\Carbon;
 
 class sysGestionController extends Controller
 {
@@ -64,6 +67,19 @@ class sysGestionController extends Controller
         // $departamento = $departamento->load('kpis');
         $kpis = Kpis::where('departamento_id', $departamento_id->id)
             ->where('tipo', 2)->get();
-        return response()->json(['departamento' => $departamento, 'kpis' => $kpis]);
+        // $registros = registros_kpi::select('kpi_id', 'actual', 'created_at')->where('kpi_id', $kpis[0]->id)->get();
+        $registros = registros_kpi::select(
+            'kpi_id',
+            'actual',
+            DB::raw("DATE_FORMAT(created_at, '%d %m %y') as mes")
+        )->where('kpi_id', $kpis[0]->id)->get();
+
+        Carbon::setLocale('es');
+
+        // $registros->transform(function ($item) {
+        //     $item->mes = Carbon::parse($item->created_at)->translatedFormat('F');
+        //     return $item;
+        // });
+        return response()->json(['departamento' => $departamento, 'kpis' => $kpis, 'registros' => $registros]);
     }
 }
