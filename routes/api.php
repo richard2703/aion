@@ -63,3 +63,5 @@ Route::delete('/asistente/{asistente}', [App\Http\Controllers\asistenteControlle
 
 Route::get('/sysgestion', [App\Http\Controllers\sysGestionController::class, 'kpis'])->name('sysgestion.kpis');
 Route::get('/sysgestion/{departamento_id}/departamento', [App\Http\Controllers\sysGestionController::class, 'departamento'])->name('sysgestion.departamento');
+
+// Route::post('/registros_kpi/store', [App\Http\Controllers\registros_kpisController::class, 'store'])->name('registros_kpi.store');
