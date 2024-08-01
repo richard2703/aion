@@ -31,13 +31,23 @@
                         </div>
                         <div class="mt-4 z-30">
                             <InputLabel for="responsable_id" value="Responsable:" />
-                            <TextInput id="responsable" type="text" :value="task.responsable.name"
-                                class="mt-1 block w-full" disabled />
+                            <div v-if="task.responsable">
+                                <TextInput id="responsable" v-model="task.responsable.name" type="text"
+                                    class="mt-1 block w-full" disabled />
+                            </div>
+                            <div v-else>
+                                <InputLabel class="text-red-500" value="Sin responsable" />
+                            </div>
                         </div>
                         <div class="mt-4 z-30">
                             <InputLabel for="revisor_id" value="Cliente de la tarea:" />
-                            <TextInput id="revisor" type="text" :value="task.revisor.name" class="mt-1 block w-full"
-                                disabled />
+                            <div v-if="task.revisor">
+                                <TextInput id="rivisor" v-model="task.revisor.name" type="text"
+                                    class="mt-1 block w-full" disabled />
+                            </div>
+                            <div v-else>
+                                <InputLabel class="text-red-500" value="Sin revisor" />
+                            </div>
                         </div>
                         <div class="mt-4">
                             <InputLabel for="estatus" value="Estatus: " />
