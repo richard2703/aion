@@ -71,3 +71,11 @@ Route::get('/tipo-minuta/{tipoMinuta}/edit', [App\Http\Controllers\tipoMinutaCon
 Route::post('/tipo-minuta', [App\Http\Controllers\tipoMinutaController::class, 'store'])->name('tipo-minuta.store');
 Route::patch('/tipo-minuta{tipoMinuta}/update', [App\Http\Controllers\tipoMinutaController::class, 'update'])->name('tipo-minuta.update');
 Route::delete('/tipo-minuta/{tipoMinuta}/delete', [App\Http\Controllers\tipoMinutaController::class, 'destroy'])->name('tipo-minuta.destroy');
+
+// Acciones
+Route::get('/acciones', [App\Http\Controllers\accionController::class, 'index'])->name('acciones.index');
+Route::get('/acciones/{area_id}/pilar/{tipo}/tipo', [App\Http\Controllers\accionController::class, 'byArea'])->name('acciones.byArea');
+Route::get('/acciones/{accion}/edit', [App\Http\Controllers\accionController::class, 'edit'])->name('acciones.edit');
+Route::post('/acciones/store', [App\Http\Controllers\accionController::class, 'store'])->name('acciones.store');
+Route::patch('/acciones/{accion}/update', [App\Http\Controllers\accionController::class, 'update'])->name('acciones.update');
+Route::delete('/acciones/{accion}/delete', [App\Http\Controllers\accionController::class, 'destroy'])->name('acciones.destroy');
