@@ -20,6 +20,7 @@ class registros_kpi extends Model
         'created_for',
         'created_at',
         'updated_at',
+        'deleted_at',
     ];
 
     public function kpis(): BelongsTo

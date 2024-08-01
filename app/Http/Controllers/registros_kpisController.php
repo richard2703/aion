@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kpis;
 use App\Models\registros_kpi;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class registros_kpisController extends Controller
 {
@@ -16,11 +17,32 @@ class registros_kpisController extends Controller
         $registro_kpi->actual = $request->actual;
         $registro_kpi->created_for = auth()->user()->id;
 
+        $promedio = registros_kpi::where('kpi_id', $request->kpi_id)
+            ->latest('created_at')
+            ->take(12)
+            ->avg('actual');
         $kpi = Kpis::find($request->kpi_id);
-        $kpi->actual = $request->actual;
+        $kpi->actual = $promedio;
         $kpi->save();
 
         $registro_kpi->save();
         return response()->json(['success' => 'KPI Creado'], 200);
+    }
+
+    public function promedio()
+    {
+
+        // $fechaInicio = Carbon::now()->subMonths(12);
+
+        // $promedio = registros_kpi::where('kpi_id', $id)
+        //     ->where('created_at', '>=', $fechaInicio)
+        //     ->avg('actual');
+
+        $promedio = registros_kpi::where('kpi_id', 4)
+            ->latest('created_at')
+            ->take(12)
+            // ->get();
+            ->avg('actual');
+        return response()->json(['promedio' => $promedio], 200);
     }
 }

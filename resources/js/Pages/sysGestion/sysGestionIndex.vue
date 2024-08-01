@@ -10,6 +10,8 @@ import Column from "primevue/column";
 import InputText from "primevue/inputtext";
 import Chart from 'primevue/chart';
 import Modal from "@/Components/Modal.vue";
+import { showToast } from "../utils/SweetAlert.service";
+
 
 import { FwbButton, FwbModal } from 'flowbite-vue'
 
@@ -216,10 +218,11 @@ async function submitModal() {
         .then((response) => {
             console.log('response', response.data);
             if (response.data.error) {
-                console.log('entro');
                 showToast(response.data.error, "error");
             } else {
                 showToast("El registro ha sido creado", "success");
+                test();
+                formModal.actual = "";
                 // window.location.href = route("kpi.index");
 
                 // setTimeout(() => {
@@ -230,6 +233,11 @@ async function submitModal() {
         .catch((error) => {
             console.log(error);
         });
+}
+
+function formatNumber(value) {
+    if (value == null) return ''; // Manejar el caso cuando el valor es nulo o indefinido
+    return parseFloat(value).toFixed(2);
 }
 
 
@@ -396,7 +404,7 @@ const subTitle = "subTitle2"; // Este segundo es por siu viene de un menu desple
                                                 <td class="py-2 px-4 border bg-yellow-100">{{
                                                     kpiItem?.objetivo }}</td>
                                                 <td class="py-2 px-4 border" style="text-align-last: justify;"> {{
-                                                    kpiItem?.actual }}
+                                                    formatNumber(kpiItem?.actual) }}
                                                     <PrimaryButton class="pi pi-filter"
                                                         @click="showModal(kpiItem.id, kpiItem.actual, kpiItem.titulo)">
                                                     </PrimaryButton>
