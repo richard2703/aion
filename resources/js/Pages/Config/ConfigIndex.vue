@@ -6,6 +6,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { showToast } from "../utils/SweetAlert.service";
 import ConfigDashboard from "@/Pages/Config/Partials/ConfigDashboard.vue";
+import ConfigTipoMinuta from "@/Pages/Config/Partials/ConfigTipoMinuta.vue";
 
 const count = ref(0);
 const template = ref('dashboard');
@@ -49,8 +50,8 @@ const template = ref('dashboard');
                                         </li>
                                         <!-- TODO: eliminar si no se usa -->
                                         <li class="text-blue-300 hover:text-blue-800 font-bold text-xl">
-                                            <button @click="template = 'seccion2'">
-                                                Seccion 2
+                                            <button @click="template = 'tipoMinuta'">
+                                                Tipos de minuta
                                             </button>
                                         </li>
 
@@ -60,9 +61,8 @@ const template = ref('dashboard');
                                 <div class="bg-white p-4">
 
                                     <ConfigDashboard v-if="template === 'dashboard'" />
-                                    <div v-if="template === 'seccion2'">
-                                        {{ template }}
-                                    </div>
+                                    <ConfigTipoMinuta v-if="template === 'tipoMinuta'" />
+
                                     <div v-if="template === 'seccion3'">
                                         {{ template }}
                                     </div>

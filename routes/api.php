@@ -39,6 +39,7 @@ Route::get('/permisos', [App\Http\Controllers\permisosController::class, 'findAl
 Route::get('/permisos/all', [App\Http\Controllers\permisosController::class, 'all'])->name('permisos.All');
 
 Route::get('/tareas', [App\Http\Controllers\tareasController::class, 'findAll'])->name('tareas.findAll');
+Route::get('/tareas/user', [App\Http\Controllers\tareasController::class, 'byUser'])->name('tareas.byUser');
 Route::get('/tareas/{minuta_id}', [App\Http\Controllers\tareasController::class, 'byMinuta'])->name('tareas.byMinuta');
 Route::get('/tareas/counter/{minuta_id}', [App\Http\Controllers\tareasController::class, 'countTareas'])->name('tareas.counter');
 Route::get('/tareas/terminadas/counter/{minuta_id}', [App\Http\Controllers\tareasController::class, 'countTareasTerminadas'])->name('tareas.terminadas');
@@ -63,3 +64,10 @@ Route::delete('/asistente/{asistente}', [App\Http\Controllers\asistenteControlle
 
 Route::get('/sysgestion', [App\Http\Controllers\sysGestionController::class, 'kpis'])->name('sysgestion.kpis');
 Route::get('/sysgestion/{departamento_id}/departamento', [App\Http\Controllers\sysGestionController::class, 'departamento'])->name('sysgestion.departamento');
+
+// Tipos de minutas
+Route::get('/tipo-minuta', [App\Http\Controllers\tipoMinutaController::class, 'index'])->name('tipo-minuta.index');
+Route::get('/tipo-minuta/{tipoMinuta}/edit', [App\Http\Controllers\tipoMinutaController::class, 'edit'])->name('tipo-minuta.edit');
+Route::post('/tipo-minuta', [App\Http\Controllers\tipoMinutaController::class, 'store'])->name('tipo-minuta.store');
+Route::patch('/tipo-minuta{tipoMinuta}/update', [App\Http\Controllers\tipoMinutaController::class, 'update'])->name('tipo-minuta.update');
+Route::delete('/tipo-minuta/{tipoMinuta}/delete', [App\Http\Controllers\tipoMinutaController::class, 'destroy'])->name('tipo-minuta.destroy');
