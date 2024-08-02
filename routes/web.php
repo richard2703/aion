@@ -145,4 +145,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
 
     //SysGestion
     Route::get('sysgestion', [App\Http\Controllers\sysGestionController::class, 'index'])->name('sysgestion.index');
+
+    Route::get('send/mail', [App\Http\Controllers\SendMailController::class, 'sendMailWithAttachment'])->name('mailer.sendMailWithAttachment');
 });
