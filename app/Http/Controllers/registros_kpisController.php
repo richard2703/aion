@@ -23,7 +23,8 @@ class registros_kpisController extends Controller
             ->take(12)
             ->avg('actual');
         $kpi = Kpis::find($request->kpi_id);
-        $kpi->actual = $promedio;
+        $kpi->promedio = $promedio;
+        $kpi->actual = $request->actual;
         $kpi->save();
 
         $registro_kpi->save();
@@ -52,6 +53,7 @@ class registros_kpisController extends Controller
         $registros = registros_kpi::select(
             'kpi_id',
             'actual',
+            'promedio',
             DB::raw("DATE_FORMAT(created_at, '%d %m %y') as mes")
         )->where('kpi_id', $id)->get();
 

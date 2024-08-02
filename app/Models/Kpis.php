@@ -21,6 +21,7 @@ class Kpis extends Model
         'proceso_id',
         'procedimiento_id',
         'actual',
+        'promedio',
         'objetivo',
         'medicion',
         'descripcion',

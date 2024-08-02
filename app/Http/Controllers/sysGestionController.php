@@ -71,6 +71,7 @@ class sysGestionController extends Controller
         $registros = registros_kpi::select(
             'kpi_id',
             'actual',
+            'promedio',
             DB::raw("DATE_FORMAT(created_at, '%d %m %y') as mes")
         )->where('kpi_id', $kpis[0]->id)->get();
 

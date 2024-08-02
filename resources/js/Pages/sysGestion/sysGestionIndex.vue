@@ -179,6 +179,7 @@ async function sysGestion(
             registros.value = departamento.value.registros.map(record => record.actual);
             // titulos.value = departamento.value.registros.map(record => record.created_at);
             titulos.value = departamento.value.registros.map(record => record.mes);
+            kpiTitulos.value = departamento.value.kpis[0]?.titulo;
 
             console.log('registros', registros.value);
         })
@@ -190,7 +191,7 @@ async function sysGestion(
 
 
 
-async function getRegistros(kpi_id,) {
+async function getRegistros(kpi_id, kpi_titulo) {
     console.log('kpi_id', kpi_id);
 
     await axios
@@ -200,7 +201,7 @@ async function getRegistros(kpi_id,) {
             console.log('resopnse', response.data);
             registros.value = response.data.map(record => record.actual);
             titulos.value = response.data.map(record => record.mes);
-
+            kpiTitulos.value = kpi_titulo;
             // console.log('registros', registros.value);
         })
         .catch((error) => {
@@ -415,11 +416,12 @@ const subTitle = "subTitle2"; // Este segundo es por siu viene de un menu desple
                                         class="min-w-full border-collapse mb-4">
                                         <thead>
                                             <tr>
-                                                <th class="py-2 px-4 border" colspan="2">
+                                                <th class="py-2 px-4 border" colspan="3">
                                                     <!-- {{ departamento.departamento.nombre }} -->
-                                                    <button @click="getRegistros(kpiItem.id)"> {{ kpiItem?.titulo ||
+                                                    <button @click="getRegistros(kpiItem.id, kpiItem.titulo)"> {{
+                                                        kpiItem?.titulo ||
                                                         "sin valor"
-                                                        }}</button>
+                                                    }}</button>
                                                 </th>
                                             </tr>
                                         </thead>
@@ -427,14 +429,23 @@ const subTitle = "subTitle2"; // Este segundo es por siu viene de un menu desple
                                             <tr>
                                                 <td class="py-2 px-4 border">Plan</td>
                                                 <td class="py-2 px-4 border">Hoy</td>
+                                                <td class="py-2 px-4 border">Promedio</td>
                                             </tr>
                                             <tr>
 
-                                                <td class="py-2 px-4 border bg-yellow-100">
+                                                <td class="py-2 px-4 border ">
                                                     {{ kpiItem?.objetivo }}
                                                 </td>
-                                                <td class="py-2 px-4 border" style="text-align-last: justify;"> {{
-                                                    formatNumber(kpiItem?.actual) }}
+                                                <td class="py-2 px-4 border bg-yellow-100 "
+                                                    style="text-align-last: justify;"> {{
+                                                        formatNumber(kpiItem?.actual) }}
+                                                    <!-- <PrimaryButton class="pi pi-filter"
+                                                        @click="showModal(kpiItem.id, kpiItem.actual, kpiItem.titulo)">
+                                                    </PrimaryButton> -->
+                                                </td>
+                                                <td class="py-2 px-4 border bg-yellow-100 "
+                                                    style="text-align-last: justify;"> {{
+                                                        formatNumber(kpiItem?.promedio) }}
                                                     <PrimaryButton class="pi pi-filter"
                                                         @click="showModal(kpiItem.id, kpiItem.actual, kpiItem.titulo)">
                                                     </PrimaryButton>
