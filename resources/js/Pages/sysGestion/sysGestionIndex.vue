@@ -13,9 +13,6 @@ import AccionIndex from "@/Pages/sysGestion/Partials/Accion/AccionIndex.vue";
 import Modal from "@/Components/Modal.vue";
 import { showToast } from "../utils/SweetAlert.service";
 
-
-import { FwbButton, FwbModal } from 'flowbite-vue'
-
 const props = defineProps({
     areas: Array,
     departamentos: Array || null,
@@ -434,7 +431,7 @@ const subTitle = "subTitle2"; // Este segundo es por siu viene de un menu desple
                                                     <button @click="getRegistros(kpiItem.id, kpiItem.titulo)"> {{
                                                         kpiItem?.titulo ||
                                                         "sin valor"
-                                                    }}</button>
+                                                        }}</button>
                                                 </th>
                                             </tr>
                                         </thead>
