@@ -9,6 +9,7 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import InputText from "primevue/inputtext";
 import Chart from 'primevue/chart';
+import AccionIndex from "@/Pages/sysGestion/Partials/Accion/AccionIndex.vue";
 
 const props = defineProps({
     areas: Array,
@@ -30,6 +31,10 @@ const departamento = ref({
 //datos para tabla
 const chartData = ref();
 const chartOptions = ref();
+
+const showCorrectivas = ref(false);
+const showPreventivas = ref(false);
+const showMejoras = ref(false);
 
 const setChartData = () => {
     return {
@@ -375,13 +380,63 @@ const subTitle = "subTitle2"; // Este segundo es por siu viene de un menu desple
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td class="py-2 px-4 border">Correctivas</td>
+                                            <td class="py-2 px-4 border">
+                                                <div>
+                                                    <span>Correctivas</span>
+                                                    <button v-if="!showCorrectivas"
+                                                        class="pi pi-angle-down float-right mx-2"
+                                                        @click="showCorrectivas = !showCorrectivas">
+                                                    </button>
+                                                    <button v-if="showCorrectivas"
+                                                        class="pi pi-angle-up float-right mx-2"
+                                                        @click="showCorrectivas = !showCorrectivas">
+                                                    </button>
+                                                </div>
+                                                <div>
+                                                    <AccionIndex v-if="showCorrectivas === true" :area_id="form.area_id"
+                                                        :tipo="'correctiva'"
+                                                        :procesos="departamento.departamento.procesos" />
+                                                </div>
+                                            </td>
                                         </tr>
                                         <tr>
-                                            <td class="py-2 px-4 border">Preventivas</td>
+                                            <td class="py-2 px-4 border">
+                                                <div>
+                                                    <span>Preventivas</span>
+                                                    <button v-if="!showPreventivas"
+                                                        class="pi pi-angle-down float-right mx-2"
+                                                        @click="showPreventivas = !showPreventivas">
+                                                    </button>
+                                                    <button v-if="showPreventivas"
+                                                        class="pi pi-angle-up float-right mx-2"
+                                                        @click="showPreventivas = !showPreventivas">
+                                                    </button>
+                                                </div>
+                                                <div>
+                                                    <AccionIndex v-if="showPreventivas === true" :tipo="'preventiva'"
+                                                        :area_id="form.area_id"
+                                                        :procesos="departamento.departamento.procesos" />
+                                                </div>
+                                            </td>
                                         </tr>
                                         <tr>
-                                            <td class="py-2 px-4 border">Mejoras</td>
+                                            <td class="py-2 px-4 border">
+                                                <div>
+                                                    <span>De Mejora</span>
+                                                    <button v-if="!showMejoras"
+                                                        class="pi pi-angle-down float-right mx-2"
+                                                        @click="showMejoras = !showMejoras">
+                                                    </button>
+                                                    <button v-if="showMejoras" class="pi pi-angle-up float-right mx-2"
+                                                        @click="showMejoras = !showMejoras">
+                                                    </button>
+                                                </div>
+                                                <div>
+                                                    <AccionIndex v-if="showMejoras === true" :tipo="'mejora'"
+                                                        :area_id="form.area_id"
+                                                        :procesos="departamento.departamento.procesos" />
+                                                </div>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td class="py-2 px-4 border">

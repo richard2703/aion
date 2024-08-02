@@ -55,14 +55,25 @@
 
                                 <div class="mt-4 z-30">
                                     <InputLabel for="responsable_id" value="Responsable:" />
-                                    <TextInput id="responsable" v-model="tarea.responsable.name" type="text"
-                                        class="mt-1 block w-full" disabled />
+
+                                    <div v-if="tarea.responsable">
+                                        <TextInput id="responsable" v-model="tarea.responsable.name" type="text"
+                                            class="mt-1 block w-full" disabled />
+                                    </div>
+                                    <div v-else>
+                                        <InputLabel class="text-red-500" value="Sin responsable" />
+                                    </div>
                                 </div>
 
                                 <div class="mt-4 z-30">
                                     <InputLabel for="revisor_id" value="Cliente de la tarea:" />
-                                    <TextInput id="rivisor" v-model="tarea.revisor.name" type="text"
-                                        class="mt-1 block w-full" disabled />
+                                    <div v-if="tarea.revisor">
+                                        <TextInput id="rivisor" v-model="tarea.revisor.name" type="text"
+                                            class="mt-1 block w-full" disabled />
+                                    </div>
+                                    <div v-else>
+                                        <InputLabel class="text-red-500" value="Sin revisor" />
+                                    </div>
                                 </div>
                                 <div class="mt-4">
                                     <InputLabel for="estatus" value="Estatus: " />
@@ -115,8 +126,8 @@ const form = useForm({
     area_id: tarea.value.area_id,
     departamento_id: tarea.value.departamento_id,
     minuta_id: tarea.value.minuta_id,
-    responsable_id: tarea.value.responsable.name,
-    revisor_id: tarea.value.revisor.name,
+    responsable_id: tarea.value.responsable ? tarea.value.responsable.name : '',
+    revisor_id: tarea.value.revisor ? tarea.value.revisor.name : '',
     tarea: tarea.value.tarea,
     fecha: tarea.value.fecha,
     nota: tarea.value.nota,

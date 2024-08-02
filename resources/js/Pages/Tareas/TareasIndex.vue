@@ -377,6 +377,14 @@ const validateTarea = async (tarea, $event) => {
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                 <Column field="responsable.name" header="Responsable" headerStyle="width:4em;"
                                     bodyClass="text-center" sortable>
+                                    <template #body="slotProps">
+                                        <div v-if="slotProps.data.responsable">
+                                            {{ slotProps.data.responsable.name }}
+                                        </div>
+                                        <div v-else class="text-center text-red-500">
+                                            Sin responsable
+                                        </div>
+                                    </template>
                                 </Column>
                                 <Column field="fecha" header="Fecha de entrega" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable>
@@ -389,6 +397,14 @@ const validateTarea = async (tarea, $event) => {
                                 </Column> -->
                                 <Column field="revisor.name" header="Cliente de la tarea" headerStyle="width:4em;"
                                     bodyClass="text-center" sortable>
+                                    <template #body="slotProps">
+                                        <div v-if="slotProps.data.revisor">
+                                            {{ slotProps.data.revisor.name }}
+                                        </div>
+                                        <div v-else>
+                                            Sin cliente
+                                        </div>
+                                    </template>
                                 </Column>
                                 <Column header="Validacion" headerStyle="width:4em;" bodyClass="justify-center">
                                     <template #body="slotProps">
