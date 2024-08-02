@@ -18,6 +18,7 @@ class registros_kpisController extends Controller
         $registro_kpi->actual = $request->actual;
         $registro_kpi->created_for = auth()->user()->id;
 
+        $registro_kpi->save();
         $promedio = registros_kpi::where('kpi_id', $request->kpi_id)
             ->latest('created_at')
             ->take(12)
@@ -27,7 +28,6 @@ class registros_kpisController extends Controller
         $kpi->actual = $request->actual;
         $kpi->save();
 
-        $registro_kpi->save();
         return response()->json(['success' => 'KPI Creado'], 200);
     }
 
