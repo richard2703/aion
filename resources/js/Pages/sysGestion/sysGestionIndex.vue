@@ -274,6 +274,14 @@ function formatNumber(value) {
     return parseFloat(value).toFixed(2);
 }
 
+const getClass = (kpiItem) => {
+    if (kpiItem.regla === 1) {
+        return kpiItem.actual >= kpiItem.objetivo ? 'bg-green-100' : 'bg-red-100';
+    } else {
+        return kpiItem.actual <= kpiItem.objetivo ? 'bg-green-100' : 'bg-red-100';
+    }
+};
+
 
 const title = "sysGestion"; // Aquí asegúrate de que esto coincida con el valor que esperas en MainMenu
 const subTitle = "subTitle2"; // Este segundo es por siu viene de un menu desplegable en MainMenu
@@ -426,7 +434,7 @@ const subTitle = "subTitle2"; // Este segundo es por siu viene de un menu desple
                                                     <button @click="getRegistros(kpiItem.id, kpiItem.titulo)"> {{
                                                         kpiItem?.titulo ||
                                                         "sin valor"
-                                                        }}</button>
+                                                    }}</button>
                                                 </th>
                                             </tr>
                                         </thead>
@@ -441,15 +449,14 @@ const subTitle = "subTitle2"; // Este segundo es por siu viene de un menu desple
                                                 <td class="py-2 px-4 border ">
                                                     {{ kpiItem?.objetivo }}
                                                 </td>
-                                                <td class="py-2 px-4 border bg-yellow-100 "
-                                                    style="text-align-last: justify;"> {{
+                                                <td :class="getClass(kpiItem)" class="py-2 px-4 border "
+                                                    style="text-align-last: justify;">
+                                                    {{
                                                         formatNumber(kpiItem?.actual) }}
-                                                    <!-- <PrimaryButton class="pi pi-filter"
-                                                        @click="showModal(kpiItem.id, kpiItem.actual, kpiItem.titulo)">
-                                                    </PrimaryButton> -->
                                                 </td>
-                                                <td class="py-2 px-4 border bg-yellow-100 "
-                                                    style="text-align-last: justify;"> {{
+                                                <td :class="getClass(kpiItem)" class="py-2 px-4 border "
+                                                    style="text-align-last: justify;">
+                                                    {{
                                                         formatNumber(kpiItem?.promedio) }}
                                                     <PrimaryButton class="pi pi-filter"
                                                         @click="showModal(kpiItem.id, kpiItem.actual, kpiItem.titulo)">
