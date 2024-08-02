@@ -79,3 +79,5 @@ Route::get('/acciones/{accion}/edit', [App\Http\Controllers\accionController::cl
 Route::post('/acciones/store', [App\Http\Controllers\accionController::class, 'store'])->name('acciones.store');
 Route::patch('/acciones/{accion}/update', [App\Http\Controllers\accionController::class, 'update'])->name('acciones.update');
 Route::delete('/acciones/{accion}/delete', [App\Http\Controllers\accionController::class, 'destroy'])->name('acciones.destroy');
+
+Route::get('/sysgestion/{id}/registros_kpi', [App\Http\Controllers\registros_kpisController::class, 'registros'])->name('registros_kpi.registros');
