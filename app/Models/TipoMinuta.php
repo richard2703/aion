@@ -18,6 +18,6 @@ class TipoMinuta extends Model
 
     function minuta()
     {
-        return $this->belongsTo(minutas::class, 'minuta_id', 'id');
+        return $this->belongsTo(minutas::class, 'minuta_id', 'id')->withTrashed();
     }
 }

@@ -18,11 +18,11 @@ class Asistente extends Model
 
     public function minuta()
     {
-        return $this->belongsTo(minutas::class);
+        return $this->belongsTo(minutas::class)->withTrashed();
     }
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->withTrashed();
     }
 }

@@ -22,16 +22,16 @@ class Accion extends Model
 
     public function area()
     {
-        return $this->belongsTo(Area::class, 'area_id');
+        return $this->belongsTo(Area::class, 'area_id')->withTrashed();
     }
 
     public function proceso()
     {
-        return $this->belongsTo(Proceso::class, 'proceso_id');
+        return $this->belongsTo(Proceso::class, 'proceso_id')->withTrashed();
     }
 
     public function tipo()
     {
-        return $this->belongsTo(TipoAccion::class, 'tipo_id');
+        return $this->belongsTo(TipoAccion::class, 'tipo_id')->withTrashed();
     }
 }

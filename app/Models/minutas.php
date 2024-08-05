@@ -28,24 +28,24 @@ class minutas extends Model
 
     public function area(): BelongsTo
     {
-        return $this->belongsTo(Area::class, 'area_id', 'id');
+        return $this->belongsTo(Area::class, 'area_id', 'id')->withTrashed();
     }
     public function departamento(): BelongsTo
     {
-        return $this->belongsTo(Departamento::class, 'departamento_id', 'id');
+        return $this->belongsTo(Departamento::class, 'departamento_id', 'id')->withTrashed();
     }
 
     public function proceso(): BelongsTo
     {
-        return $this->belongsTo(Proceso::class, 'proceso_id', 'id');
+        return $this->belongsTo(Proceso::class, 'proceso_id', 'id')->withTrashed();
     }
     public function lider(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'lider_id', 'id');
+        return $this->belongsTo(User::class, 'lider_id', 'id')->withTrashed();
     }
 
     public function tipoMinuta(): BelongsTo
     {
-        return $this->belongsTo(TipoMinuta::class, 'tipo', 'id');
+        return $this->belongsTo(TipoMinuta::class, 'tipo', 'id')->withTrashed();
     }
 }

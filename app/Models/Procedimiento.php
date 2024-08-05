@@ -23,6 +23,6 @@ class Procedimiento extends Model
 
     public function proceso(): BelongsTo
     {
-        return $this->belongsTo(Proceso::class, 'proceso_id', 'id');
+        return $this->belongsTo(Proceso::class, 'proceso_id', 'id')->withTrashed();
     }
 }
