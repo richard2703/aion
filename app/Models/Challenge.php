@@ -25,11 +25,11 @@ class Challenge extends Model
 
     public function area(): BelongsTo
     {
-        return $this->belongsTo(Area::class, 'area_id', 'id')->withTrashed();
+        return $this->belongsTo(Area::class, 'area_id', 'id');
     }
 
     public function departamento(): BelongsTo
     {
-        return $this->belongsTo(Departamento::class, 'departamento_id', 'id')->withTrashed();
+        return $this->belongsTo(Departamento::class, 'departamento_id', 'id');
     }
 }

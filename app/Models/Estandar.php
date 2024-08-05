@@ -23,6 +23,6 @@ class Estandar extends Model
 
     public function procedimiento(): BelongsTo
     {
-        return $this->belongsTo(Procedimiento::class, 'procedimiento_id', 'id')->withTrashed();
+        return $this->belongsTo(Procedimiento::class, 'procedimiento_id', 'id');
     }
 }

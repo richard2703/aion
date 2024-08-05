@@ -32,18 +32,18 @@ class Kpis extends Model
 
     public function area(): BelongsTo
     {
-        return $this->belongsTo(Area::class, 'area_id', 'id')->withTrashed();
+        return $this->belongsTo(Area::class, 'area_id', 'id');
     }
     public function departamento(): BelongsTo
     {
-        return $this->belongsTo(Departamento::class, 'departamento_id', 'id')->withTrashed();
+        return $this->belongsTo(Departamento::class, 'departamento_id', 'id');
     }
     public function proceso(): BelongsTo
     {
-        return $this->belongsTo(Proceso::class, 'proceso_id', 'id')->withTrashed();
+        return $this->belongsTo(Proceso::class, 'proceso_id', 'id');
     }
     public function procedimiento(): BelongsTo
     {
-        return $this->belongsTo(Procedimiento::class, 'procedimiento_id', 'id')->withTrashed();
+        return $this->belongsTo(Procedimiento::class, 'procedimiento_id', 'id');
     }
 }

@@ -30,6 +30,6 @@ class Opcion extends Model
 
     public function challenge(): BelongsTo
     {
-        return $this->belongsTo(Challenge::class, 'challenge_id', 'id')->withTrashed();
+        return $this->belongsTo(Challenge::class, 'challenge_id', 'id');
     }
 }

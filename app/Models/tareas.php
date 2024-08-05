@@ -30,31 +30,31 @@ class tareas extends Model
 
     public function area(): BelongsTo
     {
-        return $this->belongsTo(Area::class, 'area_id', 'id')->withTrashed();
+        return $this->belongsTo(Area::class, 'area_id', 'id');
     }
 
     public function departamento(): BelongsTo
     {
-        return $this->belongsTo(Departamento::class, 'departamento_id', 'id')->withTrashed();
+        return $this->belongsTo(Departamento::class, 'departamento_id', 'id');
     }
 
     public function minuta(): BelongsTo
     {
-        return $this->belongsTo(minutas::class, 'minuta_id', 'id')->withTrashed();
+        return $this->belongsTo(minutas::class, 'minuta_id', 'id');
     }
 
     public function responsable(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'responsable_id', 'id')->withTrashed();
+        return $this->belongsTo(User::class, 'responsable_id', 'id');
     }
 
     public function revisor(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'revisor_id', 'id')->withTrashed();
+        return $this->belongsTo(User::class, 'revisor_id', 'id');
     }
 
     public function estatus()
     {
-        return $this->belongsTo(Estatus::class, 'estatus_id', 'id')->withTrashed();
+        return $this->belongsTo(Estatus::class, 'estatus_id', 'id');
     }
 }

@@ -25,6 +25,6 @@ class registros_kpi extends Model
 
     public function kpis(): BelongsTo
     {
-        return $this->belongsTo(kpis::class, 'kpi_id', 'id')->withTrashed();
+        return $this->belongsTo(kpis::class, 'kpi_id', 'id');
     }
 }
