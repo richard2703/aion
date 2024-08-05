@@ -16,8 +16,8 @@ class TipoMinuta extends Model
         'definicion',
     ];
 
-    function minuta()
-    {
-        return $this->belongsTo(minutas::class, 'minuta_id', 'id');
-    }
+    // function minuta()
+    // {
+    //     return $this->belongsTo(minutas::class, 'minuta_id', 'id')->withTrashed();
+    // }
 }
