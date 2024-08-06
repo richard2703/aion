@@ -1,7 +1,7 @@
 <template>
     <Layout :titulo="title">
 
-        <Head title="Departamento" />
+        <Head title="Minutas" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
                 <h3>Detalles de Minuta</h3>
@@ -112,6 +112,10 @@
                                     </PrimaryButton>
                                     <!-- Trigger to open modal -->
                                     <PrimaryButton class=" mb-4 float-right pi pi-plus" @click="openModal('create')">
+                                    </PrimaryButton>
+
+                                    <!-- TODO: Send mail REMOVE IS NOT USED -->
+                                    <PrimaryButton class=" mb-4 float-right pi pi-envelope" @click="sendMail()">
                                     </PrimaryButton>
                                 </div>
 
@@ -660,4 +664,15 @@ const validateTarea = async (tarea, $event) => {
 
 };
 
+// TODO: Send mail REMOVE IS NOT USED
+const sendMail = async () => {
+    try {
+        await axios.get(route("mailer.recordatorioTarea"))
+            .then(() => {
+                showToast("El correo ha sido enviado", "success");
+            });
+    } catch (error) {
+        console.log(error);
+    }
+};
 </script>

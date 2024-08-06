@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ActualizacionTareaMail;
+use App\Mail\NuevaTareaMail;
 use App\Models\tareas;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 
 class tareasController extends Controller
@@ -175,7 +179,11 @@ class tareasController extends Controller
             $data['revisor_id'] = $request->revisor_id;
         }
 
-        tareas::create($data);
+        $mailData = tareas::create($data);
+
+        $responsable = User::find($request->responsable_id);
+
+        Mail::to($responsable->email)->send(new NuevaTareaMail($mailData));
     }
 
     /**
@@ -231,6 +239,11 @@ class tareasController extends Controller
         $tarea->nota = $request->nota;
         $tarea->estatus_id = $request->estatus_id;
         $tarea->save();
+
+        $mailData = $tarea->load('responsable', 'revisor', 'estatus');
+        $responsable = User::find($tarea->responsable_id);
+
+        Mail::to($responsable->email)->send(new ActualizacionTareaMail($mailData));
     }
 
     /**

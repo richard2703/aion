@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\RecordatorioTareaMail;
 use App\Mail\TestMail;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -39,6 +41,22 @@ class SendMailController extends Controller
 
         Mail::to('software@nutriton.com.mx')->send(new TestMail($mailData));
 
-        echo "Mail send successfully !!";
+        return response()->json(['message' => 'Mail sent successfully']);
+    }
+
+    public function recordatorioTarea()
+    {
+        $users = User::all();
+
+
+        $mailData = $users->load('tarea');
+        foreach ($mailData as $key => $mailValue) {
+            // TODO: HACER QUE ESTO SE EJECUTE DE FORMA AUTOMATICA
+            if (count($mailValue->tarea) > 0) {
+
+                Mail::to('software@nutriton.com.mx')->send(new RecordatorioTareaMail($mailValue));
+            }
+        }
+        return response()->json(['message' => 'Mail sent successfully']);
     }
 }
