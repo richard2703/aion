@@ -61,9 +61,10 @@ Route::get('/asistentes/{id}', [App\Http\Controllers\asistenteController::class,
 // Route::get('/objetivos/{objetivos_id}', [App\Http\Controllers\objetivosController::class, 'byDepartamento'])->name('challenges.byArea');
 Route::post('/asistente/store', [App\Http\Controllers\asistenteController::class, 'store'])->name('asistentes.store');
 Route::delete('/asistente/{asistente}', [App\Http\Controllers\asistenteController::class, 'destroy'])->name('asistente.delete');
-
+// Sistema de gestión
 Route::get('/sysgestion', [App\Http\Controllers\sysGestionController::class, 'kpis'])->name('sysgestion.kpis');
 Route::get('/sysgestion/{departamento_id}/departamento', [App\Http\Controllers\sysGestionController::class, 'departamento'])->name('sysgestion.departamento');
+
 
 // Tipos de minutas
 Route::get('/tipo-minuta', [App\Http\Controllers\tipoMinutaController::class, 'index'])->name('tipo-minuta.index');
@@ -81,3 +82,12 @@ Route::patch('/acciones/{accion}/update', [App\Http\Controllers\accionController
 Route::delete('/acciones/{accion}/delete', [App\Http\Controllers\accionController::class, 'destroy'])->name('acciones.destroy');
 
 Route::get('/sysgestion/{id}/registros_kpi', [App\Http\Controllers\registros_kpisController::class, 'registros'])->name('registros_kpi.registros');
+
+// Notificaciones
+Route::get('/notificaciones', [App\Http\Controllers\notificacionController::class, 'getByUser'])->name('notificaciones.getByUser');
+Route::get('/notificaciones/markAsRead', [App\Http\Controllers\notificacionController::class, 'markAsRead'])->name('notificaciones.markAsRead');
+Route::get('/notificaciones/deleteReaded', [App\Http\Controllers\notificacionController::class, 'deleteReaded'])->name('notificaciones.deleteReaded');
+
+// Route::get('send/mail', [App\Http\Controllers\SendMailController::class, 'sendMailWithAttachment'])->name('mailer.sendMailWithAttachment');
+Route::get('send/tareas/mail', [App\Http\Controllers\SendMailController::class, 'recordatorioTarea'])->name('mailer.recordatorioTarea');
+Route::get('send/{minuta}/mail', [App\Http\Controllers\SendMailController::class, 'sendTareasByMinuta'])->name('mailer.sendTareasByMinuta');

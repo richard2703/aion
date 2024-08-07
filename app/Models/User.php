@@ -95,4 +95,9 @@ class User extends Authenticatable
             });
         });
     }
+
+    public function tarea()
+    {
+        return $this->hasMany(tareas::class, 'responsable_id', 'id');
+    }
 }
