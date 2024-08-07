@@ -13,7 +13,7 @@
                 <Link :href="route('minutas.index')" class="px-1">
                 <h3>Minutas -</h3>
                 </Link>
-                <Link class="active">
+                <Link :href="route('minutas.show', minuta.id)" class="active">
                 <h3>Show</h3>
                 </Link>
             </div>
@@ -41,7 +41,7 @@
                                     </div>
                                     <div class="mt-4 flex">
                                         <InputLabel for="tipo" value="Tipo: " />&nbsp;
-                                        <InputLabel for="tipo" :value="minuta.tipo" />
+                                        <InputLabel for="tipo" :value="minuta.tipo_minuta.titulo" />
                                     </div>
                                     <div class="mt-4 flex">
                                         <InputLabel for="fecha" value="Fecha: " />&nbsp;
@@ -237,6 +237,14 @@
                                         bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                     <Column field="responsable.name" header="Responsable" headerStyle="width:4em;"
                                         bodyClass="text-center" sortable>
+                                        <template #body="slotProps">
+                                            <div v-if="slotProps.data.responsable">
+                                                {{ slotProps.data.responsable.name }}
+                                            </div>
+                                            <div v-else class="text-center text-red-500">
+                                                Sin responsable
+                                            </div>
+                                        </template>
                                     </Column>
                                     <Column field="fecha" header="Fecha de entrega" headerStyle="width:4em;"
                                         bodyStyle="text-align:center;" bodyClass="text-center" sortable>
@@ -244,14 +252,18 @@
                                             {{ formatearFecha(slotProps.data.fecha) }}
                                         </template>
                                     </Column>
-                                    <!-- <Column field="nota" header="Notas" headerStyle="width:4em;" bodyClass="text-center"
-                                        sortable>
-                                    </Column> -->
                                     <Column field="revisor.name" header="Cliente de la tarea" headerStyle="width:4em;"
                                         bodyClass="text-center" sortable>
+                                        <template #body="slotProps">
+                                            <div v-if="slotProps.data.revisor">
+                                                {{ slotProps.data.revisor.name }}
+                                            </div>
+                                            <div v-else>
+                                                Sin cliente
+                                            </div>
+                                        </template>
                                     </Column>
-                                    <Column header="Validacion" headerStyle="width:4em;" bodyClass="justify-center"
-                                        sortable>
+                                    <Column header="Validacion" headerStyle="width:4em;" bodyClass="justify-center">
                                         <template #body="slotProps">
                                             <input type="checkbox" @change="validateTarea(slotProps.data, $event)"
                                                 :disabled="slotProps.data.validacion ? true : false"

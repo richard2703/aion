@@ -65,7 +65,7 @@ const getTareas = async (
     sortOrder = 1
 ) => {
     await axios
-        .get(`/api/tareas/`, {
+        .get(route("tareas.byUser"), {
             params: {
                 page,
                 rows: rowsPerPage,
@@ -254,9 +254,6 @@ const validateTarea = async (tarea, $event) => {
         <div class="py-2">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div>
-                    <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
-                        <PrimaryButton class="pi pi-plus m-4" :href="route('tareas.create')"></PrimaryButton>
-                    </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto overflow-x-auto gap-4">
                             <div class="flex gap-4">
@@ -377,14 +374,6 @@ const validateTarea = async (tarea, $event) => {
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                 <Column field="responsable.name" header="Responsable" headerStyle="width:4em;"
                                     bodyClass="text-center" sortable>
-                                    <template #body="slotProps">
-                                        <div v-if="slotProps.data.responsable">
-                                            {{ slotProps.data.responsable.name }}
-                                        </div>
-                                        <div v-else class="text-center text-red-500">
-                                            Sin responsable
-                                        </div>
-                                    </template>
                                 </Column>
                                 <Column field="fecha" header="Fecha de entrega" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable>
@@ -392,19 +381,8 @@ const validateTarea = async (tarea, $event) => {
                                         {{ formatearFecha(slotProps.data.fecha) }}
                                     </template>
                                 </Column>
-                                <!-- <Column field="nota" header="Notas" headerStyle="width:4em;" bodyClass="text-center"
-                                    sortable>
-                                </Column> -->
                                 <Column field="revisor.name" header="Cliente de la tarea" headerStyle="width:4em;"
                                     bodyClass="text-center" sortable>
-                                    <template #body="slotProps">
-                                        <div v-if="slotProps.data.revisor">
-                                            {{ slotProps.data.revisor.name }}
-                                        </div>
-                                        <div v-else>
-                                            Sin cliente
-                                        </div>
-                                    </template>
                                 </Column>
                                 <Column header="Validacion" headerStyle="width:4em;" bodyClass="justify-center">
                                     <template #body="slotProps">
@@ -424,11 +402,11 @@ const validateTarea = async (tarea, $event) => {
                                             <PrimaryButton class="pi pi-file-check m-2"
                                                 :href="route('tareas.detail', slotProps.data.id)"></PrimaryButton>
 
-                                            <PrimaryButton v-if="slotProps.data.validacion !== 1"
+                                            <!-- <PrimaryButton v-if="slotProps.data.validacion !== 1"
                                                 class="m-2 pi pi-trash" @click.prevent="
                                                     deleteTarea(slotProps.data.id)
                                                     ">
-                                            </PrimaryButton>
+                                            </PrimaryButton> -->
                                         </div>
                                     </template>
                                 </Column>

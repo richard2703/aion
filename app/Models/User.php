@@ -79,6 +79,23 @@ class User extends Authenticatable
         return $this->belongsTo(Departamento::class, 'departamento_id', 'id');
     }
 
+    public function minutaAsistencia()
+    {
+        return $this->hasMany(Asistente::class, 'user_id', 'id');
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($user) {
+            // Elimina todos los posts relacionados
+            $user->minutaAsistencia()->each(function ($minutaAsistencia) {
+                $minutaAsistencia->delete();
+            });
+        });
+    }
+
     public function tarea()
     {
         return $this->hasMany(tareas::class, 'responsable_id', 'id');

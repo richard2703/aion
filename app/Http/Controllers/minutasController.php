@@ -27,7 +27,6 @@ class minutasController extends Controller
         $filter = $request->get('filter', '');
         $sortField = $request->get('sortField', 'id');
         $sortOrder = $request->get('sortOrder', 'asc');
-
         // Apply box filters
         if ($request->formFilter) {
 
@@ -78,6 +77,9 @@ class minutasController extends Controller
                     })
                     ->orWhereHas('lider', function ($q) use ($filter) {
                         $q->where('Users.name', 'like', '%' . $filter . '%');
+                    })
+                    ->orWhereHas('tipoMinuta', function ($q) use ($filter) {
+                        $q->where('tipos_minuta.titulo', 'like', '%' . $filter . '%');
                     });
             });
         }
@@ -86,7 +88,7 @@ class minutasController extends Controller
         //     $query->orderBy($sortField, $sortOrder);
         // }
         // Sorting logic
-        if (in_array($sortField, ['id', 'alias', 'created_at', 'tipo', 'area.nombre', 'departamento.nombre', 'lider.name', 'proceso.nombre'])) {
+        if (in_array($sortField, ['id', 'alias', 'created_at', 'tipo', 'area.nombre', 'departamento.nombre', 'lider.name', 'proceso.nombre', 'tipo_minuta'])) {
             if (strpos($sortField, 'area.') === 0) {
                 $query->join('areas', 'minutas.area_id', '=', 'areas.id')
                     ->select('minutas.*', 'areas.nombre as area_nombre') // Select distinct columns
@@ -103,6 +105,10 @@ class minutasController extends Controller
                 $query->join('procesos', 'minutas.proceso_id', '=', 'procesos.id')
                     ->select('minutas.*', 'procesos.nombre as procesos_nombre') // Select distinct columns
                     ->orderBy('procesos.nombre', $sortOrder);
+            } else if (strpos($sortField, 'tipo_minuta.') === 0) {
+                $query->join('tipos_minuta', 'minutas.tipo', '=', 'tipos_minuta.id')
+                    ->select('minutas.*', 'tipos_minuta.titulo as tipos_minuta_titulo') // Select distinct columns
+                    ->orderBy('tipos_minuta.titulo', $sortOrder);
             } else {
                 $query->orderBy('minutas.' . $sortField, $sortOrder);
             }
@@ -112,7 +118,7 @@ class minutasController extends Controller
         }
 
         // $result = $query->with('challenge')->paginate($pageSize, ['*'], 'page', $page);
-        $result = $query->with('area', 'departamento', 'lider', 'proceso')->paginate($pageSize, ['*'], 'page', $page);
+        $result = $query->with('area', 'departamento', 'lider', 'proceso', 'tipoMinuta')->paginate($pageSize, ['*'], 'page', $page);
         return response()->json($result);
     }
 
@@ -150,7 +156,7 @@ class minutasController extends Controller
     public function show(minutas $minuta)
     {
         // Carga las relaciones necesarias
-        $minuta->load('lider', 'area', 'departamento', 'proceso');
+        $minuta->load('lider', 'area', 'departamento', 'proceso', 'tipoMinuta');
 
         // Format the date
         $dateFromDatabase = $minuta->created_at;
