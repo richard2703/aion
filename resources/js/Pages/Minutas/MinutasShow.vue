@@ -115,8 +115,8 @@
                                     </PrimaryButton>
 
                                     <!-- TODO: Send mail REMOVE IS NOT USED -->
-                                    <PrimaryButton class=" mb-4 float-right pi pi-envelope" @click="sendMail()">
-                                    </PrimaryButton>
+                                    <!-- <PrimaryButton class=" mb-4 float-right pi pi-envelope" @click="sendMail()">
+                                    </PrimaryButton> -->
                                 </div>
 
 
@@ -679,7 +679,7 @@ const validateTarea = async (tarea, $event) => {
 // TODO: Send mail REMOVE IS NOT USED
 const sendMail = async () => {
     try {
-        await axios.get(route("mailer.recordatorioTarea"))
+        await axios.get(route("mailer.sendTareasByMinuta", minuta.value.id))
             .then(() => {
                 showToast("El correo ha sido enviado", "success");
             });

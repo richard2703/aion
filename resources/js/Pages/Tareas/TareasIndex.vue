@@ -225,6 +225,17 @@ const validateTarea = async (tarea, $event) => {
     }
 
 };
+
+const sendMail = async () => {
+    try {
+        await axios.get(route("mailer.recordatorioTarea"))
+            .then(() => {
+                showToast("El correo ha sido enviado", "success");
+            });
+    } catch (error) {
+        console.log(error);
+    }
+};
 </script>
 
 <style scoped>
@@ -256,8 +267,9 @@ const validateTarea = async (tarea, $event) => {
                 <div>
                     <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
                         <PrimaryButton class="pi pi-plus m-4" :href="route('tareas.create')"></PrimaryButton>
+                        <!-- <PrimaryButton class="pi pi-envelope m-4" @click="sendMail()"></PrimaryButton> -->
                     </div>
-                    <div class="px-4 py-2 bg-white border-b border-gray-200">
+                    <div class=" px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto overflow-x-auto gap-4">
                             <div class="flex gap-4">
                                 <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />

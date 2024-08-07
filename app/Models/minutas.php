@@ -44,8 +44,18 @@ class minutas extends Model
         return $this->belongsTo(User::class, 'lider_id', 'id')->withTrashed();
     }
 
+
     public function tipoMinuta(): BelongsTo
     {
         return $this->belongsTo(TipoMinuta::class, 'tipo', 'id');
+    }
+    public function tarea(): HasMany
+    {
+        return $this->hasMany(tareas::class, 'minuta_id', 'id');
+    }
+
+    public function asistente(): HasMany
+    {
+        return $this->hasMany(Asistente::class, 'minuta_id', 'id');
     }
 }
