@@ -3,7 +3,7 @@
         <ul>
             <li v-for="accionCorrectiva in accionesCorrectivas"
                 class="border-b border-gray-200 grid grid-cols-[85%_15%]">
-                <div>
+                <!-- <div>
 
                     <a class="hover:underline text-blue-500" target="blank" :href="accionCorrectiva.link">
                         {{ accionCorrectiva.titulo }} <span> para </span> {{ accionCorrectiva.proceso.nombre }}
@@ -13,7 +13,34 @@
                     <button class="pi pi-pencil text-red-500 mx-2 justify-end"
                         @click="editAccion(accionCorrectiva.id)"></button>
                     <button class="pi pi-times text-red-500 mx-2" @click="deleteAccion(accionCorrectiva.id)"></button>
+                </div> -->
+                <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow p-4">
+                    <h3 class="text-lg font-semibold mb-4">{{ accionCorrectiva.titulo }}</h3>
+                    <div class="mb-2">
+                        <strong class="text-gray-700">Proceso: </strong>
+                        <span>{{ accionCorrectiva.proceso.nombre }}</span>
+                    </div>
+                    <div class="mb-2">
+                        <strong class="text-gray-700">Responsable: </strong>
+                        <span>{{ accionCorrectiva.responsable.name }}</span>
+                    </div>
+                    <div class="mb-4">
+                        <strong class="text-gray-700">Estatus: </strong>
+                        <span class="text-blue-500">{{ accionCorrectiva.estatus.titulo }}</span>
+                    </div>
+                    <div class=" flex justify-evenly ">
+                        <div class="text-center">
+                            <button class="pi pi-pencil text-red-500 mx-2 justify-end"
+                                @click="editAccion(accionCorrectiva.id)"></button>
+                        </div>
+                        <div class="text-center">
+                            <button class="pi pi-times text-red-500 mx-2"
+                                @click="deleteAccion(accionCorrectiva.id)"></button>
+                        </div>
+
+                    </div>
                 </div>
+
             </li>
             <div class="text-center" v-if="accionesCorrectivas.length < 1">
                 <span>No hay acciones</span>
@@ -50,6 +77,8 @@ const getAcciones = async () => {
         await axios.get(route("acciones.byArea", { area_id: area_id.value, tipo: tipo.value }))
             .then((response) => {
                 accionesCorrectivas.value = response.data;
+                console.log({ acciones: accionesCorrectivas.value });
+
             })
             .catch((error) => {
                 console.log(error);

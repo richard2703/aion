@@ -21,6 +21,28 @@
                     </option>
                 </select>
             </div>
+            <div class="mt-4 z-30">
+                <InputLabel for="responsable_id" value="Responsable:" />
+                <AutoComplete v-model="form.responsable_id" optionLabel="name" :suggestions="filteredUsuarios"
+                    forceSelection @complete="search" placeholder="" />
+            </div>
+            <div class="mt-4">
+                <InputLabel for="estatus" value="Estatus: " />
+                <select ref="departamento_select"
+                    class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                    v-model="form.estatus_id" required>
+                    <option value="" selected disabled>
+                        Seleccione una opcion </option>
+                    <option value=1>
+                        Retrasado </option>
+                    <option value=2>
+                        Iniciado </option>
+                    <option value=3>
+                        En proceso </option>
+                    <option value=4>
+                        Terminado </option>
+                </select>
+            </div>
             <div class="mt-4">
                 <InputLabel for="link" value="Link:" />
                 <TextInput id="link" v-model="form.link" type="text" class="mt-1 block w-full" required
@@ -45,6 +67,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { showToast } from "@/Pages/utils/SweetAlert.service";
+import AutoComplete from 'primevue/autocomplete';
 
 const props = defineProps({
     accion: Object,
@@ -57,15 +80,44 @@ const emit = defineEmits(['list']);
 const accion = ref(props.accion);
 const procesos = ref(props.procesos);
 const area_id = ref(props.area_id);
+const usuarios = ref([]);
+const filteredUsuarios = ref();
 
 console.log({ accion: accion.value });
 const form = useForm({
     tipo_id: accion.value.tipo_id,
     proceso_id: accion.value.proceso_id,
     area_id: accion.value.area_id,
+    responsable_id: accion.value.responsable ? accion.value.responsable.name : '',
+    estatus_id: accion.value.estatus_id,
     titulo: accion.value.titulo,
     link: accion.value.link,
 });
+
+onMounted(() => {
+    getUsuarios();
+});
+
+const getUsuarios = async () => {
+    try {
+        const response = await axios.get("/api/usuarios/all/todo");
+        usuarios.value = response.data;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const search = (event) => {
+    setTimeout(() => {
+        if (!event.query.trim().length) {
+            filteredUsuarios.value = [...usuarios.value];
+        } else {
+            filteredUsuarios.value = usuarios.value.filter((usuario) => {
+                return usuario.name.toLowerCase().startsWith(event.query.toLowerCase());
+            });
+        }
+    }, 250);
+}
 
 const submit = async () => {
     try {

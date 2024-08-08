@@ -16,6 +16,8 @@ class Accion extends Model
         'tipo_id',
         'area_id',
         'proceso_id',
+        'estatus_id',
+        'responsable_id',
         'titulo',
         'link',
     ];
@@ -33,5 +35,15 @@ class Accion extends Model
     public function tipo()
     {
         return $this->belongsTo(TipoAccion::class, 'tipo_id');
+    }
+
+    public function responsable()
+    {
+        return $this->belongsTo(User::class, 'responsable_id');
+    }
+
+    public function estatus()
+    {
+        return $this->belongsTo(Estatus::class, 'estatus_id');
     }
 }

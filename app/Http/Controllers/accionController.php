@@ -19,18 +19,41 @@ class accionController extends Controller
 
     public function edit(Accion $accion)
     {
+        $accion->load('responsable');
         return response()->json($accion);
     }
 
     public function store(Request $request)
     {
-        Accion::create($request->only('proceso_id', 'area_id', 'tipo_id', 'titulo', 'link'));
+        $data = [
+            'proceso_id' => $request->proceso_id,
+            'area_id' => $request->area_id,
+            'tipo_id' => $request->tipo_id,
+            'titulo' => $request->titulo,
+            'link' => $request->link,
+            'estatus_id' => $request->estatus_id,
+        ];
+
+        if (is_array($request->responsable_id)) {
+            $data['responsable_id'] = $request->responsable_id["id"];
+        }
+        Accion::create($data);
         return response()->json(['success' => true]);
     }
 
     public function update(Request $request, Accion $accion)
     {
-        $accion->update($request->only('proceso_id', 'area_id', 'tipo_id', 'titulo', 'link'));
+        if (is_array($request->responsable_id)) {
+            $accion->responsable_id = $request->responsable_id["id"];
+        }
+        $accion->proceso_id = $request->proceso_id;
+        $accion->area_id = $request->area_id;
+        $accion->tipo_id = $request->tipo_id;
+        $accion->titulo = $request->titulo;
+        $accion->link = $request->link;
+        $accion->estatus_id = $request->estatus_id;
+
+        $accion->save();
         return response()->json(['success' => true]);
     }
 
@@ -61,7 +84,7 @@ class accionController extends Controller
                 break;
         }
 
-        $accion = Accion::with('area', 'proceso', 'tipo')->where('area_id', $area_id)->where('tipo_id', $tipo_id)->orderBy('proceso_id', 'asc')->get();
+        $accion = Accion::with('area', 'proceso', 'tipo', 'responsable', 'estatus')->where('area_id', $area_id)->where('tipo_id', $tipo_id)->orderBy('proceso_id', 'asc')->get();
         return response()->json($accion);
     }
 }
