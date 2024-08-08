@@ -167,10 +167,10 @@ class tareasController extends Controller
         ];
 
         if (is_array($request->responsable_id)) {
-            $data['responsable_id'] = $request->responsable_id;
+            $data['responsable_id'] = $request->responsable_id["id"];
         }
         if (is_array($request->revisor_id)) {
-            $data['revisor_id'] = $request->revisor_id;
+            $data['revisor_id'] = $request->revisor_id["id"];
         }
 
         if (is_int($request->responsable_id)) {
