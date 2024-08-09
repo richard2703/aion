@@ -1,19 +1,7 @@
 <template>
     <div class="max-h-40 w-full overflow-y-auto no-scrollbar">
         <ul>
-            <li v-for="accionCorrectiva in accionesCorrectivas"
-                class="border-b border-gray-200 grid grid-cols-[85%_15%]">
-                <!-- <div>
-
-                    <a class="hover:underline text-blue-500" target="blank" :href="accionCorrectiva.link">
-                        {{ accionCorrectiva.titulo }} <span> para </span> {{ accionCorrectiva.proceso.nombre }}
-                    </a>
-                </div>
-                <div class="text-right">
-                    <button class="pi pi-pencil text-red-500 mx-2 justify-end"
-                        @click="editAccion(accionCorrectiva.id)"></button>
-                    <button class="pi pi-times text-red-500 mx-2" @click="deleteAccion(accionCorrectiva.id)"></button>
-                </div> -->
+            <li v-for="accionCorrectiva in accionesCorrectivas" class="mt-4 grid grid-cols-[85%_15%]">
                 <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow p-4">
                     <h3 class="text-lg font-semibold mb-4">{{ accionCorrectiva.titulo }}</h3>
                     <div class="mb-2">

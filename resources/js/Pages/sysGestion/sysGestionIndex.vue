@@ -455,7 +455,7 @@ const subTitle = "subTitle2"; // Este segundo es por siu viene de un menu desple
                                                     style="text-align-last: justify;">
                                                     {{
                                                         formatNumber(kpiItem?.promedio) }}
-                                                    <PrimaryButton class="pi pi-filter"
+                                                    <PrimaryButton class="pi pi-plus"
                                                         @click="showModal(kpiItem.id, kpiItem.actual, kpiItem.titulo)">
                                                     </PrimaryButton>
                                                 </td>

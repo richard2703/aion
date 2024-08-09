@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\MinutaTareaMail;
+use App\Mail\NuevaTareaMail;
 use App\Mail\RecordatorioTareaMail;
 use App\Mail\TestMail;
 use App\Models\minutas;
@@ -48,10 +49,12 @@ class SendMailController extends Controller
 
     public function recordatorioTarea()
     {
-        $users = User::all();
 
 
-        $mailData = $users->load('tarea');
+        $mailData = User::with(['tarea' => function ($query) {
+            $query->where('estatus_id', '<>', '4');
+        }])->get();
+
         foreach ($mailData as $key => $mailValue) {
             // TODO: HACER QUE ESTO SE EJECUTE DE FORMA AUTOMATICA
             if (count($mailValue->tarea) > 0) {
@@ -64,13 +67,28 @@ class SendMailController extends Controller
 
     public function sendTareasByMinuta(minutas $minuta)
     {
-        $mailData = $minuta->load('tarea.responsable', 'tarea.estatus', 'asistente.user');
-        foreach ($minuta->asistente as $asistente_key => $asistente) {
-            # code...
-            echo $asistente->user->email;
+        $mailData = $minuta->load('tarea.responsable', 'tarea.estatus', 'asistente.user', 'lider');
 
-            Mail::to('software@nutriton.com.mx')->send(new MinutaTareaMail($mailData));
+        $users = User::with(['tarea' => function ($query) use ($minuta) {
+            $query->where('minuta_id', $minuta->id);
+        }])->get();
+
+        // Enviar correo a los asistentes
+        foreach ($minuta->asistente as $asistente_key => $asistente) {
+
+            Mail::to($asistente->user->email)->send(new MinutaTareaMail($mailData));
         }
-        // return response()->json(['message' => 'Mail sent successfully']);
+        // Enviar correo a los responsables de tareas
+        foreach ($users as $user_key => $mailValue) {
+            // TODO: HACER QUE ESTO SE EJECUTE DE FORMA AUTOMATICA
+            if (count($mailValue->tarea) > 0) {
+
+                Mail::to($mailValue->email)->send(new NuevaTareaMail($mailValue));
+            }
+        }
+        // Enviar correo al lider
+        Mail::to($minuta->lider->email)->send(new MinutaTareaMail($mailData));
+
+        return response()->json(['message' => 'Mail sent successfully']);
     }
 }
