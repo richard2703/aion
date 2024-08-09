@@ -194,8 +194,6 @@ class tareasController extends Controller
         $notification = Notificacion::create($notification);
 
         $responsable = User::find($request->responsable_id);
-
-        Mail::to($responsable->email)->send(new NuevaTareaMail($mailData));
     }
 
     /**
@@ -264,6 +262,8 @@ class tareasController extends Controller
 
         $mailData = $tarea->load('responsable', 'revisor', 'estatus');
         $responsable = User::find($tarea->responsable_id);
+
+        Mail::to($responsable->email)->send(new ActualizacionTareaMail($mailData));
     }
 
     /**
