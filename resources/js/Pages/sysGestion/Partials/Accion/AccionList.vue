@@ -3,7 +3,9 @@
         <ul>
             <li v-for="accionCorrectiva in accionesCorrectivas" class="mt-4 grid grid-cols-[85%_15%]">
                 <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow p-4">
-                    <h3 class="text-lg font-semibold mb-4">{{ accionCorrectiva.titulo }}</h3>
+                    <a class="hover:underline text-blue-500" target="blank" :href="accionCorrectiva.link">
+                        <h3 class="text-lg font-semibold mb-4">{{ accionCorrectiva.titulo }}</h3>
+                    </a>
                     <div class="mb-2">
                         <strong class="text-gray-700">Proceso: </strong>
                         <span>{{ accionCorrectiva.proceso.nombre }}</span>
