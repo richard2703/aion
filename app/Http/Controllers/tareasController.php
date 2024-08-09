@@ -264,8 +264,6 @@ class tareasController extends Controller
 
         $mailData = $tarea->load('responsable', 'revisor', 'estatus');
         $responsable = User::find($tarea->responsable_id);
-
-        Mail::to($responsable->email)->send(new ActualizacionTareaMail($mailData));
     }
 
     /**
