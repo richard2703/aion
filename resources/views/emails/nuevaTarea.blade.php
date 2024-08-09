@@ -11,12 +11,19 @@
     <hr>
     <br>
     <p>
-        Se ha creado una nueva tarea, en la que se te ha etiquetado.
-        <br>
-        Titulo: <a href="http://localhost:8000/tareas/{{ $mailData['id'] }}/detalle"> {{ $mailData['tarea'] }}</a>
-        <br>
-        Fecha de entrega: {{ $mailData['fecha'] }}
-        <br>
+        Se han creado nuevas tareas, en la que se te ha etiquetado.
+        @foreach ($mailData['tarea'] as $tarea)
+            <br>
+            <br>
+            Titulo: <a href="http://localhost:8000/tareas/{{ $tarea['id'] }}/detalle"> {{ $tarea['tarea'] }}</a>
+            <br>
+            Responsable: {{ $tarea['responsable']->name }}
+            <br>
+            Estatus: {{ $tarea['estatus']->titulo }}
+            <br>
+            Fecha de entrega: {{ $tarea['fecha'] }}
+            <br>
+        @endforeach
 
 
     </p>
