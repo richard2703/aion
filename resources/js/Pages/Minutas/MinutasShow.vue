@@ -115,9 +115,9 @@
                                     </PrimaryButton>
 
                                     <!-- TODO: Send mail REMOVE IS NOT USED -->
-                                    <PrimaryButton v-if="$page.props.auth.user.user.name == minuta.lider.name"
+                                    <!-- <PrimaryButton v-if="$page.props.auth.user.user.name == minuta.lider.name"
                                         class=" mb-4 pi pi-envelope float-right" @click="sendMail()">
-                                    </PrimaryButton>
+                                    </PrimaryButton> -->
 
                                 </div>
 

@@ -274,8 +274,8 @@ const sendMail = async () => {
                 <div>
                     <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
                         <PrimaryButton class="pi pi-plus m-4" :href="route('tareas.create')"></PrimaryButton>
-                        <PrimaryButton v-if="$page.props.auth.user.roles.includes('admin')" class="pi pi-envelope m-4"
-                            @click="sendMail()"></PrimaryButton>
+                        <!-- <PrimaryButton v-if="$page.props.auth.user.roles.includes('admin')" class="pi pi-envelope m-4"
+                            @click="sendMail()"></PrimaryButton> -->
                     </div>
                     <div class=" px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto overflow-x-auto gap-4">
