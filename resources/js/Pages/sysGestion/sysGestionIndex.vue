@@ -431,7 +431,7 @@ const subTitle = "subTitle2"; // Este segundo es por siu viene de un menu desple
                                                     <button @click="getRegistros(kpiItem.id, kpiItem.titulo)"> {{
                                                         kpiItem?.titulo ||
                                                         "sin valor"
-                                                        }}</button>
+                                                    }}</button>
                                                 </th>
                                             </tr>
                                         </thead>
@@ -486,10 +486,17 @@ const subTitle = "subTitle2"; // Este segundo es por siu viene de un menu desple
                                             <tr v-for="(procesoItem, index) in departamento.departamento.procesos"
                                                 :key="index">
                                                 <td class="py-2 px-4 border">
-                                                    <Link :href="route('proceso.edit', procesoItem.id)"
-                                                        class="text-blue-500 hover:underline">
-                                                    {{ procesoItem.nombre }}
-                                                    </Link>
+                                                    <div v-if="procesoItem.link_externo">
+                                                        <a target="blank" :href="procesoItem.link_externo"
+                                                            class="text-blue-500 hover:underline">
+                                                            {{ procesoItem.nombre }}
+                                                        </a>
+                                                    </div>
+                                                    <div v-else>
+                                                        <a href="#" class="text-slate-400 hover:underline">
+                                                            {{ procesoItem.nombre }}
+                                                        </a>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         </tbody>
