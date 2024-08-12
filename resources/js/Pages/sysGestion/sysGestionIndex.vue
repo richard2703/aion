@@ -12,6 +12,7 @@ import Chart from 'primevue/chart';
 import AccionIndex from "@/Pages/sysGestion/Partials/Accion/AccionIndex.vue";
 import Modal from "@/Components/Modal.vue";
 import { showToast } from "../utils/SweetAlert.service";
+import { Tooltip } from "chart.js";
 
 const props = defineProps({
     areas: Array,
@@ -69,6 +70,18 @@ const setChartOptions = () => {
             legend: {
                 labels: {
                     color: textColor
+                }
+            },
+            // TODO: agregar tooltip personalizado (falta confirmar con director el contenido)
+            tooltip: {
+                enabled: true,
+                callbacks: {
+                    label: function (context) {
+                        // Custom message for the tooltip
+                        const label = context.dataset.label || '';
+                        const value = context.raw;
+                        return `${label}: ${value} (este es un mensaje personalizado para el tooltip)`;
+                    }
                 }
             }
         },
