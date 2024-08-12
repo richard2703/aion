@@ -179,9 +179,12 @@ async function sysGestion(
             (departamento.value = response.data)
             console.log('departamento', departamento.value);
             registros.value = departamento.value.registros.map(record => record.actual);
+
             // titulos.value = departamento.value.registros.map(record => record.created_at);
             titulos.value = departamento.value.registros.map(record => record.mes);
             kpiTitulos.value = departamento.value.kpis[0]?.titulo;
+            console.log({ registros: registros.value });
+            console.log({ kpiTitulos: kpiTitulos.value });
 
             console.log('registros', registros.value);
         })
@@ -281,7 +284,7 @@ const getClass = (kpiItem) => {
 
 
 const title = "sysGestion"; // Aquí asegúrate de que esto coincida con el valor que esperas en MainMenu
-const subTitle = "subTitle2"; // Este segundo es por siu viene de un menu desplegable en MainMenu
+const subTitle = "pdca"; // Este segundo es por siu viene de un menu desplegable en MainMenu
 
 </script>
 
@@ -421,7 +424,9 @@ const subTitle = "subTitle2"; // Este segundo es por siu viene de un menu desple
                                             </tr>
                                         </tbody>
                                     </table>
-
+                                    <!-- <div v-for="registro in registros">
+                                                    {{ registro }}
+                                                </div> -->
                                     <table v-for="(kpiItem, index) in departamento.kpis" :key="index"
                                         class="min-w-full border-collapse mb-4">
                                         <thead>
@@ -431,7 +436,7 @@ const subTitle = "subTitle2"; // Este segundo es por siu viene de un menu desple
                                                     <button @click="getRegistros(kpiItem.id, kpiItem.titulo)"> {{
                                                         kpiItem?.titulo ||
                                                         "sin valor"
-                                                        }}</button>
+                                                    }}</button>
                                                 </th>
                                             </tr>
                                         </thead>
@@ -442,7 +447,6 @@ const subTitle = "subTitle2"; // Este segundo es por siu viene de un menu desple
                                                 <td class="py-2 px-4 border">Promedio</td>
                                             </tr>
                                             <tr>
-
                                                 <td class="py-2 px-4 border ">
                                                     {{ kpiItem?.objetivo }}
                                                 </td>
