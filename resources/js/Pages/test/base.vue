@@ -155,7 +155,10 @@ const subTitle = "subTitle2"; // Este segundo es por siu viene de un menu desple
                             </div>
                         </div>
                     </div>
-
+                    <iframe title="KPI AION" class="w-full" width="100%" height="541.25"
+                        src="https://app.powerbi.com/reportEmbed?reportId=179bf37c-7e0d-4b16-8efb-1dd0d892b9d3&autoAuth=true&ctid=10cd56f7-ad91-4efa-afeb-28102e28951c"
+                        frameborder="0" allowFullScreen="true">
+                    </iframe>
                 </div>
             </div>
         </div>
