@@ -19,6 +19,11 @@ class sysGestionController extends Controller
         return Inertia::render('sysGestion/sysGestionIndex');
     }
 
+    public function dashboard()
+    {
+        return Inertia::render('sysGestion/Dashboard');
+    }
+
     public function kpis(Request $request)
     {
         $query = Kpis::query();
