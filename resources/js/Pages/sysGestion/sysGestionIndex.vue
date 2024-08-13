@@ -12,6 +12,7 @@ import Chart from 'primevue/chart';
 import AccionIndex from "@/Pages/sysGestion/Partials/Accion/AccionIndex.vue";
 import Modal from "@/Components/Modal.vue";
 import { showToast } from "../utils/SweetAlert.service";
+import { Tooltip } from "chart.js";
 
 const props = defineProps({
     areas: Array,
@@ -69,6 +70,18 @@ const setChartOptions = () => {
             legend: {
                 labels: {
                     color: textColor
+                }
+            },
+            // TODO: agregar tooltip personalizado (falta confirmar con director el contenido)
+            tooltip: {
+                enabled: true,
+                callbacks: {
+                    label: function (context) {
+                        // Custom message for the tooltip
+                        const label = context.dataset.label || '';
+                        const value = context.raw;
+                        return `${label}: ${value} (este es un mensaje personalizado para el tooltip)`;
+                    }
                 }
             }
         },
@@ -490,10 +503,17 @@ const subTitle = "pdca"; // Este segundo es por siu viene de un menu desplegable
                                             <tr v-for="(procesoItem, index) in departamento.departamento.procesos"
                                                 :key="index">
                                                 <td class="py-2 px-4 border">
-                                                    <Link :href="route('proceso.edit', procesoItem.id)"
-                                                        class="text-blue-500 hover:underline">
-                                                    {{ procesoItem.nombre }}
-                                                    </Link>
+                                                    <div v-if="procesoItem.link_externo">
+                                                        <a target="blank" :href="procesoItem.link_externo"
+                                                            class="text-blue-500 hover:underline">
+                                                            {{ procesoItem.nombre }}
+                                                        </a>
+                                                    </div>
+                                                    <div v-else>
+                                                        <a href="#" class="text-slate-400 hover:underline">
+                                                            {{ procesoItem.nombre }}
+                                                        </a>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         </tbody>

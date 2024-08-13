@@ -1,36 +1,19 @@
 <template>
     <div class="max-h-40 w-full overflow-y-auto no-scrollbar">
         <ul>
-            <li v-for="accionCorrectiva in accionesCorrectivas" class="mt-4 grid grid-cols-[85%_15%]">
-                <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow p-4">
+            <li v-for="accionCorrectiva in accionesCorrectivas"
+                class="border-b border-gray-200 grid grid-cols-[85%_15%]">
+                <div>
+
                     <a class="hover:underline text-blue-500" target="blank" :href="accionCorrectiva.link">
-                        <h3 class="text-lg font-semibold mb-4">{{ accionCorrectiva.titulo }}</h3>
+                        {{ accionCorrectiva.titulo }}
                     </a>
-                    <div class="mb-2">
-                        <strong class="text-gray-700">Proceso: </strong>
-                        <span>{{ accionCorrectiva.proceso.nombre }}</span>
-                    </div>
-                    <div class="mb-2">
-                        <strong class="text-gray-700">Responsable: </strong>
-                        <span>{{ accionCorrectiva.responsable.name }}</span>
-                    </div>
-                    <div class="mb-4">
-                        <strong class="text-gray-700">Estatus: </strong>
-                        <span class="text-blue-500">{{ accionCorrectiva.estatus.titulo }}</span>
-                    </div>
-                    <div class=" flex justify-evenly ">
-                        <div class="text-center">
-                            <button class="pi pi-pencil text-red-500 mx-2 justify-end"
-                                @click="editAccion(accionCorrectiva.id)"></button>
-                        </div>
-                        <div class="text-center">
-                            <button class="pi pi-times text-red-500 mx-2"
-                                @click="deleteAccion(accionCorrectiva.id)"></button>
-                        </div>
-
-                    </div>
                 </div>
-
+                <div class="text-right">
+                    <button class="pi pi-pencil text-red-500 mx-2 justify-end"
+                        @click="editAccion(accionCorrectiva.id)"></button>
+                    <button class="pi pi-times text-red-500 mx-2" @click="deleteAccion(accionCorrectiva.id)"></button>
+                </div>
             </li>
             <div class="text-center" v-if="accionesCorrectivas.length < 1">
                 <span>No hay acciones</span>
