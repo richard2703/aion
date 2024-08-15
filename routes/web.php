@@ -150,4 +150,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     //SysGestion
     Route::get('sysgestion', [App\Http\Controllers\sysGestionController::class, 'index'])->name('sysgestion.index');
     Route::get('sysgestion/dashboard', [App\Http\Controllers\sysGestionController::class, 'dashboard'])->name('sysgestion.dashboard');
+
+    //Reportes
+    Route::get('Encargados', [App\Http\Controllers\encargado_flujoController::class, 'index'])->name('encargadoFlujo.index');
 });

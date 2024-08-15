@@ -91,3 +91,6 @@ Route::get('/notificaciones/deleteReaded', [App\Http\Controllers\notificacionCon
 // Route::get('send/mail', [App\Http\Controllers\SendMailController::class, 'sendMailWithAttachment'])->name('mailer.sendMailWithAttachment');
 Route::get('send/tareas/mail', [App\Http\Controllers\SendMailController::class, 'recordatorioTarea'])->name('mailer.recordatorioTarea');
 Route::get('send/{minuta}/mail', [App\Http\Controllers\SendMailController::class, 'sendTareasByMinuta'])->name('mailer.sendTareasByMinuta');
+
+//Encargado de flujo
+Route::get('/encargado-flujo', [App\Http\Controllers\encargado_flujoController::class, 'findAll'])->name('encargado.findAll');
