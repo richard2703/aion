@@ -45,17 +45,33 @@
             </li>
 
             <li>
-                <div class="mb-4">
-                    <Link class="group flex items-center py-3" :href="route('sysgestion.index')">
-                    <div :class="title === 'sysGestion'
-                        ? 'activo flex'
-                        : 'inactivo flex'
-                        ">
-                        <icon name="office" class="mr-2 w-4 h-4" />
+                <a class="group flex items-center py-3 cursor-pointer" @click="toggleMenu('sysGestion')">
+
+                    <i class="pi pi-building mr-2 w-4 h-4" :class="title === 'sysGestion' ? 'activo flex'
+                        : 'inactivo flex'"></i>
+                    <div :class="title === 'sysGestion' ? 'activo flex'
+                        : 'inactivo flex'">
                         Sistema de Gestion
                     </div>
-                    </Link>
-                </div>
+                    <icon name="cheveron-down" class="ml-auto w-4 h-4" :class="isOpen('sysGestion') ? 'rotate-180' : '', title === 'sysGestion' ? 'activo flex'
+                        : 'inactivo flex'" />
+                </a>
+                <ul v-show="isOpen('sysGestion')" class="pl-6 space-y-2">
+                    <li>
+                        <Link class="group flex items-center py-2" :href="route('sysgestion.dashboard')" :class="subTitle === 'dashboard' ? 'activo flex'
+                            : 'inactivo flex'">
+                        <icon name="circle" class="mr-2 w-3 h-3" />
+                        <div>Dashboard</div>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link class="group flex items-center py-2" :href="route('sysgestion.index')" :class="subTitle === 'pdca' ? 'activo flex'
+                            : 'inactivo flex'">
+                        <icon name="circle" class="mr-2 w-3 h-3" />
+                        <div>PDCA</div>
+                        </Link>
+                    </li>
+                </ul>
             </li>
 
             <!-- Usuarios Menu Item with Submenus -->

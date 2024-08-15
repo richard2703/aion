@@ -1,7 +1,7 @@
 <template>
     <Layout :titulo="title">
 
-        <Head title="Departamento" />
+        <Head title="Minutas" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
                 <h3>Detalles de Minuta</h3>
@@ -102,7 +102,7 @@
                                 <h2>Tareas</h2>
                             </div>
 
-                            <div class="container mx-auto overflow-x-auto gap-4">
+                            <div class="container mx-auto overflow-x-auto">
                                 <div class="flex gap-4">
                                     <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
                                     <PrimaryButton class=" mb-4 float-right pi pi-filter" @click="openFilter">
@@ -113,6 +113,12 @@
                                     <!-- Trigger to open modal -->
                                     <PrimaryButton class=" mb-4 float-right pi pi-plus" @click="openModal('create')">
                                     </PrimaryButton>
+
+                                    <!-- TODO: Send mail REMOVE IS NOT USED -->
+                                    <!-- <PrimaryButton v-if="$page.props.auth.user.user.name == minuta.lider.name"
+                                        class=" mb-4 pi pi-envelope float-right" @click="sendMail()">
+                                    </PrimaryButton> -->
+
                                 </div>
 
 
@@ -672,4 +678,22 @@ const validateTarea = async (tarea, $event) => {
 
 };
 
+// TODO: Send mail REMOVE IS NOT USED
+const sendMail = async () => {
+    try {
+        const result = await confirmDialog(
+            "Notificacion de Tareas?",
+            "Se enviaran las tareas de esta minuta!",
+            "warning"
+        );
+        if (result.isConfirmed) {
+            await axios.get(route("mailer.sendTareasByMinuta", minuta.value.id))
+                .then(() => {
+                    showToast("El correo ha sido enviado", "success");
+                });
+        }
+    } catch (error) {
+        console.log(error);
+    }
+};
 </script>

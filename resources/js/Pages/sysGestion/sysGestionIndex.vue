@@ -12,6 +12,7 @@ import Chart from 'primevue/chart';
 import AccionIndex from "@/Pages/sysGestion/Partials/Accion/AccionIndex.vue";
 import Modal from "@/Components/Modal.vue";
 import { showToast } from "../utils/SweetAlert.service";
+import { Tooltip } from "chart.js";
 
 const props = defineProps({
     areas: Array,
@@ -69,6 +70,18 @@ const setChartOptions = () => {
             legend: {
                 labels: {
                     color: textColor
+                }
+            },
+            // TODO: agregar tooltip personalizado (falta confirmar con director el contenido)
+            tooltip: {
+                enabled: true,
+                callbacks: {
+                    label: function (context) {
+                        // Custom message for the tooltip
+                        const label = context.dataset.label || '';
+                        const value = context.raw;
+                        return `${label}: ${value} (este es un mensaje personalizado para el tooltip)`;
+                    }
                 }
             }
         },
@@ -179,9 +192,12 @@ async function sysGestion(
             (departamento.value = response.data)
             console.log('departamento', departamento.value);
             registros.value = departamento.value.registros.map(record => record.actual);
+
             // titulos.value = departamento.value.registros.map(record => record.created_at);
             titulos.value = departamento.value.registros.map(record => record.mes);
             kpiTitulos.value = departamento.value.kpis[0]?.titulo;
+            console.log({ registros: registros.value });
+            console.log({ kpiTitulos: kpiTitulos.value });
 
             console.log('registros', registros.value);
         })
@@ -281,7 +297,7 @@ const getClass = (kpiItem) => {
 
 
 const title = "sysGestion"; // Aquí asegúrate de que esto coincida con el valor que esperas en MainMenu
-const subTitle = "subTitle2"; // Este segundo es por siu viene de un menu desplegable en MainMenu
+const subTitle = "pdca"; // Este segundo es por siu viene de un menu desplegable en MainMenu
 
 </script>
 
@@ -421,7 +437,9 @@ const subTitle = "subTitle2"; // Este segundo es por siu viene de un menu desple
                                             </tr>
                                         </tbody>
                                     </table>
-
+                                    <!-- <div v-for="registro in registros">
+                                                    {{ registro }}
+                                                </div> -->
                                     <table v-for="(kpiItem, index) in departamento.kpis" :key="index"
                                         class="min-w-full border-collapse mb-4">
                                         <thead>
@@ -431,7 +449,7 @@ const subTitle = "subTitle2"; // Este segundo es por siu viene de un menu desple
                                                     <button @click="getRegistros(kpiItem.id, kpiItem.titulo)"> {{
                                                         kpiItem?.titulo ||
                                                         "sin valor"
-                                                        }}</button>
+                                                    }}</button>
                                                 </th>
                                             </tr>
                                         </thead>
@@ -442,7 +460,6 @@ const subTitle = "subTitle2"; // Este segundo es por siu viene de un menu desple
                                                 <td class="py-2 px-4 border">Promedio</td>
                                             </tr>
                                             <tr>
-
                                                 <td class="py-2 px-4 border ">
                                                     {{ kpiItem?.objetivo }}
                                                 </td>
@@ -455,7 +472,7 @@ const subTitle = "subTitle2"; // Este segundo es por siu viene de un menu desple
                                                     style="text-align-last: justify;">
                                                     {{
                                                         formatNumber(kpiItem?.promedio) }}
-                                                    <PrimaryButton class="pi pi-filter"
+                                                    <PrimaryButton class="pi pi-plus"
                                                         @click="showModal(kpiItem.id, kpiItem.actual, kpiItem.titulo)">
                                                     </PrimaryButton>
                                                 </td>
@@ -486,10 +503,17 @@ const subTitle = "subTitle2"; // Este segundo es por siu viene de un menu desple
                                             <tr v-for="(procesoItem, index) in departamento.departamento.procesos"
                                                 :key="index">
                                                 <td class="py-2 px-4 border">
-                                                    <Link :href="route('proceso.edit', procesoItem.id)"
-                                                        class="text-blue-500 hover:underline">
-                                                    {{ procesoItem.nombre }}
-                                                    </Link>
+                                                    <div v-if="procesoItem.link_externo">
+                                                        <a target="blank" :href="procesoItem.link_externo"
+                                                            class="text-blue-500 hover:underline">
+                                                            {{ procesoItem.nombre }}
+                                                        </a>
+                                                    </div>
+                                                    <div v-else>
+                                                        <a href="#" class="text-slate-400 hover:underline">
+                                                            {{ procesoItem.nombre }}
+                                                        </a>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         </tbody>

@@ -6,7 +6,7 @@
                 <div>
 
                     <a class="hover:underline text-blue-500" target="blank" :href="accionCorrectiva.link">
-                        {{ accionCorrectiva.titulo }} <span> para </span> {{ accionCorrectiva.proceso.nombre }}
+                        {{ accionCorrectiva.titulo }}
                     </a>
                 </div>
                 <div class="text-right">
@@ -50,6 +50,8 @@ const getAcciones = async () => {
         await axios.get(route("acciones.byArea", { area_id: area_id.value, tipo: tipo.value }))
             .then((response) => {
                 accionesCorrectivas.value = response.data;
+                console.log({ acciones: accionesCorrectivas.value });
+
             })
             .catch((error) => {
                 console.log(error);

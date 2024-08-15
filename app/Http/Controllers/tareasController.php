@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ActualizacionTareaMail;
+use App\Mail\NuevaTareaMail;
+use App\Models\Notificacion;
 use App\Models\tareas;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 
 class tareasController extends Controller
@@ -162,10 +167,10 @@ class tareasController extends Controller
         ];
 
         if (is_array($request->responsable_id)) {
-            $data['responsable_id'] = $request->responsable_id;
+            $data['responsable_id'] = $request->responsable_id["id"];
         }
         if (is_array($request->revisor_id)) {
-            $data['revisor_id'] = $request->revisor_id;
+            $data['revisor_id'] = $request->revisor_id["id"];
         }
 
         if (is_int($request->responsable_id)) {
@@ -175,7 +180,20 @@ class tareasController extends Controller
             $data['revisor_id'] = $request->revisor_id;
         }
 
-        tareas::create($data);
+
+
+        $mailData = tareas::create($data);
+
+        $notification = [
+            'user_id' => $request->responsable_id,
+            'titulo' => $mailData->tarea,
+            'link' => '/tareas/' . $mailData->id . '/detalle',
+            'readed' => 0,
+        ];
+
+        $notification = Notificacion::create($notification);
+
+        $responsable = User::find($request->responsable_id);
     }
 
     /**
@@ -201,6 +219,16 @@ class tareasController extends Controller
     {
         //
         $tarea->load('area', 'departamento', 'minuta', 'responsable', 'revisor', 'estatus');
+        $notifications = Notificacion::where('user_id', $tarea->responsable_id)
+            ->where('titulo', $tarea->tarea)
+            ->where('readed', '<>', 1)
+            ->get();
+
+        if ($notifications->isNotEmpty()) {
+            Notificacion::whereIn('id', $notifications->pluck('id'))
+                ->update(['readed' => 1]);
+        }
+
         return Inertia::render('Tareas/TareaDetail', ['tarea' => $tarea]);
     }
 
@@ -231,6 +259,11 @@ class tareasController extends Controller
         $tarea->nota = $request->nota;
         $tarea->estatus_id = $request->estatus_id;
         $tarea->save();
+
+        $mailData = $tarea->load('responsable', 'revisor', 'estatus');
+        $responsable = User::find($tarea->responsable_id);
+
+        // Mail::to($responsable->email)->send(new ActualizacionTareaMail($mailData));
     }
 
     /**

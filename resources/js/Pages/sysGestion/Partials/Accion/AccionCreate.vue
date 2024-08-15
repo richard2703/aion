@@ -1,7 +1,7 @@
 <template>
     <div>
         <h2 class="text-center text-xl">Nueva acción</h2>
-        <form @submit.prevent="submit">
+        <form @submit.prevent="submit" class="w-full ">
 
             <div class="mt-4">
                 <InputLabel for="nombre" value="Nombre:" />
@@ -19,6 +19,28 @@
                     <option v-for="proceso in procesos" :key="proceso.id" :value="proceso.id">
                         {{ proceso.nombre }}
                     </option>
+                </select>
+            </div>
+            <div class="mt-4">
+                <InputLabel for="responsable_id" value="Responsable:" />
+                <AutoComplete v-model="form.responsable_id" optionLabel="name" :suggestions="filteredUsuarios"
+                    forceSelection @complete="search" placeholder="" />
+            </div>
+            <div class="mt-4">
+                <InputLabel for="estatus" value="Estatus: " />
+                <select ref="departamento_select"
+                    class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                    v-model="form.estatus_id" required>
+                    <option value="" selected disabled>
+                        Seleccione una opcion </option>
+                    <option value=1>
+                        Retrasado </option>
+                    <option value=2>
+                        Iniciado </option>
+                    <option value=3>
+                        En proceso </option>
+                    <option value=4>
+                        Terminado </option>
                 </select>
             </div>
             <div class="mt-4">
@@ -45,6 +67,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { showToast } from "@/Pages/utils/SweetAlert.service";
+import AutoComplete from 'primevue/autocomplete';
 
 const props = defineProps({
     tipo: String,
@@ -57,14 +80,45 @@ const emit = defineEmits(['list']);
 const procesos = ref(props.procesos);
 const area_id = ref(props.area_id);
 const tipo = ref(props.tipo);
+const usuarios = ref([]);
+const filteredUsuarios = ref();
 
 const form = useForm({
     tipo_id: "",
     proceso_id: "",
     area_id: area_id.value,
+    responsable_id: "",
+    estatus_id: "",
     titulo: "",
     link: "",
 });
+
+onMounted(() => {
+    getUsuarios();
+});
+
+const getUsuarios = async () => {
+    try {
+        const response = await axios.get("/api/usuarios/all/todo");
+        usuarios.value = response.data;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const search = (event) => {
+    console.log("buscando");
+    setTimeout(() => {
+        if (!event.query.trim().length) {
+            console.log(filteredUsuarios.value);
+            filteredUsuarios.value = [...usuarios.value];
+        } else {
+            filteredUsuarios.value = usuarios.value.filter((usuario) => {
+                return usuario.name.toLowerCase().startsWith(event.query.toLowerCase());
+            });
+        }
+    }, 250);
+}
 
 const submit = async () => {
     try {
