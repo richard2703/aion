@@ -55,7 +55,7 @@ class encargado_flujoController extends Controller
         //     $query->orderBy('id', $sortOrder);
         // }
 
-        $encargados = $query->paginate($pageSize, ['*'], 'page', $page);
+        $encargados = $query->with('usuario', 'departamento')->paginate($pageSize, ['*'], 'page', $page);
 
         return response()->json($encargados);
     }
@@ -63,15 +63,18 @@ class encargado_flujoController extends Controller
 
     public function create()
     {
-        //
+        return Inertia::render('EncargadoFlujo/EncargadoFlujoCreate');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $encargado_flujo = new encargado_flujo();
+        // $encargado_flujo->area_id = $request->area_id;
+        $encargado_flujo->departamento_id = $request->departamento_id;
+        $encargado_flujo->user_id = $request->lider_id["id"];
+        $encargado_flujo->save();
+
+        return redirect()->route('encargadoFlujo.index');
     }
 
     /**

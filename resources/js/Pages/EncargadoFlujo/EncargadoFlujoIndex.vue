@@ -65,6 +65,8 @@ async function getEncargados(
                 sortOrder: sortOrder === 1 ? "asc" : "desc",
             },
         });
+        console.log(response.data.data);
+
         encargados.value = response.data.data;
         totalRecords.value = response.data.total;
         first.value = (response.data.current_page - 1) * rows.value;
@@ -158,13 +160,13 @@ watch(globalFilter, (newValue) => {
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div>
                     <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
-                        <PrimaryButton :href="route('departamento.create')" class="m-4 pi pi-plus"></PrimaryButton>
+                        <PrimaryButton :href="route('encargadoFlujo.create')" class="m-4 pi pi-plus"></PrimaryButton>
                     </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto overflow-x-auto">
                             <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
 
-                            <DataTable :value="departamentos" paginator :rows="rows" :totalRecords="totalRecords"
+                            <DataTable :value="encargados" paginator :rows="rows" :totalRecords="totalRecords"
                                 :lazy="true" :first="first" @page="onPage" @sort="onSort"
                                 :rowsPerPageOptions="[5, 10, 20, 50]" tableStyle="min-width: 50rem" :filters="filters"
                                 :globalFilterFields="[
@@ -174,15 +176,15 @@ watch(globalFilter, (newValue) => {
                                     'descripcion',
                                 ]" :sortField="sortField" :sortOrder="sortOrder"
                                 class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
-                                <template #empty> No data found. </template>
+                                <template #empty> Sin registros. </template>
                                 <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
                                     sortable></Column>
-                                <Column field="area.nombre" header="Pilar" headerStyle="width:4em;"
+                                <Column field="usuario.name" header="Usuario" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                                <Column field="nombre" header="Flujo de valor" headerStyle="width:4em;"
+                                <Column field="departamento.nombre" header="Flujo de valor" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                                <Column field="descripcion" header="Descripcion" headerStyle="width:4em;"
-                                    bodyClass="text-center" sortable></Column>
+                                <!-- <Column field="descripcion" header="Descripcion" headerStyle="width:4em;"
+                                    bodyClass="text-center" sortable></Column> -->
 
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">
