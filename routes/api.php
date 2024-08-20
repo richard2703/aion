@@ -94,3 +94,7 @@ Route::get('send/{minuta}/mail', [App\Http\Controllers\SendMailController::class
 
 //Encargado de flujo
 Route::get('/encargado-flujo', [App\Http\Controllers\encargado_flujoController::class, 'findAll'])->name('encargado.findAll');
+
+//Reportes
+Route::get('/getFlujo', [App\Http\Controllers\reportesController::class, 'findAll'])->name('getFlujo.findAll');
+Route::get('/getReportes/{id}', [App\Http\Controllers\reportesController::class, 'findAllReportes'])->name('getReportes.findAllReportes');
