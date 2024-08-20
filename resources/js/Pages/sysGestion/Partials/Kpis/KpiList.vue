@@ -1,5 +1,5 @@
 <template>
-    <div class="m-4 p-4">
+    <div v-bind="$attrs" class="m-4 p-4">
         <div>
             <div class="grid sm:grid-cols-2 lg:grid-cols-2 gap-4">
                 <div class="my-4">
@@ -164,7 +164,11 @@ import TextInput from "@/Components/TextInput.vue";
 
 const props = defineProps({
     kpi: Object,
-})
+});
+
+defineOptions({
+    inheritAttrs: false,
+});
 
 const kpi = ref(props.kpi);
 const registrosKpi = ref([]);
