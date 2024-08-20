@@ -15,8 +15,13 @@ class sysGestionController extends Controller
 {
     public function index()
     {
-        // dd("paso");
-        return Inertia::render('sysGestion/sysGestionIndex');
+        $user = auth()->user();
+        return Inertia::render(
+            'sysGestion/sysGestionIndex',
+            [
+                'user' => $user
+            ]
+        );
     }
 
     public function dashboard()
@@ -74,6 +79,7 @@ class sysGestionController extends Controller
             ->where('tipo', 2)->get();
         // $registros = registros_kpi::select('kpi_id', 'actual', 'created_at')->where('kpi_id', $kpis[0]->id)->get();
         $registros = registros_kpi::select(
+            'id',
             'kpi_id',
             'actual',
             'promedio',

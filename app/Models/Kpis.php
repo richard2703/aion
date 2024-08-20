@@ -46,4 +46,9 @@ class Kpis extends Model
     {
         return $this->belongsTo(Procedimiento::class, 'procedimiento_id', 'id');
     }
+
+    public function registros()
+    {
+        return $this->hasMany(registros_kpi::class, 'kpi_id', 'id');
+    }
 }
