@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Departamento;
+use App\Models\Kpis;
 use App\Models\reporteSemanal;
 use App\Models\reportes;
 use App\Models\lights;
@@ -150,7 +151,14 @@ class reportesController extends Controller
         // } else {
         //     $departamentos = $query->with('kpis')->get();
         // }
-        $reportes = $query->where('semana_id', $id)->with(['departamento', 'highlight', 'lowlight'])->get();
+        $reportes = $query->where('semana_id', $id)->with(['departamento', 'highlight', 'lowlight', 'kpis' => function ($query) {
+            $query->where('tipo', 2);
+        }])->get();
+        // if (isset($reportes[0]->departamento_id)) {
+        //     // dd($reportes[0]->departamento_id);
+        //     $kpis = Kpis::where('departamento_id', $reportes[0]->departamento_id)->get();
+        // }
+
         // dd($reportes);
         return response()->json($reportes);
     }

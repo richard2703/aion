@@ -42,4 +42,9 @@ class reportes extends Model
     {
         return $this->hasMany(lights::class, 'reporte_id')->where('tipo', 0);
     }
+
+    public function kpis()
+    {
+        return $this->hasMany(kpis::class, 'departamento_id', 'departamento_id');
+    }
 }
