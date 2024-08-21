@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\avisos;
 use App\Models\Departamento;
 use App\Models\Kpis;
 use App\Models\reporteSemanal;
@@ -57,10 +58,24 @@ class reportesController extends Controller
         $reporte = reportes::create([
             'departamento_id' => $request->departamento_id,
             'semana_id' => $reporteSemanal->id,
-            'aviso' => $request->aviso,
+            // 'aviso' => $request->aviso,
             'created_for' => auth()->id(),
 
         ]);
+
+        // Guardar los avisos
+        foreach ($request->avisos as $aviso) {
+            if ($aviso != null) {
+                # code...
+                avisos::create([
+                    'departamento_id' => $request->departamento_id,
+                    'semana_id' => $reporteSemanal->id,
+                    'reporte_id' => $reporte->id,
+                    'aviso' => $aviso,
+                    'created_for' => auth()->id(), // Asignar al usuario autenticado
+                ]);
+            }
+        }
 
         // Guardar los highlights
         foreach ($request->highlights as $highlight) {
@@ -133,6 +148,19 @@ class reportesController extends Controller
 
     public function findAll()
     {
+        $query = Departamento::query();
+        // if ($pageSize && $page) {
+        //     $departamentos = $query->with('kpis')->paginate($pageSize, ['*'], 'page', $page);
+        // } else {
+        //     $departamentos = $query->with('kpis')->get();
+        // }
+        $reporteSemanal = $query->orderBy('nombre', 'asc')->get();
+
+        return response()->json($reporteSemanal);
+    }
+
+    public function findAllReporteSemanal()
+    {
         $query = reporteSemanal::query();
         // if ($pageSize && $page) {
         //     $departamentos = $query->with('kpis')->paginate($pageSize, ['*'], 'page', $page);
@@ -143,6 +171,7 @@ class reportesController extends Controller
 
         return response()->json($reporteSemanal);
     }
+
     public function findAllReportes($id)
     {
         $query = reportes::query();
@@ -151,7 +180,7 @@ class reportesController extends Controller
         // } else {
         //     $departamentos = $query->with('kpis')->get();
         // }
-        $reportes = $query->where('semana_id', $id)->with(['departamento', 'highlight', 'lowlight', 'kpis' => function ($query) {
+        $reportes = $query->where('semana_id', $id)->with(['departamento', 'highlight', 'lowlight', 'avisos', 'kpis' => function ($query) {
             $query->where('tipo', 2);
         }])->get();
         // if (isset($reportes[0]->departamento_id)) {

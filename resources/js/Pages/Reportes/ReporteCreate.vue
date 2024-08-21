@@ -13,7 +13,8 @@ const props = defineProps({
 
 const departamentos = ref(props.departamentos);
 
-// Estado para los campos dinámicos de highlight y lowlight
+// Estado para los campos dinámicos
+const avisos = ref([{ value: "" }]);
 const highlights = ref([{ value: "" }]);
 const lowlights = ref([{ value: "" }]);
 
@@ -31,13 +32,14 @@ async function getDepartamentos() {
 const form = useForm({
     nombre: "",
     departamento_id: "",
-    aviso: "",
-    highlights: [], // Cambiado para manejar múltiples highlights
-    lowlights: [],  // Cambiado para manejar múltiples lowlights
+    avisos: [],
+    highlights: [],
+    lowlights: [],
 });
 
 const submit = () => {
     // Asignar los valores de highlights y lowlights al formulario antes de enviarlo
+    form.avisos = avisos.value.map(a => a.value);
     form.highlights = highlights.value.map(h => h.value);
     form.lowlights = lowlights.value.map(l => l.value);
 
@@ -47,6 +49,10 @@ const submit = () => {
 };
 
 // Funciones para añadir y eliminar campos dinámicos
+
+const addAviso = () => avisos.value.push({ value: "" });
+const removeAviso = (index) => avisos.value.splice(index, 1);
+
 const addHighlight = () => highlights.value.push({ value: "" });
 const removeHighlight = (index) => highlights.value.splice(index, 1);
 
@@ -100,11 +106,26 @@ getDepartamentos();
                                         </select>
                                     </div>
 
-                                    <div>
+                                    <!-- <div>
                                         <InputLabel for="Avisos" value="Avisos:" />
                                         <TextInput id="aviso" v-model="form.aviso" type="text" class="mt-1 block w-full"
                                             autocomplete="aviso" />
+                                    </div> -->
+
+                                    <!-- Campos dinámicos para Avisos -->
+                                    <div class="col-span-full flex items-center mt-4">
+                                        <InputLabel for="Avisos" value="Avisos:" />
                                     </div>
+                                    <div v-for="(aviso, index) in avisos" :key="index"
+                                        class="col-span-full flex items-center justify-between">
+                                        <TextInput v-model="aviso.value" type="text" class="mt-1 block w-full"
+                                            autocomplete="Aviso" />
+                                        <button type="button" @click="removeAviso(index)"
+                                            class="ml-2 text-red-500">Eliminar</button>
+                                    </div>
+                                    <button type="button" @click="addAviso" class="mt-2 text-blue-500">Añadir
+                                        Aviso</button>
+
 
                                     <!-- Campos dinámicos para Highlight -->
                                     <div class="col-span-full flex items-center mt-4">

@@ -47,4 +47,9 @@ class reportes extends Model
     {
         return $this->hasMany(kpis::class, 'departamento_id', 'departamento_id');
     }
+
+    public function avisos()
+    {
+        return $this->hasMany(avisos::class, 'departamento_id', 'departamento_id');
+    }
 }

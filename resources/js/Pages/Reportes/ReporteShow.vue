@@ -150,6 +150,8 @@ const getClass = (kpiItem) => {
     margin-bottom: 10px;
     border-radius: 5px;
     padding: 10px;
+    background-color: white;
+
 }
 
 .departamento-header {
@@ -200,6 +202,9 @@ const getClass = (kpiItem) => {
                                     {{ highlight.light }}
                                 </li>
                             </ul>
+                            <div v-if="!reporte.highlight.length">
+                                <p>No hay Highlight disponibles.</p>
+                            </div>
                         </div>
 
                         <!-- Low Lights Section -->
@@ -210,11 +215,14 @@ const getClass = (kpiItem) => {
                                     {{ lowlight.light }}
                                 </li>
                             </ul>
+                            <div v-if="!reporte.lowlight.length">
+                                <p>No hay Lowlights disponibles.</p>
+                            </div>
                         </div>
                     </div>
-                    <div v-if="!reporte.highlight.length && !reporte.lowlight.length">
+                    <!-- <div v-if="!reporte.highlight.length && !reporte.lowlight.length">
                         <p>No hay highlights ni lowlights disponibles.</p>
-                    </div>
+                    </div> -->
 
                     <!-- KPIs Section -->
                     <div class="grid grid-cols-2 gap-4 mt-8">
@@ -249,14 +257,28 @@ const getClass = (kpiItem) => {
                                     </tr>
                                 </tbody>
                             </table>
+                            <div v-if="!reporte.kpis.length">
+                                <p>No hay Kpis disponibles.</p>
+                            </div>
                         </div>
 
                         <!-- Avisos Section -->
-                        <div>
+                        <!-- <div>
                             <h2 class="text-xl font-bold text-purple-700">Avisos parroquiales</h2>
                             <p class="mt-2">
                                 {{ reportes[0].aviso }}
                             </p>
+                        </div> -->
+                        <div>
+                            <h2 class="text-xl font-bold text-purple-700">Avisos</h2>
+                            <ul class=" pl-5 mt-2">
+                                <li v-for="aviso in reporte.avisos" :key="aviso.id">
+                                    {{ aviso.aviso }}
+                                </li>
+                            </ul>
+                            <div v-if="!reporte.avisos.length">
+                                <p>No hay Avisos disponibles.</p>
+                            </div>
                         </div>
                     </div>
 

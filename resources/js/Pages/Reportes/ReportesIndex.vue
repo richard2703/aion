@@ -34,7 +34,7 @@ async function getreporteSemanal(
     sortOrder = 1
 ) {
     try {
-        const response = await axios.get("/api/getFlujo", {
+        const response = await axios.get("/api/getReporteSemanal", {
             params: {
                 page,
                 rows: rowsPerPage,
@@ -44,7 +44,7 @@ async function getreporteSemanal(
             },
         });
         reporteSemanal.value = response.data;
-        console.log('reporteSemanal', reporteSemanal.value);
+        // console.log('reporteSemanal', reporteSemanal.value);
 
         totalRecords.value = response.data.total;
         first.value = (response.data.current_page - 1) * rows.value;
