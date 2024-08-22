@@ -17,6 +17,7 @@ const departamentos = ref(props.departamentos);
 const avisos = ref([{ value: "" }]);
 const highlights = ref([{ value: "" }]);
 const lowlights = ref([{ value: "" }]);
+const errors = ref([{ value: "" }]);
 
 async function getDepartamentos() {
     await axios
@@ -44,6 +45,16 @@ const submit = () => {
     form.lowlights = lowlights.value.map(l => l.value);
 
     form.post(route("reporte.store"), {
+        onError: (errors) => {
+            console.log(errors);
+            showToast(errors.message, "error");
+        },
+        // onFinish: () => {
+        //     if (!errors) {
+        //         showToast("El registro ha sido creado", "success");
+
+        //     }
+        // }
         onFinish: () => form.reset(),
     });
 };

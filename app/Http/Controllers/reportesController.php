@@ -54,6 +54,21 @@ class reportesController extends Controller
                 'fin' => $finSemana,
             ]);
         }
+        if (reportes::where('departamento_id', $request->departamento_id)->where('semana_id', $reporteSemanal->id)->count() > 0) {
+            // dd('ya existe');
+            // return Inertia::resolved('Reportes/ReporteCreate', ['reporteSemanal' => $reporteSemanal]);
+            // return Inertia::render('Reportes/ReporteCreate', [
+            //     'errors' => [
+            //         'message' => 'Solo se puede un reporte por semana para este departamento.'
+            //     ]
+            // ])->withStatus(422);
+            return back()->withErrors([
+                'message' => 'Solo se puede un reporte por semana para este departamento.',
+            ]);
+        }
+
+
+        // dd('sin guardar');
         // Crear el nuevo aviso en la tabla reportes
         $reporte = reportes::create([
             'departamento_id' => $request->departamento_id,
