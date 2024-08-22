@@ -23,9 +23,13 @@ class reportesController extends Controller
         return Inertia::render('Reportes/ReportesIndex');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    public function misReportes()
+    {
+        $reportes = reportes::where('created_for', auth()->id())->with(['semana', 'departamento'])->orderby('created_at', 'desc')->get();
+        // dd($reportes);
+        return Inertia::render('Reportes/ReportesMisReportes', ['reportes' => $reportes]);
+    }
+
     public function create()
     {
         return Inertia::render('Reportes/ReporteCreate');

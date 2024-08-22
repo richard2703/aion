@@ -151,12 +151,15 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('sysgestion', [App\Http\Controllers\sysGestionController::class, 'index'])->name('sysgestion.index');
     Route::get('sysgestion/dashboard', [App\Http\Controllers\sysGestionController::class, 'dashboard'])->name('sysgestion.dashboard');
 
-    //Reportes
+    //EncargadosReportes
     Route::get('Encargados', [App\Http\Controllers\encargado_flujoController::class, 'index'])->name('encargadoFlujo.index');
     Route::get('Encargados/create', [App\Http\Controllers\encargado_flujoController::class, 'create'])->name('encargadoFlujo.create');
     Route::post('Encargados/store', [App\Http\Controllers\encargado_flujoController::class, 'store'])->name('encargadoFlujo.store');
+    //Reportes
     Route::get('reportes', [App\Http\Controllers\reportesController::class, 'index'])->name('reporte.index');
     Route::get('reportes/nuevo', [App\Http\Controllers\reportesController::class, 'create'])->name('reporte.create');
     Route::post('reportes/store', [App\Http\Controllers\reportesController::class, 'store'])->name('reporte.store');
     Route::get('reportes/{reporte}/show', [App\Http\Controllers\reportesController::class, 'show'])->name('reporte.show');
+    Route::get('MisReportes', [App\Http\Controllers\reportesController::class, 'misReportes'])->name('misreporte.index');
+    Route::get('MisReportes/{reporte}/edit', [App\Http\Controllers\reportesController::class, 'edit'])->name('misreporte.edit');
 });

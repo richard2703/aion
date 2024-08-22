@@ -95,7 +95,7 @@
                         </Link>
                     </li>
                     <li>
-                        <Link class="group flex items-center py-2" :href="route('sysgestion.index')" :class="subTitle === 'pdca' ? 'activo flex'
+                        <Link class="group flex items-center py-2" :href="route('misreporte.index')" :class="subTitle === 'pdca' ? 'activo flex'
                             : 'inactivo flex'">
                         <icon name="circle" class="mr-2 w-3 h-3" />
                         <div>Mis Reportes</div>
