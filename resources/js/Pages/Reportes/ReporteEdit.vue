@@ -57,7 +57,7 @@ const submit = () => {
     form.highlights = highlights.value.map(h => h.value);
     form.lowlights = lowlights.value.map(l => l.value);
 
-    form.post(route("misreporte.update", props.reporte.id), {
+    form.patch(route("misreporte.update", props.reporte.id), {
         onError: (errors) => {
             console.log(errors);
             showToast(errors.message, "error");

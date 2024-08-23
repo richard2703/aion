@@ -43,14 +43,13 @@ class reportes extends Model
         return $this->hasMany(lights::class, 'reporte_id')->where('tipo', 0);
     }
 
+    public function avisos()
+    {
+        return $this->hasMany(avisos::class, 'reporte_id');
+    }
     public function kpis()
     {
         //mayuscula KPIs
         return $this->hasMany(Kpis::class, 'departamento_id', 'departamento_id');
-    }
-
-    public function avisos()
-    {
-        return $this->hasMany(avisos::class, 'departamento_id', 'departamento_id');
     }
 }

@@ -154,7 +154,7 @@ class reportesController extends Controller
      */
     public function update(Request $request, $reporteId)
     {
-        dd($request);
+        // dd($request);
         // Validate and update the report
         $validatedData = $request->validate([
             'departamento_id' => 'required|exists:departamentos,id',
@@ -166,10 +166,51 @@ class reportesController extends Controller
         $reporte = reportes::findOrFail($reporteId);
         $reporte->update($validatedData);
 
-        // Optionally, update related data like highlights, lowlights, etc.
-        // Example:
-        // $reporte->highlights()->sync($validatedData['highlights']);
-        // $reporte->lowlights()->sync($validatedData['lowlights']);
+        // Actualizar los highlights
+        $reporte->highlights()->delete(); // Elimina los existentes
+        foreach ($validatedData['highlights'] as $highlight) {
+            if (!empty($highlight)) {
+                $reporte->highlights()->create([
+                    'light' => $highlight,
+                    'tipo' => 1, // tipo 1 para highlights
+                    'departamento_id' => $reporte->departamento_id,
+                    'semana_id' => $reporte->semana_id,
+                    'reporte_id' => $reporte->id,
+                    'created_for' => auth()->id(), // Asignar al usuario autenticado
+                ]);
+            }
+        }
+
+        // Actualizar los lowlights
+        $reporte->lowlights()->delete(); // Elimina los existentes
+        foreach ($validatedData['lowlights'] as $lowlight) {
+            if (!empty($lowlight)) {
+                $reporte->lowlights()->create([
+                    'light' => $highlight,
+                    'tipo' => 1, // tipo 1 para highlights
+                    'departamento_id' => $reporte->departamento_id,
+                    'semana_id' => $reporte->semana_id,
+                    'reporte_id' => $reporte->id,
+                    'created_for' => auth()->id(), // Asignar al usuario autenticado
+
+                ]);
+            }
+        }
+
+        // Actualizar los avisos
+        $reporte->avisos()->delete(); // Elimina los existentes
+        foreach ($validatedData['avisos'] as $aviso) {
+            if (!empty($aviso)) {
+                $reporte->avisos()->create([
+                    'aviso' => $aviso,
+                    'departamento_id' => $reporte->departamento_id,
+                    'semana_id' => $reporte->semana_id,
+                    'reporte_id' => $reporte->id,
+                    'created_for' => auth()->id(), // Asignar al usuario autenticado
+
+                ]);
+            }
+        }
 
         return redirect()->route('reporte.index')->with('success', 'Reporte actualizado correctamente.');
     }
