@@ -34,11 +34,11 @@ class reportes extends Model
     // {
     //     return $this->hasMany(Procedimiento::class);
     // }
-    public function highlight()
+    public function highlights()
     {
         return $this->hasMany(lights::class, 'reporte_id')->where('tipo', 1);
     }
-    public function lowlight()
+    public function lowlights()
     {
         return $this->hasMany(lights::class, 'reporte_id')->where('tipo', 0);
     }

@@ -58,6 +58,7 @@ class reportesController extends Controller
                 'fin' => $finSemana,
             ]);
         }
+
         if (reportes::where('departamento_id', $request->departamento_id)->where('semana_id', $reporteSemanal->id)->count() > 0) {
             // dd('ya existe');
             // return Inertia::resolved('Reportes/ReporteCreate', ['reporteSemanal' => $reporteSemanal]);
@@ -72,7 +73,7 @@ class reportesController extends Controller
         }
 
 
-        // dd('sin guardar');
+        dd('sin guardar');
         // Crear el nuevo aviso en la tabla reportes
         $reporte = reportes::create([
             'departamento_id' => $request->departamento_id,
@@ -144,17 +145,35 @@ class reportesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(reportes $reportes)
+    public function edit($reporte)
     {
-        //
+        $reporte = reportes::where('id', $reporte)->with(['semana', 'departamento', 'avisos', 'lowlights', 'highlights'])->orderby('created_at', 'desc')->first();
+        return Inertia::render('Reportes/ReporteEdit', ['reporte' => $reporte]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, reportes $reportes)
+    public function update(Request $request, $reporteId)
     {
-        //
+        dd($request);
+        // Validate and update the report
+        $validatedData = $request->validate([
+            'departamento_id' => 'required|exists:departamentos,id',
+            'avisos' => 'array',
+            'highlights' => 'array',
+            'lowlights' => 'array',
+        ]);
+
+        $reporte = reportes::findOrFail($reporteId);
+        $reporte->update($validatedData);
+
+        // Optionally, update related data like highlights, lowlights, etc.
+        // Example:
+        // $reporte->highlights()->sync($validatedData['highlights']);
+        // $reporte->lowlights()->sync($validatedData['lowlights']);
+
+        return redirect()->route('reporte.index')->with('success', 'Reporte actualizado correctamente.');
     }
 
     /**
@@ -199,7 +218,7 @@ class reportesController extends Controller
         // } else {
         //     $departamentos = $query->with('kpis')->get();
         // }
-        $reportes = $query->where('semana_id', $id)->with(['departamento', 'highlight', 'lowlight', 'avisos', 'kpis' => function ($query) {
+        $reportes = $query->where('semana_id', $id)->with(['departamento', 'highlights', 'lowlights', 'avisos', 'kpis' => function ($query) {
             $query->where('tipo', 2);
         }])->get();
         // if (isset($reportes[0]->departamento_id)) {

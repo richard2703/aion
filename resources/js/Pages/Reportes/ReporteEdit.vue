@@ -1,178 +1,95 @@
 <script setup>
-import { Head, Link } from "@inertiajs/vue3";
-import { ref, onMounted, watch } from "vue";
-import axios from "axios";
+import { ref, onMounted } from "vue";
+import { Head, Link, useForm } from "@inertiajs/vue3";
 import Layout from "@/Layouts/Layout.vue";
+import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import { confirmDialog, showToast } from "../utils/SweetAlert.service";
-import DataTable from "primevue/datatable";
-import Column from "primevue/column";
-import InputText from "primevue/inputtext";
+import TextInput from "@/Components/TextInput.vue";
+import { showToast } from "../utils/SweetAlert.service";
 
-// Definir propiedades
 const props = defineProps({
-    reporteSemanal: Object,
-    reportes: Array,
+    departamentos: Array,
+    reporte: Object,
 });
 
-const totalRecords = ref(0);
-const rows = ref(10);
-const first = ref(0);
-const reporteSemanal = ref(props.reporteSemanal);
-const reportes = ref("");
-const globalFilter = ref("");
-const filters = ref({});
-const sortField = ref("id"); // Valor predeterminado
-const sortOrder = ref(1);
-const title = "reportes";
+const departamentos = ref(props.departamentos);
 
-// Función para obtener áreas
-async function getreportes(
-    page = 1,
-    rowsPerPage = rows.value,
-    filter = "",
-    sortField = "id",
-    sortOrder = 1,
-    id = reporteSemanal.value.id,
-) {
-    try {
-        const response = await axios.get(route("getReportes.findAllReportes", id), {
-            params: {
-                page,
-                rows: rowsPerPage,
-                filter,
-                sortField,
-                sortOrder: sortOrder === 1 ? "asc" : "desc",
-            },
+async function getDepartamentos() {
+    await axios
+        .get("/api/getFlujo")
+        .then((response) => {
+            departamentos.value = response.data;
+        })
+        .catch((error) => {
+            console.log(error);
         });
-        reportes.value = response.data;
-        console.log('reportes', response);
-
-        totalRecords.value = response.data.total;
-        first.value = (response.data.current_page - 1) * rows.value;
-    } catch (error) {
-        console.error(error);
-    }
 }
+// Pre-fill avisos, highlights, lowlights with the values from the report if available
+const avisos = ref(
+    props.reporte.avisos && props.reporte.avisos.length
+        ? props.reporte.avisos.map(a => ({ value: a.aviso }))
+        : [{ value: "" }]
+);
 
-// Manejar paginación
-const onPage = (event) => {
-    const page = event.page + 1;
-    rows.value = event.rows; // Actualizar filas por página
-    getreportes(
-        page,
-        rows.value,
-        globalFilter.value,
-        sortField.value,
-        sortOrder.value
-    );
+const highlights = ref(
+    props.reporte.highlights && props.reporte.highlights.length
+        ? props.reporte.highlights.map(h => ({ value: h.light }))
+        : [{ value: "" }]
+);
+
+const lowlights = ref(
+    props.reporte.lowlights && props.reporte.lowlights.length
+        ? props.reporte.lowlights.map(l => ({ value: l.light }))
+        : [{ value: "" }]
+);
+
+const form = useForm({
+    nombre: props.reporte.departamento.nombre || "",
+    departamento_id: props.reporte.departamento_id || "",
+    avisos: [],
+    highlights: [],
+    lowlights: [],
+});
+
+const submit = () => {
+    // Assign the avisos, highlights, and lowlights to the form
+    form.avisos = avisos.value.map(a => a.value);
+    form.highlights = highlights.value.map(h => h.value);
+    form.lowlights = lowlights.value.map(l => l.value);
+
+    form.post(route("misreporte.update", props.reporte.id), {
+        onError: (errors) => {
+            console.log(errors);
+            showToast(errors.message, "error");
+        },
+        onFinish: () => form.reset(),
+    });
 };
 
-// Manejar ordenación
-const onSort = (event) => {
-    sortField.value = event.sortField || "id";
-    sortOrder.value = event.sortOrder;
-    getreportes(
-        1,
-        rows.value,
-        globalFilter.value,
-        sortField.value,
-        sortOrder.value
-    );
-};
+// Functions for adding/removing dynamic fields
+const addAviso = () => avisos.value.push({ value: "" });
+const removeAviso = (index) => avisos.value.splice(index, 1);
 
-const collapsedReport = ref([]);
+const addHighlight = () => highlights.value.push({ value: "" });
+const removeHighlight = (index) => highlights.value.splice(index, 1);
 
-function collapsedReportReport(id) {
-    if (collapsedReport.value.includes(id)) {
-        collapsedReport.value = collapsedReport.value.filter(item => item !== id);
-    } else {
-        collapsedReport.value.push(id);
-    }
-}
+const addLowlight = () => lowlights.value.push({ value: "" });
+const removeLowlight = (index) => lowlights.value.splice(index, 1);
 
-function iscollapsedReport(id) {
-    return collapsedReport.value.includes(id);
-}
-
-// Obtener áreas al montar el componente
 onMounted(() => {
-    getreportes();
+    // console.log('reportes', reportes.value);
+    getDepartamentos();
+
 });
-
-// Eliminar área
-// const deleteArea = async (id) => {
-//     try {
-//         const result = await confirmDialog(
-//             "Estas seguro?",
-//             "Ya no podras revertir esto!",
-//             "warning"
-//         );
-//         if (result.isConfirmed) {
-//             const response = await axios.delete(route("area.destroy", id));
-//             areas.value = areas.value.filter((area) => area.id !== id);
-//             showToast("El registro ha sido eliminado", "success");
-//         }
-//     } catch (error) {
-//         console.error(error);
-//     }
-// };
-
-// Actualizar filtro global
-watch(globalFilter, (newValue) => {
-    filters.value = {
-        global: { value: newValue, matchMode: "contains" },
-    };
-    getAreas(1, rows.value, newValue, sortField.value, sortOrder.value);
-});
-
-function formatNumber(value) {
-    if (value == null) return ''; // Manejar el caso cuando el valor es nulo o indefinido
-    return parseFloat(value).toFixed(2);
-}
-
-const getClass = (kpiItem) => {
-    if (kpiItem.regla === 1) {
-        return kpiItem.actual >= kpiItem.objetivo ? 'bg-green-100' : 'bg-red-100';
-    } else {
-        return kpiItem.actual <= kpiItem.objetivo ? 'bg-green-100' : 'bg-red-100';
-    }
-};
 </script>
 
-<style scoped>
-.mb-3 {
-    margin-bottom: 1rem;
-}
-
-.reporte {
-    border: 1px solid #ccc;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    padding: 10px;
-    background-color: white;
-
-}
-
-.departamento-header {
-    cursor: pointer;
-    background-color: #f0f0f0;
-    padding: 10px;
-    border-radius: 5px;
-}
-
-.departamento-content {
-    padding: 10px;
-}
-</style>
-
 <template>
-    <Layout :titulo="'Reporte Semanal ' + reporteSemanal.numeroSemana">
+    <Layout>
 
-        <Head title="Reporte Semanal" />
+        <Head title="Usuarios" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
-                <h3>Reporte Semanal: Semana {{ reporteSemanal.numeroSemana }}</h3>
+                <h3>Editar Reporte</h3>
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
@@ -182,106 +99,88 @@ const getClass = (kpiItem) => {
                 <h3>Reportes -</h3>
                 </Link>
                 <Link class="active">
-                <h3>Reporte Semanal</h3>
+                <h3>Editar</h3>
                 </Link>
             </div>
         </div>
 
         <div class="py-2">
-            <div v-for="reporte in reportes" :key="reporte.id" class="reporte">
-                <div @click="collapsedReportReport(reporte.id)" class="departamento-header">
-                    <h3 class="text-xl font-bold text-purple-700">{{ reporte.departamento.nombre }}</h3>
-                </div>
-                <div v-if="!iscollapsedReport(reporte.id)" class="departamento-content">
-                    <div class="grid grid-cols-2 gap-4">
-                        <!-- Highlights Section -->
-                        <div>
-                            <h2 class="text-xl font-bold text-purple-700">Highlights</h2>
-                            <ul class=" pl-5 mt-2 pl-5">
-                                <li v-for="highlight in reporte.highlight" :key="highlight.id">
-                                    {{ highlight.light }}
-                                </li>
-                            </ul>
-                            <div v-if="!reporte.highlight.length">
-                                <p>No hay Highlight disponibles.</p>
-                            </div>
-                        </div>
+            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                <div>
+                    <div class="px-4 my-4 py-2 flex justify-end bg-white border-b border-gray-200"></div>
+                    <div class="px-4 py-2 bg-white border-b border-gray-200">
+                        <div class="container mx-auto">
+                            <form @submit.prevent="submit">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+                                    <div>
+                                        <InputLabel for="area_id" value="Flujo de valor: " />
+                                        <select ref="select"
+                                            class="mt-1 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                            v-model="form.departamento_id" required>
+                                            <option value="" disabled selected>
+                                                Seleccione una opción
+                                            </option>
+                                            <option v-for="departamento in departamentos" :key="departamento.id"
+                                                :value="departamento.id">
+                                                {{ departamento.nombre }}
+                                            </option>
+                                        </select>
+                                    </div>
 
-                        <!-- Low Lights Section -->
-                        <div>
-                            <h2 class="text-xl font-bold text-purple-700">Low lights</h2>
-                            <ul class=" pl-5 mt-2">
-                                <li v-for="lowlight in reporte.lowlight" :key="lowlight.id">
-                                    {{ lowlight.light }}
-                                </li>
-                            </ul>
-                            <div v-if="!reporte.lowlight.length">
-                                <p>No hay Lowlights disponibles.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- <div v-if="!reporte.highlight.length && !reporte.lowlight.length">
-                        <p>No hay highlights ni lowlights disponibles.</p>
-                    </div> -->
+                                    <!-- Campos dinámicos para Avisos -->
+                                    <div class="col-span-full flex items-center mt-4">
+                                        <InputLabel for="Avisos" value="Avisos:" />
+                                    </div>
+                                    <div v-for="(aviso, index) in avisos" :key="index"
+                                        class="col-span-full flex items-center justify-between">
+                                        <TextInput v-model="aviso.value" type="text" class="mt-1 block w-full"
+                                            autocomplete="Aviso" />
+                                        <button type="button" @click="removeAviso(index)"
+                                            class="ml-2 text-red-500">Eliminar</button>
+                                    </div>
+                                    <button type="button" @click="addAviso" class="mt-2 text-blue-500">Añadir
+                                        Aviso</button>
 
-                    <!-- KPIs Section -->
-                    <div class="grid grid-cols-2 gap-4 mt-8">
-                        <div>
-                            <h2 class="text-xl font-bold text-purple-700">KPI's</h2>
-                            <table v-for="kpis in reporte.kpis" :key="kpis.id" class="min-w-full border-collapse mb-4">
-                                <thead>
-                                    <tr>
-                                        <th class="py-2 px-4 border" colspan="3" style="border-color: black;">
-                                            {{ kpis?.titulo }}
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="py-2 px-4 border" style="border-color: black;">Plan</td>
-                                        <td class="py-2 px-4 border" style="border-color: black;">Hoy</td>
-                                        <td class="py-2 px-4 border" style="border-color: black;">Promedio</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="py-2 px-4 border " style="border-color: black;">
-                                            {{ kpis?.objetivo }}
-                                        </td>
-                                        <td :class="getClass(kpis)" class="py-2 px-4 border "
-                                            style="text-align-last: justify; border-color: black;">
-                                            {{ formatNumber(kpis?.actual) }}
-                                        </td>
-                                        <td :class="getClass(kpis)" class="py-2 px-4 border "
-                                            style="text-align-last: justify; border-color: black;">
-                                            {{ formatNumber(kpis?.promedio) }}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div v-if="!reporte.kpis.length">
-                                <p>No hay Kpis disponibles.</p>
-                            </div>
-                        </div>
 
-                        <!-- Avisos Section -->
-                        <!-- <div>
-                            <h2 class="text-xl font-bold text-purple-700">Avisos parroquiales</h2>
-                            <p class="mt-2">
-                                {{ reportes[0].aviso }}
-                            </p>
-                        </div> -->
-                        <div>
-                            <h2 class="text-xl font-bold text-purple-700">Avisos</h2>
-                            <ul class=" pl-5 mt-2">
-                                <li v-for="aviso in reporte.avisos" :key="aviso.id">
-                                    {{ aviso.aviso }}
-                                </li>
-                            </ul>
-                            <div v-if="!reporte.avisos.length">
-                                <p>No hay Avisos disponibles.</p>
-                            </div>
+                                    <!-- Campos dinámicos para Highlight -->
+                                    <div class="col-span-full flex items-center mt-4">
+                                        <InputLabel for="Highlight" value="Highlight:" />
+                                    </div>
+                                    <div v-for="(highlight, index) in highlights" :key="index"
+                                        class="col-span-full flex items-center justify-between">
+                                        <TextInput v-model="highlight.value" type="text" class="mt-1 block w-full"
+                                            autocomplete="Highlight" />
+                                        <button type="button" @click="removeHighlight(index)"
+                                            class="ml-2 text-red-500">Eliminar</button>
+                                    </div>
+                                    <button type="button" @click="addHighlight" class="mt-2 text-blue-500">Añadir
+                                        Highlight</button>
+
+                                    <!-- Campos dinámicos para Lowlight -->
+                                    <div class="col-span-full flex items-center mt-4">
+                                        <InputLabel for="Lowlight" value="Lowlight:" />
+                                    </div>
+                                    <div v-for="(lowlight, index) in lowlights" :key="index"
+                                        class="col-span-full flex items-center justify-between">
+                                        <TextInput v-model="lowlight.value" type="text" class="mt-1 block w-full"
+                                            autocomplete="Lowlight" />
+                                        <button type="button" @click="removeLowlight(index)"
+                                            class="ml-2 text-red-500">Eliminar</button>
+                                    </div>
+                                    <button type="button" @click="addLowlight" class="mt-2 text-blue-500">Añadir
+                                        Lowlight</button>
+
+                                    <div class="col-span-full flex items-center justify-end mt-4">
+                                        <PrimaryButton class="ms-4 pi pi-save" :class="{
+                                            'opacity-25': form.processing,
+                                        }" :disabled="form.processing">
+
+                                        </PrimaryButton>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

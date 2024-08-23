@@ -198,11 +198,11 @@ const getClass = (kpiItem) => {
                         <div>
                             <h2 class="text-xl font-bold text-purple-700">Highlights</h2>
                             <ul class=" pl-5 mt-2 pl-5">
-                                <li v-for="highlight in reporte.highlight" :key="highlight.id">
+                                <li v-for="highlight in reporte.highlights" :key="highlight.id">
                                     {{ highlight.light }}
                                 </li>
                             </ul>
-                            <div v-if="!reporte.highlight.length">
+                            <div v-if="!reporte.highlights.length">
                                 <p>No hay Highlight disponibles.</p>
                             </div>
                         </div>
@@ -211,11 +211,11 @@ const getClass = (kpiItem) => {
                         <div>
                             <h2 class="text-xl font-bold text-purple-700">Low lights</h2>
                             <ul class=" pl-5 mt-2">
-                                <li v-for="lowlight in reporte.lowlight" :key="lowlight.id">
+                                <li v-for="lowlight in reporte.lowlights" :key="lowlight.id">
                                     {{ lowlight.light }}
                                 </li>
                             </ul>
-                            <div v-if="!reporte.lowlight.length">
+                            <div v-if="!reporte.lowlights.length">
                                 <p>No hay Lowlights disponibles.</p>
                             </div>
                         </div>

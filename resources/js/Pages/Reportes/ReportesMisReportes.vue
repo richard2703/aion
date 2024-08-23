@@ -112,11 +112,11 @@ watch(globalFilter, (newValue) => {
 
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">
-                                        <!-- <PrimaryButton class="pi pi-file-edit me-2" :href="route(
+                                        <PrimaryButton class="pi pi-file-edit me-2" :href="route(
                                             'misreporte.edit',
                                             slotProps.data.id
                                         )">
-                                        </PrimaryButton> -->
+                                        </PrimaryButton>
 
                                         <!-- <PrimaryButton class="pi pi-trash me-2" @click.prevent="
                                             deleteArea(slotProps.data.id)
