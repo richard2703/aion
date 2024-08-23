@@ -72,8 +72,6 @@ class reportesController extends Controller
             ]);
         }
 
-
-        dd('sin guardar');
         // Crear el nuevo aviso en la tabla reportes
         $reporte = reportes::create([
             'departamento_id' => $request->departamento_id,
