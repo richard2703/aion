@@ -45,7 +45,8 @@ class reportes extends Model
 
     public function kpis()
     {
-        return $this->hasMany(kpis::class, 'departamento_id', 'departamento_id');
+        //mayuscula KPIs
+        return $this->hasMany(Kpis::class, 'departamento_id', 'departamento_id');
     }
 
     public function avisos()
