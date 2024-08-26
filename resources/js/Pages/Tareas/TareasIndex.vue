@@ -14,6 +14,8 @@ import InputLabel from "@/Components/InputLabel.vue";
 
 const props = defineProps({
     authUser: Object,
+    area_id: Number,
+    departamento_id: Number,
 });
 
 const title = "tareas";
@@ -22,32 +24,39 @@ const areas = ref();
 const departamentos = ref();
 const usuarios = ref(props.usuarios);
 const authUser = ref(props.authUser);
+const area_id = ref(props.area_id);
+const departamento_id = ref(props.departamento_id);
+
 
 //filtro global y paginado
 const customFilter = ref(false);
 const totalRecords = ref(0);
 const rows = ref(10);
 const first = ref(0);
-const globalFilter = ref("");
-const filters = ref({});
 const sortField = ref("id");
 const sortOrder = ref(1);
+const globalFilter = ref("");
+const filters = ref({});
 
-const formFilter = useForm({
-    area_id: "",
-    departamento_id: "",
-    responsable_id: "",
-    estatus_id: "",
-    fecha_from: "",
-    fecha_to: "",
-});
+const pilar = ref(area_id.value || "");
+const flujoValor = ref(departamento_id.value || "");
+const responsable = ref("");
+const revisor = ref("");
+const estatus = ref("");
+const desde = ref("");
+const hasta = ref("");
+
 
 const formValidate = useForm({
     validacion: "",
 });
 
 onMounted(() => {
-    getTareas();
+    filters.value = {
+        area_id: { value: pilar.value, matchMode: "contains" },
+        departamento_id: { value: flujoValor.value, matchMode: "contains" },
+    };
+    getTareas('', '', filters.value, '', '');
     getAreas();
     getDepartamentos();
     getUsuarios();
@@ -84,12 +93,23 @@ const getTareas = async (
         });
 }
 
-watch(globalFilter, (newValue) => {
-    filters.value = {
-        global: { value: newValue, matchMode: "contains" },
-    };
-    getTareas(1, rows.value, newValue, sortField.value, sortOrder.value);
-});
+watch(
+    [globalFilter, pilar, flujoValor, responsable, revisor, estatus, desde, hasta],
+    ([newGlobalFilter, newPilar, newFlujoValor, newResponsable, newRevisor, newEstatus, newDesde, newHasta]) => {
+        filters.value = {
+            global: { value: newGlobalFilter, matchMode: "contains" },
+            area_id: { value: newPilar, matchMode: "contains" },
+            departamento_id: { value: newFlujoValor, matchMode: "contains" },
+            responsable_id: { value: newResponsable, matchMode: "contains" },
+            revisor_id: { value: newRevisor, matchMode: "contains" },
+            estatus: { value: newEstatus, matchMode: "contains" },
+            desde: { value: newDesde, matchMode: "contains" },
+            hasta: { value: newHasta, matchMode: "contains" },
+        };
+        getTareas(1, rows.value, filters.value, sortField.value, sortOrder.value);
+    }
+);
+
 
 const onPage = (event) => {
     const page = event.page + 1;
@@ -97,7 +117,7 @@ const onPage = (event) => {
     getTareas(
         page,
         rows.value,
-        globalFilter.value,
+        filters.value,
         sortField.value,
         sortOrder.value
     );
@@ -109,7 +129,7 @@ const onSort = (event) => {
     getTareas(
         1,
         rows.value,
-        globalFilter.value,
+        filters.value,
         sortField.value,
         sortOrder.value
     );
@@ -185,7 +205,13 @@ const openFilter = () => {
 
 };
 const clearFilter = () => {
-    formFilter.reset();
+    pilar.value = '';
+    flujoValor.value = '';
+    responsable.value = '';
+    revisor.value = '';
+    estatus.value = '';
+    desde.value = '';
+    hasta.value = '';
     // customFilter.value = !customFilter.value
     getTareas();
 };
@@ -243,6 +269,9 @@ const sendMail = async () => {
         console.log(error);
     }
 };
+
+console.log({ area_id: area_id.value, departamento_id: departamento_id.value });
+
 </script>
 
 <style scoped>
@@ -254,7 +283,7 @@ const sendMail = async () => {
 <template>
     <Layout :titulo="title">
 
-        <Head title="Departamento" />
+        <Head title="Tareas" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
                 <h3>Tareas</h3>
@@ -297,8 +326,8 @@ const sendMail = async () => {
                                             <InputLabel for="area_id" value="Pilar: " />
                                             <select ref="area_select"
                                                 class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                                v-model="formFilter.area_id">
-                                                <option value="" disabled selected>
+                                                v-model="pilar">
+                                                <option value="" selected>
                                                     Seleccione una opcion
                                                 </option>
                                                 <option v-for="area in areas" :key="area.id" :value="area.id">
@@ -311,8 +340,8 @@ const sendMail = async () => {
                                             <InputLabel for="departamento_id" value="Flujo de valor: " />
                                             <select ref="departamento_select"
                                                 class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                                v-model="formFilter.departamento_id">
-                                                <option value="" disabled selected>
+                                                v-model="flujoValor">
+                                                <option value="" selected>
                                                     Seleccione una opcion
                                                 </option>
                                                 <option v-for="departamento in departamentos" :key="departamento.id"
@@ -326,8 +355,22 @@ const sendMail = async () => {
                                             <InputLabel for="responsable_id" value="Responsable: " />
                                             <select ref="responsable_select"
                                                 class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                                v-model="formFilter.responsable_id">
-                                                <option value="" disabled selected>
+                                                v-model="responsable">
+                                                <option value="" selected>
+                                                    Seleccione una opcion
+                                                </option>
+                                                <option v-for="usuario in usuarios" :key="usuario.id"
+                                                    :value="usuario.id">{{
+                                                        usuario.name }}</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="m-4">
+                                            <InputLabel for="cliente_id" value="Cliente de tarea: " />
+                                            <select ref="cliente_select"
+                                                class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                                v-model="revisor">
+                                                <option value="" selected>
                                                     Seleccione una opcion
                                                 </option>
                                                 <option v-for="usuario in usuarios" :key="usuario.id"
@@ -340,8 +383,8 @@ const sendMail = async () => {
                                             <InputLabel for="estatus_id" value="Estatus: " />
                                             <select ref="estatus_select"
                                                 class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                                v-model="formFilter.estatus_id">
-                                                <option value="" selected disabled>
+                                                v-model="estatus">
+                                                <option value="" selected>
                                                     Seleccione una opcion </option>
                                                 <option value=1>
                                                     Retrasado </option>
@@ -356,19 +399,14 @@ const sendMail = async () => {
 
                                         <div class="m-4">
                                             <InputLabel for="fecha" value="Fecha de entrega de: " />
-                                            <TextInput id="fecha" v-model="formFilter.fecha_from" type="date"
-                                                class="mt-1 block w-full" autocomplete="fecha" />
+                                            <TextInput id="fecha" v-model="desde" type="date" class="mt-1 block w-full"
+                                                autocomplete="fecha" />
                                         </div>
 
                                         <div class="m-4">
                                             <InputLabel for="created_at" value="Fecha de entrega hasta: " />
-                                            <TextInput id="fecha" v-model="formFilter.fecha_to" type="date"
-                                                class="mt-1 block w-full" autocomplete="fecha" />
-                                        </div>
-
-                                        <div class="m-4">
-                                            <PrimaryButton class="m-4 float-right pi pi-search" type="submit">
-                                            </PrimaryButton>
+                                            <TextInput id="fecha" v-model="hasta" type="date" class="mt-1 block w-full"
+                                                autocomplete="fecha" />
                                         </div>
                                     </div>
                                 </form>
@@ -382,6 +420,7 @@ const sendMail = async () => {
                                     'tarea',
                                     'departamento.nombre',
                                     'responsable.name',
+                                    'revisor.name',
                                     'fecha_entrega',
                                     'estatus.titulo',
                                 ]" :sortField="sortField" :sortOrder="sortOrder"

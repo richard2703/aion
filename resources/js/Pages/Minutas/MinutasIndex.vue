@@ -12,6 +12,11 @@ import { format } from 'date-fns';
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
 
+const props = defineProps({
+    area_id: Number,
+    departamento_id: Number,
+});
+
 const title = "minutero";
 const items = ref([]);
 const areas = ref([]);
@@ -23,9 +28,19 @@ const totalRecords = ref(0);
 const rows = ref(10);
 const first = ref(0);
 const globalFilter = ref("");
-const filters = ref({});
 const sortField = ref("id");
 const sortOrder = ref(-1);
+const filters = ref({});
+
+const area_id = ref(props.area_id);
+const departamento_id = ref(props.departamento_id);
+const pilar = ref(area_id.value || "");
+const flujoValor = ref(departamento_id.value || "");
+const lider = ref("");
+const tipo = ref("");
+const proceso = ref("");
+const desde = ref("");
+const hasta = ref("");
 
 const formFilter = useForm({
     area_id: "",
@@ -112,30 +127,43 @@ const deleteItems = async (id) => {
 };
 
 onMounted(() => {
-    getItems();
+    filters.value = {
+        area_id: { value: pilar.value, matchMode: "contains" },
+        departamento_id: { value: flujoValor.value, matchMode: "contains" },
+    };
+    getItems('', '', filters.value, '', '');
     getAreas();
     getDepartamentos();
     getProcesos();
     getUsuarios();
 });
 
-watch(globalFilter, (newValue) => {
-    filters.value = {
-        global: { value: newValue, matchMode: "contains" },
-    };
-    getItems(1, rows.value, newValue, sortField.value, sortOrder.value);
-});
+watch(
+    [globalFilter, pilar, flujoValor, lider, tipo, proceso, desde, hasta],
+    ([newglobalFilter, newpilar, newflujoValor, newlider, newtipo, newproceso, newdesde, newhasta]) => {
+        filters.value = {
+            global: { value: newglobalFilter, matchMode: "contains" },
+            area_id: { value: newpilar, matchMode: "contains" },
+            departamento_id: { value: newflujoValor, matchMode: "contains" },
+            lider_id: { value: newlider, matchMode: "contains" },
+            tipo: { value: newtipo, matchMode: "contains" },
+            proceso: { value: newproceso, matchMode: "contains" },
+            desde: { value: newdesde, matchMode: "contains" },
+            hasta: { value: newhasta, matchMode: "contains" },
+        };
+        getItems(1, rows.value, filters.value, sortField.value, sortOrder.value);
+    });
 
 const onPage = (event) => {
     const page = event.page + 1;
     rows.value = event.rows;
-    getItems(page, rows.value, globalFilter.value, sortField.value, sortOrder.value);
+    getItems(page, rows.value, filters.value, sortField.value, sortOrder.value);
 };
 
 const onSort = (event) => {
     sortField.value = event.sortField;
     sortOrder.value = event.sortOrder;
-    getItems(1, rows.value, globalFilter.value, sortField.value, sortOrder.value);
+    getItems(1, rows.value, filters.value, sortField.value, sortOrder.value);
 };
 
 const openFilter = () => {
@@ -157,8 +185,14 @@ const filterTable = async () => {
 };
 
 const clearFilter = () => {
-    formFilter.reset();
-    // customFilter.value = !customFilter.value
+    pilar.value = "";
+    flujoValor.value = "";
+    lider.value = "";
+    tipo.value = "";
+    proceso.value = "";
+    desde.value = "";
+    hasta.value = "";
+
     getItems();
 };
 
@@ -255,7 +289,7 @@ async function getTareasTerminadas(minuta_id) {
                                             <InputLabel for="area_id" value="Pilar: " />
                                             <select ref="area_select"
                                                 class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                                v-model="formFilter.area_id">
+                                                v-model="pilar">
                                                 <option value="" selected>
                                                     Seleccione una opcion
                                                 </option>
@@ -269,7 +303,7 @@ async function getTareasTerminadas(minuta_id) {
                                             <InputLabel for="departamento_id" value="Flujo de valor: " />
                                             <select ref="departamento_select"
                                                 class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                                v-model="formFilter.departamento_id">
+                                                v-model="flujoValor">
                                                 <option value="" selected>
                                                     Seleccione una opcion
                                                 </option>
@@ -284,7 +318,7 @@ async function getTareasTerminadas(minuta_id) {
                                             <InputLabel for="lider_id" value="Lider: " />
                                             <select ref="lider_select"
                                                 class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                                v-model="formFilter.lider_id">
+                                                v-model="lider">
                                                 <option value="" selected>
                                                     Seleccione una opcion
                                                 </option>
@@ -298,7 +332,7 @@ async function getTareasTerminadas(minuta_id) {
                                             <InputLabel for="tipo" value="Tipo: " />
                                             <select ref="tipo_select"
                                                 class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                                v-model="formFilter.tipo">
+                                                v-model="tipo">
                                                 <option value="" selected>
                                                     Seleccione una opcion
                                                 </option>
@@ -317,7 +351,7 @@ async function getTareasTerminadas(minuta_id) {
                                             <InputLabel for="proceso_id" value="Proceso: " />
                                             <select ref="departamento_select"
                                                 class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                                v-model="formFilter.proceso_id">
+                                                v-model="proceso">
                                                 <option value="" selected>
                                                     Seleccione una opcion
                                                 </option>
@@ -330,19 +364,14 @@ async function getTareasTerminadas(minuta_id) {
 
                                         <div class="m-4">
                                             <InputLabel for="fecha" value="Fecha de entrega de: " />
-                                            <TextInput id="fecha" v-model="formFilter.fecha_from" type="date"
-                                                class="mt-1 block w-full" autocomplete="fecha" />
+                                            <TextInput id="fecha" v-model="desde" type="date" class="mt-1 block w-full"
+                                                autocomplete="fecha" />
                                         </div>
 
                                         <div class="m-4">
                                             <InputLabel for="created_at" value="Fecha de entrega hasta: " />
-                                            <TextInput id="fecha" v-model="formFilter.fecha_to" type="date"
-                                                class="mt-1 block w-full" autocomplete="fecha" />
-                                        </div>
-
-                                        <div class="m-4">
-                                            <PrimaryButton class="m-4 float-right pi pi-search" type="submit">
-                                            </PrimaryButton>
+                                            <TextInput id="fecha" v-model="hasta" type="date" class="mt-1 block w-full"
+                                                autocomplete="fecha" />
                                         </div>
                                     </div>
                                 </form>
