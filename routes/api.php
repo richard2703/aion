@@ -34,6 +34,8 @@ Route::get('/procesos', [App\Http\Controllers\procesoController::class, 'findAll
 Route::get('/procedimientos', [App\Http\Controllers\procedimientoController::class, 'findAll'])->name('procedimientos.findAll');
 Route::get('/estandares', [App\Http\Controllers\EstandarController::class, 'findAll'])->name('estandares.findAll');
 Route::get('/kpis', [App\Http\Controllers\kpiController::class, 'findAll'])->name('kpis.findAll');
+Route::get('/kpis/{departamento_id}/departamento', [App\Http\Controllers\kpiController::class, 'byDepartamento'])->name('kpis.byDepartamento');
+Route::get('/kpis/{kpi}/find', [App\Http\Controllers\kpiController::class, 'byId'])->name('kpis.byId');
 Route::get('/roles', [App\Http\Controllers\rolesController::class, 'findAll'])->name('roles.findAll');
 Route::get('/permisos', [App\Http\Controllers\permisosController::class, 'findAll'])->name('permisos.findAll');
 Route::get('/permisos/all', [App\Http\Controllers\permisosController::class, 'all'])->name('permisos.All');
@@ -75,13 +77,14 @@ Route::delete('/tipo-minuta/{tipoMinuta}/delete', [App\Http\Controllers\tipoMinu
 
 // Acciones
 Route::get('/acciones', [App\Http\Controllers\accionController::class, 'index'])->name('acciones.index');
-Route::get('/acciones/{area_id}/pilar/{tipo}/tipo', [App\Http\Controllers\accionController::class, 'byArea'])->name('acciones.byArea');
+Route::get('/acciones/{departamento_id}/pilar/{tipo}/tipo', [App\Http\Controllers\accionController::class, 'byDepartamento'])->name('acciones.byDepartamento');
 Route::get('/acciones/{accion}/edit', [App\Http\Controllers\accionController::class, 'edit'])->name('acciones.edit');
 Route::post('/acciones/store', [App\Http\Controllers\accionController::class, 'store'])->name('acciones.store');
 Route::patch('/acciones/{accion}/update', [App\Http\Controllers\accionController::class, 'update'])->name('acciones.update');
 Route::delete('/acciones/{accion}/delete', [App\Http\Controllers\accionController::class, 'destroy'])->name('acciones.destroy');
 
 Route::get('/sysgestion/{id}/registros_kpi', [App\Http\Controllers\registros_kpisController::class, 'registros'])->name('registros_kpi.registros');
+Route::get('/sysgestion/{registros_kpi}/edit', [App\Http\Controllers\registros_kpisController::class, 'edit'])->name('registros_kpi.edit');
 
 // Notificaciones
 Route::get('/notificaciones', [App\Http\Controllers\notificacionController::class, 'getByUser'])->name('notificaciones.getByUser');
