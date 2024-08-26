@@ -130,8 +130,8 @@
                                                 <InputLabel for="area_id" value="Area: " />
                                                 <select ref="area_select"
                                                     class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                                    v-model="formFilter.area_id">
-                                                    <option value="" disabled selected>
+                                                    v-model="pilar">
+                                                    <option value="" selected>
                                                         Seleccione una opcion
                                                     </option>
                                                     <option v-for="area in areas" :key="area.id" :value="area.id">
@@ -144,8 +144,8 @@
                                                 <InputLabel for="departamento_id" value="Departamento: " />
                                                 <select ref="departamento_select"
                                                     class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                                    v-model="formFilter.departamento_id">
-                                                    <option value="" disabled selected>
+                                                    v-model="flujoValor">
+                                                    <option value="" selected>
                                                         Seleccione una opcion
                                                     </option>
                                                     <option v-for="departamento in departamentos" :key="departamento.id"
@@ -159,8 +159,22 @@
                                                 <InputLabel for="responsable_id" value="Responsable: " />
                                                 <select ref="responsable_select"
                                                     class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                                    v-model="formFilter.responsable_id">
-                                                    <option value="" disabled selected>
+                                                    v-model="responsable">
+                                                    <option value="" selected>
+                                                        Seleccione una opcion
+                                                    </option>
+                                                    <option v-for="usuario in usuarios" :key="usuario.id"
+                                                        :value="usuario.id">{{
+                                                            usuario.name }}</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="m-4">
+                                                <InputLabel for="cliente_id" value="Cliente de tarea: " />
+                                                <select ref="cliente_select"
+                                                    class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                                    v-model="revisor">
+                                                    <option value="" selected>
                                                         Seleccione una opcion
                                                     </option>
                                                     <option v-for="usuario in usuarios" :key="usuario.id"
@@ -173,8 +187,8 @@
                                                 <InputLabel for="estatus_id" value="Estatus: " />
                                                 <select ref="estatus_select"
                                                     class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                                    v-model="formFilter.estatus_id">
-                                                    <option value="" selected disabled>
+                                                    v-model="estatus">
+                                                    <option value="" selected>
                                                         Seleccione una opcion </option>
                                                     <option value=1>
                                                         Retrasado </option>
@@ -189,13 +203,13 @@
 
                                             <div class="m-4">
                                                 <InputLabel for="fecha" value="Fecha de entrega de: " />
-                                                <TextInput id="fecha" v-model="formFilter.fecha_from" type="date"
+                                                <TextInput id="fecha" v-model="desde" type="date"
                                                     class="mt-1 block w-full" autocomplete="fecha" />
                                             </div>
 
                                             <div class="m-4">
                                                 <InputLabel for="created_at" value="Fecha de entrega hasta: " />
-                                                <TextInput id="fecha" v-model="formFilter.fecha_to" type="date"
+                                                <TextInput id="fecha" v-model="hasta" type="date"
                                                     class="mt-1 block w-full" autocomplete="fecha" />
                                             </div>
 
@@ -368,6 +382,8 @@ onMounted(() => {
 
 const props = defineProps({
     minuta: Object,
+    area_id: Number,
+    departamento_id: Number,
 
 });
 
@@ -376,14 +392,6 @@ const form = useForm({
     minuta_id: props.minuta.id,
 });
 
-const formFilter = useForm({
-    area_id: "",
-    departamento_id: "",
-    responsable_id: "",
-    estatus_id: "",
-    fecha_from: "",
-    fecha_to: "",
-});
 
 const title = "minutero";
 const minuta = ref(props.minuta);
@@ -401,6 +409,16 @@ const areas = ref();
 const departamentos = ref();
 const customFilter = ref(false);
 const page = usePage();
+
+const area_id = ref(props.area_id);
+const departamento_id = ref(props.departamento_id);
+const pilar = ref(area_id.value || "");
+const flujoValor = ref(departamento_id.value || "");
+const responsable = ref("");
+const revisor = ref("");
+const estatus = ref("");
+const desde = ref("");
+const hasta = ref("");
 
 //filtro global y paginado
 const totalRecords = ref(0);
@@ -482,7 +500,7 @@ const search = (event) => {
             filteredUsuarios.value = usuarios.value.filter(usuario =>
                 usuario.id !== minuta.value.lider_id &&
                 !asistentesUserIds.includes(usuario.id) &&
-                usuario.name.toLowerCase().startsWith(query)
+                usuario.name.toLowerCase().includes(query)
             );
         }
     }, 250);
@@ -520,8 +538,13 @@ const openFilter = () => {
 
 };
 const clearFilter = () => {
-    formFilter.reset();
-    // customFilter.value = !customFilter.value
+    pilar.value = '';
+    flujoValor.value = '';
+    responsable.value = '';
+    revisor.value = '';
+    estatus.value = '';
+    desde.value = '';
+    hasta.value = '';
     getTareas(minuta.value.id);
 };
 
@@ -565,12 +588,22 @@ const getTareas = async (
         });
 }
 
-watch(globalFilter, (newValue) => {
-    filters.value = {
-        global: { value: newValue, matchMode: "contains" },
-    };
-    getTareas(minuta.value.id, 1, rows.value, newValue, sortField.value, sortOrder.value);
-});
+watch(
+    [globalFilter, pilar, flujoValor, responsable, revisor, estatus, desde, hasta],
+    ([newGlobalFilter, newPilar, newFlujoValor, newResponsable, newRevisor, newEstatus, newDesde, newHasta]) => {
+        filters.value = {
+            global: { value: newGlobalFilter, matchMode: "contains" },
+            area_id: { value: newPilar, matchMode: "contains" },
+            departamento_id: { value: newFlujoValor, matchMode: "contains" },
+            responsable_id: { value: newResponsable, matchMode: "contains" },
+            revisor_id: { value: newRevisor, matchMode: "contains" },
+            estatus: { value: newEstatus, matchMode: "contains" },
+            desde: { value: newDesde, matchMode: "contains" },
+            hasta: { value: newHasta, matchMode: "contains" },
+        };
+        getTareas(minuta.value.id, 1, rows.value, filters.value, sortField.value, sortOrder.value);
+    }
+);
 
 const onPage = (event) => {
     const page = event.page + 1;
@@ -579,7 +612,7 @@ const onPage = (event) => {
         minuta.value.id,
         page,
         rows.value,
-        globalFilter.value,
+        filters.value,
         sortField.value,
         sortOrder.value
     );
@@ -592,7 +625,7 @@ const onSort = (event) => {
         minuta.value.id,
         1,
         rows.value,
-        globalFilter.value,
+        filters.value,
         sortField.value,
         sortOrder.value
     );

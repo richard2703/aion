@@ -241,8 +241,19 @@ async function getProcesos() {
                                     </tr>
                                     <tr>
                                         <td class="py-2 px-4 border">
-                                            <Link :href="route('minutas.index')" class="text-blue-500 hover:underline">
+                                            <Link
+                                                :href="route('minutas.index', { area_id: form.area_id, departamento_id: form.departamento_id })"
+                                                class="text-blue-500 hover:underline">
                                             Minutas
+                                            </Link>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 px-4 border">
+                                            <Link
+                                                :href="route('tareas.index', { area_id: form.area_id, departamento_id: form.departamento_id })"
+                                                class="text-blue-500 hover:underline">
+                                            Tareas
                                             </Link>
                                         </td>
                                     </tr>
