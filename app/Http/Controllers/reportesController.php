@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\avisos;
 use App\Models\Departamento;
+use App\Models\encargado_flujo;
 use App\Models\Kpis;
 use App\Models\reporteSemanal;
 use App\Models\reportes;
@@ -58,6 +59,7 @@ class reportesController extends Controller
                 'fin' => $finSemana,
             ]);
         }
+
         if (reportes::where('departamento_id', $request->departamento_id)->where('semana_id', $reporteSemanal->id)->count() > 0) {
             // dd('ya existe');
             // return Inertia::resolved('Reportes/ReporteCreate', ['reporteSemanal' => $reporteSemanal]);
@@ -71,8 +73,6 @@ class reportesController extends Controller
             ]);
         }
 
-
-        // dd('sin guardar');
         // Crear el nuevo aviso en la tabla reportes
         $reporte = reportes::create([
             'departamento_id' => $request->departamento_id,
@@ -144,17 +144,75 @@ class reportesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(reportes $reportes)
+    public function edit($reporte)
     {
-        //
+        $reporte = reportes::where('id', $reporte)->with(['semana', 'departamento', 'avisos', 'lowlights', 'highlights'])->orderby('created_at', 'desc')->first();
+        return Inertia::render('Reportes/ReporteEdit', ['reporte' => $reporte]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, reportes $reportes)
+    public function update(Request $request, $reporteId)
     {
-        //
+        // dd($request);
+        // Validate and update the report
+        $validatedData = $request->validate([
+            'departamento_id' => 'required|exists:departamentos,id',
+            'avisos' => 'array',
+            'highlights' => 'array',
+            'lowlights' => 'array',
+        ]);
+
+        $reporte = reportes::findOrFail($reporteId);
+        $reporte->update($validatedData);
+
+        // Actualizar los highlights
+        $reporte->highlights()->delete(); // Elimina los existentes
+        foreach ($validatedData['highlights'] as $highlight) {
+            // dd(!empty($highlight));
+            if (!empty($highlight)) {
+                lights::create([
+                    'departamento_id' => $reporte->departamento_id,
+                    'semana_id' => $reporte->semana_id,
+                    'reporte_id' => $reporte->id,
+                    'tipo' => 1, // 1 para highlights
+                    'light' => $highlight,
+                    'created_for' => auth()->id(), // Asignar al usuario autenticado
+                ]);
+            }
+        }
+
+        // Actualizar los lowlights
+        $reporte->lowlights()->delete(); // Elimina los existentes
+        foreach ($validatedData['lowlights'] as $lowlight) {
+            if (!empty($lowlight)) {
+                lights::create([
+                    'departamento_id' => $reporte->departamento_id,
+                    'semana_id' => $reporte->semana_id,
+                    'reporte_id' => $reporte->id,
+                    'tipo' => 0, // 0 para lowlights
+                    'light' => $lowlight,
+                    'created_for' => auth()->id(), // Asignar al usuario autenticado
+                ]);
+            }
+        }
+
+        // Actualizar los avisos
+        $reporte->avisos()->delete(); // Elimina los existentes
+        foreach ($validatedData['avisos'] as $aviso) {
+            if (!empty($aviso)) {
+                avisos::create([
+                    'departamento_id' => $reporte->departamento_id,
+                    'semana_id' => $reporte->semana_id,
+                    'reporte_id' => $reporte->id,
+                    'aviso' => $aviso,
+                    'created_for' => auth()->id(), // Asignar al usuario autenticado
+                ]);
+            }
+        }
+
+        return redirect()->route('reporte.index')->with('success', 'Reporte actualizado correctamente.');
     }
 
     /**
@@ -167,13 +225,15 @@ class reportesController extends Controller
 
     public function findAll()
     {
-        $query = Departamento::query();
+        // $query = Departamento::query();
+        $query = encargado_flujo::query();
         // if ($pageSize && $page) {
         //     $departamentos = $query->with('kpis')->paginate($pageSize, ['*'], 'page', $page);
         // } else {
         //     $departamentos = $query->with('kpis')->get();
         // }
-        $reporteSemanal = $query->orderBy('nombre', 'asc')->get();
+        // $reporteSemanal = $query->orderBy('nombre', 'asc')->get();
+        $reporteSemanal = $query->where('user_id', auth()->id())->with('Departamento')->get();
 
         return response()->json($reporteSemanal);
     }
@@ -199,7 +259,7 @@ class reportesController extends Controller
         // } else {
         //     $departamentos = $query->with('kpis')->get();
         // }
-        $reportes = $query->where('semana_id', $id)->with(['departamento', 'highlight', 'lowlight', 'avisos', 'kpis' => function ($query) {
+        $reportes = $query->where('semana_id', $id)->with(['departamento', 'highlights', 'lowlights', 'avisos', 'kpis' => function ($query) {
             $query->where('tipo', 2);
         }])->get();
         // if (isset($reportes[0]->departamento_id)) {

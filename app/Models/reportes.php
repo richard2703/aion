@@ -24,7 +24,7 @@ class reportes extends Model
 
     public function departamento(): BelongsTo
     {
-        return $this->belongsTo(Departamento::class, 'departamento_id', 'id');
+        return $this->belongsTo(Departamento::class, 'departamento_id', 'id')->withTrashed();
     }
     public function semana(): BelongsTo
     {
@@ -34,22 +34,22 @@ class reportes extends Model
     // {
     //     return $this->hasMany(Procedimiento::class);
     // }
-    public function highlight()
+    public function highlights()
     {
         return $this->hasMany(lights::class, 'reporte_id')->where('tipo', 1);
     }
-    public function lowlight()
+    public function lowlights()
     {
         return $this->hasMany(lights::class, 'reporte_id')->where('tipo', 0);
     }
 
-    public function kpis()
-    {
-        return $this->hasMany(kpis::class, 'departamento_id', 'departamento_id');
-    }
-
     public function avisos()
     {
-        return $this->hasMany(avisos::class, 'departamento_id', 'departamento_id');
+        return $this->hasMany(avisos::class, 'reporte_id');
+    }
+    public function kpis()
+    {
+        //mayuscula KPIs
+        return $this->hasMany(Kpis::class, 'departamento_id', 'departamento_id');
     }
 }

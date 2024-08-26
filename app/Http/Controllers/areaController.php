@@ -55,7 +55,7 @@ class areaController extends Controller
                 $query->orderBy($sortField, $sortOrder);
             }
 
-            $areas = $query->paginate($pageSize, ['*'], 'page', $page);
+            $areas = $query->where('deleted_at', null)->paginate($pageSize, ['*'], 'page', $page);
             return response()->json($areas);
         }
     }

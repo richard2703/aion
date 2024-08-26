@@ -11,7 +11,7 @@ class lights extends Model
 {
     use HasFactory;
 
-    use SoftDeletes;
+    // use SoftDeletes;
 
     protected $table = 'lights';
 
