@@ -44,7 +44,6 @@ const lowlights = ref(
 );
 
 const form = useForm({
-    nombre: props.reporte.departamento.nombre || "",
     departamento_id: props.reporte.departamento_id || "",
     avisos: [],
     highlights: [],
@@ -121,8 +120,8 @@ onMounted(() => {
                                                 Seleccione una opción
                                             </option>
                                             <option v-for="departamento in departamentos" :key="departamento.id"
-                                                :value="departamento.id">
-                                                {{ departamento.nombre }}
+                                                :value="departamento.departamento.id">
+                                                {{ departamento.departamento.nombre }}
                                             </option>
                                         </select>
                                     </div>

@@ -24,6 +24,8 @@ async function getDepartamentos() {
         .get("/api/getFlujo")
         .then((response) => {
             departamentos.value = response.data;
+            console.log({ departamentos: departamentos.value });
+
         })
         .catch((error) => {
             console.log(error);
@@ -111,8 +113,8 @@ getDepartamentos();
                                                 Seleccione una opción
                                             </option>
                                             <option v-for="departamento in departamentos" :key="departamento.id"
-                                                :value="departamento.id">
-                                                {{ departamento.nombre }}
+                                                :value="departamento.departamento.id">
+                                                {{ departamento.departamento.nombre }}
                                             </option>
                                         </select>
                                     </div>

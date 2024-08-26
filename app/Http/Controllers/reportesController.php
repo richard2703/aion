@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\avisos;
 use App\Models\Departamento;
+use App\Models\encargado_flujo;
 use App\Models\Kpis;
 use App\Models\reporteSemanal;
 use App\Models\reportes;
@@ -169,13 +170,14 @@ class reportesController extends Controller
         // Actualizar los highlights
         $reporte->highlights()->delete(); // Elimina los existentes
         foreach ($validatedData['highlights'] as $highlight) {
+            // dd(!empty($highlight));
             if (!empty($highlight)) {
-                $reporte->highlights()->create([
-                    'light' => $highlight,
-                    'tipo' => 1, // tipo 1 para highlights
+                lights::create([
                     'departamento_id' => $reporte->departamento_id,
                     'semana_id' => $reporte->semana_id,
                     'reporte_id' => $reporte->id,
+                    'tipo' => 1, // 1 para highlights
+                    'light' => $highlight,
                     'created_for' => auth()->id(), // Asignar al usuario autenticado
                 ]);
             }
@@ -185,14 +187,13 @@ class reportesController extends Controller
         $reporte->lowlights()->delete(); // Elimina los existentes
         foreach ($validatedData['lowlights'] as $lowlight) {
             if (!empty($lowlight)) {
-                $reporte->lowlights()->create([
-                    'light' => $highlight,
-                    'tipo' => 1, // tipo 1 para highlights
+                lights::create([
                     'departamento_id' => $reporte->departamento_id,
                     'semana_id' => $reporte->semana_id,
                     'reporte_id' => $reporte->id,
+                    'tipo' => 0, // 0 para lowlights
+                    'light' => $lowlight,
                     'created_for' => auth()->id(), // Asignar al usuario autenticado
-
                 ]);
             }
         }
@@ -201,13 +202,12 @@ class reportesController extends Controller
         $reporte->avisos()->delete(); // Elimina los existentes
         foreach ($validatedData['avisos'] as $aviso) {
             if (!empty($aviso)) {
-                $reporte->avisos()->create([
-                    'aviso' => $aviso,
+                avisos::create([
                     'departamento_id' => $reporte->departamento_id,
                     'semana_id' => $reporte->semana_id,
                     'reporte_id' => $reporte->id,
+                    'aviso' => $aviso,
                     'created_for' => auth()->id(), // Asignar al usuario autenticado
-
                 ]);
             }
         }
@@ -225,13 +225,15 @@ class reportesController extends Controller
 
     public function findAll()
     {
-        $query = Departamento::query();
+        // $query = Departamento::query();
+        $query = encargado_flujo::query();
         // if ($pageSize && $page) {
         //     $departamentos = $query->with('kpis')->paginate($pageSize, ['*'], 'page', $page);
         // } else {
         //     $departamentos = $query->with('kpis')->get();
         // }
-        $reporteSemanal = $query->orderBy('nombre', 'asc')->get();
+        // $reporteSemanal = $query->orderBy('nombre', 'asc')->get();
+        $reporteSemanal = $query->where('user_id', auth()->id())->with('Departamento')->get();
 
         return response()->json($reporteSemanal);
     }

@@ -191,6 +191,9 @@ const getClass = (kpiItem) => {
             <div v-for="reporte in reportes" :key="reporte.id" class="reporte">
                 <div @click="collapsedReportReport(reporte.id)" class="departamento-header">
                     <h3 class="text-xl font-bold text-purple-700">{{ reporte.departamento.nombre }}</h3>
+                    <div v-if="reporte.departamento.deleted_at">
+                        <p class="text-red-500">Este Flujo ha sido eliminado.</p>
+                    </div>
                 </div>
                 <div v-if="!iscollapsedReport(reporte.id)" class="departamento-content">
                     <div class="grid grid-cols-2 gap-4">

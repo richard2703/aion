@@ -24,7 +24,7 @@ class reportes extends Model
 
     public function departamento(): BelongsTo
     {
-        return $this->belongsTo(Departamento::class, 'departamento_id', 'id');
+        return $this->belongsTo(Departamento::class, 'departamento_id', 'id')->withTrashed();
     }
     public function semana(): BelongsTo
     {
