@@ -73,6 +73,36 @@
                     </li>
                 </ul>
             </li>
+            <!-- //reportes -->
+            <li>
+                <a class="group flex items-center py-3 cursor-pointer" @click="toggleMenu('reportes')">
+
+                    <i class="pi pi-building mr-2 w-4 h-4" :class="title === 'reportes' ? 'activo flex'
+                        : 'inactivo flex'"></i>
+                    <div :class="title === 'reportes' ? 'activo flex'
+                        : 'inactivo flex'">
+                        Reportes
+                    </div>
+                    <icon name="cheveron-down" class="ml-auto w-4 h-4" :class="isOpen('reportes') ? 'rotate-180' : '', title === 'reportes' ? 'activo flex'
+                        : 'inactivo flex'" />
+                </a>
+                <ul v-show="isOpen('reportes')" class="pl-6 space-y-2">
+                    <li>
+                        <Link class="group flex items-center py-2" :href="route('reporte.index')" :class="subTitle === 'semanales' ? 'activo flex'
+                            : 'inactivo flex'">
+                        <icon name="circle" class="mr-2 w-3 h-3" />
+                        <div>Reportes</div>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link class="group flex items-center py-2" :href="route('misreporte.index')" :class="subTitle === 'pdca' ? 'activo flex'
+                            : 'inactivo flex'">
+                        <icon name="circle" class="mr-2 w-3 h-3" />
+                        <div>Mis Reportes</div>
+                        </Link>
+                    </li>
+                </ul>
+            </li>
 
             <!-- Usuarios Menu Item with Submenus -->
             <!-- <li>
@@ -145,6 +175,19 @@
                             ">
                             <i class="pi pi-users mr-2 w-4 h-4"></i>
                             Usuarios
+                        </div>
+                        </Link>
+                    </div>
+                </li>
+                <li>
+                    <div class="mb-4">
+                        <Link class="group flex items-center py-3" :href="route('encargadoFlujo.index')">
+                        <div :class="title === 'usuarios'
+                            ? 'activo flex'
+                            : 'inactivo flex'
+                            ">
+                            <i class="pi pi-users mr-2 w-4 h-4"></i>
+                            Encargados de Flujo
                         </div>
                         </Link>
                     </div>
