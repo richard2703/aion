@@ -156,7 +156,7 @@ const search = (event) => {
             filteredUsuarios.value = [...usuarios.value];
         } else {
             filteredUsuarios.value = usuarios.value.filter((usuario) => {
-                return usuario.name.toLowerCase().startsWith(event.query.toLowerCase());
+                return usuario.name.toLowerCase().includes(event.query.toLowerCase());
             });
         }
     }, 250);

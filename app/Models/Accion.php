@@ -15,6 +15,7 @@ class Accion extends Model
         'id',
         'tipo_id',
         'area_id',
+        'departamento_id',
         'proceso_id',
         'estatus_id',
         'responsable_id',

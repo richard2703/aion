@@ -17,10 +17,12 @@ class tareasController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         return Inertia::render('Tareas/TareasIndex', [
             'authUser' => auth()->user(),
+            'area_id' => $request->get('area_id'),
+            'departamento_id' => $request->get('departamento_id'),
         ]);
     }
 
@@ -34,66 +36,64 @@ class tareasController extends Controller
         $query = tareas::query();
         $pageSize = $request->get('rows', 10);
         $page = $request->get('page', 1);
-        $filter = $request->get('filter', '');
+        $filters = $request->get('filter', '');
         $sortField = $request->get('sortField', 'id');
         $sortOrder = $request->get('sortOrder', 'asc');
 
-        if ($request->formFilter) {
-            $area_id = $request->formFilter['area_id'];
-            $departamento_id = $request->formFilter['departamento_id'];
-            $responsable_id = $request->formFilter['responsable_id'];
-            $estatus_id = $request->formFilter['estatus_id'];
-            $fecha_from = $request->formFilter['fecha_from'];
-            $fecha_to = $request->formFilter['fecha_to'];
+        // new stuff
 
-            $query->where(function ($q) use ($area_id, $departamento_id, $responsable_id, $estatus_id, $fecha_from, $fecha_to) {
-                if ($area_id) {
-                    $q->orWhere('tareas.area_id', '=', $area_id);
-                }
-                if ($departamento_id) {
-                    $q->orWhere('tareas.departamento_id', '=', $departamento_id);
-                }
-                if ($responsable_id) {
-                    $q->orWhere('tareas.responsable_id', '=', $responsable_id);
-                }
-                if ($estatus_id) {
-                    $q->orWhere('tareas.estatus_id', '=', $estatus_id);
-                }
-                if ($fecha_from && $fecha_to) {
-                    $q->orWhereBetween('tareas.fecha', [$fecha_from, $fecha_to]);
-                }
-            });
-        }
+        // Apply global filter if it exists
+        if (isset($filters['global']['value']) && !empty($filters['global']['value'])) {
+            $globalFilter = $filters['global']['value'];
+            $query->where(function ($q) use ($globalFilter) {
 
-        // Filter logic
-        if ($filter) {
-            $query->where(function ($q) use ($filter) {
-                $q->where('tareas.id', 'like', '%' . $filter . '%')
-                    ->orWhere('tareas.tarea', 'like', '%' . $filter . '%')
-                    ->orWhere('tareas.fecha', 'like', '%' . $filter . '%')
-                    ->orWhere('tareas.nota', 'like', '%' . $filter . '%')
-                    ->orWhereHas('area', function ($q) use ($filter) {
-                        $q->where('areas.nombre', 'like', '%' . $filter . '%')
-                            ->orWhere('areas.descripcion', 'like', '%' . $filter . '%');
+                $q->where('tareas.id', 'like', '%' . $globalFilter . '%')
+                    ->orWhere('tareas.tarea', 'like', '%' . $globalFilter . '%')
+                    ->orWhere('tareas.fecha', 'like', '%' . $globalFilter . '%')
+                    ->orWhere('tareas.nota', 'like', '%' . $globalFilter . '%')
+                    ->orWhereHas('area', function ($q) use ($globalFilter) {
+                        $q->where('areas.nombre', 'like', '%' . $globalFilter . '%')
+                            ->orWhere('areas.descripcion', 'like', '%' . $globalFilter . '%');
                     })
-                    ->orWhereHas('departamento', function ($q) use ($filter) {
-                        $q->where('departamentos.nombre', 'like', '%' . $filter . '%')
-                            ->orWhere('departamentos.descripcion', 'like', '%' . $filter . '%');
+                    ->orWhereHas('departamento', function ($q) use ($globalFilter) {
+                        $q->where('departamentos.nombre', 'like', '%' . $globalFilter . '%')
+                            ->orWhere('departamentos.descripcion', 'like', '%' . $globalFilter . '%');
                     })
-                    ->orWhereHas('minuta', function ($q) use ($filter) {
-                        $q->where('minutas.alias', 'like', '%' . $filter . '%');
-                        // ->orWhere('minutas.descripcion', 'like', '%' . $filter . '%');
+                    ->orWhereHas('minuta', function ($q) use ($globalFilter) {
+                        $q->where('minutas.alias', 'like', '%' . $globalFilter . '%');
                     })
-                    ->orWhereHas('responsable', function ($q) use ($filter) {
-                        $q->where('users.name', 'like', '%' . $filter . '%');
-                        // ->orWhere('responsables.apellido', 'like', '%' . $filter . '%');
+                    ->orWhereHas('responsable', function ($q) use ($globalFilter) {
+                        $q->where('users.name', 'like', '%' . $globalFilter . '%');
                     })
-                    ->orWhereHas('estatus', function ($q) use ($filter) {
-                        $q->where('estatus.titulo', 'like', '%' . $filter . '%');
-                        // ->orWhere('responsables.apellido', 'like', '%' . $filter . '%');
+                    ->orWhereHas('revisor', function ($q) use ($globalFilter) {
+                        $q->where('users.name', 'like', '%' . $globalFilter . '%');
+                    })
+                    ->orWhereHas('estatus', function ($q) use ($globalFilter) {
+                        $q->where('estatus.titulo', 'like', '%' . $globalFilter . '%');
                     });
+                // Add more fields if necessary
             });
         }
+
+        // Apply specific filters
+        $filterableFields = ['area_id', 'departamento_id', 'responsable_id', 'revisor_id', 'estatus'];
+        foreach ($filterableFields as $field) {
+
+            if (isset($filters[$field]['value']) && !empty($filters[$field]['value'])) {
+                $query->orWhere($field, '=', $filters[$field]['value']);
+            }
+        }
+        // dd($query->toSql());
+
+        // Apply date range filters
+        if (isset($filters['desde']['value']) && !empty($filters['desde']['value'])) {
+            $query->where('fecha', '>=', $filters['desde']['value']);
+        }
+        if (isset($filters['hasta']['value']) && !empty($filters['hasta']['value'])) {
+            $query->where('fecha', '<=', $filters['hasta']['value']);
+        }
+
+        //
 
         // Sorting logic
         if (in_array($sortField, ['id', 'tarea', 'fecha', 'nota', 'area.nombre', 'departamento.nombre', 'minuta.nombre', 'responsable.name', 'revisor.name', 'estatus.titulo'])) {
@@ -293,72 +293,65 @@ class tareasController extends Controller
         $query = tareas::query();
         $pageSize = $request->get('rows', 10);
         $page = $request->get('page', 1);
-        $filter = $request->get('filter', '');
+        $filters = $request->get('filter', '');
         $sortField = $request->get('sortField', 'id');
         $sortOrder = $request->get('sortOrder', 'asc');
 
-        if ($request->formFilter) {
-            $area_id = $request->formFilter['area_id'];
-            $departamento_id = $request->formFilter['departamento_id'];
-            $responsable_id = $request->formFilter['responsable_id'];
-            $estatus_id = $request->formFilter['estatus_id'];
-            $fecha_from = $request->formFilter['fecha_from'];
-            $fecha_to = $request->formFilter['fecha_to'];
+        // Apply global filter if it exists
+        if (isset($filters['global']['value']) && !empty($filters['global']['value'])) {
+            $globalFilter = $filters['global']['value'];
+            $query->where(function ($q) use ($globalFilter) {
 
-            $query->where(function ($q) use ($area_id, $departamento_id, $responsable_id, $estatus_id, $fecha_from, $fecha_to) {
-                if ($area_id) {
-                    $q->orWhere('tareas.area_id', '=', $area_id);
-                }
-                if ($departamento_id) {
-                    $q->orWhere('tareas.departamento_id', '=', $departamento_id);
-                }
-                if ($responsable_id) {
-                    $q->orWhere('tareas.responsable_id', '=', $responsable_id);
-                }
-                if ($estatus_id) {
-                    $q->orWhere('tareas.estatus_id', '=', $estatus_id);
-                }
-                if ($fecha_from && $fecha_to) {
-                    $q->orWhereBetween('tareas.fecha', [$fecha_from, $fecha_to]);
-                }
-            });
-        } else {
-            $query->where('tareas.minuta_id', '=', $minuta_id);
-        }
-
-
-        // Filter logic
-        if ($filter) {
-            $query->where(function ($q) use ($filter) {
-                $q->where('tareas.id', 'like', '%' . $filter . '%')
-                    ->orWhere('tareas.tarea', 'like', '%' . $filter . '%')
-                    ->orWhere('tareas.fecha', 'like', '%' . $filter . '%')
-                    ->orWhere('tareas.nota', 'like', '%' . $filter . '%')
-                    ->orWhereHas('area', function ($q) use ($filter) {
-                        $q->where('areas.nombre', 'like', '%' . $filter . '%')
-                            ->orWhere('areas.descripcion', 'like', '%' . $filter . '%');
+                $q->where('tareas.id', 'like', '%' . $globalFilter . '%')
+                    ->orWhere('tareas.tarea', 'like', '%' . $globalFilter . '%')
+                    ->orWhere('tareas.fecha', 'like', '%' . $globalFilter . '%')
+                    ->orWhere('tareas.nota', 'like', '%' . $globalFilter . '%')
+                    ->orWhereHas('area', function ($q) use ($globalFilter) {
+                        $q->where('areas.nombre', 'like', '%' . $globalFilter . '%')
+                            ->orWhere('areas.descripcion', 'like', '%' . $globalFilter . '%');
                     })
-                    ->orWhereHas('departamento', function ($q) use ($filter) {
-                        $q->where('departamentos.nombre', 'like', '%' . $filter . '%')
-                            ->orWhere('departamentos.descripcion', 'like', '%' . $filter . '%');
+                    ->orWhereHas('departamento', function ($q) use ($globalFilter) {
+                        $q->where('departamentos.nombre', 'like', '%' . $globalFilter . '%')
+                            ->orWhere('departamentos.descripcion', 'like', '%' . $globalFilter . '%');
                     })
-                    ->orWhereHas('minuta', function ($q) use ($filter) {
-                        $q->where('minutas.alias', 'like', '%' . $filter . '%');
-                        // ->orWhere('minutas.descripcion', 'like', '%' . $filter . '%');
+                    ->orWhereHas('minuta', function ($q) use ($globalFilter) {
+                        $q->where('minutas.alias', 'like', '%' . $globalFilter . '%');
                     })
-                    ->orWhereHas('responsable', function ($q) use ($filter) {
-                        $q->where('users.name', 'like', '%' . $filter . '%');
-                        // ->orWhere('responsables.apellido', 'like', '%' . $filter . '%');
+                    ->orWhereHas('responsable', function ($q) use ($globalFilter) {
+                        $q->where('users.name', 'like', '%' . $globalFilter . '%');
                     })
-                    ->orWhereHas('estatus', function ($q) use ($filter) {
-                        $q->where('estatus.titulo', 'like', '%' . $filter . '%');
-                        // ->orWhere('responsables.apellido', 'like', '%' . $filter . '%');
+                    ->orWhereHas('revisor', function ($q) use ($globalFilter) {
+                        $q->where('users.name', 'like', '%' . $globalFilter . '%');
+                    })
+                    ->orWhereHas('estatus', function ($q) use ($globalFilter) {
+                        $q->where('estatus.titulo', 'like', '%' . $globalFilter . '%');
                     });
+                // Add more fields if necessary
             });
         }
+
+        // Apply specific filters
+        $filterableFields = ['area_id', 'departamento_id', 'responsable_id', 'revisor_id', 'estatus'];
+        foreach ($filterableFields as $field) {
+
+            if (isset($filters[$field]['value']) && !empty($filters[$field]['value'])) {
+                $query->orwhere($field, 'like', "%" . $filters[$field]['value'] . "%");
+            }
+        }
+        // dd($query->toSql());
+
+        // Apply date range filters
+        if (isset($filters['desde']['value']) && !empty($filters['desde']['value'])) {
+            $query->where('fecha', '>=', $filters['desde']['value']);
+        }
+        if (isset($filters['hasta']['value']) && !empty($filters['hasta']['value'])) {
+            $query->where('fecha', '<=', $filters['hasta']['value']);
+        }
+
+        //
 
         // Sorting logic
-        if (in_array($sortField, ['id', 'tarea', 'fecha', 'nota', 'area.nombre', 'departamento.nombre', 'minuta.nombre', 'responsable.nombre', 'revisor.name',  'estatus.titulo'])) {
+        if (in_array($sortField, ['id', 'tarea', 'fecha', 'nota', 'area.nombre', 'departamento.nombre', 'minuta.nombre', 'responsable.name', 'revisor.name', 'estatus.titulo'])) {
             if (strpos($sortField, 'area.') === 0) {
                 $query->join('areas', 'tareas.area_id', '=', 'areas.id')
                     ->select('tareas.*', 'areas.nombre as area_nombre') // Select distinct columns
@@ -372,7 +365,7 @@ class tareasController extends Controller
                     ->select('tareas.*', 'minutas.alias as minuta_alias') // Select distinct columns
                     ->orderBy('minutas.alias', $sortOrder);
             } else if (strpos($sortField, 'responsable.') === 0) {
-                $query->join('responsables', 'tareas.responsable_id', '=', 'users.id')
+                $query->join('users', 'tareas.responsable_id', '=', 'users.id')
                     ->select('tareas.*', 'users.name as responsable_name') // Select distinct columns
                     ->orderBy('users.name', $sortOrder);
             } else if (strpos($sortField, 'revisor.') === 0) {
@@ -417,7 +410,9 @@ class tareasController extends Controller
 
     public function misTareas()
     {
-        return Inertia::render('Tareas/MisTareas');
+        return Inertia::render('Tareas/MisTareas', [
+            'authUser' => auth()->user(),
+        ]);
     }
     public function byUser(Request $request)
     {
@@ -427,72 +422,67 @@ class tareasController extends Controller
         $query = tareas::query();
         $pageSize = $request->get('rows', 10);
         $page = $request->get('page', 1);
-        $filter = $request->get('filter', '');
+        $filters = $request->get('filter', '');
         $sortField = $request->get('sortField', 'id');
         $sortOrder = $request->get('sortOrder', 'asc');
 
-        if ($request->formFilter) {
-            $area_id = $request->formFilter['area_id'];
-            $departamento_id = $request->formFilter['departamento_id'];
-            $responsable_id = $request->formFilter['responsable_id'];
-            $estatus_id = $request->formFilter['estatus_id'];
-            $fecha_from = $request->formFilter['fecha_from'];
-            $fecha_to = $request->formFilter['fecha_to'];
+        // new stuff
 
-            $query->where(function ($q) use ($area_id, $departamento_id, $responsable_id, $estatus_id, $fecha_from, $fecha_to) {
-                if ($area_id) {
-                    $q->orWhere('tareas.area_id', '=', $area_id);
-                }
-                if ($departamento_id) {
-                    $q->orWhere('tareas.departamento_id', '=', $departamento_id);
-                }
-                if ($responsable_id) {
-                    $q->orWhere('tareas.responsable_id', '=', $responsable_id);
-                }
-                if ($estatus_id) {
-                    $q->orWhere('tareas.estatus_id', '=', $estatus_id);
-                }
-                if ($fecha_from && $fecha_to) {
-                    $q->orWhereBetween('tareas.fecha', [$fecha_from, $fecha_to]);
-                }
-            });
-        } else {
-            $query->where('responsable_id', $user->id);
-        }
+        // Apply global filter if it exists
+        if (isset($filters['global']['value']) && !empty($filters['global']['value'])) {
+            $globalFilter = $filters['global']['value'];
+            $query->where(function ($q) use ($globalFilter) {
 
-
-        // Filter logic
-        if ($filter) {
-            $query->where(function ($q) use ($filter) {
-                $q->where('tareas.id', 'like', '%' . $filter . '%')
-                    ->orWhere('tareas.tarea', 'like', '%' . $filter . '%')
-                    ->orWhere('tareas.fecha', 'like', '%' . $filter . '%')
-                    ->orWhere('tareas.nota', 'like', '%' . $filter . '%')
-                    ->orWhereHas('area', function ($q) use ($filter) {
-                        $q->where('areas.nombre', 'like', '%' . $filter . '%')
-                            ->orWhere('areas.descripcion', 'like', '%' . $filter . '%');
+                $q->where('tareas.id', 'like', '%' . $globalFilter . '%')
+                    ->orWhere('tareas.tarea', 'like', '%' . $globalFilter . '%')
+                    ->orWhere('tareas.fecha', 'like', '%' . $globalFilter . '%')
+                    ->orWhere('tareas.nota', 'like', '%' . $globalFilter . '%')
+                    ->orWhereHas('area', function ($q) use ($globalFilter) {
+                        $q->where('areas.nombre', 'like', '%' . $globalFilter . '%')
+                            ->orWhere('areas.descripcion', 'like', '%' . $globalFilter . '%');
                     })
-                    ->orWhereHas('departamento', function ($q) use ($filter) {
-                        $q->where('departamentos.nombre', 'like', '%' . $filter . '%')
-                            ->orWhere('departamentos.descripcion', 'like', '%' . $filter . '%');
+                    ->orWhereHas('departamento', function ($q) use ($globalFilter) {
+                        $q->where('departamentos.nombre', 'like', '%' . $globalFilter . '%')
+                            ->orWhere('departamentos.descripcion', 'like', '%' . $globalFilter . '%');
                     })
-                    ->orWhereHas('minuta', function ($q) use ($filter) {
-                        $q->where('minutas.alias', 'like', '%' . $filter . '%');
-                        // ->orWhere('minutas.descripcion', 'like', '%' . $filter . '%');
+                    ->orWhereHas('minuta', function ($q) use ($globalFilter) {
+                        $q->where('minutas.alias', 'like', '%' . $globalFilter . '%');
                     })
-                    ->orWhereHas('responsable', function ($q) use ($filter) {
-                        $q->where('users.name', 'like', '%' . $filter . '%');
-                        // ->orWhere('responsables.apellido', 'like', '%' . $filter . '%');
+                    ->orWhereHas('responsable', function ($q) use ($globalFilter) {
+                        $q->where('users.name', 'like', '%' . $globalFilter . '%');
                     })
-                    ->orWhereHas('estatus', function ($q) use ($filter) {
-                        $q->where('estatus.titulo', 'like', '%' . $filter . '%');
-                        // ->orWhere('responsables.apellido', 'like', '%' . $filter . '%');
+                    ->orWhereHas('revisor', function ($q) use ($globalFilter) {
+                        $q->where('users.name', 'like', '%' . $globalFilter . '%');
+                    })
+                    ->orWhereHas('estatus', function ($q) use ($globalFilter) {
+                        $q->where('estatus.titulo', 'like', '%' . $globalFilter . '%');
                     });
+                // Add more fields if necessary
             });
         }
+
+        // Apply specific filters
+        $filterableFields = ['area_id', 'departamento_id', 'responsable_id', 'revisor_id', 'estatus'];
+        foreach ($filterableFields as $field) {
+
+            if (isset($filters[$field]['value']) && !empty($filters[$field]['value'])) {
+                $query->orWhere($field, '=', $filters[$field]['value']);
+            }
+        }
+        // dd($query->toSql());
+
+        // Apply date range filters
+        if (isset($filters['desde']['value']) && !empty($filters['desde']['value'])) {
+            $query->where('fecha', '>=', $filters['desde']['value']);
+        }
+        if (isset($filters['hasta']['value']) && !empty($filters['hasta']['value'])) {
+            $query->where('fecha', '<=', $filters['hasta']['value']);
+        }
+
+        //
 
         // Sorting logic
-        if (in_array($sortField, ['id', 'tarea', 'fecha', 'nota', 'area.nombre', 'departamento.nombre', 'minuta.nombre', 'responsable.nombre', 'revisor.name',  'estatus.titulo'])) {
+        if (in_array($sortField, ['id', 'tarea', 'fecha', 'nota', 'area.nombre', 'departamento.nombre', 'minuta.nombre', 'responsable.name', 'revisor.name', 'estatus.titulo'])) {
             if (strpos($sortField, 'area.') === 0) {
                 $query->join('areas', 'tareas.area_id', '=', 'areas.id')
                     ->select('tareas.*', 'areas.nombre as area_nombre') // Select distinct columns
@@ -506,7 +496,7 @@ class tareasController extends Controller
                     ->select('tareas.*', 'minutas.alias as minuta_alias') // Select distinct columns
                     ->orderBy('minutas.alias', $sortOrder);
             } else if (strpos($sortField, 'responsable.') === 0) {
-                $query->join('responsables', 'tareas.responsable_id', '=', 'users.id')
+                $query->join('users', 'tareas.responsable_id', '=', 'users.id')
                     ->select('tareas.*', 'users.name as responsable_name') // Select distinct columns
                     ->orderBy('users.name', $sortOrder);
             } else if (strpos($sortField, 'revisor.') === 0) {
@@ -525,7 +515,7 @@ class tareasController extends Controller
             $query->orderBy('id', $sortOrder);
         }
 
-        $tareas = $query->with('area', 'departamento', 'minuta', 'responsable', 'revisor', 'estatus')->where('responsable_id', $user->id)->paginate($pageSize, ['*'], 'page', $page);
+        $tareas = $query->with('area', 'departamento', 'minuta', 'responsable', 'revisor', 'estatus')->where('responsable_id', $user->id)->where('validacion', null)->paginate($pageSize, ['*'], 'page', $page);
 
         return response()->json($tareas);
     }

@@ -10,12 +10,12 @@
                     <br>
                     <!-- componente -->
                     <div class="flex">
-                        <AccionList class="overflow-y-auto" v-if="triger === 'list'" :area_id="area_id" :tipo="tipo"
-                            @edit="(id) => editAccion(id)" />
-                        <AccionCreate v-if="triger === 'create'" :area_id="area_id" :tipo="tipo" :procesos="procesos"
-                            @list="triger = 'list'" />
-                        <AccionEdit v-if="triger === 'edit'" :area_id="area_id" :procesos="procesos" :accion="accion"
-                            @list="triger = 'list'" />
+                        <AccionList class="overflow-y-auto" v-if="triger === 'list'" :area_id="area_id"
+                            :departamento_id="departamento_id" :tipo="tipo" @edit="(id) => editAccion(id)" />
+                        <AccionCreate v-if="triger === 'create'" :area_id="area_id" :departamento_id="departamento_id"
+                            :tipo="tipo" :procesos="procesos" @list="triger = 'list'" />
+                        <AccionEdit v-if="triger === 'edit'" :area_id="area_id" :departamento_id="departamento_id"
+                            :procesos="procesos" :accion="accion" @list="triger = 'list'" />
                     </div>
                 </div>
             </div>
@@ -37,10 +37,11 @@ import AccionEdit from "@/Pages/sysGestion/Partials/Accion/AccionEdit.vue";
 const props = defineProps({
     tipo: String,
     procesos: Array,
-    area_id: Number
+    area_id: Number,
+    departamento_id: Number,
 });
 
-console.log({ procesosIndex: props.procesos, tipo: props.tipo, area_id: props.area_id });
+console.log({ procesosIndex: props.procesos, tipo: props.tipo, area_id: props.area_id, });
 // Define emits TODO: difinir emits
 const emit = defineEmits([]);
 
@@ -53,6 +54,8 @@ onMounted(() => {
     // getTiposMinuta();
 }
 );
+
+console.log({ procesosEnAcciones: procesos });
 
 const editAccion = (id) => {
     axios.get(route("acciones.edit", id))

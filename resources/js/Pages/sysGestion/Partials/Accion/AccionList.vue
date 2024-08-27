@@ -23,12 +23,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import axios from "axios";
 import { confirmDialog, showToast } from "@/Pages/utils/SweetAlert.service";
 
 const props = defineProps({
     area_id: Number,
+    departamento_id: Number,
     tipo: String
 });
 
@@ -36,6 +37,7 @@ const props = defineProps({
 const emit = defineEmits(['edit']);
 
 const area_id = ref(props.area_id);
+const departamento_id = ref(props.departamento_id);
 const tipo = ref(props.tipo);
 const accionesCorrectivas = ref([]);
 
@@ -45,9 +47,14 @@ onMounted(() => {
 }
 );
 
+watch(() => props.departamento_id, (newDepartamento_id) => {
+    departamento_id.value = newDepartamento_id;
+    getAcciones();
+});
+
 const getAcciones = async () => {
     try {
-        await axios.get(route("acciones.byArea", { area_id: area_id.value, tipo: tipo.value }))
+        await axios.get(route("acciones.byDepartamento", { departamento_id: departamento_id.value, tipo: tipo.value }))
             .then((response) => {
                 accionesCorrectivas.value = response.data;
                 console.log({ acciones: accionesCorrectivas.value });

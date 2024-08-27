@@ -13,9 +13,7 @@ class accionController extends Controller
         // return Inertia::render('Acciones/Index');
     }
 
-    public function create()
-    {
-    }
+    public function create() {}
 
     public function edit(Accion $accion)
     {
@@ -28,6 +26,7 @@ class accionController extends Controller
         $data = [
             'proceso_id' => $request->proceso_id,
             'area_id' => $request->area_id,
+            'departamento_id' => $request->departamento_id,
             'tipo_id' => $request->tipo_id,
             'titulo' => $request->titulo,
             'link' => $request->link,
@@ -48,6 +47,7 @@ class accionController extends Controller
         }
         $accion->proceso_id = $request->proceso_id;
         $accion->area_id = $request->area_id;
+        $accion->departamento_id = $request->departamento_id;
         $accion->tipo_id = $request->tipo_id;
         $accion->titulo = $request->titulo;
         $accion->link = $request->link;
@@ -63,9 +63,9 @@ class accionController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function byArea($area_id, $tipo)
+    public function byDepartamento($departamento_id, $tipo)
     {
-        // dd($area_id, $tipo);
+        // dd($departamento_id, $tipo);
         switch ($tipo) {
             case 'correctiva':
                 $tipo_id = 1;
@@ -84,7 +84,7 @@ class accionController extends Controller
                 break;
         }
 
-        $accion = Accion::with('area', 'proceso', 'tipo', 'responsable', 'estatus')->where('area_id', $area_id)->where('tipo_id', $tipo_id)->orderBy('proceso_id', 'asc')->get();
+        $accion = Accion::with('area', 'proceso', 'tipo', 'responsable', 'estatus')->where('departamento_id', $departamento_id)->where('tipo_id', $tipo_id)->orderBy('proceso_id', 'asc')->get();
         return response()->json($accion);
     }
 }

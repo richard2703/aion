@@ -56,6 +56,12 @@ class kpiController extends Controller
         return response()->json($kpis);
     }
 
+    public function byDepartamento($departamento_id)
+    {
+        $kpis = Kpis::with('area', 'departamento', 'proceso', 'procedimiento', 'registros')->where('departamento_id', $departamento_id)->get();
+        return response()->json($kpis);
+    }
+
     public function create()
     {
         return Inertia::render('Kpi/KpiCreate');
@@ -66,6 +72,10 @@ class kpiController extends Controller
         return Inertia::render('Kpi/KpiEdit', [
             'kpi' => $kpi
         ]);
+    }
+    public function byId(Kpis $kpi)
+    {
+        return response()->json($kpi);
     }
 
     public function store(Request $request)
