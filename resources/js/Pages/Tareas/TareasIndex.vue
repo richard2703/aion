@@ -102,7 +102,7 @@ watch(
             departamento_id: { value: newFlujoValor, matchMode: "contains" },
             responsable_id: { value: newResponsable, matchMode: "contains" },
             revisor_id: { value: newRevisor, matchMode: "contains" },
-            estatus: { value: newEstatus, matchMode: "contains" },
+            estatus_id: { value: newEstatus, matchMode: "contains" },
             desde: { value: newDesde, matchMode: "contains" },
             hasta: { value: newHasta, matchMode: "contains" },
         };
