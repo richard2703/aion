@@ -128,6 +128,33 @@
                                 </div>
                             </form>
                         </div>
+                        <div class="contaier mx-auto">
+                            <form @submit.prevent="uploadFile" enctype="multipart/form-data">
+                                <div class="grid grid-cols-1 gap-4">
+                                    <div>
+                                        <InputLabel for="img_ref" value="Muestra del trabajo realizado: " />
+                                        <input id="img_ref" type="file" @change="onFileChange('img_ref', $event)"
+                                            class="mt-1 block w-full" autocomplete="img_ref" />
+                                    </div>
+
+                                    <div class="col-span-full flex items-center justify-end mt-4">
+                                        <PrimaryButton class="ms-4 pi pi-upload" :class="{
+                                            'opacity-25': form.processing,
+                                        }" :disabled="form.processing">
+                                        </PrimaryButton>
+                                    </div>
+                                    <div
+                                        class="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+                                        <div v-for="evidencia in evidencias" class="card w-60 bg-slate-100">
+                                            <Image :src="evidencia" alt="Image" width="250" preview />
+                                            <!-- <img :src="evidencia" alt="" srcset=""> -->
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -146,10 +173,13 @@ import TextInput from "@/Components/TextInput.vue";
 import AutoComplete from 'primevue/autocomplete';
 import Textarea from 'primevue/textarea';
 import { showToast } from "@/Pages/utils/SweetAlert.service";
+import Image from 'primevue/image';
 
 const props = defineProps({
     tarea: Object
 });
+
+console.log(props.tarea);
 
 const tarea = ref(props.tarea);
 const areas = ref({});
@@ -157,6 +187,8 @@ const minutas = ref({});
 const departamentos = ref({});
 const usuarios = ref([]);
 const filteredUsuarios = ref();
+
+const evidencias = ref({});
 
 const form = useForm({
     area_id: tarea.value.area_id,
@@ -170,11 +202,17 @@ const form = useForm({
     estatus_id: tarea.value.estatus_id,
 });
 
+const evidenciaForm = useForm({
+    tarea_id: tarea.value.id,
+    img_ref: null,
+});
+
 onMounted(() => {
     getAreas();
     getDepartamentos(tarea.value.area_id);
     getUsuarios();
     getMinutas();
+    getEvidencias();
 });
 
 const getAreas = async () => {
@@ -242,5 +280,41 @@ const search = (event) => {
         }
     }, 250);
 }
+
+const onFileChange = (key, event) => {
+    console.log("onFileChange", event.target.files[0]);
+
+    evidenciaForm[key] = event.target.files[0];
+
+};
+
+const uploadFile = async () => {
+    try {
+
+        const formData = new FormData();
+        formData.append('tarea_id', evidenciaForm.tarea_id);
+        formData.append('img_ref', evidenciaForm.img_ref);
+
+        response = await axios.post(route("tareas.evidencia.store"), formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+    } catch (error) {
+        showToast("Ocurrio un error", "error");
+        console.error(error);
+    }
+};
+
+const getEvidencias = async () => {
+    try {
+        const response = await axios.get(route("tareaEvidencia.getByTarea", tarea.value.id));
+        evidencias.value = response.data;
+        console.log({ evidencias: evidencias.value });
+
+    } catch (error) {
+        console.error(error);
+    }
+};
 
 </script>

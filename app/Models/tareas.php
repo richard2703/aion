@@ -57,4 +57,9 @@ class tareas extends Model
     {
         return $this->belongsTo(Estatus::class, 'estatus_id', 'id');
     }
+
+    public function evidencia()
+    {
+        return $this->hasMany(tareaEvidencia::class, 'tarea_id', 'id');
+    }
 }
