@@ -24,7 +24,7 @@ async function getDepartamentos() {
         .get("/api/getFlujo")
         .then((response) => {
             departamentos.value = response.data;
-            console.log({ departamentos: departamentos.value });
+            // console.log({ departamentos: departamentos.value });
 
         })
         .catch((error) => {
@@ -112,9 +112,13 @@ getDepartamentos();
                                             <option value="" disabled selected>
                                                 Seleccione una opción
                                             </option>
-                                            <option v-for="departamento in departamentos" :key="departamento.id"
+                                            <!-- <option v-for="departamento in departamentos" :key="departamento.id"
                                                 :value="departamento.departamento.id">
                                                 {{ departamento.departamento.nombre }}
+                                            </option> -->
+                                            <option v-for="departamento in departamentos" :key="departamento.id"
+                                                :value="departamento.id">
+                                                {{ departamento.nombre }}
                                             </option>
                                         </select>
                                     </div>
@@ -125,19 +129,6 @@ getDepartamentos();
                                             autocomplete="aviso" />
                                     </div> -->
 
-                                    <!-- Campos dinámicos para Avisos -->
-                                    <div class="col-span-full flex items-center mt-4">
-                                        <InputLabel for="Avisos" value="Avisos:" />
-                                    </div>
-                                    <div v-for="(aviso, index) in avisos" :key="index"
-                                        class="col-span-full flex items-center justify-between">
-                                        <TextInput v-model="aviso.value" type="text" class="mt-1 block w-full"
-                                            autocomplete="Aviso" />
-                                        <button type="button" @click="removeAviso(index)"
-                                            class="ml-2 text-red-500">Eliminar</button>
-                                    </div>
-                                    <button type="button" @click="addAviso" class="mt-2 text-blue-500">Añadir
-                                        Aviso</button>
 
 
                                     <!-- Campos dinámicos para Highlight -->
@@ -167,6 +158,21 @@ getDepartamentos();
                                     </div>
                                     <button type="button" @click="addLowlight" class="mt-2 text-blue-500">Añadir
                                         Lowlight</button>
+
+                                    <!-- Campos dinámicos para Avisos -->
+                                    <div class="col-span-full flex items-center mt-4">
+                                        <InputLabel for="Avisos" value="Avisos:" />
+                                    </div>
+                                    <div v-for="(aviso, index) in avisos" :key="index"
+                                        class="col-span-full flex items-center justify-between">
+                                        <TextInput v-model="aviso.value" type="text" class="mt-1 block w-full"
+                                            autocomplete="Aviso" />
+                                        <button type="button" @click="removeAviso(index)"
+                                            class="ml-2 text-red-500">Eliminar</button>
+                                    </div>
+                                    <button type="button" @click="addAviso" class="mt-2 text-blue-500">Añadir
+                                        Aviso</button>
+
 
                                     <div class="col-span-full flex items-center justify-end mt-4">
                                         <PrimaryButton class="ms-4 pi pi-save" :class="{

@@ -46,7 +46,7 @@ async function getreportes(
             },
         });
         reportes.value = response.data;
-        console.log('reportes', response);
+        // console.log('reportes', response);
 
         totalRecords.value = response.data.total;
         first.value = (response.data.current_page - 1) * rows.value;

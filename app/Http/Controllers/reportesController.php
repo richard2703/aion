@@ -224,17 +224,25 @@ class reportesController extends Controller
         //
     }
 
+    // public function findAll()
+    // {
+    //     // $query = Departamento::query();
+    //     $query = encargado_flujo::query();
+    //     // if ($pageSize && $page) {
+    //     //     $departamentos = $query->with('kpis')->paginate($pageSize, ['*'], 'page', $page);
+    //     // } else {
+    //     //     $departamentos = $query->with('kpis')->get();
+    //     // }
+    //     // $reporteSemanal = $query->orderBy('nombre', 'asc')->get();
+    //     $reporteSemanal = $query->where('user_id', auth()->id())->with('Departamento')->get();
+
+    //     return response()->json($reporteSemanal);
+    // }
+
     public function findAll()
     {
-        // $query = Departamento::query();
-        $query = encargado_flujo::query();
-        // if ($pageSize && $page) {
-        //     $departamentos = $query->with('kpis')->paginate($pageSize, ['*'], 'page', $page);
-        // } else {
-        //     $departamentos = $query->with('kpis')->get();
-        // }
-        // $reporteSemanal = $query->orderBy('nombre', 'asc')->get();
-        $reporteSemanal = $query->where('user_id', auth()->id())->with('Departamento')->get();
+        $query = Departamento::query();
+        $reporteSemanal = $query->orderBy('nombre', 'asc')->get();
 
         return response()->json($reporteSemanal);
     }
@@ -254,35 +262,19 @@ class reportesController extends Controller
 
     public function findAllReportes($id)
     {
-        $query = reportes::query();
-        // if ($pageSize && $page) {
-        //     $departamentos = $query->with('kpis')->paginate($pageSize, ['*'], 'page', $page);
-        // } else {
-        //     $departamentos = $query->with('kpis')->get();
-        // }
-        $reportes = $query->where('semana_id', $id)->with(['departamento', 'highlights', 'lowlights', 'avisos', 'kpis' => function ($query) {
-            $query->where('tipo', 2);
-        }])->get();
-        // if (isset($reportes[0]->departamento_id)) {
-        //     // dd($reportes[0]->departamento_id);
-        //     $kpis = Kpis::where('departamento_id', $reportes[0]->departamento_id)->get();
-        // }
+        $reportes = reportes::where('semana_id', $id)
+            ->join('departamentos', 'reportes.departamento_id', '=', 'departamentos.id')
+            ->with(['departamento', 'highlights', 'lowlights', 'avisos', 'kpis' => function ($query) {
+                $query->where('tipo', 2);
+            }])
+            ->orderByRaw("CASE WHEN departamentos.nombre = 'Dirección General' THEN 1 ELSE 2 END")
+            ->orderBy('departamentos.nombre') // Para el resto de los departamentos
+            ->select('reportes.*') // Aseguramos seleccionar solo los campos de reportes
+            ->get();
 
-        // dd($reportes);
         return response()->json($reportes);
     }
-    // public function pdf(reporteSemanal $reporte)
-    // {
-    //     $reporteSemanal = $reporte;
-    //     $reportes = reportes::where('semana_id', $reporteSemanal->id)
-    //         ->with(['departamento', 'highlights', 'lowlights', 'avisos', 'kpis' => function ($query) {
-    //             $query->where('tipo', 2);
-    //         }])
-    //         ->get();
 
-    //     $pdf = Pdf::loadView('ReportePDF', compact('reporteSemanal', 'reportes'));
-    //     return $pdf->download('reporte-semanal.pdf');
-    // }
     public function pdf(reporteSemanal $reporte)
     {
         $reporteSemanal = $reporte;
