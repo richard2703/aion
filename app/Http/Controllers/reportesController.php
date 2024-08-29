@@ -12,6 +12,7 @@ use App\Models\lights;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Inertia\Inertia;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 
 class reportesController extends Controller
@@ -269,5 +270,35 @@ class reportesController extends Controller
 
         // dd($reportes);
         return response()->json($reportes);
+    }
+    // public function pdf(reporteSemanal $reporte)
+    // {
+    //     $reporteSemanal = $reporte;
+    //     $reportes = reportes::where('semana_id', $reporteSemanal->id)
+    //         ->with(['departamento', 'highlights', 'lowlights', 'avisos', 'kpis' => function ($query) {
+    //             $query->where('tipo', 2);
+    //         }])
+    //         ->get();
+
+    //     $pdf = Pdf::loadView('ReportePDF', compact('reporteSemanal', 'reportes'));
+    //     return $pdf->download('reporte-semanal.pdf');
+    // }
+    public function pdf(reporteSemanal $reporte)
+    {
+        $reporteSemanal = $reporte;
+        $reportes = reportes::where('semana_id', $reporteSemanal->id)
+            ->join('departamentos', 'reportes.departamento_id', '=', 'departamentos.id')
+            ->with(['departamento', 'highlights', 'lowlights', 'avisos', 'kpis' => function ($query) {
+                $query->where('tipo', 2);
+            }])
+            ->orderByRaw("CASE WHEN departamentos.nombre = 'Dirección General' THEN 1 ELSE 2 END")
+            ->orderBy('departamentos.nombre') // Para el resto de los departamentos
+            ->select('reportes.*') // Aseguramos seleccionar solo los campos de reportes
+            ->get();
+
+        // return view('ReportePDF', compact('reporteSemanal', 'reportes'));
+
+        $pdf = Pdf::loadView('ReportePDF', compact('reporteSemanal', 'reportes'));
+        return $pdf->download('reporte-semanal.pdf');
     }
 }

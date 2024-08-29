@@ -164,4 +164,5 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('MisReportes', [App\Http\Controllers\reportesController::class, 'misReportes'])->name('misreporte.index');
     Route::get('MisReportes/{reporte}/edit', [App\Http\Controllers\reportesController::class, 'edit'])->name('misreporte.edit');
     Route::patch('MisReportes/{reporte}/update', [App\Http\Controllers\reportesController::class, 'update'])->name('misreporte.update');
+    Route::get('reportes/{reporte}/pdf', [App\Http\Controllers\reportesController::class, 'pdf'])->name('reporte.pdf');
 });

@@ -169,14 +169,13 @@ watch(globalFilter, (newValue) => {
                                             slotProps.data.id
                                         )
                                             ">
-
                                         </PrimaryButton>
 
-                                        <!-- <PrimaryButton class="pi pi-trash me-2" @click.prevent="
-                                            deleteArea(slotProps.data.id)
-                                            ">
+                                        <PrimaryButton class="pi pi-download me-2" :href="route(
+                                            'reporte.pdf',
+                                            slotProps.data.id)">
+                                        </PrimaryButton>
 
-                                        </PrimaryButton> -->
                                     </template>
                                 </Column>
                             </DataTable>
