@@ -115,6 +115,34 @@
                         </div>
                     </form>
                 </div>
+                <div class="contaier mx-auto">
+                    <form @submit.prevent="uploadFile" enctype="multipart/form-data">
+                        <div class="grid grid-cols-1 gap-4">
+                            <div>
+                                <InputLabel for="img_ref" value="Muestra del trabajo realizado: " />
+                                <input id="img_ref" type="file" @change="onFileChange('img_ref', $event)"
+                                    class="mt-1 block w-full" autocomplete="img_ref" />
+                            </div>
+
+                            <div class="col-span-full flex items-center justify-end mt-4">
+                                <PrimaryButton class="ms-4 pi pi-upload" :class="{
+                                    'opacity-25': form.processing,
+                                }" :disabled="form.processing">
+                                </PrimaryButton>
+                            </div>
+                            <div class="grid  grid-cols-1">
+                                <div v-for="evidencia in evidencias" class="card w-60 bg-slate-100 text-center">
+                                    <Image :src="evidencia.img_ref" alt="Image" width="250" preview />
+                                    <!-- <img :src="evidencia" alt="" srcset=""> -->
+                                    <a class="pi pi-trash text-red-500 cursor-pointer hover:text-red-700 text-2xl"
+                                        @click="deleteEvidencia(evidencia.id)"></a>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -130,6 +158,7 @@ import TextInput from "@/Components/TextInput.vue";
 import AutoComplete from 'primevue/autocomplete';
 import Textarea from 'primevue/textarea';
 import { showToast } from "@/Pages/utils/SweetAlert.service";
+import Image from 'primevue/image';
 
 const props = defineProps({
     areas: Array,
@@ -149,6 +178,7 @@ const minuta = ref(props.minuta);
 
 const usuarios = ref([]);
 const filteredUsuarios = ref([]);
+const evidencias = ref({});
 
 const form = useForm({
     area_id: minuta.value.area_id,
@@ -160,6 +190,19 @@ const form = useForm({
     fecha: task.value.fecha,
     nota: task.value.nota,
     estatus_id: task.value.estatus ? task.value.estatus.id : 1,
+});
+
+const evidenciaForm = useForm({
+    tarea_id: task.value.id,
+    img_ref: null,
+});
+
+
+onMounted(() => {
+    getAreas();
+    getDepartamentos(minuta.value.area_id);
+    getUsuarios();
+    getEvidencias();
 });
 
 const onChange = async (event) => {
@@ -226,9 +269,59 @@ const closeModal = () => {
     emit('close');
 };
 
-onMounted(() => {
-    getAreas();
-    getDepartamentos(minuta.value.area_id);
-    getUsuarios();
-});
+const onFileChange = (key, event) => {
+    console.log("onFileChange", event.target.files[0]);
+
+    evidenciaForm[key] = event.target.files[0];
+
+};
+
+const uploadFile = async () => {
+    try {
+
+        const formData = new FormData();
+        formData.append('tarea_id', evidenciaForm.tarea_id);
+        formData.append('img_ref', evidenciaForm.img_ref);
+
+        const response = await axios.post(route("tareas.evidencia.store"), formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        }).then((response) => {
+            showToast("La evidencia ha sido subida", "success");
+            getEvidencias();
+        });
+    } catch (error) {
+        showToast("Ocurrio un error", "error");
+        console.error(error);
+    }
+};
+
+const getEvidencias = async () => {
+    try {
+        console.log({ tarea_id: task.value.id });
+        const response = await axios.get(route("tareaEvidencia.getByTarea", task.value.id));
+        evidencias.value = response.data;
+        console.log({ evidencias: evidencias.value });
+
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const deleteEvidencia = async (id) => {
+    await axios
+        .delete(route("tareas.evidencia.destroy", id))
+        .then((response) => {
+            showToast("La evidencia ha sido eliminada", "success");
+            getEvidencias();
+        })
+        .catch((error) => {
+            showToast("Ocurrio un error", "error");
+            console.error(error);
+        });
+}
+
+
+
 </script>

@@ -72,6 +72,17 @@
                         </div>
                     </form>
                 </div>
+                <div class="contaier mx-auto">
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="grid  grid-cols-1">
+                            <div v-for="evidencia in evidencias" class="card w-60 bg-slate-100">
+                                <Image :src="evidencia.img_ref" alt="Image" width="250" preview />
+                                <!-- <img :src="evidencia" alt="" srcset=""> -->
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -87,6 +98,7 @@ import TextInput from "@/Components/TextInput.vue";
 import AutoComplete from 'primevue/autocomplete';
 import Textarea from 'primevue/textarea';
 import { showToast } from "@/Pages/utils/SweetAlert.service";
+import Image from 'primevue/image';
 
 const props = defineProps({
     areas: Array,
@@ -106,6 +118,7 @@ const minuta = ref(props.minuta);
 
 const usuarios = ref([]);
 const filteredUsuarios = ref([]);
+const evidencias = ref({});
 
 const form = useForm({
     area_id: minuta.value.area_id,
@@ -117,6 +130,13 @@ const form = useForm({
     fecha: task.value.fecha,
     nota: task.value.nota,
     estatus_id: task.value.estatus ? task.value.estatus.id : 1,
+});
+
+onMounted(() => {
+    getAreas();
+    getDepartamentos(minuta.value.area_id);
+    getUsuarios();
+    getEvidencias();
 });
 
 const onChange = async (event) => {
@@ -183,9 +203,12 @@ const closeModal = () => {
     emit('close');
 };
 
-onMounted(() => {
-    getAreas();
-    getDepartamentos(minuta.value.area_id);
-    getUsuarios();
-});
+const getEvidencias = async () => {
+    try {
+        const response = await axios.get(route("tareaEvidencia.getByTarea", task.value.id));
+        evidencias.value = response.data;
+    } catch (error) {
+        console.error(error);
+    }
+};
 </script>

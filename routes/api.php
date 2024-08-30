@@ -106,3 +106,4 @@ Route::get('/getReportes/{id}', [App\Http\Controllers\reportesController::class,
 // tareaEvidencia
 Route::get('/tareaEvidencia/{tarea_id}/getByTarea', [App\Http\Controllers\tareaEvidenciaController::class, 'getByTarea'])->name('tareaEvidencia.getByTarea');
 Route::post('/tareaEvidencia/store', [App\Http\Controllers\tareaEvidenciaController::class, 'store'])->name('tareas.evidencia.store');
+Route::delete('/tareaEvidencia/{tareaEvidencia}/delete', [App\Http\Controllers\tareaEvidenciaController::class, 'destroy'])->name('tareas.evidencia.destroy');

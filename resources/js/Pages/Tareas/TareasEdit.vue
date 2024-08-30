@@ -145,9 +145,11 @@
                                     </div>
                                     <div
                                         class="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
-                                        <div v-for="evidencia in evidencias" class="card w-60 bg-slate-100">
-                                            <Image :src="evidencia" alt="Image" width="250" preview />
+                                        <div v-for="evidencia in evidencias" class="card w-60 bg-slate-100 text-center">
+                                            <Image :src="evidencia.img_ref" alt="Image" width="250" preview />
                                             <!-- <img :src="evidencia" alt="" srcset=""> -->
+                                            <a class="pi pi-trash text-red-500 cursor-pointer hover:text-red-700 text-2xl"
+                                                @click="deleteEvidencia(evidencia.id)"></a>
                                         </div>
 
                                     </div>
@@ -179,7 +181,6 @@ const props = defineProps({
     tarea: Object
 });
 
-console.log(props.tarea);
 
 const tarea = ref(props.tarea);
 const areas = ref({});
@@ -282,10 +283,7 @@ const search = (event) => {
 }
 
 const onFileChange = (key, event) => {
-    console.log("onFileChange", event.target.files[0]);
-
     evidenciaForm[key] = event.target.files[0];
-
 };
 
 const uploadFile = async () => {
@@ -295,11 +293,14 @@ const uploadFile = async () => {
         formData.append('tarea_id', evidenciaForm.tarea_id);
         formData.append('img_ref', evidenciaForm.img_ref);
 
-        response = await axios.post(route("tareas.evidencia.store"), formData, {
+        const response = await axios.post(route("tareas.evidencia.store"), formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
-        })
+        }).then((response) => {
+            showToast("La evidencia ha sido subida", "success");
+            getEvidencias();
+        });
     } catch (error) {
         showToast("Ocurrio un error", "error");
         console.error(error);
@@ -310,11 +311,22 @@ const getEvidencias = async () => {
     try {
         const response = await axios.get(route("tareaEvidencia.getByTarea", tarea.value.id));
         evidencias.value = response.data;
-        console.log({ evidencias: evidencias.value });
-
     } catch (error) {
         console.error(error);
     }
 };
+
+const deleteEvidencia = async (id) => {
+    await axios
+        .delete(route("tareas.evidencia.destroy", id))
+        .then((response) => {
+            showToast("La evidencia ha sido eliminada", "success");
+            getEvidencias();
+        })
+        .catch((error) => {
+            showToast("Ocurrio un error", "error");
+            console.error(error);
+        });
+}
 
 </script>
