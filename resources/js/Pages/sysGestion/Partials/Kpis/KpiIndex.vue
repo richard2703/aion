@@ -1,11 +1,3 @@
-<template>
-    <div class="w-full">
-        <div class="overflow-x-auto" v-for="kpi in kpis" :key="kpi.id">
-            <KpiList class="border-b my-4" :kpi="kpi" />
-        </div>
-    </div>
-</template>
-
 <script setup>
 import { onMounted, ref, watch } from "vue";
 import axios from 'axios';
@@ -37,3 +29,11 @@ const getKpis = async () => {
         });
 };
 </script>
+
+<template>
+    <div class="w-full">
+        <div class="overflow-x-auto" v-for="kpi in kpis" :key="kpi.id">
+            <KpiList class="border-b my-4" :kpi="kpi" />
+        </div>
+    </div>
+</template>
