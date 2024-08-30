@@ -1,3 +1,113 @@
+<script setup>
+import { onMounted, ref } from "vue";
+import Layout from "@/Layouts/Layout.vue";
+import { Head, useForm, Link } from "@inertiajs/vue3";
+import axios from "axios";
+import InputLabel from "@/Components/InputLabel.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import TextInput from "@/Components/TextInput.vue";
+import AutoComplete from 'primevue/autocomplete';
+import Textarea from 'primevue/textarea';
+import { showToast } from "@/Pages/utils/SweetAlert.service";
+
+const areas = ref({});
+const minutas = ref({});
+const departamentos = ref({});
+const usuarios = ref([]);
+const filteredUsuarios = ref();
+
+
+
+const form = useForm({
+    area_id: "",
+    departamento_id: "",
+    minuta_id: "",
+    responsable_id: "",
+    revisor_id: "",
+    tarea: "",
+    fecha: "",
+    nota: "",
+    estatus_id: "",
+});
+
+onMounted(() => {
+    getAreas();
+    getUsuarios();
+    getMinutas();
+});
+
+const getAreas = async () => {
+    try {
+        const response = await axios.get("/api/areas");
+        areas.value = response.data;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const onChange = async (event) => {
+    await getDepartamentos(event.target.value);
+};
+
+const getDepartamentos = async (area_id) => {
+    try {
+        const response = await axios.get(route("departamentos.byArea", area_id));
+        departamentos.value = response.data.departamentos;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const getUsuarios = async () => {
+    try {
+        const response = await axios.get("/api/usuarios/all/todo");
+        usuarios.value = response.data;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const getMinutas = async () => {
+    try {
+        const response = await axios.get("/api/minutas");
+        minutas.value = response.data.data;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const submit = async () => {
+    try {
+        console.log(form.data());
+
+        await form.post(route("tareas.store"), {
+            onFinish: () => {
+                showToast("El registro ha sido creado", "success");
+                // window.location.href = route('tareas.index');
+            },
+        });
+    } catch (error) {
+        showToast("Ocurrio un error", "error");
+        console.error(error);
+    }
+};
+
+const search = (event) => {
+    console.log("buscando");
+    setTimeout(() => {
+        if (!event.query.trim().length) {
+            console.log(filteredUsuarios.value);
+            filteredUsuarios.value = [...usuarios.value];
+        } else {
+            filteredUsuarios.value = usuarios.value.filter((usuario) => {
+                return usuario.name.toLowerCase().includes(event.query.toLowerCase());
+            });
+        }
+    }, 250);
+}
+
+</script>
+
 <template>
     <Layout>
 
@@ -134,113 +244,3 @@
         </div>
     </Layout>
 </template>
-
-<script setup>
-import { onMounted, ref } from "vue";
-import Layout from "@/Layouts/Layout.vue";
-import { Head, useForm, Link } from "@inertiajs/vue3";
-import axios from "axios";
-import InputLabel from "@/Components/InputLabel.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
-import TextInput from "@/Components/TextInput.vue";
-import AutoComplete from 'primevue/autocomplete';
-import Textarea from 'primevue/textarea';
-import { showToast } from "@/Pages/utils/SweetAlert.service";
-
-const areas = ref({});
-const minutas = ref({});
-const departamentos = ref({});
-const usuarios = ref([]);
-const filteredUsuarios = ref();
-
-
-
-const form = useForm({
-    area_id: "",
-    departamento_id: "",
-    minuta_id: "",
-    responsable_id: "",
-    revisor_id: "",
-    tarea: "",
-    fecha: "",
-    nota: "",
-    estatus_id: "",
-});
-
-onMounted(() => {
-    getAreas();
-    getUsuarios();
-    getMinutas();
-});
-
-const getAreas = async () => {
-    try {
-        const response = await axios.get("/api/areas");
-        areas.value = response.data;
-    } catch (error) {
-        console.error(error);
-    }
-};
-
-const onChange = async (event) => {
-    await getDepartamentos(event.target.value);
-};
-
-const getDepartamentos = async (area_id) => {
-    try {
-        const response = await axios.get(route("departamentos.byArea", area_id));
-        departamentos.value = response.data.departamentos;
-    } catch (error) {
-        console.error(error);
-    }
-};
-
-const getUsuarios = async () => {
-    try {
-        const response = await axios.get("/api/usuarios/all/todo");
-        usuarios.value = response.data;
-    } catch (error) {
-        console.error(error);
-    }
-};
-
-const getMinutas = async () => {
-    try {
-        const response = await axios.get("/api/minutas");
-        minutas.value = response.data.data;
-    } catch (error) {
-        console.error(error);
-    }
-};
-
-const submit = async () => {
-    try {
-        console.log(form.data());
-
-        await form.post(route("tareas.store"), {
-            onFinish: () => {
-                showToast("El registro ha sido creado", "success");
-                // window.location.href = route('tareas.index');
-            },
-        });
-    } catch (error) {
-        showToast("Ocurrio un error", "error");
-        console.error(error);
-    }
-};
-
-const search = (event) => {
-    console.log("buscando");
-    setTimeout(() => {
-        if (!event.query.trim().length) {
-            console.log(filteredUsuarios.value);
-            filteredUsuarios.value = [...usuarios.value];
-        } else {
-            filteredUsuarios.value = usuarios.value.filter((usuario) => {
-                return usuario.name.toLowerCase().includes(event.query.toLowerCase());
-            });
-        }
-    }, 250);
-}
-
-</script>
