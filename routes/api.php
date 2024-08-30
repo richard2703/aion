@@ -42,6 +42,7 @@ Route::get('/permisos/all', [App\Http\Controllers\permisosController::class, 'al
 
 Route::get('/tareas', [App\Http\Controllers\tareasController::class, 'findAll'])->name('tareas.findAll');
 Route::get('/tareas/user', [App\Http\Controllers\tareasController::class, 'byUser'])->name('tareas.byUser');
+Route::get('/tareas/toReview', [App\Http\Controllers\tareasController::class, 'toReview'])->name('tareas.toReview');
 Route::get('/tareas/{minuta_id}', [App\Http\Controllers\tareasController::class, 'byMinuta'])->name('tareas.byMinuta');
 Route::get('/tareas/counter/{minuta_id}', [App\Http\Controllers\tareasController::class, 'countTareas'])->name('tareas.counter');
 Route::get('/tareas/terminadas/counter/{minuta_id}', [App\Http\Controllers\tareasController::class, 'countTareasTerminadas'])->name('tareas.terminadas');

@@ -76,7 +76,7 @@ class tareasController extends Controller
         }
 
         // Apply specific filters
-        $filterableFields = ['area_id', 'departamento_id', 'responsable_id', 'revisor_id', 'estatus'];
+        $filterableFields = ['area_id', 'departamento_id', 'responsable_id', 'revisor_id', 'estatus_id'];
         foreach ($filterableFields as $field) {
 
             if (isset($filters[$field]['value']) && !empty($filters[$field]['value'])) {
@@ -331,7 +331,7 @@ class tareasController extends Controller
         }
 
         // Apply specific filters
-        $filterableFields = ['area_id', 'departamento_id', 'responsable_id', 'revisor_id', 'estatus'];
+        $filterableFields = ['area_id', 'departamento_id', 'responsable_id', 'revisor_id', 'estatus_id'];
         foreach ($filterableFields as $field) {
 
             if (isset($filters[$field]['value']) && !empty($filters[$field]['value'])) {
@@ -462,7 +462,7 @@ class tareasController extends Controller
         }
 
         // Apply specific filters
-        $filterableFields = ['area_id', 'departamento_id', 'responsable_id', 'revisor_id', 'estatus'];
+        $filterableFields = ['area_id', 'departamento_id', 'responsable_id', 'revisor_id', 'estatus_id'];
         foreach ($filterableFields as $field) {
 
             if (isset($filters[$field]['value']) && !empty($filters[$field]['value'])) {
@@ -517,6 +517,105 @@ class tareasController extends Controller
 
         $tareas = $query->with('area', 'departamento', 'minuta', 'responsable', 'revisor', 'estatus')->where('responsable_id', $user->id)->where('validacion', null)->paginate($pageSize, ['*'], 'page', $page);
 
+        return response()->json($tareas);
+    }
+
+    function toReview(Request $request)
+    {
+        $user = Auth::user();
+
+        $query = tareas::query();
+        $pageSize = $request->get('rows', 10);
+        $page = $request->get('page', 1);
+        $filters = $request->get('filter', '');
+        $sortField = $request->get('sortField', 'id');
+        $sortOrder = $request->get('sortOrder', 'asc');
+
+        // Apply global filter if it exists
+        if (isset($filters['global']['value']) && !empty($filters['global']['value'])) {
+            $globalFilter = $filters['global']['value'];
+            $query->where(function ($q) use ($globalFilter) {
+
+                $q->where('tareas.id', 'like', '%' . $globalFilter . '%')
+                    ->orWhere('tareas.tarea', 'like', '%' . $globalFilter . '%')
+                    ->orWhere('tareas.fecha', 'like', '%' . $globalFilter . '%')
+                    ->orWhere('tareas.nota', 'like', '%' . $globalFilter . '%')
+                    ->orWhereHas('area', function ($q) use ($globalFilter) {
+                        $q->where('areas.nombre', 'like', '%' . $globalFilter . '%')
+                            ->orWhere('areas.descripcion', 'like', '%' . $globalFilter . '%');
+                    })
+                    ->orWhereHas('departamento', function ($q) use ($globalFilter) {
+                        $q->where('departamentos.nombre', 'like', '%' . $globalFilter . '%')
+                            ->orWhere('departamentos.descripcion', 'like', '%' . $globalFilter . '%');
+                    })
+                    ->orWhereHas('minuta', function ($q) use ($globalFilter) {
+                        $q->where('minutas.alias', 'like', '%' . $globalFilter . '%');
+                    })
+                    ->orWhereHas('responsable', function ($q) use ($globalFilter) {
+                        $q->where('users.name', 'like', '%' . $globalFilter . '%');
+                    })
+                    ->orWhereHas('revisor', function ($q) use ($globalFilter) {
+                        $q->where('users.name', 'like', '%' . $globalFilter . '%');
+                    })
+                    ->orWhereHas('estatus', function ($q) use ($globalFilter) {
+                        $q->where('estatus.titulo', 'like', '%' . $globalFilter . '%');
+                    });
+                // Add more fields if necessary
+            });
+        }
+
+        // Apply specific filters
+        $filterableFields = ['area_id', 'departamento_id', 'responsable_id', 'revisor_id', 'estatus_id'];
+        foreach ($filterableFields as $field) {
+
+            if (isset($filters[$field]['value']) && !empty($filters[$field]['value'])) {
+                $query->orwhere($field, 'like', "%" . $filters[$field]['value'] . "%");
+            }
+        }
+
+        // Apply date range filters
+        if (isset($filters['desde']['value']) && !empty($filters['desde']['value'])) {
+            $query->where('fecha', '>=', $filters['desde']['value']);
+        }
+        if (isset($filters['hasta']['value']) && !empty($filters['hasta']['value'])) {
+            $query->where('fecha', '<=', $filters['hasta']['value']);
+        }
+
+        // Sorting logic
+        if (in_array($sortField, ['id', 'tarea', 'fecha', 'nota', 'area.nombre', 'departamento.nombre', 'minuta.nombre', 'responsable.name', 'revisor.name', 'estatus.titulo'])) {
+            if (strpos($sortField, 'area.') === 0) {
+                $query->join('areas', 'tareas.area_id', '=', 'areas.id')
+                    ->select('tareas.*', 'areas.nombre as area_nombre') // Select distinct columns
+                    ->orderBy('areas.nombre', $sortOrder);
+            } else if (strpos($sortField, 'departamento.') === 0) {
+                $query->join('departamentos', 'tareas.departamento_id', '=', 'departamentos.id')
+                    ->select('tareas.*', 'departamentos.nombre as departamento_nombre') // Select distinct columns
+                    ->orderBy('departamentos.nombre', $sortOrder);
+            } else if (strpos($sortField, 'minuta.') === 0) {
+                $query->join('minutas', 'tareas.minuta_id', '=', 'minutas.id')
+                    ->select('tareas.*', 'minutas.alias as minuta_alias') // Select distinct columns
+                    ->orderBy('minutas.alias', $sortOrder);
+            } else if (strpos($sortField, 'responsable.') === 0) {
+                $query->join('users', 'tareas.responsable_id', '=', 'users.id')
+                    ->select('tareas.*', 'users.name as responsable_name') // Select distinct columns
+                    ->orderBy('users.name', $sortOrder);
+            } else if (strpos($sortField, 'revisor.') === 0) {
+                $query->join('users', 'tareas.revisor_id', '=', 'users.id')
+                    ->select('tareas.*', 'users.name as revisor_name') // Select distinct columns
+                    ->orderBy('users.name', $sortOrder);
+            } else if (strpos($sortField, 'estatus.') === 0) {
+                $query->join('estatus', 'tareas.estatus_id', '=', 'estatus.id')
+                    ->select('tareas.*', 'estatus.titulo as estatus_titulo') // Select distinct columns
+                    ->orderBy('estatus.titulo', $sortOrder);
+            } else {
+                $query->orderBy('tareas.' . $sortField, $sortOrder);
+            }
+        } else {
+            // Default sorting if the provided sortField is not allowed
+            $query->orderBy('id', $sortOrder);
+        }
+
+        $tareas = $query->with('area', 'departamento', 'minuta', 'responsable', 'revisor', 'estatus')->where('revisor_id', $user->id)->where('validacion', null)->paginate($pageSize, ['*'], 'page', $page);
         return response()->json($tareas);
     }
 }
