@@ -103,3 +103,8 @@ Route::get('/encargado-flujo', [App\Http\Controllers\encargado_flujoController::
 Route::get('/getFlujo', [App\Http\Controllers\reportesController::class, 'findAll'])->name('getFlujo.findAll');
 Route::get('/getReporteSemanal', [App\Http\Controllers\reportesController::class, 'findAllReporteSemanal'])->name('getFlujo.findAllReporteSemanal');
 Route::get('/getReportes/{id}', [App\Http\Controllers\reportesController::class, 'findAllReportes'])->name('getReportes.findAllReportes');
+
+// tareaEvidencia
+Route::get('/tareaEvidencia/{tarea_id}/getByTarea', [App\Http\Controllers\tareaEvidenciaController::class, 'getByTarea'])->name('tareaEvidencia.getByTarea');
+Route::post('/tareaEvidencia/store', [App\Http\Controllers\tareaEvidenciaController::class, 'store'])->name('tareas.evidencia.store');
+Route::delete('/tareaEvidencia/{tareaEvidencia}/delete', [App\Http\Controllers\tareaEvidenciaController::class, 'destroy'])->name('tareas.evidencia.destroy');

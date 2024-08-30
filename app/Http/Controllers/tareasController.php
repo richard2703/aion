@@ -201,7 +201,7 @@ class tareasController extends Controller
      */
     public function show(tareas $tarea)
     {
-        $tarea->load('area', 'departamento', 'minuta', 'responsable', 'estatus', 'revisor');
+        $tarea->load('area', 'departamento', 'minuta', 'responsable', 'estatus', 'revisor', 'evidencia');
         return response()->json($tarea);
     }
 
@@ -211,7 +211,7 @@ class tareasController extends Controller
     public function edit(tareas $tarea)
     {
         //
-        $tarea->load('area', 'departamento', 'minuta', 'responsable', 'revisor', 'estatus');
+        $tarea->load('area', 'departamento', 'minuta', 'responsable', 'revisor', 'estatus', 'evidencia');
         return Inertia::render('Tareas/TareasEdit', ['tarea' => $tarea]);
     }
 

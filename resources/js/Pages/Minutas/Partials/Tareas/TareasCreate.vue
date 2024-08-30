@@ -1,3 +1,114 @@
+<script setup>
+import { onMounted, ref } from "vue";
+import { useForm } from "@inertiajs/vue3";
+import axios from "axios";
+import InputLabel from "@/Components/InputLabel.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import TextInput from "@/Components/TextInput.vue";
+import AutoComplete from 'primevue/autocomplete';
+import Textarea from 'primevue/textarea';
+import { showToast } from "@/Pages/utils/SweetAlert.service";
+
+const props = defineProps({
+    areas: Array,
+    departamentos: Array || null,
+    minuta: Object,
+});
+
+// Define emits
+const emit = defineEmits(['close']);
+
+const areas = ref(props.areas);
+const departamentos = ref(props.departamentos);
+const minuta = ref(props.minuta);
+
+const usuarios = ref([]);
+const filteredUsuarios = ref([]);
+
+const form = useForm({
+    area_id: minuta.value.area_id,
+    departamento_id: minuta.value.departamento_id,
+    minuta_id: minuta.value.id,
+    responsable_id: "",
+    revisor_id: "",
+    tarea: "",
+    fecha: "",
+    nota: "",
+    estatus_id: "",
+});
+
+const onChange = async (event) => {
+    await getDepartamentos(event.target.value);
+};
+
+const getAreas = async () => {
+    try {
+        const response = await axios.get("/api/areas");
+        areas.value = response.data;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const getDepartamentos = async (area_id) => {
+    try {
+        const response = await axios.get(route("departamentos.byArea", area_id));
+        departamentos.value = response.data.departamentos;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const getUsuarios = async () => {
+    try {
+        const response = await axios.get("/api/usuarios/all/todo");
+        usuarios.value = response.data;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const search = (event) => {
+    setTimeout(() => {
+        if (!event.query.trim().length) {
+            filteredUsuarios.value = [...usuarios.value];
+        } else {
+            filteredUsuarios.value = usuarios.value.filter((usuario) => {
+                return usuario.name.toLowerCase().includes(event.query.toLowerCase());
+            });
+        }
+    }, 250);
+};
+
+const submit = async () => {
+    try {
+        console.log(form.data());
+
+        await form.post(route("tareas.store"), {
+            onFinish: () => {
+                showToast("El registro ha sido creado", "success");
+                emit('tareaGuardada');
+                closeModal();
+            },
+        });
+    } catch (error) {
+        showToast("Ocurrio un error", "error");
+        console.error(error);
+    }
+};
+
+const closeModal = () => {
+    // Emit event to close modal in the parent component
+    emit('close');
+};
+
+onMounted(() => {
+    getAreas();
+    getDepartamentos(minuta.value.area_id);
+    getUsuarios();
+});
+</script>
+
 <template>
     <div class="py-2">
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
@@ -118,114 +229,3 @@
         </div>
     </div>
 </template>
-
-<script setup>
-import { onMounted, ref } from "vue";
-import { useForm } from "@inertiajs/vue3";
-import axios from "axios";
-import InputLabel from "@/Components/InputLabel.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
-import TextInput from "@/Components/TextInput.vue";
-import AutoComplete from 'primevue/autocomplete';
-import Textarea from 'primevue/textarea';
-import { showToast } from "@/Pages/utils/SweetAlert.service";
-
-const props = defineProps({
-    areas: Array,
-    departamentos: Array || null,
-    minuta: Object,
-});
-
-// Define emits
-const emit = defineEmits(['close']);
-
-const areas = ref(props.areas);
-const departamentos = ref(props.departamentos);
-const minuta = ref(props.minuta);
-
-const usuarios = ref([]);
-const filteredUsuarios = ref([]);
-
-const form = useForm({
-    area_id: minuta.value.area_id,
-    departamento_id: minuta.value.departamento_id,
-    minuta_id: minuta.value.id,
-    responsable_id: "",
-    revisor_id: "",
-    tarea: "",
-    fecha: "",
-    nota: "",
-    estatus_id: "",
-});
-
-const onChange = async (event) => {
-    await getDepartamentos(event.target.value);
-};
-
-const getAreas = async () => {
-    try {
-        const response = await axios.get("/api/areas");
-        areas.value = response.data;
-    } catch (error) {
-        console.error(error);
-    }
-};
-
-const getDepartamentos = async (area_id) => {
-    try {
-        const response = await axios.get(route("departamentos.byArea", area_id));
-        departamentos.value = response.data.departamentos;
-    } catch (error) {
-        console.error(error);
-    }
-};
-
-const getUsuarios = async () => {
-    try {
-        const response = await axios.get("/api/usuarios/all/todo");
-        usuarios.value = response.data;
-    } catch (error) {
-        console.error(error);
-    }
-};
-
-const search = (event) => {
-    setTimeout(() => {
-        if (!event.query.trim().length) {
-            filteredUsuarios.value = [...usuarios.value];
-        } else {
-            filteredUsuarios.value = usuarios.value.filter((usuario) => {
-                return usuario.name.toLowerCase().includes(event.query.toLowerCase());
-            });
-        }
-    }, 250);
-};
-
-const submit = async () => {
-    try {
-        console.log(form.data());
-
-        await form.post(route("tareas.store"), {
-            onFinish: () => {
-                showToast("El registro ha sido creado", "success");
-                emit('tareaGuardada');
-                closeModal();
-            },
-        });
-    } catch (error) {
-        showToast("Ocurrio un error", "error");
-        console.error(error);
-    }
-};
-
-const closeModal = () => {
-    // Emit event to close modal in the parent component
-    emit('close');
-};
-
-onMounted(() => {
-    getAreas();
-    getDepartamentos(minuta.value.area_id);
-    getUsuarios();
-});
-</script>

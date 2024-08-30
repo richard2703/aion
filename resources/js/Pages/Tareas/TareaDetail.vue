@@ -1,3 +1,125 @@
+<script setup>
+import { onMounted, ref } from "vue";
+import Layout from "@/Layouts/Layout.vue";
+import { Head, useForm, Link } from "@inertiajs/vue3";
+import axios from "axios";
+import InputLabel from "@/Components/InputLabel.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import TextInput from "@/Components/TextInput.vue";
+import AutoComplete from 'primevue/autocomplete';
+import Textarea from 'primevue/textarea';
+import { showToast } from "@/Pages/utils/SweetAlert.service";
+import Image from 'primevue/image';
+
+const props = defineProps({
+    tarea: Object
+});
+
+const tarea = ref(props.tarea);
+const areas = ref({});
+const minutas = ref({});
+const departamentos = ref({});
+const usuarios = ref([]);
+const filteredUsuarios = ref();
+
+const evidencias = ref({});
+
+const form = useForm({
+    area_id: tarea.value.area_id,
+    departamento_id: tarea.value.departamento_id,
+    minuta_id: tarea.value.minuta_id,
+    responsable_id: tarea.value.responsable ? tarea.value.responsable.name : '',
+    revisor_id: tarea.value.revisor ? tarea.value.revisor.name : '',
+    tarea: tarea.value.tarea,
+    fecha: tarea.value.fecha,
+    nota: tarea.value.nota,
+    estatus_id: tarea.value.estatus_id,
+});
+
+onMounted(() => {
+    getAreas();
+    getDepartamentos(tarea.value.area_id);
+    getUsuarios();
+    getMinutas();
+    getEvidencias();
+});
+
+const getAreas = async () => {
+    try {
+        const response = await axios.get("/api/areas");
+        areas.value = response.data;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const onChange = async (event) => {
+    await getDepartamentos(event.target.value);
+};
+
+const getDepartamentos = async (area_id) => {
+    try {
+        const response = await axios.get(route("departamentos.byArea", area_id));
+        departamentos.value = response.data.departamentos;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const getUsuarios = async () => {
+    try {
+        const response = await axios.get("/api/usuarios/all/todo");
+        usuarios.value = response.data;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const getMinutas = async () => {
+    try {
+        const response = await axios.get("/api/minutas");
+        minutas.value = response.data.data;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const submit = async () => {
+    try {
+        await form.patch(route("tareas.update", tarea.value.id), {
+            onFinish: () => {
+                showToast("El registro ha sido creado", "success");
+                window.location.href = route('tareas.index');
+            },
+        });
+    } catch (error) {
+        showToast("Ocurrio un error", "error");
+        console.error(error);
+    }
+};
+
+const search = (event) => {
+    setTimeout(() => {
+        if (!event.query.trim().length) {
+            filteredUsuarios.value = [...usuarios.value];
+        } else {
+            filteredUsuarios.value = usuarios.value.filter((usuario) => {
+                return usuario.name.toLowerCase().includes(event.query.toLowerCase());
+            });
+        }
+    }, 250);
+}
+
+const getEvidencias = async () => {
+    try {
+        const response = await axios.get(route("tareaEvidencia.getByTarea", tarea.value.id));
+        evidencias.value = response.data;
+    } catch (error) {
+        console.error(error);
+    }
+};
+</script>
+
 <template>
     <Layout>
 
@@ -92,119 +214,22 @@
                                 </div>
                             </form>
                         </div>
+                        <div class="contaier mx-auto">
+                            <div class="grid grid-cols-1 gap-4">
+                                <InputLabel for="img_ref" value="Muestra del trabajo realizado: " />
+                                <div
+                                    class="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+                                    <div v-for="evidencia in evidencias" class="card w-60 bg-slate-100">
+                                        <Image :src="evidencia.img_ref" alt="Image" width="250" preview />
+                                        <!-- <img :src="evidencia" alt="" srcset=""> -->
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </Layout>
 </template>
-
-<script setup>
-import { onMounted, ref } from "vue";
-import Layout from "@/Layouts/Layout.vue";
-import { Head, useForm, Link } from "@inertiajs/vue3";
-import axios from "axios";
-import InputLabel from "@/Components/InputLabel.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
-import TextInput from "@/Components/TextInput.vue";
-import AutoComplete from 'primevue/autocomplete';
-import Textarea from 'primevue/textarea';
-import { showToast } from "@/Pages/utils/SweetAlert.service";
-
-const props = defineProps({
-    tarea: Object
-});
-
-const tarea = ref(props.tarea);
-const areas = ref({});
-const minutas = ref({});
-const departamentos = ref({});
-const usuarios = ref([]);
-const filteredUsuarios = ref();
-
-const form = useForm({
-    area_id: tarea.value.area_id,
-    departamento_id: tarea.value.departamento_id,
-    minuta_id: tarea.value.minuta_id,
-    responsable_id: tarea.value.responsable ? tarea.value.responsable.name : '',
-    revisor_id: tarea.value.revisor ? tarea.value.revisor.name : '',
-    tarea: tarea.value.tarea,
-    fecha: tarea.value.fecha,
-    nota: tarea.value.nota,
-    estatus_id: tarea.value.estatus_id,
-});
-
-onMounted(() => {
-    getAreas();
-    getDepartamentos(tarea.value.area_id);
-    getUsuarios();
-    getMinutas();
-});
-
-const getAreas = async () => {
-    try {
-        const response = await axios.get("/api/areas");
-        areas.value = response.data;
-    } catch (error) {
-        console.error(error);
-    }
-};
-
-const onChange = async (event) => {
-    await getDepartamentos(event.target.value);
-};
-
-const getDepartamentos = async (area_id) => {
-    try {
-        const response = await axios.get(route("departamentos.byArea", area_id));
-        departamentos.value = response.data.departamentos;
-    } catch (error) {
-        console.error(error);
-    }
-};
-
-const getUsuarios = async () => {
-    try {
-        const response = await axios.get("/api/usuarios/all/todo");
-        usuarios.value = response.data;
-    } catch (error) {
-        console.error(error);
-    }
-};
-
-const getMinutas = async () => {
-    try {
-        const response = await axios.get("/api/minutas");
-        minutas.value = response.data.data;
-    } catch (error) {
-        console.error(error);
-    }
-};
-
-const submit = async () => {
-    try {
-        await form.patch(route("tareas.update", tarea.value.id), {
-            onFinish: () => {
-                showToast("El registro ha sido creado", "success");
-                window.location.href = route('tareas.index');
-            },
-        });
-    } catch (error) {
-        showToast("Ocurrio un error", "error");
-        console.error(error);
-    }
-};
-
-const search = (event) => {
-    setTimeout(() => {
-        if (!event.query.trim().length) {
-            filteredUsuarios.value = [...usuarios.value];
-        } else {
-            filteredUsuarios.value = usuarios.value.filter((usuario) => {
-                return usuario.name.toLowerCase().includes(event.query.toLowerCase());
-            });
-        }
-    }, 250);
-}
-
-</script>
