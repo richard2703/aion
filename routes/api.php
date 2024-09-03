@@ -108,3 +108,8 @@ Route::get('/getReportes/{id}', [App\Http\Controllers\reportesController::class,
 Route::get('/tareaEvidencia/{tarea_id}/getByTarea', [App\Http\Controllers\tareaEvidenciaController::class, 'getByTarea'])->name('tareaEvidencia.getByTarea');
 Route::post('/tareaEvidencia/store', [App\Http\Controllers\tareaEvidenciaController::class, 'store'])->name('tareas.evidencia.store');
 Route::delete('/tareaEvidencia/{tareaEvidencia}/delete', [App\Http\Controllers\tareaEvidenciaController::class, 'destroy'])->name('tareas.evidencia.destroy');
+
+//tiposDesperdicios
+Route::get('/tiposDesperdicios/findAll', [App\Http\Controllers\tiposDesperdiciosController::class, 'findAll'])->name('tiposDesperdicios.findAll');
+Route::get('/tiposDesperdicios/{departamento_id}', [App\Http\Controllers\tiposDesperdiciosController::class, 'byDepartamento'])->name('desperdicio.byDepartamento');
+Route::get('/Desperdicio/findAll', [App\Http\Controllers\desperdiciosController::class, 'findAll'])->name('desperdicio.findAll');
