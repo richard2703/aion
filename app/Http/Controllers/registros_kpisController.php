@@ -34,6 +34,7 @@ class registros_kpisController extends Controller
 
     public function edit(registros_kpi $registros_kpi)
     {
+        $registros_kpi->load('kpis');
         return response()->json($registros_kpi);
     }
 

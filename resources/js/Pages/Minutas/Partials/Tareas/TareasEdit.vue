@@ -5,7 +5,6 @@ import axios from "axios";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
-import AutoComplete from 'primevue/autocomplete';
 import Textarea from 'primevue/textarea';
 import { showToast } from "@/Pages/utils/SweetAlert.service";
 import Image from 'primevue/image';

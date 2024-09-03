@@ -4,32 +4,32 @@ import { useForm } from "@inertiajs/vue3";
 import axios from 'axios';
 import Modal from "@/Components/Modal.vue";
 import Chart from 'primevue/chart';
-import { Tooltip } from "chart.js";
-
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
 
 const props = defineProps({
     kpi: Object,
+    updateFlag: Boolean
 });
 
 defineOptions({
     inheritAttrs: false,
 });
 
+// define emits event for parent
+const emit = defineEmits(['updateKpi']);
+
 const kpi = ref(props.kpi);
+const updateFlag = ref(props.updateFlag);
 const registrosKpi = ref([]);
 const chartData = ref();
 const chartOptions = ref();
 const chartValues = ref();
 const chartLabels = ref();
-
 const isCreateModalVidible = ref(false);
 const isEditModalVidible = ref(false);
-const isHistoricosVisible = ref(false);
 const editedRegistro = ref();
-
 const titulo = ref();
 const viejo = ref();
 
@@ -51,6 +51,12 @@ onMounted(() => {
     formatDataSet();
 });
 
+watch(() => [props.kpi, props.updateFlag],
+    ([newKpi, newFlag]) => {
+        kpi.value = newKpi;
+        formatDataSet();
+    });
+
 const getClass = (kpi) => {
     if (kpi.regla === 1) {
         return kpi.actual >= kpi.objetivo ? 'bg-green-100' : 'bg-red-100';
@@ -71,7 +77,6 @@ const formatDataSet = async () => {
         .catch((error) => {
             console.log(error);
         });
-
 }
 
 const setChartData = () => {
@@ -146,18 +151,6 @@ const openCreateModal = (kpi_id, Mviejo, Mtitulo) => {
     isCreateModalVidible.value = true
 }
 
-const openEditModal = async (id) => {
-    await axios.get(route("registros_kpi.edit", id)).then((response) => {
-        formEditModal.actual = response.data.actual,
-            editedRegistro.value = response.data.id
-    })
-        .catch((error) => {
-            console.log(error);
-        });
-
-    isEditModalVidible.value = true
-}
-
 const closeModal = () => {
     isCreateModalVidible.value = false;
     isEditModalVidible.value = false;
@@ -168,31 +161,11 @@ async function submitCreateModal() {
     await axios
         .post(route("registros_kpi.store"), formCreateModal)
         .then((response) => {
+            formCreateModal.actual = "";
             getNewKpi(kpi.value.id);
-            if (response.data.error) {
-                showToast(response.data.error, "error");
-            } else {
-                showToast("El registro ha sido creado", "success");
-                formCreateModal.actual = "";
-            }
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-}
+            emit('updateKpi');
+            showToast("El registro ha sido creado", "success");
 
-async function submitEditModal() {
-    closeModal();
-    await axios
-        .patch(route("registros_kpi.update", editedRegistro.value), formEditModal)
-        .then((response) => {
-            if (response.data.error) {
-                showToast(response.data.error, "error");
-            } else {
-                getNewKpi(kpi.value.id);
-                showToast("El registro ha sido creado", "success");
-                formEditModal.actual = "";
-            }
         })
         .catch((error) => {
             console.log(error);
@@ -223,7 +196,7 @@ function formatNumber(value) {
                         <span class="text-2xl font-bold">Plan</span>
                     </div>
                     <div class="rotation-table">
-                        <!-- Tabla de Kpis -->
+                        <!-- Tabla de Kpis to move-->
                         <table class="min-w-full border-collapse mb-4">
                             <thead>
                                 <tr>
@@ -249,28 +222,6 @@ function formatNumber(value) {
                                             @click="openCreateModal(kpi.id, kpi.actual, kpi.titulo)">
                                         </PrimaryButton>
                                     </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <!-- Tabla de Historico -->
-                        <table class="min-w-full border-collapse mb-4">
-                            <thead>
-                                <tr>
-                                    <th class="py-2 px-4 border hover:bg-slate-100" colspan="2"
-                                        @click="isHistoricosVisible = !isHistoricosVisible">
-                                        historico
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody v-if="isHistoricosVisible === true">
-                                <tr>
-                                    <td class="py-2 px-4 border">Valor</td>
-                                    <td class="py-2 px-4 border">Fecha</td>
-                                </tr>
-                                <tr v-for="registro in registrosKpi" :key="registro.id" class="hover:bg-slate-50"
-                                    @click="openEditModal(registro.id)">
-                                    <td class="py-2 px-4 border">{{ registro.actual }}</td>
-                                    <td class="py-2 px-4 border">{{ registro.mes }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -320,42 +271,6 @@ function formatNumber(value) {
                                 <PrimaryButton class="ms-4 pi pi-save" :class="{
                                     'opacity-25': formCreateModal.processing,
                                 }" :disabled="formCreateModal.processing">
-                                </PrimaryButton>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </template>
-    </Modal>
-
-    <!-- MODAL to edit value -->
-    <Modal :show="isEditModalVidible" maxWidth="lg">
-        <template v-slot="">
-            <div>
-                <div class="px-4 my-4 py-2 flex justify-center bg-white border-b border-gray-200">
-                    <p class=" text-lg font-medium text-gray-900">{{ kpi.titulo }}</p>
-                </div>
-                <div class="px-4 py-2 bg-white border-b border-gray-200">
-                    <div class="container mx-auto">
-                        <form @submit.prevent="submitEditModal">
-                            <div class=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
-                                <div class="my-4">
-                                    <InputLabel for="Nuevo Valor" value="Nuevo Valor " />
-                                    <TextInput id="objetivo" v-model="formEditModal.actual" type="number" step="any"
-                                        class="mt-1 block w-full" required autocomplete="new-challenge" />
-                                </div>
-                            </div>
-
-                            <div class="flex justify-between">
-                                <PrimaryButton @click.prevent="closeModal" class="bg-red-500 ms-4 pi pi-times" :class="{
-                                    'opacity-25': formEditModal.abort,
-                                }" :disabled="formEditModal.abort">
-                                </PrimaryButton>
-
-                                <PrimaryButton class="ms-4 pi pi-save" :class="{
-                                    'opacity-25': formEditModal.processing,
-                                }" :disabled="formEditModal.processing">
                                 </PrimaryButton>
                             </div>
                         </form>
