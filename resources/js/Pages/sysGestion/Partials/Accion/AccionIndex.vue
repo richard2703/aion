@@ -1,28 +1,3 @@
-<template>
-    <div class="py-2">
-        <div class="bg-white  sm:rounded-lg">
-            <div class="px-4">
-                <div class="py-2">
-                    <div class="flex justify-end">
-                        <button v-if="triger === 'list'" class="pi pi-plus" @click="triger = 'create'"></button>
-                        <button v-if="triger !== 'list'" class="pi pi-minus" @click="triger = 'list'"></button>
-                    </div>
-                    <br>
-                    <!-- componente -->
-                    <div class="flex">
-                        <AccionList class="overflow-y-auto" v-if="triger === 'list'" :area_id="area_id"
-                            :departamento_id="departamento_id" :tipo="tipo" @edit="(id) => editAccion(id)" />
-                        <AccionCreate v-if="triger === 'create'" :area_id="area_id" :departamento_id="departamento_id"
-                            :tipo="tipo" :procesos="procesos" @list="triger = 'list'" />
-                        <AccionEdit v-if="triger === 'edit'" :area_id="area_id" :departamento_id="departamento_id"
-                            :procesos="procesos" :accion="accion" @list="triger = 'list'" />
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</template>
-
 <script setup>
 import { ref, onMounted } from "vue";
 // import { Head, Link, useForm } from "@inertiajs/vue3";
@@ -86,3 +61,28 @@ const deleteTipo = async (id) => {
     }
 };
 </script>
+
+<template>
+    <div class="py-2">
+        <div class="bg-white  sm:rounded-lg">
+            <div class="px-4">
+                <div class="py-2">
+                    <div class="flex justify-end">
+                        <button v-if="triger === 'list'" class="pi pi-plus" @click="triger = 'create'"></button>
+                        <button v-if="triger !== 'list'" class="pi pi-minus" @click="triger = 'list'"></button>
+                    </div>
+                    <br>
+                    <!-- componente -->
+                    <div class="flex">
+                        <AccionList class="overflow-y-auto" v-if="triger === 'list'" :area_id="area_id"
+                            :departamento_id="departamento_id" :tipo="tipo" @edit="(id) => editAccion(id)" />
+                        <AccionCreate v-if="triger === 'create'" :area_id="area_id" :departamento_id="departamento_id"
+                            :tipo="tipo" :procesos="procesos" @list="triger = 'list'" />
+                        <AccionEdit v-if="triger === 'edit'" :area_id="area_id" :departamento_id="departamento_id"
+                            :procesos="procesos" :accion="accion" @list="triger = 'list'" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

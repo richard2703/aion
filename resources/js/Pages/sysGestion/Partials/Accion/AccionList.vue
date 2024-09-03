@@ -1,27 +1,3 @@
-<template>
-    <div class="max-h-40 w-full overflow-y-auto no-scrollbar">
-        <ul>
-            <li v-for="accionCorrectiva in accionesCorrectivas"
-                class="border-b border-gray-200 grid grid-cols-[85%_15%]">
-                <div>
-
-                    <a class="hover:underline text-blue-500" target="blank" :href="accionCorrectiva.link">
-                        {{ accionCorrectiva.titulo }}
-                    </a>
-                </div>
-                <div class="text-right">
-                    <button class="pi pi-pencil text-red-500 mx-2 justify-end"
-                        @click="editAccion(accionCorrectiva.id)"></button>
-                    <button class="pi pi-times text-red-500 mx-2" @click="deleteAccion(accionCorrectiva.id)"></button>
-                </div>
-            </li>
-            <div class="text-center" v-if="accionesCorrectivas.length < 1">
-                <span>No hay acciones</span>
-            </div>
-        </ul>
-    </div>
-</template>
-
 <script setup>
 import { ref, onMounted, watch } from "vue";
 import axios from "axios";
@@ -91,3 +67,27 @@ const deleteAccion = async (id) => {
     }
 };
 </script>
+
+<template>
+    <div class="max-h-40 w-full overflow-y-auto no-scrollbar">
+        <ul>
+            <li v-for="accionCorrectiva in accionesCorrectivas"
+                class="border-b border-gray-200 grid grid-cols-[85%_15%]">
+                <div>
+
+                    <a class="hover:underline text-blue-500" target="blank" :href="accionCorrectiva.link">
+                        {{ accionCorrectiva.titulo }}
+                    </a>
+                </div>
+                <div class="text-right">
+                    <button class="pi pi-pencil text-red-500 mx-2 justify-end"
+                        @click="editAccion(accionCorrectiva.id)"></button>
+                    <button class="pi pi-times text-red-500 mx-2" @click="deleteAccion(accionCorrectiva.id)"></button>
+                </div>
+            </li>
+            <div class="text-center" v-if="accionesCorrectivas.length < 1">
+                <span>No hay acciones</span>
+            </div>
+        </ul>
+    </div>
+</template>
