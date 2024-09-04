@@ -13,7 +13,8 @@ const props = defineProps({
     opciones: Array,
 });
 
-const title = "Opciones";
+const title = "assessment";
+const subTitle = "opciones";
 const opciones = ref([]);
 const totalRecords = ref(0);
 const rows = ref(10);
@@ -111,7 +112,7 @@ console.log(opciones.value);
 </style>
 
 <template>
-    <Layout :titulo="title">
+    <Layout :titulo="title" :subTitulo="subTitle">
 
         <Head title="Departamento" />
         <div class="overflow-hidden sm:rounded-lg">
