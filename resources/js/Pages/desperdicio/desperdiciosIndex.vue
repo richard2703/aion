@@ -8,6 +8,14 @@ import { confirmDialog, showToast } from "../utils/SweetAlert.service";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import InputText from "primevue/inputtext";
+import { format } from 'date-fns';
+
+const formatDate = (rowData) => {
+    if (rowData.created_at) {
+        return format(new Date(rowData.created_at), 'dd/MM/yy');
+    }
+    return '';
+};
 
 const props = defineProps({
     tipos: Array,
@@ -41,8 +49,6 @@ async function getdesperdicios(
                 sortOrder: sortOrder === 1 ? "asc" : "desc",
             },
         });
-        console.log(response.data.data);
-
         tipos.value = response.data.data;
         totalRecords.value = response.data.total;
         first.value = (response.data.current_page - 1) * rows.value;
@@ -51,25 +57,25 @@ async function getdesperdicios(
     }
 }
 
-// const deleteDepartamento = async (id) => {
-//     try {
-//         const result = await confirmDialog(
-//             "Estas seguro?",
-//             "Ya no podras revertir esto!",
-//             "warning"
-//         );
-//         if (result.isConfirmed) {
-//             await axios.delete(route("departamento.destroy", id));
+const deleteItem = async (id) => {
+    try {
+        const result = await confirmDialog(
+            "Estas seguro?",
+            "Ya no podras revertir esto!",
+            "warning"
+        );
+        if (result.isConfirmed) {
+            await axios.delete(route("desperdicio.destroy", id));
 
-//             departamentos.value = departamentos.value.filter(
-//                 (departamento) => departamento.id !== id
-//             );
-//             showToast("El registro ha sido eliminado", "success");
-//         }
-//     } catch (error) {
-//         console.error(error);
-//     }
-// };
+            tipos.value = tipos.value.filter(
+                (tipos) => tipos.id !== id
+            );
+            showToast("El registro ha sido eliminado", "success");
+        }
+    } catch (error) {
+        console.error(error);
+    }
+};
 
 const onPage = (event) => {
     const page = event.page + 1;
@@ -106,6 +112,10 @@ watch(globalFilter, (newValue) => {
     };
     getdesperdicios(1, rows.value, newValue, sortField.value, sortOrder.value);
 });
+const formatearFecha = (dateString) => {
+    return format(new Date(dateString), 'dd/MM/yyyy');
+};
+
 </script>
 
 <style scoped>
@@ -152,35 +162,33 @@ watch(globalFilter, (newValue) => {
                                 ]" :sortField="sortField" :sortOrder="sortOrder"
                                 class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
                                 <template #empty> Sin registros. </template>
-                                <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
-                                    sortable></Column>
-                                <!-- <Column field="usuario.name" header="Usuario" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column> -->
-                                <Column field="nombre" header="Nombre:" headerStyle="width:4em;" bodyClass="text-center"
-                                    sortable></Column>
+                                <!-- <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
+                                    sortable></Column> -->
+                                <Column field="created_at" header="Fecha" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" :body="formatDate" sortable>
+                                    <template #body="slotProps">
+                                        {{ formatearFecha(slotProps.data.created_at) }}
+                                    </template>
+                                </Column>
                                 <Column field="area.nombre" header="Pilar" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                 <Column field="departamento.nombre" header="Flujo de valor" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+                                <Column field="monto" header="Monto" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+                                <Column field="usuario.name" header="Usuario" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                 <!-- <Column field="descripcion" header="Descripcion" headerStyle="width:4em;"
                                     bodyClass="text-center" sortable></Column> -->
 
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">
-                                        <PrimaryButton class="me-2 pi pi-file-edit" :href="route(
-                                            'departamento.edit',
-                                            slotProps.data.id
-                                        )
-                                            ">
-
+                                        <PrimaryButton class="me-2 pi pi-file-edit"
+                                            :href="route('desperdicio.edit', slotProps.data.id)">
                                         </PrimaryButton>
 
-                                        <PrimaryButton class="me-2 pi pi-trash" @click.prevent="
-                                            deleteDepartamento(
-                                                slotProps.data.id
-                                            )
-                                            ">
-
+                                        <PrimaryButton class="me-2 pi pi-trash"
+                                            @click.prevent="deleteItem(slotProps.data.id)">
                                         </PrimaryButton>
                                     </template>
                                 </Column>

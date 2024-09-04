@@ -41,6 +41,7 @@ class desperdiciosController extends Controller
         //     });
         // }
 
+
         // Sorting logic
         // if (in_array($sortField, ['id', 'nombre', 'descripcion', 'link_externo', 'procedimiento.nombre'])) {
         //     if (strpos($sortField, 'procedimiento.') === 0) {
@@ -55,7 +56,7 @@ class desperdiciosController extends Controller
         //     $query->orderBy('id', $sortOrder);
         // }
 
-        $desperdicios = $query->with('usuario', 'area', 'departamento')->paginate($pageSize, ['*'], 'page', $page);
+        $desperdicios = $query->with('usuario', 'area', 'departamento')->orderBy('created_at', 'desc')->paginate($pageSize, ['*'], 'page', $page);
 
         return response()->json($desperdicios);
     }
@@ -93,24 +94,31 @@ class desperdiciosController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(desperdicios $desperdicios)
+    public function edit(desperdicios $desperdicio)
     {
-        //
+        return Inertia::render('desperdicio/desperdicioEdit', [
+            'desperdicio' => $desperdicio
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, desperdicios $desperdicios)
+    public function update(Request $request, desperdicios $desperdicio)
     {
-        //
+        // dd($request);
+        // $reporte = desperdicios::findOrFail($desperdicio);
+        $desperdicio->update($request->only('area_id', 'departamento_id', 'tipoDesperdicio_id', 'descripcion', 'monto'));
+
+        return redirect()->route('desperdicio.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(desperdicios $desperdicios)
+    public function destroy(desperdicios $desperdicio)
     {
-        //
+        $desperdicio->delete();
+        return response()->json(['success' => true]);
     }
 }
