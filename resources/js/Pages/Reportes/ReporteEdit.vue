@@ -146,7 +146,7 @@ onMounted(() => {
                                     <div v-for="(highlight, index) in highlights" :key="index"
                                         class="col-span-full flex items-center justify-between">
                                         <TextInput v-model="highlight.value" type="text" class="mt-1 block w-full"
-                                            autocomplete="Highlight" />
+                                            autocomplete="Highlight" maxlength="250" />
                                         <button type="button" @click="removeHighlight(index)"
                                             class="ml-2 text-red-500">Eliminar</button>
                                     </div>
@@ -160,7 +160,7 @@ onMounted(() => {
                                     <div v-for="(lowlight, index) in lowlights" :key="index"
                                         class="col-span-full flex items-center justify-between">
                                         <TextInput v-model="lowlight.value" type="text" class="mt-1 block w-full"
-                                            autocomplete="Lowlight" />
+                                            autocomplete="Lowlight" maxlength="250" />
                                         <button type="button" @click="removeLowlight(index)"
                                             class="ml-2 text-red-500">Eliminar</button>
                                     </div>
