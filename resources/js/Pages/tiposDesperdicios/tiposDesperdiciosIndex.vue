@@ -94,6 +94,25 @@ const onSort = (event) => {
         sortOrder.value
     );
 };
+const deleteItem = async (id) => {
+    try {
+        const result = await confirmDialog(
+            "Estas seguro?",
+            "Ya no podras revertir esto!",
+            "warning"
+        );
+        if (result.isConfirmed) {
+            await axios.delete(route("tiposDesperdicios.destroy", id));
+
+            tipos.value = tipos.value.filter(
+                (tipos) => tipos.id !== id
+            );
+            showToast("El registro ha sido eliminado", "success");
+        }
+    } catch (error) {
+        console.error(error);
+    }
+};
 
 onMounted(() => {
     // getDepartamentos();
@@ -168,19 +187,15 @@ watch(globalFilter, (newValue) => {
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">
                                         <PrimaryButton class="me-2 pi pi-file-edit" :href="route(
-                                            'departamento.edit',
+                                            'tiposDesperdicios.edit',
                                             slotProps.data.id
                                         )
                                             ">
 
                                         </PrimaryButton>
 
-                                        <PrimaryButton class="me-2 pi pi-trash" @click.prevent="
-                                            deleteDepartamento(
-                                                slotProps.data.id
-                                            )
-                                            ">
-
+                                        <PrimaryButton class="me-2 pi pi-trash"
+                                            @click.prevent="deleteItem(slotProps.data.id)">
                                         </PrimaryButton>
                                     </template>
                                 </Column>

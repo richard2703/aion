@@ -88,32 +88,31 @@ class tiposDesperdiciosController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(tiposDesperdicios $tiposDesperdicios)
-    {
-        //
-    }
+    public function show(tiposDesperdicios $tipoDesperdicio) {}
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(tiposDesperdicios $tiposDesperdicios)
+    public function edit(tiposDesperdicios $tipoDesperdicio)
     {
-        //
+        // dd($tipoDesperdicio);
+        return Inertia::render('tiposDesperdicios/tipoDesperdicioEdit', [
+            'tipoDesperdicio' => $tipoDesperdicio
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, tiposDesperdicios $tiposDesperdicios)
+    public function update(Request $request, tiposDesperdicios $tipoDesperdicio)
     {
-        //
+        $tipoDesperdicio->update($request->only('area_id', 'departamento_id', 'nombre', 'descripcion'));
+        return redirect()->route('tiposDesperdicios.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(tiposDesperdicios $tiposDesperdicios)
+    public function destroy(tiposDesperdicios $tipoDesperdicio)
     {
-        //
+        $tipoDesperdicio->delete();
+        return response()->json(['success' => true]);
     }
 }
