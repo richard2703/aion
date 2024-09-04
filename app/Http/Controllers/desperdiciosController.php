@@ -56,7 +56,7 @@ class desperdiciosController extends Controller
         //     $query->orderBy('id', $sortOrder);
         // }
 
-        $desperdicios = $query->with('usuario', 'area', 'departamento')->orderBy('created_at', 'desc')->paginate($pageSize, ['*'], 'page', $page);
+        $desperdicios = $query->with('usuario', 'area', 'departamento', 'tipo')->orderBy('created_at', 'desc')->paginate($pageSize, ['*'], 'page', $page);
 
         return response()->json($desperdicios);
     }
