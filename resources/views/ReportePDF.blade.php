@@ -45,15 +45,37 @@
         .bg-green-100 {
             background-color: #f0fff4;
         }
+
+        @page: first {
+            margin: 0px;
+        }
+
+        @page {
+            margin: 0px;
+        }
+
+        body {
+            margin: 0px;
+            padding: 0px;
+        }
     </style>
     <title>Reporte Semanal: Semana {{ $reporteSemanal->numeroSemana }}</title>
 
 </head>
 
 <body>
-    {{--  <title>Reporte Semanal: Semana {{ $reporteSemanal->numeroSemana }}</title>  --}}
-    <div>
+    {{--  <div>
         <h1>Reporte Semanal: Semana {{ $reporteSemanal->numeroSemana }}</h1>
+        <img src="{{ public_path('portadas/test.jpg') }}" alt="Logo">
+    </div>  --}}
+
+    <div style="position: relative; width: 100%; height: 1100px; text-align: center;">
+        <img src="{{ public_path('portadas/test.jpg') }}" alt="Logo"
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 1100px; z-index: -1;">
+
+        <h1 style="position: relative; color: white; font-size: 3rem; z-index: 2; padding-top: 500px;">
+            Reporte Semanal: Semana {{ $reporteSemanal->numeroSemana }}
+        </h1>
     </div>
 
     <div class="container py-2">
