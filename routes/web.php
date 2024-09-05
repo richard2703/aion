@@ -165,4 +165,16 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('MisReportes/{reporte}/edit', [App\Http\Controllers\reportesController::class, 'edit'])->name('misreporte.edit');
     Route::patch('MisReportes/{reporte}/update', [App\Http\Controllers\reportesController::class, 'update'])->name('misreporte.update');
     Route::get('reportes/{reporte}/pdf', [App\Http\Controllers\reportesController::class, 'pdf'])->name('reporte.pdf');
+
+    //Seccion
+    Route::get('secciones', [App\Http\Controllers\seccionController::class, 'index'])->name('seccion.index');
+    Route::get('seccion/create', [App\Http\Controllers\seccionController::class, 'create'])->name('seccion.create');
+    Route::get('seccion/{seccion}/show', [App\Http\Controllers\seccionController::class, 'show'])->name('seccion.show');
+    Route::get('seccion/{seccion}/edit', [App\Http\Controllers\seccionController::class, 'edit'])->name('seccion.edit');
+    Route::post('seccion/store', [App\Http\Controllers\seccionController::class, 'store'])->name('seccion.store');
+    Route::patch('seccion/{seccion}/update', [App\Http\Controllers\seccionController::class, 'update'])->name('seccion.update');
+    Route::delete('seccion/{seccion}/destroy', [App\Http\Controllers\seccionController::class, 'destroy'])->name('seccion.destroy');
+
+    //Assessment
+
 });

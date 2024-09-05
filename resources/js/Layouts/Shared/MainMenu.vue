@@ -119,7 +119,7 @@
                 </a>
                 <ul v-show="isOpen('assessment')" class="pl-6 space-y-2">
                     <li>
-                        <Link class="group flex items-center py-2" :href="route('reporte.index')" :class="subTitle === 'secciones' ? 'activo flex'
+                        <Link class="group flex items-center py-2" :href="route('seccion.index')" :class="subTitle === 'secciones' ? 'activo flex'
                             : 'inactivo flex'">
                         <icon name="circle" class="mr-2 w-3 h-3" />
                         <div>Secciones</div>
