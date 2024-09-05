@@ -141,7 +141,7 @@ onMounted(() => {
                                     </div>
 
                                     <div class="mt-4">
-                                        <InputLabel for="departamento_id" value="Flujo de valor: " />
+                                        <InputLabel for="departamento_id" value="Tipo desperdicio: " />
 
                                         <select ref="departamento_select"
                                             class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
