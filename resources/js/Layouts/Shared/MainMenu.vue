@@ -104,6 +104,21 @@
                 </ul>
             </li>
 
+            <!-- //Desperdicios -->
+            <li>
+                <div class="mb-4">
+                    <Link class="group flex items-center py-3" :href="route('desperdicio.index')">
+                    <div :class="title === 'Desperdicios'
+                        ? 'activo flex'
+                        : 'inactivo flex'
+                        ">
+                        <i class="pi pi-list mr-2 w-4 h-4"></i>
+                        Desperdicios
+                    </div>
+                    </Link>
+                </div>
+            </li>
+
             <!-- Usuarios Menu Item with Submenus -->
             <!-- <li>
                 <a class="group flex items-center py-3 cursor-pointer" @click="toggleMenu('usuarios')">
@@ -188,6 +203,21 @@
                             ">
                             <i class="pi pi-users mr-2 w-4 h-4"></i>
                             Encargados de Flujo
+                        </div>
+                        </Link>
+                    </div>
+                </li>
+
+                <!-- //Tipos de Desperdicios -->
+                <li>
+                    <div class="mb-4">
+                        <Link class="group flex items-center py-3" :href="route('tiposDesperdicios.index')">
+                        <div :class="title === 'tiposDesperdicios'
+                            ? 'activo flex'
+                            : 'inactivo flex'
+                            ">
+                            <i class="pi pi-trash mr-2 w-4 h-4"></i>
+                            Tipos de Desperdicios
                         </div>
                         </Link>
                     </div>

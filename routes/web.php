@@ -165,4 +165,19 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('MisReportes/{reporte}/edit', [App\Http\Controllers\reportesController::class, 'edit'])->name('misreporte.edit');
     Route::patch('MisReportes/{reporte}/update', [App\Http\Controllers\reportesController::class, 'update'])->name('misreporte.update');
     Route::get('reportes/{reporte}/pdf', [App\Http\Controllers\reportesController::class, 'pdf'])->name('reporte.pdf');
+
+    //EncargadosReportes
+    Route::get('tipoDesperdicio', [App\Http\Controllers\tiposDesperdiciosController::class, 'index'])->name('tiposDesperdicios.index');
+    Route::get('tipoDesperdicio/create', [App\Http\Controllers\tiposDesperdiciosController::class, 'create'])->name('tiposDesperdicios.create');
+    Route::post('tipoDesperdicio/store', [App\Http\Controllers\tiposDesperdiciosController::class, 'store'])->name('tiposDesperdicios.store');
+    Route::get('tipoDesperdicio/{tipoDesperdicio}/edit', [App\Http\Controllers\tiposDesperdiciosController::class, 'edit'])->name('tiposDesperdicios.edit');
+    Route::patch('tipoDesperdicio/{tipoDesperdicio}/update', [App\Http\Controllers\tiposDesperdiciosController::class, 'update'])->name('tiposDesperdicios.update');
+    Route::delete('tipoDesperdicio/{destipoDesperdicioerdicio}/destroy', [App\Http\Controllers\tiposDesperdiciosController::class, 'destroy'])->name('tiposDesperdicios.destroy');
+    //Desperdicio
+    Route::get('Desperdicio', [App\Http\Controllers\desperdiciosController::class, 'index'])->name('desperdicio.index');
+    Route::get('Desperdicio/nuevo', [App\Http\Controllers\desperdiciosController::class, 'create'])->name('desperdicio.create');
+    Route::post('Desperdicio/store', [App\Http\Controllers\desperdiciosController::class, 'store'])->name('desperdicio.store');
+    Route::get('Desperdicio/{desperdicio}/edit', [App\Http\Controllers\desperdiciosController::class, 'edit'])->name('desperdicio.edit');
+    Route::patch('Desperdicio/{desperdicio}/update', [App\Http\Controllers\desperdiciosController::class, 'update'])->name('desperdicio.update');
+    Route::delete('Desperdicio/{desperdicio}/destroy', [App\Http\Controllers\desperdiciosController::class, 'destroy'])->name('desperdicio.destroy');
 });
