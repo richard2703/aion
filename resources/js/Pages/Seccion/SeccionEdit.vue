@@ -17,28 +17,54 @@ const subTitle = "secciones";
 const seccion = ref(props.seccion);
 const secciones = ref(props.secciones);
 const departamentos = ref([]);
+const areas = ref([]);
 
 const form = useForm({
-    titulo: seccion.value.titulo,
-    descripcion: seccion.value.descripcion,
+    area_id: seccion.value.area_id,
+    departamento_id: seccion.value.departamento_id,
 });
 
 onMounted(() => {
+    getAreas();
     getDepartamentos();
 })
 console.log({ seccion: seccion.value });
 
-async function getDepartamentos() {
-    const newSecciones = secciones.value.map(a => a.titulo);
+async function getAreas() {
     await axios
-        .get(route('departamentos.findAll'))
+        .get("/api/areas")
+        .then((response) => (areas.value = response.data))
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+async function getDepartamentos() {
+    const newSecciones = secciones.value.map(a => a);
+    await axios
+        .get(route('departamentos.byArea', seccion.value.area_id))
         .then((response) => {
-            departamentos.value = response.data.filter((departamento) => {
-                return !newSecciones.some(newSeccion => newSeccion === departamento.nombre && newSeccion !== seccion.value.titulo);
+            departamentos.value = response.data.departamentos.filter((departamento) => {
+                return !newSecciones.some(newSeccion => newSeccion.departamento_id === departamento.id && newSeccion.departamento_id !== seccion.value.departamento_id);
             });
         })
         .catch((error) => {
             console.error(error);
+        });
+}
+
+async function onChange(event) {
+    const newSecciones = secciones.value.map(a => a);
+    const taget_id = event.target.value;
+    await axios
+        .get(route("departamentos.byArea", taget_id))
+        .then((response) => {
+            departamentos.value = response.data.departamentos.filter((departamento) => {
+                return !newSecciones.some(newSeccion => newSeccion.departamento_id === departamento.id && newSeccion.departamento_id !== seccion.value.departamento_id);
+            });
+        })
+        .catch((error) => {
+            console.log(error);
         });
 }
 
@@ -83,28 +109,33 @@ const submit = () => {
                 <div class="p-6 bg-white border-b border-gray-200">
                     <form @submit.prevent="submit">
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+                            <div class="mt-4">
+                                <InputLabel for="area_id" value="Pilar: " />
+                                <select ref="area_select" @change="onChange($event)"
+                                    class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                    v-model="form.area_id" required>
+                                    <option value="" disabled selected>
+                                        Seleccione una opcion
+                                    </option>
+                                    <option v-for="area in areas" :key="area.id" :value="area.id">
+                                        {{ area.nombre }}
+                                    </option>
+                                </select>
+                            </div>
                             <div class="mt-4 ">
                                 <InputLabel for="titulo" value="Flujo de valor: " />
-                                <!-- <TextInput v-model="form.titulo" type="text" class="mt-1 block w-full" /> -->
                                 <select ref="departamento_select" class=" border-gray-300 focus:border-indigo-500 focus:ring-indigo-500
-                                            rounded-md shadow-sm w-full px-3 py-2 cursor-pointer" v-model="form.titulo"
-                                    required>
+                                            rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                    v-model="form.departamento_id" required>
                                     <option value="" disabled selected>
                                         Seleccione una opcion
                                     </option>
                                     <option v-for="departamento in departamentos" :key="departamento.id"
-                                        :value="departamento.nombre">
+                                        :value="departamento.id">
                                         {{ departamento.nombre }}
                                     </option>
                                 </select>
                             </div>
-
-                            <div class="mt-4">
-                                <InputLabel for="descripcion" value="Descripcion: " />
-                                <Textarea v-model="form.descripcion" rows="5" cols="30" />
-                            </div>
-
-
                         </div>
                         <div class="flex items-center justify-end mt-4">
                             <PrimaryButton class="ms-4 pi pi-save" :class="{

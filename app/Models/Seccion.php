@@ -16,8 +16,8 @@ class Seccion extends Model
     protected $table = 'secciones';
 
     protected $fillable = [
-        'titulo',
-        'descripcion',
+        'area_id',
+        'departamento_id',
         'created_by',
     ];
 
@@ -25,5 +25,15 @@ class Seccion extends Model
     public function challenge(): HasMany
     {
         return $this->hasMany(Challenge::class, 'seccion_id', 'id');
+    }
+
+    public function area(): BelongsTo
+    {
+        return $this->belongsTo(Area::class, 'area_id', 'id');
+    }
+
+    public function departamento(): BelongsTo
+    {
+        return $this->belongsTo(Departamento::class, 'departamento_id', 'id');
     }
 }

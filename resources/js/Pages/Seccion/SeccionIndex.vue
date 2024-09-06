@@ -144,16 +144,16 @@ const deleteSeccion = async (id) => {
                                 :rowsPerPageOptions="[5, 10, 20, 50]" tableStyle="min-width: 50rem" :filters="filters"
                                 :globalFilterFields="[
                                     'id',
-                                    'titulo',
-                                    'descripcion',
+                                    'area.nombre',
+                                    'departamento.nombre',
                                 ]" :sortField="sortField" :sortOrder="sortOrder"
                                 class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
                                 <template #empty> No data found. </template>
                                 <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
                                     sortable></Column>
-                                <Column field="titulo" header="Sección" headerStyle="width:4em;" bodyClass="text-center"
-                                    sortable></Column>
-                                <Column field="descripcion" header="Descripción" headerStyle="width:4em;"
+                                <Column field="area.nombre" header="Pilar" headerStyle="width:4em;"
+                                    bodyClass="text-center" sortable></Column>
+                                <Column field="departamento.nombre" header="Flujo de valor" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">

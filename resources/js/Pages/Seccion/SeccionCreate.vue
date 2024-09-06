@@ -15,20 +15,30 @@ const title = "assessment";
 const subTitle = "secciones";
 const secciones = ref(props.secciones);
 const departamentos = ref([]);
+const areas = ref([]);
 
 const form = useForm({
-    titulo: "",
-    descripcion: "",
+    area_id: "",
+    departamento_id: "",
 });
 
 onMounted(() => {
-    getDepartamentos();
+    getAreas();
 })
+
+async function getAreas() {
+    await axios
+        .get("/api/areas")
+        .then((response) => (areas.value = response.data))
+        .catch((error) => {
+            console.log(error);
+        });
+}
 
 async function getDepartamentos() {
     const newSecciones = secciones.value.map(a => a.titulo);
     await axios
-        .get(route('departamentos.findAll'))
+        .get(route('departamentos.byArea',))
         .then((response) => {
             departamentos.value = response.data.filter((departamento) => {
                 return !newSecciones.some(seccion => seccion === departamento.nombre);
@@ -38,6 +48,22 @@ async function getDepartamentos() {
             console.error(error);
         });
 }
+
+const onChange = async (event) => {
+    const newSecciones = secciones.value.map(a => a);
+    const target_id = event.target.value;
+    await axios
+        .get(route("departamentos.byArea", target_id))
+        .then((response) => {
+            departamentos.value = response.data.departamentos.filter((departamento) => {
+                return !newSecciones.some(seccion => seccion.departamento_id === departamento.id);
+            });
+
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+};
 
 const submit = () => {
     try {
@@ -80,28 +106,34 @@ const submit = () => {
                 <div class="p-6 bg-white border-b border-gray-200">
                     <form @submit.prevent="submit">
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
-                            <div class="mt-4 ">
-                                <InputLabel for="titulo" value="Flujo de valor: " />
-                                <!-- <TextInput v-model="form.titulo" type="text" class="mt-1 block w-full" /> -->
-                                <select ref="departamento_select" class=" border-gray-300 focus:border-indigo-500 focus:ring-indigo-500
-                                            rounded-md shadow-sm w-full px-3 py-2 cursor-pointer" v-model="form.titulo"
-                                    required>
+                            <div class="mt-4">
+                                <InputLabel for="area_id" value="Pilar: " />
+                                <select ref="area_select" @change="onChange($event)"
+                                    class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                    v-model="form.area_id" required>
                                     <option value="" disabled selected>
                                         Seleccione una opcion
                                     </option>
-                                    <option v-for="departamento in departamentos" :key="departamento.id"
-                                        :value="departamento.nombre">
-                                        {{ departamento.nombre }}
+                                    <option v-for="area in areas" :key="area.id" :value="area.id">
+                                        {{ area.nombre }}
                                     </option>
                                 </select>
                             </div>
 
                             <div class="mt-4">
-                                <InputLabel for="descripcion" value="Descripcion: " />
-                                <Textarea v-model="form.descripcion" rows="5" cols="30" />
+                                <InputLabel for="departamento_id" value="Flujo de valor: " />
+                                <select ref="departamento_select"
+                                    class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                    v-model="form.departamento_id" required>
+                                    <option value="" disabled selected>
+                                        Seleccione una opcion
+                                    </option>
+                                    <option v-for="departamento in departamentos" :key="departamento.id"
+                                        :value="departamento.id">
+                                        {{ departamento.nombre }}
+                                    </option>
+                                </select>
                             </div>
-
-
                         </div>
                         <div class="flex items-center justify-end mt-4">
                             <PrimaryButton class="ms-4 pi pi-save" :class="{

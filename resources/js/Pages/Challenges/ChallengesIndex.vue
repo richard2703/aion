@@ -44,6 +44,7 @@ async function getChallenges(
         challenges.value = response.data.data;
         totalRecords.value = response.data.total;
         first.value = (response.data.current_page - 1) * rows.value;
+        console.log({ challenges: challenges.value });
     } catch (error) {
         console.error(error);
     }
@@ -102,7 +103,7 @@ const onSort = (event) => {
         sortOrder.value
     );
 };
-console.log(challenges.value);
+
 </script>
 
 <style scoped>

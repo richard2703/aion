@@ -27,16 +27,34 @@ class seccionController extends Controller
         if ($filter) {
             $query->where(function ($q) use ($filter) {
                 $q->where('secciones.id', 'like', '%' . $filter . '%')
-                    ->orWhere('secciones.titulo', 'like', '%' . $filter . '%')
-                    ->orWhere('secciones.descripcion', 'like', '%' . $filter . '%');
+                    ->orWhereHas('area', function ($q) use ($filter) {
+                        $q->where('areas.nombre', 'like', '%' . $filter . '%')
+                            ->orWhere('areas.descripcion', 'like', '%' . $filter . '%');
+                    })
+                    ->orWhereHas('departamento', function ($q) use ($filter) {
+                        $q->where('departamentos.nombre', 'like', '%' . $filter . '%')
+                            ->orWhere('departamentos.descripcion', 'like', '%' . $filter . '%');
+                    });
             });
         }
 
         if ($sortField) {
-            $query->orderBy($sortField, $sortOrder);
+            if (in_array($sortField, ['id', 'area.nombre', 'departamento.nombre'])) {
+                if (strpos($sortField, 'area.') === 0) {
+                    $query->join('areas', 'secciones.area_id', '=', 'areas.id')
+                        ->select('secciones.*', 'areas.nombre as area_nombre') // Select distinct columns
+                        ->orderBy('areas.' . substr($sortField, 5), $sortOrder);
+                } else if (strpos($sortField, 'departamento.') === 0) {
+                    $query->join('departamentos', 'secciones.departamento_id', '=', 'departamentos.id')
+                        ->select('secciones.*', 'departamentos.nombre as departamento_nombre') // Select distinct columns
+                        ->orderBy('departamentos.' . substr($sortField, 12), $sortOrder);
+                } else {
+                    $query->orderBy($sortField, $sortOrder);
+                }
+            }
         }
 
-        $result = $query->paginate($pageSize, ['*'], 'page', $page);
+        $result = $query->with('area', 'departamento')->paginate($pageSize, ['*'], 'page', $page);
 
         return response()->json($result);
     }
@@ -58,10 +76,17 @@ class seccionController extends Controller
         ]);
     }
 
+    public function byDepartamento($departamento_id)
+    {
+        $secciones = Seccion::where('departamento_id', $departamento_id)->get();
+        return response()->json($secciones);
+    }
+
     public function store(Request $request)
     {
         $data = [
-            'titulo' => $request->titulo,
+            'area_id' => $request->area_id,
+            'departamento_id' => $request->departamento_id,
             'descripcion' => $request->descripcion,
             'created_by' => auth()->user()->id,
         ];
@@ -71,8 +96,7 @@ class seccionController extends Controller
 
     public function update(Seccion $seccion, Request $request)
     {
-
-        $seccion->update($request->only('titulo', 'descripcion'));
+        $seccion->update($request->only('area_id', 'departamento_id'));
         return redirect()->route('seccion.index');
     }
 

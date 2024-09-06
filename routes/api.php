@@ -110,3 +110,4 @@ Route::post('/tareaEvidencia/store', [App\Http\Controllers\tareaEvidenciaControl
 Route::delete('/tareaEvidencia/{tareaEvidencia}/delete', [App\Http\Controllers\tareaEvidenciaController::class, 'destroy'])->name('tareas.evidencia.destroy');
 
 Route::get('/secciones', [App\Http\Controllers\seccionController::class, 'findAll'])->name('secciones.findAll');
+Route::get('/secciones/{departamento_id}', [App\Http\Controllers\seccionController::class, 'byDepartamento'])->name('secciones.byDepartamento');
