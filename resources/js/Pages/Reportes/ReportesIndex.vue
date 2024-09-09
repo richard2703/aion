@@ -109,6 +109,13 @@ watch(globalFilter, (newValue) => {
     };
     getAreas(1, rows.value, newValue, sortField.value, sortOrder.value);
 });
+
+const isLoading = ref(false);
+function handleClick(id) {
+    isLoading.value = true;
+    // El redireccionamiento ocurre después de cambiar el estado.
+    window.location.href = route('reporte.pdf', id);
+}
 </script>
 
 <style scoped>
@@ -164,16 +171,19 @@ watch(globalFilter, (newValue) => {
 
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">
-                                        <PrimaryButton class="pi pi-eye me-2" :href="route(
-                                            'reporte.show',
-                                            slotProps.data.id
-                                        )
-                                            ">
+                                        <PrimaryButton class="pi pi-eye me-2"
+                                            :href="route('reporte.show', slotProps.data.id)">
                                         </PrimaryButton>
+                                        <!-- <PrimaryButton class="pi pi-eye me-2" @click="handleClick(slotProps.data.id)"
+                                            :disabled="isLoading">
+                                            <span v-if="!isLoading">Ver Reporte</span>
+                                            <span v-else>
+                                                <i class="pi pi-spinner pi-spin"></i> Cargando...
+                                            </span>
+                                        </PrimaryButton> -->
 
-                                        <PrimaryButton class="pi pi-download me-2" :href="route(
-                                            'reporte.pdf',
-                                            slotProps.data.id)">
+                                        <PrimaryButton class="pi pi-download me-2"
+                                            :href="route('reporte.pdf', slotProps.data.id)">
                                         </PrimaryButton>
 
                                     </template>

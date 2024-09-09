@@ -70,11 +70,12 @@
     </div>  --}}
 
     <div style="position: relative; width: 100%; height: 1100px; text-align: center;">
-        <img src="{{ public_path('portadas/test.jpg') }}" alt="Logo"
-            style="position: absolute; top: 0; left: 0; width: 100%; height: 1100px; z-index: -1;">
+        <img src="{{ public_path('portadas/portada.png') }}" alt="Logo"
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 1200px; z-index: -1;">
 
-        <h1 style="position: relative; color: white; font-size: 3rem; z-index: 2; padding-top: 500px;">
-            Reporte Semanal: Semana {{ $reporteSemanal->numeroSemana }}
+        <h1 style="position: relative; color: white; font-size: 3rem; z-index: 2; padding-top: 600px;">
+            Reporte Semanal <br>
+            Semana: {{ $reporteSemanal->numeroSemana }}
         </h1>
     </div>
 
