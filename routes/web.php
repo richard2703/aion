@@ -180,4 +180,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('Desperdicio/{desperdicio}/edit', [App\Http\Controllers\desperdiciosController::class, 'edit'])->name('desperdicio.edit');
     Route::patch('Desperdicio/{desperdicio}/update', [App\Http\Controllers\desperdiciosController::class, 'update'])->name('desperdicio.update');
     Route::delete('Desperdicio/{desperdicio}/destroy', [App\Http\Controllers\desperdiciosController::class, 'destroy'])->name('desperdicio.destroy');
+
+    //test de mail
+    Route::get('send/mail', [App\Http\Controllers\SendMailController::class, 'sendMailWithAttachment'])->name('mailer.sendMailWithAttachment');
 });
