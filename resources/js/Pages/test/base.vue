@@ -53,6 +53,9 @@ const subTitle = "subTitle2"; // Este segundo es por siu viene de un menu desple
                     <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
                         <PrimaryButton>Nuevo</PrimaryButton>
                     </div>
+                    <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
+                        <PrimaryButton :href="route('mailer.sendMailWithAttachment')">Enviar</PrimaryButton>
+                    </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
 
                         <div class="container mx-auto">
