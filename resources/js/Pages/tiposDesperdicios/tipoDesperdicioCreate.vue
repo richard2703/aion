@@ -55,6 +55,7 @@ const form = useForm({
     nombre: "",
     descripcion: "",
     calificacion: "",
+    tipo: "",
 });
 
 const onChange = async (event) => {
@@ -134,7 +135,7 @@ const search = (event) => {
                             <form @submit.prevent="submit">
 
                                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
-                                    <div class="mt-4">
+                                    <!-- <div class="mt-4">
                                         <InputLabel for="area_id" value="Pilar: " />
                                         <select ref="area_select" @change="onChange($event)"
                                             class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
@@ -161,8 +162,15 @@ const search = (event) => {
                                                 {{ departamento.nombre }}
                                             </option>
                                         </select>
+                                    </div> -->
+                                    <div class="mt-4">
+                                        <InputLabel for="Tipo" value="Tipo: " />
+                                        <!-- <AutoComplete v-model="form.lider_id" optionLabel="name"
+                                            :suggestions="filteredUsuarios" forceSelection @complete="search"
+                                            placeholder="" /> -->
+                                        <TextInput id="tipo" v-model="form.tipo" type="text" class="mt-1 block w-full"
+                                            required autocomplete="tipo" />
                                     </div>
-
                                     <div class="mt-4">
                                         <InputLabel for="Nombre" value="Nombre: " />
                                         <!-- <AutoComplete v-model="form.lider_id" optionLabel="name"

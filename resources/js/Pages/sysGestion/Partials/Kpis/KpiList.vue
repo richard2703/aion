@@ -84,7 +84,8 @@ const setChartData = () => {
         labels: chartLabels,
         datasets: [
             {
-                label: kpi.value.titulo,
+                // label: kpi.value.titulo,
+                label: 'kpi',
                 data: chartValues,
                 backgroundColor: ['rgba(115, 72, 207, 0.2)'],
                 borderColor: ['rgb(74, 13, 204)'],

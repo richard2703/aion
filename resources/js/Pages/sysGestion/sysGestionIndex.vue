@@ -68,6 +68,8 @@ async function onChange(event) {
 }
 
 async function getProcesos() {
+    console.log('departamento_id', form.departamento_id);
+
     await axios.get(route("procesos.byDepartamento", form.departamento_id))
         .then((response) => (procesos.value = response.data.procesos))
         .catch((error) => {
@@ -113,7 +115,7 @@ async function getProcesos() {
                                 <div class="mt-4">
                                     <InputLabel for="departamento_id" value="Flujo de valor: " />
 
-                                    <select ref="departamento_select"
+                                    <select ref="departamento_select" @change="getProcesos()"
                                         class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
                                         v-model="form.departamento_id" required>
                                         <option value="" disabled selected>

@@ -22,6 +22,7 @@ class tiposDesperdicios extends Model
         'descripcion',
         'calificacion',
         'created_for',
+        'tipo',
     ];
 
     public function usuario(): BelongsTo

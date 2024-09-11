@@ -96,8 +96,8 @@ const submit = () => {
 
 
 onMounted(() => {
-    getAreas();
-    onChange(desperdicio.value.area_id);
+    // getAreas();
+    // onChange(desperdicio.value.area_id);
     getTipos(desperdicio.value.departamento_id);
 })
 
@@ -133,7 +133,7 @@ onMounted(() => {
                             <form @submit.prevent="submit">
 
                                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
-                                    <div class="mt-4">
+                                    <!-- <div class="mt-4">
                                         <InputLabel for="area_id" value="Pilar: " />
                                         <select ref="area_select" @change="onChange($event)"
                                             class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
@@ -145,9 +145,9 @@ onMounted(() => {
                                                 {{ area.nombre }}
                                             </option>
                                         </select>
-                                    </div>
+                                    </div> -->
 
-                                    <div class="mt-4">
+                                    <!-- <div class="mt-4">
                                         <InputLabel for="departamento_id" value="Flujo de valor: " />
 
                                         <select ref="departamento_select" @change="getTipos($event)"
@@ -161,7 +161,7 @@ onMounted(() => {
                                                 {{ departamento.nombre }}
                                             </option>
                                         </select>
-                                    </div>
+                                    </div> -->
 
                                     <div class="mt-4">
                                         <InputLabel for="departamento_id" value="Tipo desperdicio: " />
@@ -173,7 +173,7 @@ onMounted(() => {
                                                 Seleccione una opcion
                                             </option>
                                             <option v-for="tipo in tipos" :key="tipo.id" :value="tipo.id">
-                                                {{ tipo.nombre }}
+                                                {{ tipo.tipo }} - {{ tipo.nombre }}
                                             </option>
                                         </select>
                                     </div>

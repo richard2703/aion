@@ -177,21 +177,17 @@ watch(globalFilter, (newValue) => {
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column> -->
                                 <Column field="nombre" header="Nombre:" headerStyle="width:4em;" bodyClass="text-center"
                                     sortable></Column>
-                                <Column field="area.nombre" header="Pilar" headerStyle="width:4em;"
+                                <Column field="descripcion" header="Descripcion" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                                <Column field="departamento.nombre" header="Flujo de valor" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+                                <!-- <Column field="departamento.nombre" header="Flujo de valor" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column> -->
                                 <!-- <Column field="descripcion" header="Descripcion" headerStyle="width:4em;"
                                     bodyClass="text-center" sortable></Column> -->
 
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">
-                                        <PrimaryButton class="me-2 pi pi-file-edit" :href="route(
-                                            'tiposDesperdicios.edit',
-                                            slotProps.data.id
-                                        )
-                                            ">
-
+                                        <PrimaryButton class="me-2 pi pi-file-edit"
+                                            :href="route('tiposDesperdicios.edit', slotProps.data.id)">
                                         </PrimaryButton>
 
                                         <PrimaryButton class="me-2 pi pi-trash"

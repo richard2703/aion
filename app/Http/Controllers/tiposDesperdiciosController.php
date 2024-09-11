@@ -61,7 +61,8 @@ class tiposDesperdiciosController extends Controller
 
     function byDepartamento($departamento_id)
     {
-        return response()->json(['tipos' => tiposDesperdicios::where('departamento_id', $departamento_id)->get()]);
+        // return response()->json(['tipos' => tiposDesperdicios::where('departamento_id', $departamento_id)->get()]);
+        return response()->json(['tipos' => tiposDesperdicios::orderBy('tipo', 'desc')->get()]);
     }
 
     public function create()
@@ -80,6 +81,7 @@ class tiposDesperdiciosController extends Controller
         $tipo->created_for = auth()->id();
         $tipo->nombre = $request->nombre;
         $tipo->descripcion = $request->descripcion;
+        $tipo->tipo = $request->tipo;
         $tipo->save();
 
         return redirect()->route('tiposDesperdicios.index');
@@ -103,7 +105,7 @@ class tiposDesperdiciosController extends Controller
 
     public function update(Request $request, tiposDesperdicios $tipoDesperdicio)
     {
-        $tipoDesperdicio->update($request->only('area_id', 'departamento_id', 'nombre', 'descripcion'));
+        $tipoDesperdicio->update($request->only('area_id', 'departamento_id', 'nombre', 'descripcion', 'tipo'));
         return redirect()->route('tiposDesperdicios.index');
     }
 
