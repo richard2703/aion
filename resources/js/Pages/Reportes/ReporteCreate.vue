@@ -112,14 +112,14 @@ getDepartamentos();
                                             <option value="" disabled selected>
                                                 Seleccione una opción
                                             </option>
-                                            <!-- <option v-for="departamento in departamentos" :key="departamento.id"
+                                            <option v-for="departamento in departamentos" :key="departamento.id"
                                                 :value="departamento.departamento.id">
                                                 {{ departamento.departamento.nombre }}
-                                            </option> -->
-                                            <option v-for="departamento in departamentos" :key="departamento.id"
+                                            </option>
+                                            <!-- <option v-for="departamento in departamentos" :key="departamento.id"
                                                 :value="departamento.id">
                                                 {{ departamento.nombre }}
-                                            </option>
+                                            </option> -->
                                         </select>
                                     </div>
 

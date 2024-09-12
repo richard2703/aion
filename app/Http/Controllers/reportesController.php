@@ -226,28 +226,28 @@ class reportesController extends Controller
         //
     }
 
-    // public function findAll()
-    // {
-    //     // $query = Departamento::query();
-    //     $query = encargado_flujo::query();
-    //     // if ($pageSize && $page) {
-    //     //     $departamentos = $query->with('kpis')->paginate($pageSize, ['*'], 'page', $page);
-    //     // } else {
-    //     //     $departamentos = $query->with('kpis')->get();
-    //     // }
-    //     // $reporteSemanal = $query->orderBy('nombre', 'asc')->get();
-    //     $reporteSemanal = $query->where('user_id', auth()->id())->with('Departamento')->get();
-
-    //     return response()->json($reporteSemanal);
-    // }
-
     public function findAll()
     {
-        $query = Departamento::query();
-        $reporteSemanal = $query->orderBy('nombre', 'asc')->get();
+        // $query = Departamento::query();
+        $query = encargado_flujo::query();
+        // if ($pageSize && $page) {
+        //     $departamentos = $query->with('kpis')->paginate($pageSize, ['*'], 'page', $page);
+        // } else {
+        //     $departamentos = $query->with('kpis')->get();
+        // }
+        // $reporteSemanal = $query->orderBy('nombre', 'asc')->get();
+        $reporteSemanal = $query->where('user_id', auth()->id())->with('Departamento')->get();
 
         return response()->json($reporteSemanal);
     }
+
+    // public function findAll()
+    // {
+    //     $query = Departamento::query();
+    //     $reporteSemanal = $query->orderBy('nombre', 'asc')->get();
+
+    //     return response()->json($reporteSemanal);
+    // }
 
     public function findAllReporteSemanal()
     {
