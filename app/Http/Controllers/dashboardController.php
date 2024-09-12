@@ -17,11 +17,16 @@ class dashboardController extends Controller
 
         $personalizar->logo_path = Storage::disk('public')->url($personalizar->logo);
         $personalizar->banner_path = Storage::disk('public')->url($personalizar->banner);
+        $personalizar->portada_path = Storage::disk('public')->url($personalizar->portada);
 
         // $logo = ("public/storage/$personalizar->logo");
         // $banner = ("public/storage/$personalizar->banner");
+        // $portada = ("public/storage/$personalizar->portada");
+
         // $personalizar->logo_path = asset($logo);
         // $personalizar->banner_path = asset($banner);
+        // $personalizar->portada_path = asset($portada);
+
         // dd($logo);
         // return response()->json($personalizar);
         return response()->json([$personalizar, $objetivos]);
@@ -96,6 +101,29 @@ class dashboardController extends Controller
 
         $personalizar->save();
 
+        return response()->json(['message' => 'Updated successfully', 'personalizar' => $personalizar->fresh()]);
+    }
+
+    public function portada(Request $request, $id)
+    {
+        // dd('portada');
+        $personalizar = Personalizar::findOrFail($id);
+
+        // Manejar la carga del logo
+        if ($request->hasFile('portada')) {
+            // Eliminar el archivo anterior si existe
+            if ($personalizar->portada) {
+                Storage::disk('public')->delete($personalizar->portada);
+            }
+
+            // Guardar el nuevo archivo
+            $portada = $request->file('portada');
+            $path1 = $portada->store('portada', 'public');
+            $personalizar->portada = $path1;
+        }
+        $personalizar->save();
+
+        // Return response
         return response()->json(['message' => 'Updated successfully', 'personalizar' => $personalizar->fresh()]);
     }
 }

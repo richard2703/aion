@@ -19,5 +19,6 @@ class Personalizar extends Model
         'actuacion',
         'logo',
         'banner',
+        'portada',
     ];
 }

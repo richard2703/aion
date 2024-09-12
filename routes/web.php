@@ -71,6 +71,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     // Dashboard
     Route::post('/dashboard/store', [App\Http\Controllers\dashboardController::class, 'store'])->name('dashboard.store');
     Route::post('/dashboard/{id}/update', [App\Http\Controllers\dashboardController::class, 'update'])->name('dashboard.update');
+    Route::post('/dashboard/{id}/portada', [App\Http\Controllers\dashboardController::class, 'portada'])->name('dashboard.portada');
 
     //Objetivo
     Route::get('/objetivos', [App\Http\Controllers\objetivosController::class, 'index'])->name('objetivo.index');
