@@ -98,7 +98,7 @@ const deleteDepartamento = async (id) => {
 const onPage = (event) => {
     const page = event.page + 1;
     rows.value = event.rows; // Actualizar filas por página
-    getDepartamentos(
+    getEncargados(
         page,
         rows.value,
         globalFilter.value,
@@ -110,7 +110,7 @@ const onPage = (event) => {
 const onSort = (event) => {
     sortField.value = event.sortField || "id";
     sortOrder.value = event.sortOrder;
-    getDepartamentos(
+    getEncargados(
         1,
         rows.value,
         globalFilter.value,
