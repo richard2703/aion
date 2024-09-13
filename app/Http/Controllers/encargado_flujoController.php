@@ -72,6 +72,12 @@ class encargado_flujoController extends Controller
         // $encargado_flujo->area_id = $request->area_id;
         $encargado_flujo->departamento_id = $request->departamento_id;
         $encargado_flujo->user_id = $request->lider_id["id"];
+        $revision = encargado_flujo::where('departamento_id', $request->departamento_id)->where('user_id', $request->lider_id["id"])->first();
+        if ($revision) {
+            // dd("no hay revision");
+            return redirect()->route('encargadoFlujo.index');
+        }
+        // dd("si hay revision");
         $encargado_flujo->save();
 
         return redirect()->route('encargadoFlujo.index');

@@ -24,30 +24,30 @@ const filters = ref({});
 const sortField = ref("id");
 const sortOrder = ref(1);
 
-async function getDepartamentos(
-    page = 1,
-    rowsPerPage = rows.value,
-    filter = "",
-    sortField = "id",
-    sortOrder = 1
-) {
-    try {
-        const response = await axios.get("/api/departamentos", {
-            params: {
-                page,
-                rows: rowsPerPage,
-                filter,
-                sortField,
-                sortOrder: sortOrder === 1 ? "asc" : "desc",
-            },
-        });
-        departamentos.value = response.data.data;
-        totalRecords.value = response.data.total;
-        first.value = (response.data.current_page - 1) * rows.value;
-    } catch (error) {
-        console.error(error);
-    }
-}
+// async function getDepartamentos(
+//     page = 1,
+//     rowsPerPage = rows.value,
+//     filter = "",
+//     sortField = "id",
+//     sortOrder = 1
+// ) {
+//     try {
+//         const response = await axios.get("/api/departamentos", {
+//             params: {
+//                 page,
+//                 rows: rowsPerPage,
+//                 filter,
+//                 sortField,
+//                 sortOrder: sortOrder === 1 ? "asc" : "desc",
+//             },
+//         });
+//         departamentos.value = response.data.data;
+//         totalRecords.value = response.data.total;
+//         first.value = (response.data.current_page - 1) * rows.value;
+//     } catch (error) {
+//         console.error(error);
+//     }
+// }
 async function getEncargados(
     page = 1,
     rowsPerPage = rows.value,

@@ -19,7 +19,7 @@ async function getDepartamentos() {
         .get("/api/getFlujo")
         .then((response) => {
             departamentos.value = response.data;
-            // console.log({ departamentos: departamentos.value });
+            console.log({ departamentos: departamentos.value });
         })
         .catch((error) => {
             console.log(error);
@@ -114,7 +114,7 @@ onMounted(() => {
                                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
                                     <div>
                                         <InputLabel for="area_id" value="Flujo de valor: " />
-                                        <!-- <select ref="select"
+                                        <select ref="select"
                                             class="mt-1 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
                                             v-model="form.departamento_id" required>
                                             <option value="" disabled selected>
@@ -124,9 +124,9 @@ onMounted(() => {
                                                 :value="departamento.departamento.id">
                                                 {{ departamento.departamento.nombre }}
                                             </option>
-                                        </select> -->
+                                        </select>
 
-                                        <select ref="select"
+                                        <!-- <select ref="select"
                                             class="mt-1 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
                                             v-model="form.departamento_id" required>
                                             <option value="" disabled selected>
@@ -136,7 +136,7 @@ onMounted(() => {
                                                 :value="departamento.id">
                                                 {{ departamento.nombre }}
                                             </option>
-                                        </select>
+                                        </select> -->
                                     </div>
 
                                     <!-- Campos dinámicos para Highlight -->
