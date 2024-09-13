@@ -112,6 +112,7 @@ class encargado_flujoController extends Controller
      */
     public function destroy(encargado_flujo $encargado_flujo)
     {
-        //
+        $encargado_flujo->delete();
+        return response()->json(['success' => true]);
     }
 }

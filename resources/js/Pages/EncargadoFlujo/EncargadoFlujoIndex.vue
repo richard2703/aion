@@ -83,7 +83,7 @@ const deleteDepartamento = async (id) => {
             "warning"
         );
         if (result.isConfirmed) {
-            await axios.delete(route("departamento.destroy", id));
+            await axios.delete(route("encargadoFlujo.destroy", id));
 
             departamentos.value = departamentos.value.filter(
                 (departamento) => departamento.id !== id
@@ -93,6 +93,8 @@ const deleteDepartamento = async (id) => {
     } catch (error) {
         console.error(error);
     }
+    getEncargados();
+
 };
 
 const onPage = (event) => {
@@ -188,13 +190,13 @@ watch(globalFilter, (newValue) => {
 
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">
-                                        <PrimaryButton class="me-2 pi pi-file-edit" :href="route(
+                                        <!-- <PrimaryButton class="me-2 pi pi-file-edit" :href="route(
                                             'departamento.edit',
                                             slotProps.data.id
                                         )
                                             ">
 
-                                        </PrimaryButton>
+                                        </PrimaryButton> -->
 
                                         <PrimaryButton class="me-2 pi pi-trash" @click.prevent="
                                             deleteDepartamento(

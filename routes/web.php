@@ -157,6 +157,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('Encargados', [App\Http\Controllers\encargado_flujoController::class, 'index'])->name('encargadoFlujo.index');
     Route::get('Encargados/create', [App\Http\Controllers\encargado_flujoController::class, 'create'])->name('encargadoFlujo.create');
     Route::post('Encargados/store', [App\Http\Controllers\encargado_flujoController::class, 'store'])->name('encargadoFlujo.store');
+    Route::delete('Encargados/{encargado_flujo}/destroy', [App\Http\Controllers\encargado_flujoController::class, 'destroy'])->name('encargadoFlujo.destroy');
+
     //Reportes
     Route::get('reportes', [App\Http\Controllers\reportesController::class, 'index'])->name('reporte.index');
     Route::get('reportes/nuevo', [App\Http\Controllers\reportesController::class, 'create'])->name('reporte.create');
