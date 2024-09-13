@@ -36,4 +36,9 @@ class testController extends Controller
             'usuario' => $usuario,
         ]);
     }
+
+    function form()
+    {
+        return Inertia::render('test/testForm');
+    }
 }

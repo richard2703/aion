@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Assessment extends Model
 {
     use HasFactory;
-    use SoftDeletes;
+    // use SoftDeletes;
 
     protected $table = 'assessments';
 
@@ -20,8 +20,8 @@ class Assessment extends Model
         'created_by',
     ];
 
-    public function secciones(): HasMany
+    public function AssessmentAsignado(): HasMany
     {
-        return $this->hasMany(Seccion::class, 'assessment_id', 'id');
+        return $this->hasMany(AssessmentAsignado::class, 'assessment_id', 'id');
     }
 }

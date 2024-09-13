@@ -1,21 +1,21 @@
 <script setup>
-import { Head, Link } from "@inertiajs/vue3";
-import { ref, onMounted, watch } from "vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
-import axios from "axios";
-import Layout from "@/Layouts/Layout.vue";
+import { onMounted, ref, watch } from 'vue';
+import { Head, Link } from '@inertiajs/vue3';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
+import Layout from '@/Layouts/Layout.vue';
 import { confirmDialog, showToast } from "../utils/SweetAlert.service";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import InputText from "primevue/inputtext";
+import { format } from 'date-fns';
 
 const props = defineProps({
-    challenges: Array,
 });
 
 const title = "assessment";
-const subTitle = "challenges";
-const challenges = ref([]);
+const subTitle = "evaluaciones";
+const evaluaciones = ref([]);
+
 const totalRecords = ref(0);
 const rows = ref(10);
 const first = ref(0);
@@ -24,15 +24,26 @@ const filters = ref({});
 const sortField = ref("id");
 const sortOrder = ref(1);
 
-async function getChallenges(
+onMounted(() => {
+    getEvaluaciones();
+})
+
+watch(globalFilter, (newValue) => {
+    filters.value = {
+        global: { value: newValue, matchMode: "contains" },
+    };
+    getEvaluaciones(1, rows.value, newValue, sortField.value, sortOrder.value);
+});
+
+async function getEvaluaciones(
     page = 1,
     rowsPerPage = rows.value,
     filter = "",
     sortField = "id",
-    sortOrder = 1
+    sortOrder = -1
 ) {
     try {
-        const response = await axios.get("/api/challenges", {
+        const response = await axios.get("/api/evaluaciones", {
             params: {
                 page,
                 rows: rowsPerPage,
@@ -41,49 +52,21 @@ async function getChallenges(
                 sortOrder: sortOrder === 1 ? "asc" : "desc",
             },
         });
-        challenges.value = response.data.data;
+        evaluaciones.value = response.data.data;
         totalRecords.value = response.data.total;
         first.value = (response.data.current_page - 1) * rows.value;
-        console.log({ challenges: challenges.value });
     } catch (error) {
         console.error(error);
     }
 }
-
-const deleteChallenge = async (id) => {
-    try {
-        const result = await confirmDialog(
-            "Estas seguro?",
-            "Ya no podras revertir esto!",
-            "warning"
-        );
-        if (result.isConfirmed) {
-            await axios.delete(route("challenge.destroy", id));
-            challenges.value = challenges.value.filter((challenge) => challenge.id !== id);
-            showToast("El registro ha sido eliminado", "success");
-
-        }
-    } catch (error) {
-        console.log(error);
-
-    }
+const formatearFecha = (dateString) => {
+    return format(new Date(dateString), 'dd/MM/yyyy');
 };
-
-onMounted(() => {
-    getChallenges();
-});
-
-watch(globalFilter, (newValue) => {
-    filters.value = {
-        global: { value: newValue, matchMode: "contains" },
-    };
-    getChallenges(1, rows.value, newValue, sortField.value, sortOrder.value);
-});
 
 const onPage = (event) => {
     const page = event.page + 1;
-    rows.value = event.rows;
-    getChallenges(
+    rows.value = event.rows; // Actualizar filas por página
+    getEvaluaciones(
         page,
         rows.value,
         globalFilter.value,
@@ -95,7 +78,7 @@ const onPage = (event) => {
 const onSort = (event) => {
     sortField.value = event.sortField || "id";
     sortOrder.value = event.sortOrder;
-    getChallenges(
+    getEvaluaciones(
         1,
         rows.value,
         globalFilter.value,
@@ -106,26 +89,23 @@ const onSort = (event) => {
 
 </script>
 
-<style scoped>
-.mb-3 {
-    margin-bottom: 1rem;
-}
-</style>
-
 <template>
     <Layout :titulo="title" :subTitulo="subTitle">
 
-        <Head title="Challenges" />
+        <Head title="Assessment" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
-                <h3>Challenges</h3>
+                <h3>Evaluaciones</h3>
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
-                <Link class="active">
-                <h3>Challenges</h3>
+                <Link href="#" class="px-1">
+                <h3>Assessment -</h3>
+                </Link>
+                <Link :href="route('evaluacion.index')" class="active">
+                <h3>Evaluaciones</h3>
                 </Link>
             </div>
         </div>
@@ -134,45 +114,42 @@ const onSort = (event) => {
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div>
                     <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
-                        <PrimaryButton :href="route('challenge.create')" class="m-4 pi pi-plus"></PrimaryButton>
+                        <PrimaryButton :href="route('evaluacion.create')" class="m-4 pi pi-plus"></PrimaryButton>
                     </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto overflow-x-auto">
                             <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
-                            <DataTable :value="challenges" paginator :rows="rows" :totalRecords="totalRecords"
+                            <DataTable :value="evaluaciones" paginator :rows="rows" :totalRecords="totalRecords"
                                 :lazy="true" :first="first" @page="onPage" @sort="onSort"
                                 :rowsPerPageOptions="[5, 10, 20, 50]" tableStyle="min-width: 50rem" :filters="filters"
                                 :globalFilterFields="[
-                                    'id',
-                                    'area.nombre',
-                                    'departamento.nombre',
-                                    'challenge',
+                                    'id'
                                 ]" :sortField="sortField" :sortOrder="sortOrder"
                                 class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
                                 <template #empty> No data found. </template>
                                 <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
                                     sortable></Column>
-                                <Column field="area.nombre" header="Pilar" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                                <Column field="departamento.nombre" header="Flujo de valor" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                                <Column field="challenge" header="Challenge" headerStyle="width:4em;"
-                                    bodyClass="text-center" sortable></Column>
+                                <Column header="Fecha" headerStyle="width:4em;" bodyStyle="text-align:center;"
+                                    bodyClass="text-center" sortable>
+                                    <template #body="slotProps">
+                                        {{ formatearFecha(slotProps.data.created_at) }}
+                                    </template>
+                                </Column>
 
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">
                                         <PrimaryButton class="m-2 pi pi-file-edit" :href="route(
-                                            'challenge.edit',
+                                            'evaluacion.select',
                                             slotProps.data.id
                                         )">
 
                                         </PrimaryButton>
 
-                                        <PrimaryButton class="m-2 pi pi-trash" @click.prevent="
-                                            deleteChallenge(slotProps.data.id)
+                                        <!-- <PrimaryButton class="m-2 pi pi-trash" @click.prevent="
+                                            deleteSeccion(slotProps.data.id)
                                             ">
 
-                                        </PrimaryButton>
+                                        </PrimaryButton> -->
                                     </template>
                                 </Column>
                             </DataTable>

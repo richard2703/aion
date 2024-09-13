@@ -19,6 +19,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     })->name('dashboard');
 
     Route::get('/test', [App\Http\Controllers\testController::class, 'primero'])->name('test.primero');
+    Route::get('/test/form', [App\Http\Controllers\testController::class, 'form'])->name('test.form');
+
     Route::get('/cambiar-mensaje', [App\Http\Controllers\testController::class, 'cambiarMensaje'])->name('test.cambiarMensaje');
     Route::post('/cambiar-mensaje', [App\Http\Controllers\testController::class, 'registro'])->name('test.registro');
 
@@ -176,5 +178,14 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::delete('seccion/{seccion}/destroy', [App\Http\Controllers\seccionController::class, 'destroy'])->name('seccion.destroy');
 
     //Assessment
-
+    Route::get('assessment', [App\Http\Controllers\evaluacionController::class, 'index'])->name('evaluacion.index');
+    Route::get('assessment/create', [App\Http\Controllers\evaluacionController::class, 'create'])->name('evaluacion.create');
+    Route::get('assessment/{evaluacion}/select', [App\Http\Controllers\evaluacionController::class, 'select'])->name('evaluacion.select');
+    Route::get('assessment/{assessmentAsignado}/form', [App\Http\Controllers\evaluacionController::class, 'form'])->name('evaluacion.form');
+    Route::get('assessment/{evaluacion}/show', [App\Http\Controllers\evaluacionController::class, 'show'])->name('evaluacion.show');
+    Route::get('assessment/{evaluacion}/edit', [App\Http\Controllers\evaluacionController::class, 'edit'])->name('evaluacion.edit');
+    Route::get('assessment/{evaluacion}/details', [App\Http\Controllers\evaluacionController::class, 'details'])->name('evaluacion.details');
+    Route::post('assessment/store', [App\Http\Controllers\evaluacionController::class, 'store'])->name('evaluacion.store');
+    Route::patch('assessment/{evaluacion}/update', [App\Http\Controllers\evaluacionController::class, 'update'])->name('evaluacion.update');
+    Route::delete('assessment/{evaluacion}/destroy', [App\Http\Controllers\evaluacionController::class, 'destroy'])->name('evaluacion.destroy');
 });

@@ -140,7 +140,7 @@
                         </Link>
                     </li>
                     <li>
-                        <Link class="group flex items-center py-2" :href="route('misreporte.index')" :class="subTitle === 'evaluaciones' ? 'activo flex'
+                        <Link class="group flex items-center py-2" :href="route('evaluacion.index')" :class="subTitle === 'evaluaciones' ? 'activo flex'
                             : 'inactivo flex'">
                         <icon name="circle" class="mr-2 w-3 h-3" />
                         <div>Evaluaciones</div>

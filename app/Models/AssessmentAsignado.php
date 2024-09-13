@@ -15,7 +15,7 @@ class AssessmentAsignado extends Model
     protected $fillable = [
         'assessment_id',
         'seccion_id',
-        'status',
+        'estatus',
     ];
 
     public function assessment(): BelongsTo

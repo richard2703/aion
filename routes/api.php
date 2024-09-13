@@ -111,3 +111,5 @@ Route::delete('/tareaEvidencia/{tareaEvidencia}/delete', [App\Http\Controllers\t
 
 Route::get('/secciones', [App\Http\Controllers\seccionController::class, 'findAll'])->name('secciones.findAll');
 Route::get('/secciones/{departamento_id}', [App\Http\Controllers\seccionController::class, 'byDepartamento'])->name('secciones.byDepartamento');
+
+Route::get('/evaluaciones', [App\Http\Controllers\evaluacionController::class, 'findAll'])->name('evaluaciones.findAll');
