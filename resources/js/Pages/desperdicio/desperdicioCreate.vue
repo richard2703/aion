@@ -25,6 +25,9 @@ const form = useForm({
     tipoDesperdicio_id: "",
     descripcion: "",
     monto: "",
+    rango: "",
+    recurrencia: '',
+    detectabilidad: '',
 });
 
 async function getAreas() {
@@ -112,7 +115,7 @@ onMounted(() => {
                         <div class="container mx-auto">
                             <form @submit.prevent="submit">
 
-                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                                     <!--   <div class="mt-4">
                                         <InputLabel for="area_id" value="Pilar: " />
                                         <select ref="area_select" @change="onChange($event)"
@@ -159,7 +162,7 @@ onMounted(() => {
                                     </div>
 
                                     <div class="mt-4">
-                                        <InputLabel for="monto" value="Monto: " />
+                                        <InputLabel for="monto" value="Monto $ : " />
                                         <TextInput id="tarea" v-model="form.monto" type="number" step="any"
                                             class="mt-1 block w-full" required autocomplete="tarea" />
                                     </div>
@@ -168,6 +171,23 @@ onMounted(() => {
                                         <TextInput id="descripcion" v-model="form.descripcion" type="text"
                                             class="mt-1 block w-full" required autocomplete="descripcion"
                                             maxlength="250" />
+                                    </div>
+                                    <div class="mt-4">
+                                        <InputLabel for="Rango" value="Rango: " />
+                                        <TextInput id="rango" v-model="form.rango" type="number"
+                                            class="mt-1 block w-full" required autocomplete="rango" min="1" max="10" />
+                                    </div>
+                                    <div class="mt-4">
+                                        <InputLabel for="Recurrencia" value="Recurrencia: " />
+                                        <TextInput id="recurrencia" v-model="form.recurrencia" type="number"
+                                            class="mt-1 block w-full" required autocomplete="recurrencia" min="1"
+                                            max="10" />
+                                    </div>
+                                    <div class="mt-4">
+                                        <InputLabel for="Detectabilidad" value="Detectabilidad: " />
+                                        <TextInput id="detectabilidad" v-model="form.detectabilidad" type="number"
+                                            class="mt-1 block w-full" required autocomplete="detectabilidad" min="1"
+                                            max="10" />
                                     </div>
 
 

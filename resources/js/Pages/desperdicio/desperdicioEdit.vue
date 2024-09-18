@@ -28,6 +28,9 @@ const form = useForm({
     tipoDesperdicio_id: desperdicio.value.tipoDesperdicio_id,
     descripcion: desperdicio.value.descripcion,
     monto: desperdicio.value.monto,
+    rango: desperdicio.value.rango,
+    recurrencia: desperdicio.value.recurrencia,
+    detectabilidad: desperdicio.value.detectabilidad,
 });
 
 async function getAreas() {
@@ -98,7 +101,9 @@ const submit = () => {
 onMounted(() => {
     // getAreas();
     // onChange(desperdicio.value.area_id);
-    getTipos(desperdicio.value.departamento_id);
+    // getTipos(desperdicio.value.departamento_id);
+    getTipos(1);
+
 })
 
 </script>
@@ -195,6 +200,25 @@ onMounted(() => {
                                             class="mt-1 block w-full" required autocomplete="descripcion"
                                             maxlength="250" />
                                     </div>
+
+                                    <div class="mt-4">
+                                        <InputLabel for="Rango" value="Rango: " />
+                                        <TextInput id="rango" v-model="form.rango" type="number"
+                                            class="mt-1 block w-full" required autocomplete="rango" min="1" max="10" />
+                                    </div>
+                                    <div class="mt-4">
+                                        <InputLabel for="Recurrencia" value="Recurrencia: " />
+                                        <TextInput id="recurrencia" v-model="form.recurrencia" type="number"
+                                            class="mt-1 block w-full" required autocomplete="recurrencia" min="1"
+                                            max="10" />
+                                    </div>
+                                    <div class="mt-4">
+                                        <InputLabel for="Detectabilidad" value="Detectabilidad: " />
+                                        <TextInput id="detectabilidad" v-model="form.detectabilidad" type="number"
+                                            class="mt-1 block w-full" required autocomplete="detectabilidad" min="1"
+                                            max="10" />
+                                    </div>
+
 
 
                                 </div>

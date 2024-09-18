@@ -78,6 +78,9 @@ class desperdiciosController extends Controller
         $item->created_for = auth()->id();
         $item->monto = $request->monto;
         $item->descripcion = $request->descripcion;
+        $item->rango = $request->rango;
+        $item->recurrencia = $request->recurrencia;
+        $item->detectabilidad = $request->detectabilidad;
         $item->save();
 
         return redirect()->route('desperdicio.index');
@@ -108,7 +111,7 @@ class desperdiciosController extends Controller
     {
         // dd($request);
         // $reporte = desperdicios::findOrFail($desperdicio);
-        $desperdicio->update($request->only('area_id', 'departamento_id', 'tipoDesperdicio_id', 'descripcion', 'monto'));
+        $desperdicio->update($request->only('area_id', 'departamento_id', 'tipoDesperdicio_id', 'descripcion', 'monto', 'rango', 'recurrencia', 'detectabilidad'));
 
         return redirect()->route('desperdicio.index');
     }

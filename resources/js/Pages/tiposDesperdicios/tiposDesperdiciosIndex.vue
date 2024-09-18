@@ -173,8 +173,8 @@ watch(globalFilter, (newValue) => {
                                 <template #empty> Sin registros. </template>
                                 <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
                                     sortable></Column>
-                                <!-- <Column field="usuario.name" header="Usuario" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column> -->
+                                <Column field="tipo" header="Tipo" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                 <Column field="nombre" header="Nombre:" headerStyle="width:4em;" bodyClass="text-center"
                                     sortable></Column>
                                 <Column field="descripcion" header="Descripcion" headerStyle="width:4em;"

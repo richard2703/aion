@@ -151,13 +151,36 @@ const search = (event) => {
                                         </select>
                                     </div> -->
                                     <div class="mt-4">
+                                        <InputLabel for="departamento_id" value="Tipo: " />
+
+                                        <select ref="departamento_select"
+                                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                            v-model="form.tipo" required>
+                                            <option value="" disabled selected>
+                                                Seleccione una opcion
+                                            </option>
+                                            <option value="Equipos">
+                                                Equipos
+                                            </option>
+                                            <option value="Materiales">
+                                                Materiales
+                                            </option>
+                                            <option value="Energia">
+                                                Energia
+                                            </option>
+                                            <option value="Gente">
+                                                Gente
+                                            </option>
+                                            <option value="Otros">
+                                                Otros
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <!-- <div class="mt-4">
                                         <InputLabel for="Tipo" value="Tipo: " />
-                                        <!-- <AutoComplete v-model="form.lider_id" optionLabel="name"
-                                            :suggestions="filteredUsuarios" forceSelection @complete="search"
-                                            placeholder="" /> -->
                                         <TextInput id="tipo" v-model="form.tipo" type="text" class="mt-1 block w-full"
                                             required autocomplete="tipo" />
-                                    </div>
+                                    </div> -->
                                     <div class="mt-4">
                                         <InputLabel for="Nombre" value="Nombre: " />
                                         <!-- <AutoComplete v-model="form.lider_id" optionLabel="name"

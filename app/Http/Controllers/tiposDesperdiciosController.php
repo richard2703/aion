@@ -54,7 +54,7 @@ class tiposDesperdiciosController extends Controller
         //     $query->orderBy('id', $sortOrder);
         // }
 
-        $tipos = $query->with('usuario', 'area', 'departamento')->paginate($pageSize, ['*'], 'page', $page);
+        $tipos = $query->with('usuario', 'area', 'departamento')->orderBy('tipo', 'desc')->paginate($pageSize, ['*'], 'page', $page);
 
         return response()->json($tipos);
     }
