@@ -177,7 +177,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::post('tipoDesperdicio/store', [App\Http\Controllers\tiposDesperdiciosController::class, 'store'])->name('tiposDesperdicios.store');
     Route::get('tipoDesperdicio/{tipoDesperdicio}/edit', [App\Http\Controllers\tiposDesperdiciosController::class, 'edit'])->name('tiposDesperdicios.edit');
     Route::patch('tipoDesperdicio/{tipoDesperdicio}/update', [App\Http\Controllers\tiposDesperdiciosController::class, 'update'])->name('tiposDesperdicios.update');
-    Route::delete('tipoDesperdicio/{destipoDesperdicioerdicio}/destroy', [App\Http\Controllers\tiposDesperdiciosController::class, 'destroy'])->name('tiposDesperdicios.destroy');
+    Route::delete('tipoDesperdicio/{tipoDesperdicio}/destroy', [App\Http\Controllers\tiposDesperdiciosController::class, 'destroy'])->name('tiposDesperdicios.destroy');
     //Desperdicio
     Route::get('Desperdicio', [App\Http\Controllers\desperdiciosController::class, 'index'])->name('desperdicio.index');
     Route::get('Desperdicio/nuevo', [App\Http\Controllers\desperdiciosController::class, 'create'])->name('desperdicio.create');

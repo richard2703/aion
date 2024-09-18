@@ -113,7 +113,7 @@
                         </tr>  --}}
                         <tr>
                             <td>
-                                <div class="col-6">
+                                <div class="col-12">
                                     <h2>Highlights</h2>
                                     <ul class="mt-2">
                                         @forelse ($reporte->highlights as $highlight)
@@ -125,7 +125,7 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="col-6">
+                                <div class="col-12">
                                     <h2>Lowlights</h2>
                                     <ul class="mt-2">
                                         @forelse ($reporte->lowlights as $lowlight)
@@ -139,7 +139,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <div class="col-6">
+                                <div class="col-12">
                                     <h2>Kpis</h2>
                                     {{--  @foreach ($reporte->kpis as $kpi)  --}}
                                     @forelse ($reporte->kpis as $kpi)
@@ -169,7 +169,7 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="col-6">
+                                <div class="col-12">
                                     <h2>Avisos</h2>
                                     <ul class="mt-2">
                                         @forelse ($reporte->avisos as $aviso)

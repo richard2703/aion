@@ -51,7 +51,7 @@ const formatearFecha = (dateString) => {
         <div class="py-2">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    {{ evaluacion }}
+                    <!-- {{ evaluacion }} -->
 
                     <!-- R2 -->
                     <div class="grid grid-cols-3 gap-2">

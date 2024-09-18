@@ -252,146 +252,145 @@
                         </Link>
                     </div>
                 </li>
-                <<<<<<< HEAD=======<!-- //Tipos de Desperdicios -->
-                    <li>
-                        <div class="mb-4">
-                            <Link class="group flex items-center py-3" :href="route('tiposDesperdicios.index')">
-                            <div :class="title === 'tiposDesperdicios'
-                                ? 'activo flex'
-                                : 'inactivo flex'
-                                ">
-                                <i class="pi pi-trash mr-2 w-4 h-4"></i>
-                                Tipos de Desperdicios
-                            </div>
-                            </Link>
+                <!-- //Tipos de Desperdicios -->
+                <li>
+                    <div class="mb-4">
+                        <Link class="group flex items-center py-3" :href="route('tiposDesperdicios.index')">
+                        <div :class="title === 'tiposDesperdicios'
+                            ? 'activo flex'
+                            : 'inactivo flex'
+                            ">
+                            <i class="pi pi-trash mr-2 w-4 h-4"></i>
+                            Tipos de Desperdicios
                         </div>
-                    </li>
+                        </Link>
+                    </div>
+                </li>
 
-                    <li>
-                        <div class="mb-4">
-                            <Link class="group flex items-center py-3" :href="route('challenge.index')">
-                            <div :class="title === 'Challenges'
-                                ? 'activo flex'
-                                : 'inactivo flex'
-                                ">
-                                <i class="pi pi-verified mr-2 w-4 h-4"></i>
-                                Challenges
-                            </div>
-                            </Link>
+                <li>
+                    <div class="mb-4">
+                        <Link class="group flex items-center py-3" :href="route('challenge.index')">
+                        <div :class="title === 'Challenges'
+                            ? 'activo flex'
+                            : 'inactivo flex'
+                            ">
+                            <i class="pi pi-verified mr-2 w-4 h-4"></i>
+                            Challenges
                         </div>
-                    </li>
+                        </Link>
+                    </div>
+                </li>
 
-                    <li>
-                        <div class="mb-4">
-                            <Link class="group flex items-center py-3" :href="route('opcion.index')">
-                            <div :class="title === 'Opciones'
-                                ? 'activo flex'
-                                : 'inactivo flex'
-                                ">
-                                <i class="pi pi-question mr-2 w-4 h-4"></i>
-                                Opciones
-                            </div>
-                            </Link>
+                <li>
+                    <div class="mb-4">
+                        <Link class="group flex items-center py-3" :href="route('opcion.index')">
+                        <div :class="title === 'Opciones'
+                            ? 'activo flex'
+                            : 'inactivo flex'
+                            ">
+                            <i class="pi pi-question mr-2 w-4 h-4"></i>
+                            Opciones
                         </div>
-                    </li>
-                    >>>>>>> integracion
-                    <li>
-                        <div class="mb-4">
-                            <Link class="group flex items-center py-3" :href="route('config.index')">
-                            <div :class="title === 'Configuraciones'
-                                ? 'activo flex'
-                                : 'inactivo flex'
-                                ">
-                                <i class="pi pi-wrench mr-2 w-4 h-4"></i>
-                                Configuraciones
-                            </div>
-                            </Link>
+                        </Link>
+                    </div>
+                </li>
+                <li>
+                    <div class="mb-4">
+                        <Link class="group flex items-center py-3" :href="route('config.index')">
+                        <div :class="title === 'Configuraciones'
+                            ? 'activo flex'
+                            : 'inactivo flex'
+                            ">
+                            <i class="pi pi-wrench mr-2 w-4 h-4"></i>
+                            Configuraciones
                         </div>
-                    </li>
-                    <li>
-                        <div class="mb-4">
-                            <Link class="group flex items-center py-3" :href="route('objetivo.index')">
-                            <div :class="title === 'Objetivos' ? 'activo flex' : 'inactivo flex'">
-                                <i class="pi pi-flag mr-2 w-4 h-4"></i>
-                                Objetivo
-                            </div>
-                            </Link>
+                        </Link>
+                    </div>
+                </li>
+                <li>
+                    <div class="mb-4">
+                        <Link class="group flex items-center py-3" :href="route('objetivo.index')">
+                        <div :class="title === 'Objetivos' ? 'activo flex' : 'inactivo flex'">
+                            <i class="pi pi-flag mr-2 w-4 h-4"></i>
+                            Objetivo
                         </div>
-                    </li>
+                        </Link>
+                    </div>
+                </li>
 
-                    <li>
-                        <div class="mb-4">
-                            <Link class="group flex items-center py-3" :href="route('proceso.index')">
-                            <div :class="title === 'Procesos' ? 'activo flex' : 'inactivo flex'">
-                                <i class="pi pi-list-check mr-2 w-4 h-4"></i>
-                                Procesos
-                            </div>
-                            </Link>
+                <li>
+                    <div class="mb-4">
+                        <Link class="group flex items-center py-3" :href="route('proceso.index')">
+                        <div :class="title === 'Procesos' ? 'activo flex' : 'inactivo flex'">
+                            <i class="pi pi-list-check mr-2 w-4 h-4"></i>
+                            Procesos
                         </div>
+                        </Link>
+                    </div>
 
-                    </li>
+                </li>
 
-                    <li>
-                        <div class="mb-4">
-                            <Link class="group flex items-center py-3" :href="route('procedimiento.index')">
-                            <div :class="title === 'Procedimientos' ? 'activo flex' : 'inactivo flex'">
-                                <i class="pi pi-check-square mr-2 w-4 h-4"></i>
-                                Procedimientos
-                            </div>
-                            </Link>
+                <li>
+                    <div class="mb-4">
+                        <Link class="group flex items-center py-3" :href="route('procedimiento.index')">
+                        <div :class="title === 'Procedimientos' ? 'activo flex' : 'inactivo flex'">
+                            <i class="pi pi-check-square mr-2 w-4 h-4"></i>
+                            Procedimientos
                         </div>
-                    </li>
+                        </Link>
+                    </div>
+                </li>
 
-                    <li>
-                        <div class="mb-4">
-                            <Link class="group flex items-center py-3" :href="route('estandar.index')">
-                            <div :class="title === 'Estandares' ? 'activo flex' : 'inactivo flex'">
-                                <i class="pi pi-file mr-2 w-4 h-4"></i>
-                                Estandares
-                            </div>
-                            </Link>
+                <li>
+                    <div class="mb-4">
+                        <Link class="group flex items-center py-3" :href="route('estandar.index')">
+                        <div :class="title === 'Estandares' ? 'activo flex' : 'inactivo flex'">
+                            <i class="pi pi-file mr-2 w-4 h-4"></i>
+                            Estandares
                         </div>
-                    </li>
+                        </Link>
+                    </div>
+                </li>
 
-                    <li>
-                        <div class="mb-4">
-                            <Link class="group flex items-center py-3" :href="route('kpi.index')">
-                            <div :class="title === 'KPI' ? 'activo flex' : 'inactivo flex'">
-                                <i class="pi pi-chart-line mr-2 w-4 h-4"></i>
-                                KPI's
-                            </div>
-                            </Link>
+                <li>
+                    <div class="mb-4">
+                        <Link class="group flex items-center py-3" :href="route('kpi.index')">
+                        <div :class="title === 'KPI' ? 'activo flex' : 'inactivo flex'">
+                            <i class="pi pi-chart-line mr-2 w-4 h-4"></i>
+                            KPI's
                         </div>
-                    </li>
-                    <li v-if="$page.props.auth.user.roles.includes('admin')">
-                        <a class="group flex items-center py-3 cursor-pointer" @click="toggleMenu('rolesypermisos')">
+                        </Link>
+                    </div>
+                </li>
+                <li v-if="$page.props.auth.user.roles.includes('admin')">
+                    <a class="group flex items-center py-3 cursor-pointer" @click="toggleMenu('rolesypermisos')">
 
-                            <i class="pi pi-lock mr-2 w-4 h-4" :class="title === 'rolesypermisos' ? 'activo flex'
-                                : 'inactivo flex'"></i>
-                            <div :class="title === 'rolesypermisos' ? 'activo flex'
+                        <i class="pi pi-lock mr-2 w-4 h-4" :class="title === 'rolesypermisos' ? 'activo flex'
+                            : 'inactivo flex'"></i>
+                        <div :class="title === 'rolesypermisos' ? 'activo flex'
+                            : 'inactivo flex'">
+                            Roles y permisos
+                        </div>
+                        <icon name="cheveron-down" class="ml-auto w-4 h-4" :class="isOpen('rolesypermisos') ? 'rotate-180' : '', title === 'rolesypermisos' ? 'activo flex'
+                            : 'inactivo flex'" />
+                    </a>
+                    <ul v-show="isOpen('rolesypermisos')" class="pl-6 space-y-2">
+                        <li>
+                            <Link class="group flex items-center py-2" :href="route('roles.index')" :class="subTitle === 'roles' ? 'activo flex'
                                 : 'inactivo flex'">
-                                Roles y permisos
-                            </div>
-                            <icon name="cheveron-down" class="ml-auto w-4 h-4" :class="isOpen('rolesypermisos') ? 'rotate-180' : '', title === 'rolesypermisos' ? 'activo flex'
-                                : 'inactivo flex'" />
-                        </a>
-                        <ul v-show="isOpen('rolesypermisos')" class="pl-6 space-y-2">
-                            <li>
-                                <Link class="group flex items-center py-2" :href="route('roles.index')" :class="subTitle === 'roles' ? 'activo flex'
-                                    : 'inactivo flex'">
-                                <icon name="circle" class="mr-2 w-3 h-3" />
-                                <div>Roles</div>
-                                </Link>
-                            </li>
-                            <li>
-                                <Link class="group flex items-center py-2" :href="route('permisos.index')" :class="subTitle === 'permisos' ? 'activo flex'
-                                    : 'inactivo flex'">
-                                <icon name="circle" class="mr-2 w-3 h-3" />
-                                <div>Permisos</div>
-                                </Link>
-                            </li>
-                        </ul>
-                    </li>
+                            <icon name="circle" class="mr-2 w-3 h-3" />
+                            <div>Roles</div>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link class="group flex items-center py-2" :href="route('permisos.index')" :class="subTitle === 'permisos' ? 'activo flex'
+                                : 'inactivo flex'">
+                            <icon name="circle" class="mr-2 w-3 h-3" />
+                            <div>Permisos</div>
+                            </Link>
+                        </li>
+                    </ul>
+                </li>
             </div>
         </ul>
     </div>

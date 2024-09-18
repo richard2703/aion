@@ -74,7 +74,7 @@ async function getTipos(
 const onPage = (event) => {
     const page = event.page + 1;
     rows.value = event.rows; // Actualizar filas por página
-    getDepartamentos(
+    getTipos(
         page,
         rows.value,
         globalFilter.value,
@@ -86,7 +86,7 @@ const onPage = (event) => {
 const onSort = (event) => {
     sortField.value = event.sortField || "id";
     sortOrder.value = event.sortOrder;
-    getDepartamentos(
+    getTipos(
         1,
         rows.value,
         globalFilter.value,
@@ -159,7 +159,7 @@ watch(globalFilter, (newValue) => {
                     </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto overflow-x-auto">
-                            <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
+                            <!-- <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" /> -->
 
                             <DataTable :value="tipos" paginator :rows="rows" :totalRecords="totalRecords" :lazy="true"
                                 :first="first" @page="onPage" @sort="onSort" :rowsPerPageOptions="[5, 10, 20, 50]"

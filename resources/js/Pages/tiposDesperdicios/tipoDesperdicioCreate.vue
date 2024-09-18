@@ -117,8 +117,8 @@ const search = (event) => {
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
-                <Link :href="route('encargadoFlujo.index')" class="px-1">
-                <h3>Encargados -</h3>
+                <Link :href="route('tiposDesperdicios.index')" class="px-1">
+                <h3>Tipo de desperdicio -</h3>
                 </Link>
                 <Link class="active">
                 <h3>Nuevo</h3>

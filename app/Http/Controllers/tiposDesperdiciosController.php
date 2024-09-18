@@ -40,6 +40,20 @@ class tiposDesperdiciosController extends Controller
         //     });
         // }
 
+        // Filter logic
+        // if ($filter) {
+        //     $query->where(function ($q) use ($filter) {
+        //         $q->where('estandares.id', 'like', '%' . $filter . '%')
+        //             ->orWhere('estandares.nombre', 'like', '%' . $filter . '%')
+        //             ->orWhere('estandares.descripcion', 'like', '%' . $filter . '%')
+        //             ->orWhere('estandares.link_externo', 'like', '%' . $filter . '%')
+        //             ->orWhereHas('procedimiento', function ($q) use ($filter) {
+        //                 $q->where('procedimientos.nombre', 'like', '%' . $filter . '%')
+        //                     ->orWhere('procedimientos.descripcion', 'like', '%' . $filter . '%');
+        //             });
+        //     });
+        // }
+
         // Sorting logic
         // if (in_array($sortField, ['id', 'nombre', 'descripcion', 'link_externo', 'procedimiento.nombre'])) {
         //     if (strpos($sortField, 'procedimiento.') === 0) {

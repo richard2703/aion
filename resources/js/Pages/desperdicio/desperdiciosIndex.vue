@@ -80,7 +80,7 @@ const deleteItem = async (id) => {
 const onPage = (event) => {
     const page = event.page + 1;
     rows.value = event.rows; // Actualizar filas por página
-    getDepartamentos(
+    getdesperdicios(
         page,
         rows.value,
         globalFilter.value,
@@ -92,7 +92,7 @@ const onPage = (event) => {
 const onSort = (event) => {
     sortField.value = event.sortField || "id";
     sortOrder.value = event.sortOrder;
-    getDepartamentos(
+    getdesperdicios(
         1,
         rows.value,
         globalFilter.value,
@@ -150,7 +150,7 @@ const formatearFecha = (dateString) => {
                     </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto overflow-x-auto">
-                            <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
+                            <!-- <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" /> -->
 
                             <DataTable :value="tipos" paginator :rows="rows" :totalRecords="totalRecords" :lazy="true"
                                 :first="first" @page="onPage" @sort="onSort" :rowsPerPageOptions="[5, 10, 20, 50]"
@@ -170,13 +170,15 @@ const formatearFecha = (dateString) => {
                                         {{ formatearFecha(slotProps.data.created_at) }}
                                     </template>
                                 </Column>
-                                <Column field="area.nombre" header="Pilar" headerStyle="width:4em;"
+                                <!-- <Column field="area.nombre" header="Pilar" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                 <Column field="departamento.nombre" header="Flujo de valor" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column> -->
+                                <Column field="tipo.tipo" header="Tipo" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+                                <Column field="tipo.nombre" header="Nombre" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                 <Column field="monto" header="Monto" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                                <Column field="tipo.nombre" header="Tipo" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                 <Column field="usuario.name" header="Usuario" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
