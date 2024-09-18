@@ -9,10 +9,12 @@ use App\Models\Kpis;
 use App\Models\reporteSemanal;
 use App\Models\reportes;
 use App\Models\lights;
+use App\Models\Personalizar;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Inertia\Inertia;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Storage;
 
 
 class reportesController extends Controller
@@ -224,28 +226,28 @@ class reportesController extends Controller
         //
     }
 
-    // public function findAll()
-    // {
-    //     // $query = Departamento::query();
-    //     $query = encargado_flujo::query();
-    //     // if ($pageSize && $page) {
-    //     //     $departamentos = $query->with('kpis')->paginate($pageSize, ['*'], 'page', $page);
-    //     // } else {
-    //     //     $departamentos = $query->with('kpis')->get();
-    //     // }
-    //     // $reporteSemanal = $query->orderBy('nombre', 'asc')->get();
-    //     $reporteSemanal = $query->where('user_id', auth()->id())->with('Departamento')->get();
-
-    //     return response()->json($reporteSemanal);
-    // }
-
     public function findAll()
     {
-        $query = Departamento::query();
-        $reporteSemanal = $query->orderBy('nombre', 'asc')->get();
+        // $query = Departamento::query();
+        $query = encargado_flujo::query();
+        // if ($pageSize && $page) {
+        //     $departamentos = $query->with('kpis')->paginate($pageSize, ['*'], 'page', $page);
+        // } else {
+        //     $departamentos = $query->with('kpis')->get();
+        // }
+        // $reporteSemanal = $query->orderBy('nombre', 'asc')->get();
+        $reporteSemanal = $query->where('user_id', auth()->id())->with('Departamento')->get();
 
         return response()->json($reporteSemanal);
     }
+
+    // public function findAll()
+    // {
+    //     $query = Departamento::query();
+    //     $reporteSemanal = $query->orderBy('nombre', 'asc')->get();
+
+    //     return response()->json($reporteSemanal);
+    // }
 
     public function findAllReporteSemanal()
     {
@@ -277,6 +279,15 @@ class reportesController extends Controller
 
     public function pdf(reporteSemanal $reporte)
     {
+        $personalizar = Personalizar::first();
+        // $personalizar->portada_path = Storage::disk('public')->url($personalizar->portada);
+
+        // $portada = ("public/storage/$personalizar->portada");
+        // $personalizar->portada_path = asset($portada);
+
+        // dd($logo);
+        // return response()->json($personalizar);
+
         $reporteSemanal = $reporte;
         $reportes = reportes::where('semana_id', $reporteSemanal->id)
             ->join('departamentos', 'reportes.departamento_id', '=', 'departamentos.id')
@@ -288,9 +299,9 @@ class reportesController extends Controller
             ->select('reportes.*') // Aseguramos seleccionar solo los campos de reportes
             ->get();
 
-        // return view('ReportePDF', compact('reporteSemanal', 'reportes'));
+        // return view('ReportePDF', compact('reporteSemanal', 'reportes', 'personalizar'));
 
-        $pdf = Pdf::loadView('ReportePDF', compact('reporteSemanal', 'reportes'));
+        $pdf = Pdf::loadView('ReportePDF', compact('reporteSemanal', 'reportes', 'personalizar'));
         return $pdf->download('reporte-semanal.pdf');
     }
 }

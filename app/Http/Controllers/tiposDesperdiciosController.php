@@ -2,25 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\encargado_flujo;
+use App\Models\tiposDesperdicios;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class encargado_flujoController extends Controller
+class tiposDesperdiciosController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return Inertia::render('EncargadoFlujo/EncargadoFlujoIndex');
+        return Inertia::render('tiposDesperdicios/tiposDesperdiciosIndex');
     }
-
 
     public function findAll(Request $request)
     {
 
-        $query = encargado_flujo::query();
+        $query = tiposDesperdicios::query();
         $pageSize = $request->get('rows', 10);
         $page = $request->get('page', 1);
         $filter = $request->get('filter', '');
@@ -55,64 +54,67 @@ class encargado_flujoController extends Controller
         //     $query->orderBy('id', $sortOrder);
         // }
 
-        $encargados = $query->with('usuario', 'departamento')->paginate($pageSize, ['*'], 'page', $page);
+        $tipos = $query->with('usuario', 'area', 'departamento')->orderBy('tipo', 'desc')->paginate($pageSize, ['*'], 'page', $page);
 
-        return response()->json($encargados);
+        return response()->json($tipos);
     }
 
+    function byDepartamento($departamento_id)
+    {
+        // return response()->json(['tipos' => tiposDesperdicios::where('departamento_id', $departamento_id)->get()]);
+        return response()->json(['tipos' => tiposDesperdicios::orderBy('tipo', 'desc')->get()]);
+    }
 
     public function create()
     {
-        return Inertia::render('EncargadoFlujo/EncargadoFlujoCreate');
+        return Inertia::render('tiposDesperdicios/tipoDesperdicioCreate');
     }
 
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
-        $encargado_flujo = new encargado_flujo();
-        // $encargado_flujo->area_id = $request->area_id;
-        $encargado_flujo->departamento_id = $request->departamento_id;
-        $encargado_flujo->user_id = $request->lider_id["id"];
-        $revision = encargado_flujo::where('departamento_id', $request->departamento_id)->where('user_id', $request->lider_id["id"])->first();
-        if ($revision) {
-            // dd("no hay revision");
-            return redirect()->route('encargadoFlujo.index');
-        }
-        // dd("si hay revision");
-        $encargado_flujo->save();
+        $tipo = new tiposDesperdicios();
+        $tipo->area_id = $request->area_id;
+        $tipo->departamento_id = $request->departamento_id;
+        $tipo->created_for = auth()->id();
+        $tipo->nombre = $request->nombre;
+        $tipo->descripcion = $request->descripcion;
+        $tipo->tipo = $request->tipo;
+        $tipo->save();
 
-        return redirect()->route('encargadoFlujo.index');
+        return redirect()->route('tiposDesperdicios.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(encargado_flujo $encargado_flujo)
-    {
-        //
-    }
+    public function show(tiposDesperdicios $tipoDesperdicio) {}
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(encargado_flujo $encargado_flujo)
+    public function edit(tiposDesperdicios $tipoDesperdicio)
     {
-        //
+        // dd($tipoDesperdicio);
+        return Inertia::render('tiposDesperdicios/tipoDesperdicioEdit', [
+            'tipoDesperdicio' => $tipoDesperdicio
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, encargado_flujo $encargado_flujo)
+    public function update(Request $request, tiposDesperdicios $tipoDesperdicio)
     {
-        //
+        $tipoDesperdicio->update($request->only('area_id', 'departamento_id', 'nombre', 'descripcion', 'tipo'));
+        return redirect()->route('tiposDesperdicios.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(encargado_flujo $encargado_flujo)
+    public function destroy(tiposDesperdicios $tipoDesperdicio)
     {
-        $encargado_flujo->delete();
+        $tipoDesperdicio->delete();
         return response()->json(['success' => true]);
     }
 }

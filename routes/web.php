@@ -73,6 +73,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     // Dashboard
     Route::post('/dashboard/store', [App\Http\Controllers\dashboardController::class, 'store'])->name('dashboard.store');
     Route::post('/dashboard/{id}/update', [App\Http\Controllers\dashboardController::class, 'update'])->name('dashboard.update');
+    Route::post('/dashboard/{id}/portada', [App\Http\Controllers\dashboardController::class, 'portada'])->name('dashboard.portada');
 
     //Objetivo
     Route::get('/objetivos', [App\Http\Controllers\objetivosController::class, 'index'])->name('objetivo.index');
@@ -158,6 +159,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('Encargados', [App\Http\Controllers\encargado_flujoController::class, 'index'])->name('encargadoFlujo.index');
     Route::get('Encargados/create', [App\Http\Controllers\encargado_flujoController::class, 'create'])->name('encargadoFlujo.create');
     Route::post('Encargados/store', [App\Http\Controllers\encargado_flujoController::class, 'store'])->name('encargadoFlujo.store');
+    Route::delete('Encargados/{encargado_flujo}/destroy', [App\Http\Controllers\encargado_flujoController::class, 'destroy'])->name('encargadoFlujo.destroy');
+
     //Reportes
     Route::get('reportes', [App\Http\Controllers\reportesController::class, 'index'])->name('reporte.index');
     Route::get('reportes/nuevo', [App\Http\Controllers\reportesController::class, 'create'])->name('reporte.create');
@@ -167,6 +170,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('MisReportes/{reporte}/edit', [App\Http\Controllers\reportesController::class, 'edit'])->name('misreporte.edit');
     Route::patch('MisReportes/{reporte}/update', [App\Http\Controllers\reportesController::class, 'update'])->name('misreporte.update');
     Route::get('reportes/{reporte}/pdf', [App\Http\Controllers\reportesController::class, 'pdf'])->name('reporte.pdf');
+
 
     //Seccion
     Route::get('secciones', [App\Http\Controllers\seccionController::class, 'index'])->name('seccion.index');
@@ -188,4 +192,22 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::post('assessment/store', [App\Http\Controllers\evaluacionController::class, 'store'])->name('evaluacion.store');
     Route::patch('assessment/{evaluacion}/update', [App\Http\Controllers\evaluacionController::class, 'update'])->name('evaluacion.update');
     Route::delete('assessment/{evaluacion}/destroy', [App\Http\Controllers\evaluacionController::class, 'destroy'])->name('evaluacion.destroy');
+
+    //EncargadosReportes
+    Route::get('tipoDesperdicio', [App\Http\Controllers\tiposDesperdiciosController::class, 'index'])->name('tiposDesperdicios.index');
+    Route::get('tipoDesperdicio/create', [App\Http\Controllers\tiposDesperdiciosController::class, 'create'])->name('tiposDesperdicios.create');
+    Route::post('tipoDesperdicio/store', [App\Http\Controllers\tiposDesperdiciosController::class, 'store'])->name('tiposDesperdicios.store');
+    Route::get('tipoDesperdicio/{tipoDesperdicio}/edit', [App\Http\Controllers\tiposDesperdiciosController::class, 'edit'])->name('tiposDesperdicios.edit');
+    Route::patch('tipoDesperdicio/{tipoDesperdicio}/update', [App\Http\Controllers\tiposDesperdiciosController::class, 'update'])->name('tiposDesperdicios.update');
+    Route::delete('tipoDesperdicio/{destipoDesperdicioerdicio}/destroy', [App\Http\Controllers\tiposDesperdiciosController::class, 'destroy'])->name('tiposDesperdicios.destroy');
+    //Desperdicio
+    Route::get('Desperdicio', [App\Http\Controllers\desperdiciosController::class, 'index'])->name('desperdicio.index');
+    Route::get('Desperdicio/nuevo', [App\Http\Controllers\desperdiciosController::class, 'create'])->name('desperdicio.create');
+    Route::post('Desperdicio/store', [App\Http\Controllers\desperdiciosController::class, 'store'])->name('desperdicio.store');
+    Route::get('Desperdicio/{desperdicio}/edit', [App\Http\Controllers\desperdiciosController::class, 'edit'])->name('desperdicio.edit');
+    Route::patch('Desperdicio/{desperdicio}/update', [App\Http\Controllers\desperdiciosController::class, 'update'])->name('desperdicio.update');
+    Route::delete('Desperdicio/{desperdicio}/destroy', [App\Http\Controllers\desperdiciosController::class, 'destroy'])->name('desperdicio.destroy');
+
+    //test de mail
+    Route::get('send/mail', [App\Http\Controllers\SendMailController::class, 'sendMailWithAttachment'])->name('mailer.sendMailWithAttachment');
 });

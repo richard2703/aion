@@ -130,7 +130,7 @@ async function getOneKpi(id) {
                                 <tr>
                                     <th class="py-2 px-4 border hover:bg-slate-100 cursor-pointer" colspan="2"
                                         @click="isHistoricosVisible = !isHistoricosVisible">
-                                        historico
+                                        Historico
                                     </th>
                                 </tr>
                             </thead>

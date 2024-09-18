@@ -45,15 +45,40 @@
         .bg-green-100 {
             background-color: #f0fff4;
         }
+
+        @page: first {
+            margin: 0px;
+        }
+
+        @page {
+            margin: 0px;
+        }
+
+        body {
+            margin: 0px;
+            padding: 0px;
+        }
     </style>
     <title>Reporte Semanal: Semana {{ $reporteSemanal->numeroSemana }}</title>
 
 </head>
 
 <body>
-    {{--  <title>Reporte Semanal: Semana {{ $reporteSemanal->numeroSemana }}</title>  --}}
-    <div>
+    {{--  <div>
         <h1>Reporte Semanal: Semana {{ $reporteSemanal->numeroSemana }}</h1>
+        <img src="{{ public_path('portadas/test.jpg') }}" alt="Logo">
+    </div>  --}}
+
+    <div style="position: relative; width: 100%; height: 1100px; text-align: center;">
+        {{--  <img src="{{ public_path('portadas/portada.png') }}" alt="Logo"
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 1200px; z-index: -1;">  --}}
+        <img src="{{ storage_path('app/public/' . $personalizar->portada) }}" alt="Logo"
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 1200px; z-index: -1;">
+
+        <h1 style="position: relative; color: white; font-size: 3rem; z-index: 2; padding-top: 600px;">
+            Reporte Semanal <br>
+            Semana: {{ $reporteSemanal->numeroSemana }}
+        </h1>
     </div>
 
     <div class="container py-2">
@@ -65,6 +90,11 @@
                             <th colspan="2"> <!-- Nombre del departamento -->
                                 <div class="departamento-header">
                                     <h3 class="text-lg font-bold">{{ $reporte->departamento->nombre }}</h3>
+                                    {{--  <h3 class="text-lg font-bold">
+                                        {{ storage_path('app/public/' . $personalizar->portada) }}</h3>
+                                    <h3 class="text-lg font-bold">{{ storage_path('app/public/portadas/test.jpg') }}
+                                    </h3>  --}}
+
                                     {{--  @if ($reporte->departamento->deleted_at)
                                         <p class="text-danger " style="size: 15px">Este Flujo ha sido eliminado.</p>
                                     @endif  --}}

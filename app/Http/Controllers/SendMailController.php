@@ -42,7 +42,7 @@ class SendMailController extends Controller
             // ]
         ];
 
-        Mail::to('software@nutriton.com.mx')->send(new TestMail($mailData));
+        Mail::to('software.lider@nutriton.com.mx')->send(new TestMail($mailData));
 
         return response()->json(['message' => 'Mail sent successfully']);
     }

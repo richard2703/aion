@@ -7,6 +7,7 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { showToast } from "../utils/SweetAlert.service";
 import ConfigDashboard from "@/Pages/Config/Partials/ConfigDashboard.vue";
 import ConfigTipoMinuta from "@/Pages/Config/Partials/ConfigTipoMinuta.vue";
+import ConfigPortada from "@/Pages/Config/Partials/ConfigPortada.vue";
 
 const count = ref(0);
 const template = ref('dashboard');
@@ -55,6 +56,12 @@ const template = ref('dashboard');
                                             </button>
                                         </li>
 
+                                        <li class="text-blue-300 hover:text-blue-800 font-bold text-xl">
+                                            <button @click="template = 'Portada'">
+                                                Portada de Reporte
+                                            </button>
+                                        </li>
+
 
                                     </ul>
                                 </div>
@@ -62,6 +69,7 @@ const template = ref('dashboard');
 
                                     <ConfigDashboard v-if="template === 'dashboard'" />
                                     <ConfigTipoMinuta v-if="template === 'tipoMinuta'" />
+                                    <ConfigPortada v-if="template === 'Portada'" />
 
                                     <div v-if="template === 'seccion3'">
                                         {{ template }}

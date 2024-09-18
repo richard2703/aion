@@ -109,7 +109,13 @@ Route::get('/tareaEvidencia/{tarea_id}/getByTarea', [App\Http\Controllers\tareaE
 Route::post('/tareaEvidencia/store', [App\Http\Controllers\tareaEvidenciaController::class, 'store'])->name('tareas.evidencia.store');
 Route::delete('/tareaEvidencia/{tareaEvidencia}/delete', [App\Http\Controllers\tareaEvidenciaController::class, 'destroy'])->name('tareas.evidencia.destroy');
 
+
 Route::get('/secciones', [App\Http\Controllers\seccionController::class, 'findAll'])->name('secciones.findAll');
 Route::get('/secciones/{departamento_id}', [App\Http\Controllers\seccionController::class, 'byDepartamento'])->name('secciones.byDepartamento');
 
 Route::get('/evaluaciones', [App\Http\Controllers\evaluacionController::class, 'findAll'])->name('evaluaciones.findAll');
+
+//tiposDesperdicios
+Route::get('/tiposDesperdicios/findAll', [App\Http\Controllers\tiposDesperdiciosController::class, 'findAll'])->name('tiposDesperdicios.findAll');
+Route::get('/tiposDesperdicios/{departamento_id}', [App\Http\Controllers\tiposDesperdiciosController::class, 'byDepartamento'])->name('desperdicio.byDepartamento');
+Route::get('/Desperdicio/findAll', [App\Http\Controllers\desperdiciosController::class, 'findAll'])->name('desperdicio.findAll');

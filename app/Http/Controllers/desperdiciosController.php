@@ -2,25 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\encargado_flujo;
+use App\Models\desperdicios;
+use App\Models\tiposDesperdicios;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class encargado_flujoController extends Controller
+class desperdiciosController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return Inertia::render('EncargadoFlujo/EncargadoFlujoIndex');
+        return Inertia::render('desperdicio/desperdiciosIndex');
     }
-
 
     public function findAll(Request $request)
     {
 
-        $query = encargado_flujo::query();
+        $query = desperdicios::query();
         $pageSize = $request->get('rows', 10);
         $page = $request->get('page', 1);
         $filter = $request->get('filter', '');
@@ -41,6 +41,7 @@ class encargado_flujoController extends Controller
         //     });
         // }
 
+
         // Sorting logic
         // if (in_array($sortField, ['id', 'nombre', 'descripcion', 'link_externo', 'procedimiento.nombre'])) {
         //     if (strpos($sortField, 'procedimiento.') === 0) {
@@ -55,38 +56,40 @@ class encargado_flujoController extends Controller
         //     $query->orderBy('id', $sortOrder);
         // }
 
-        $encargados = $query->with('usuario', 'departamento')->paginate($pageSize, ['*'], 'page', $page);
+        $desperdicios = $query->with('usuario', 'area', 'departamento', 'tipo')->orderBy('created_at', 'desc')->paginate($pageSize, ['*'], 'page', $page);
 
-        return response()->json($encargados);
+        return response()->json($desperdicios);
     }
-
 
     public function create()
     {
-        return Inertia::render('EncargadoFlujo/EncargadoFlujoCreate');
+        return Inertia::render('desperdicio/desperdicioCreate');
     }
 
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
-        $encargado_flujo = new encargado_flujo();
-        // $encargado_flujo->area_id = $request->area_id;
-        $encargado_flujo->departamento_id = $request->departamento_id;
-        $encargado_flujo->user_id = $request->lider_id["id"];
-        $revision = encargado_flujo::where('departamento_id', $request->departamento_id)->where('user_id', $request->lider_id["id"])->first();
-        if ($revision) {
-            // dd("no hay revision");
-            return redirect()->route('encargadoFlujo.index');
-        }
-        // dd("si hay revision");
-        $encargado_flujo->save();
+        $item = new desperdicios();
+        $item->area_id = $request->area_id;
+        $item->departamento_id = $request->departamento_id;
+        $item->tipoDesperdicio_id = $request->tipoDesperdicio_id;
+        $item->created_for = auth()->id();
+        $item->monto = $request->monto;
+        $item->descripcion = $request->descripcion;
+        $item->rango = $request->rango;
+        $item->recurrencia = $request->recurrencia;
+        $item->detectabilidad = $request->detectabilidad;
+        $item->save();
 
-        return redirect()->route('encargadoFlujo.index');
+        return redirect()->route('desperdicio.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(encargado_flujo $encargado_flujo)
+    public function show(desperdicios $desperdicios)
     {
         //
     }
@@ -94,25 +97,31 @@ class encargado_flujoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(encargado_flujo $encargado_flujo)
+    public function edit(desperdicios $desperdicio)
     {
-        //
+        return Inertia::render('desperdicio/desperdicioEdit', [
+            'desperdicio' => $desperdicio
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, encargado_flujo $encargado_flujo)
+    public function update(Request $request, desperdicios $desperdicio)
     {
-        //
+        // dd($request);
+        // $reporte = desperdicios::findOrFail($desperdicio);
+        $desperdicio->update($request->only('area_id', 'departamento_id', 'tipoDesperdicio_id', 'descripcion', 'monto', 'rango', 'recurrencia', 'detectabilidad'));
+
+        return redirect()->route('desperdicio.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(encargado_flujo $encargado_flujo)
+    public function destroy(desperdicios $desperdicio)
     {
-        $encargado_flujo->delete();
+        $desperdicio->delete();
         return response()->json(['success' => true]);
     }
 }
