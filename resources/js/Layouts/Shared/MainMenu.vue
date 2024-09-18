@@ -104,6 +104,51 @@
                 </ul>
             </li>
 
+            <!-- //reportes -->
+            <li>
+                <a class="group flex items-center py-3 cursor-pointer" @click="toggleMenu('assessment')">
+
+                    <i class="pi pi-file-check mr-2 w-4 h-4" :class="title === 'assessment' ? 'activo flex'
+                        : 'inactivo flex'"></i>
+                    <div :class="title === 'assessment' ? 'activo flex'
+                        : 'inactivo flex'">
+                        Assessment
+                    </div>
+                    <icon name="cheveron-down" class="ml-auto w-4 h-4" :class="isOpen('assessment') ? 'rotate-180' : '', title === 'assessment' ? 'activo flex'
+                        : 'inactivo flex'" />
+                </a>
+                <ul v-show="isOpen('assessment')" class="pl-6 space-y-2">
+                    <li>
+                        <Link class="group flex items-center py-2" :href="route('seccion.index')" :class="subTitle === 'secciones' ? 'activo flex'
+                            : 'inactivo flex'">
+                        <icon name="circle" class="mr-2 w-3 h-3" />
+                        <div>Secciones</div>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link class="group flex items-center py-2" :href="route('challenge.index')" :class="subTitle === 'challenges' ? 'activo flex'
+                            : 'inactivo flex'">
+                        <icon name="circle" class="mr-2 w-3 h-3" />
+                        <div>Challenges</div>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link class="group flex items-center py-2" :href="route('opcion.index')" :class="subTitle === 'opciones' ? 'activo flex'
+                            : 'inactivo flex'">
+                        <icon name="circle" class="mr-2 w-3 h-3" />
+                        <div>Opciones</div>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link class="group flex items-center py-2" :href="route('evaluacion.index')" :class="subTitle === 'evaluaciones' ? 'activo flex'
+                            : 'inactivo flex'">
+                        <icon name="circle" class="mr-2 w-3 h-3" />
+                        <div>Evaluaciones</div>
+                        </Link>
+                    </li>
+                </ul>
+            </li>
+
             <!-- //Desperdicios -->
             <li>
                 <div class="mb-4">

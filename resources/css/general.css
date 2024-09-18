@@ -11,6 +11,8 @@
     --dorado: #dfb569 ;
     --cafe: #b38a4a ;
     --slate: #1e293b;
+
+    --gris-pv: #334155;
 }
 
 .bg-logo {
@@ -93,4 +95,10 @@
     letter-spacing: 0.05em; /* tracking-widest */
     transition: background-color 0.15s ease-in-out;
 
+}
+
+
+.p-togglebutton {
+    @apply text-[var(--gris-pv)] !important;
+    --p-togglebutton-checked-background: var(--blanco);
 }

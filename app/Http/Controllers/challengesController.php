@@ -60,7 +60,7 @@ class challengesController extends Controller
             }
         }
 
-        $challenges = $query->with('area', 'departamento')->paginate($pageSize, ['*'], 'page', $page);
+        $challenges = $query->with('area', 'departamento', 'seccion')->paginate($pageSize, ['*'], 'page', $page);
 
         return response()->json($challenges);
     }
@@ -74,7 +74,7 @@ class challengesController extends Controller
     public function store(Request $request)
     {
 
-        $challenge = Challenge::create($request->only('challenge', 'area_id', 'departamento_id'));
+        $challenge = Challenge::create($request->only('challenge', 'area_id', 'departamento_id', 'seccion_id'));
         return redirect()->route('challenge.index');
     }
 
@@ -93,7 +93,7 @@ class challengesController extends Controller
     {
 
         $challenge = Challenge::find($id);
-        $challenge->update($request->only('challenge', 'area_id', 'departamento_id'));
+        $challenge->update($request->only('challenge', 'area_id', 'departamento_id', 'seccion_id'));
         return redirect()->route('challenge.index');
     }
 

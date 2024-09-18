@@ -13,7 +13,8 @@ const props = defineProps({
     challenges: Array,
 });
 
-const title = "Challenges";
+const title = "assessment";
+const subTitle = "challenges";
 const challenges = ref([]);
 const totalRecords = ref(0);
 const rows = ref(10);
@@ -43,6 +44,7 @@ async function getChallenges(
         challenges.value = response.data.data;
         totalRecords.value = response.data.total;
         first.value = (response.data.current_page - 1) * rows.value;
+        console.log({ challenges: challenges.value });
     } catch (error) {
         console.error(error);
     }
@@ -101,7 +103,7 @@ const onSort = (event) => {
         sortOrder.value
     );
 };
-console.log(challenges.value);
+
 </script>
 
 <style scoped>
@@ -111,9 +113,9 @@ console.log(challenges.value);
 </style>
 
 <template>
-    <Layout :titulo="title">
+    <Layout :titulo="title" :subTitulo="subTitle">
 
-        <Head title="Departamento" />
+        <Head title="Challenges" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
                 <h3>Challenges</h3>
