@@ -75,8 +75,15 @@
         <img src="{{ storage_path('app/public/' . $personalizar->portada) }}" alt="Logo"
             style="position: absolute; top: 0; left: 0; width: 100%; height: 1200px; z-index: -1;">
 
-        <h1 style="position: relative; color: white; font-size: 3rem; z-index: 2; padding-top: 600px;">
+        {{--  <h1 style="position: relative; color: white; font-size: 3rem; z-index: 2; padding-top: 600px;">
             Reporte Semanal <br>
+            Semana: {{ $reporteSemanal->numeroSemana }}
+        </h1>  --}}
+
+        <h1
+            style="position: relative; color: black; font-size: 2rem; z-index: 2; padding-top: 900px; text-align: right; padding-right: 40px;">
+            Reporte Semanal <br>
+            De Actividades <br>
             Semana: {{ $reporteSemanal->numeroSemana }}
         </h1>
     </div>
