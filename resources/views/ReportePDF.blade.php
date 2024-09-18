@@ -112,7 +112,7 @@
                             </td>
                         </tr>  --}}
                         <tr>
-                            <td>
+                            <td class="col-6">
                                 <div class="col-12">
                                     <h2>Highlights</h2>
                                     <ul class="mt-2">
@@ -124,7 +124,7 @@
                                     </ul>
                                 </div>
                             </td>
-                            <td>
+                            <td class="col-6">
                                 <div class="col-12">
                                     <h2>Lowlights</h2>
                                     <ul class="mt-2">
@@ -138,7 +138,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <td class="col-6">
                                 <div class="col-12">
                                     <h2>Kpis</h2>
                                     {{--  @foreach ($reporte->kpis as $kpi)  --}}
@@ -168,7 +168,7 @@
                                     @endforelse
                                 </div>
                             </td>
-                            <td>
+                            <td class="col-6">
                                 <div class="col-12">
                                     <h2>Avisos</h2>
                                     <ul class="mt-2">
