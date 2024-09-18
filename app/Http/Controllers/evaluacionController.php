@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AreaEvaluacion;
 use App\Models\Assessment;
 use App\Models\AssessmentAsignado;
+use App\Models\DepartamentoEvaluacion;
 use App\Models\Respuesta;
 use App\Models\Seccion;
 use Illuminate\Http\Request;
@@ -33,6 +35,16 @@ class evaluacionController extends Controller
         //             ->orWhere('assessments.titulo', 'like', '%' . $filter . '%');
         //     });
         // }
+
+        // $query->withCount(['AssessmentAsignado as seccion_incompleta' => function ($query) {
+        //     $query->where('estatus', 'INCOMPLETO');
+        // }]);
+
+        $query->withCount('AssessmentAsignado as seccion_total');
+
+        $query->withCount(['AssessmentAsignado as seccion_completa' => function ($query) {
+            $query->where('estatus', 'COMPLETADO');
+        }]);
 
         if ($sortField) {
             $query->orderBy($sortField, $sortOrder);
@@ -97,7 +109,11 @@ class evaluacionController extends Controller
         );
     }
 
-    public function details() {}
+    public function details(Assessment $evaluacion)
+    {
+
+        return Inertia::render('Evaluacion/EvaluacionBenchmark', ['evaluacion' => $evaluacion]);
+    }
 
     public function destroy() {}
 
@@ -105,30 +121,18 @@ class evaluacionController extends Controller
 
     public function store(Request $request)
     {
-        $assessmentAsignado_id = $request->post('challenge1')['assessmentAsignado_id'];
+        $assessmentAsignadoId = $request->post('challenge1')['assessmentAsignado_id'];
+        $assessmentId = $request->post('challenge1')['assessment_id'];
 
-        // dd($assessmentAsignado);
-        // dd($request->post('challenge1')['assessmentAsignado_id']);
         foreach ($request->all() as $key => $value) {
+            $score = match ($value['valor_opcion']) {
+                'Nulo' => 5,
+                'Basico' => 30,
+                'Maduro' => 55,
+                'Avanzado' => 90,
+                default => 5,
+            };
 
-            switch ($value['valor_opcion']) {
-                case 'Nulo':
-                    $valor = 5;
-                    break;
-                case 'Basico':
-                    $valor = 30;
-                    break;
-                case 'Maduro':
-                    $valor = 55;
-                    break;
-                case 'Avanzado':
-                    $valor = 90;
-                    break;
-
-                default:
-                    $valor = 5;
-                    break;
-            }
             $data = [
                 'assessment_id' => $value['assessment_id'],
                 'seccion_id' => $value['seccion_id'],
@@ -136,17 +140,53 @@ class evaluacionController extends Controller
                 'departamento_id' => $value['departamento_id'],
                 'challenge_id' => $value['challenge_id'],
                 'opcion_id' => $value['opcion_id'],
-                'valor_opcion' => $valor,
+                'valor_opcion' => $score,
             ];
 
-            $assessmentAsignado = Respuesta::create($data);
+            $assessmentRespuestas = Respuesta::create($data);
         }
-        if ($assessmentAsignado) {
-            $assessmentAsignado = AssessmentAsignado::find($assessmentAsignado_id);
-            $assessmentAsignado->update(['estatus' => 'COMPLETADO']); // INCOMPLETO, COMPLETADO
 
+        if ($assessmentRespuestas) {
+            $assessmentAsignado = AssessmentAsignado::find($assessmentAsignadoId);
+            $assessmentAsignado->update(['estatus' => 'COMPLETADO']);
+
+            $countIncompleted = AssessmentAsignado::where('assessment_id', $assessmentId)
+                ->where('estatus', '=', 'INCOMPLETO')
+                ->count();
+
+            if ($countIncompleted === 0) {
+                $promedioDepartamentos = Respuesta::where('assessment_id', $assessmentId)
+                    ->select()
+                    ->get()
+                    ->groupBy('departamento_id')
+                    ->map(fn($group) => $group->avg('valor_opcion'));
+
+                foreach ($promedioDepartamentos as $departamentoId => $score) {
+                    DepartamentoEvaluacion::create([
+                        'assessment_id' => $assessmentId,
+                        'departamento_id' => $departamentoId,
+                        'score' => $score,
+                    ]);
+                }
+
+                $promedioArea = Respuesta::where('assessment_id', $assessmentId)
+                    ->get()
+                    ->groupBy('area_id')
+                    ->map(fn($group) => $group->avg('valor_opcion'));
+
+                foreach ($promedioArea as $areaId => $score) {
+                    AreaEvaluacion::create([
+                        'assessment_id' => $assessmentId,
+                        'area_id' => $areaId,
+                        'score' => $score,
+                    ]);
+                }
+            }
         }
 
         return response()->json('success', 201);
     }
+
+
+    function radarChart() {}
 }

@@ -145,7 +145,6 @@ onMounted(() => {
                                         </option>
                                     </select>
                                 </div>
-                                {{ form.seccion_id }}
 
                                 <div class="mt-4">
                                     <InputLabel for="challenge" value="challenge" />

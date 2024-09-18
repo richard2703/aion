@@ -55,6 +55,7 @@ async function getEvaluaciones(
         evaluaciones.value = response.data.data;
         totalRecords.value = response.data.total;
         first.value = (response.data.current_page - 1) * rows.value;
+        console.log({ evaluaciones: evaluaciones.value });
     } catch (error) {
         console.error(error);
     }
@@ -135,14 +136,27 @@ const onSort = (event) => {
                                         {{ formatearFecha(slotProps.data.created_at) }}
                                     </template>
                                 </Column>
+                                <Column header="Progreso" headerStyle="width:4em;" bodyStyle="text-align:center;"
+                                    bodyClass="text-center">
+                                    <template #body="slotProps">
+                                        {{ slotProps.data.seccion_completa }} / {{ slotProps.data.seccion_total }}
+                                    </template>
+                                </Column>
 
-                                <Column header="" headerStyle="width:4em;">
-                                    <template #body="slotProps" class="text-center">
-                                        <PrimaryButton class="m-2 pi pi-file-edit" :href="route(
-                                            'evaluacion.select',
+                                <Column header="" headerStyle="width:4em;" bodyStyle=" justify-content-center;">
+                                    <template #body="slotProps" class="justify-center">
+                                        <PrimaryButton
+                                            v-if="slotProps.data.seccion_completa !== slotProps.data.seccion_total"
+                                            class="m-2 pi pi-file-edit" :href="route(
+                                                'evaluacion.select',
+                                                slotProps.data.id
+                                            )">
+                                        </PrimaryButton>
+
+                                        <PrimaryButton class="m-2 pi pi-chart-scatter" :href="route(
+                                            'evaluacion.details',
                                             slotProps.data.id
                                         )">
-
                                         </PrimaryButton>
 
                                         <!-- <PrimaryButton class="m-2 pi pi-trash" @click.prevent="
