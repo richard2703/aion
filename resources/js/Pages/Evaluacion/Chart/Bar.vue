@@ -25,9 +25,7 @@ const formatDataSet = async () => {
     await axios
         .get(route('evaluaciones.barChart', evaluacion.value.id))
         .then((response) => {
-            console.log(response.data);
             // return
-
             chartValues.value = response.data.map(record => record.score);
             chartLabels.value = response.data.map(record => record.departamento.nombre);
             results.value = response.data;
@@ -97,6 +95,6 @@ const setChartOptions = () => {
 
 <template>
     <div class="card">
-        <Chart type="bar" :data="chartData" :options="chartOptions" class="w-full h-full" />
+        <Chart type="bar" :data="chartData" :options="chartOptions" class="w-full h-96 flex justify-center" />
     </div>
 </template>

@@ -122,3 +122,4 @@ Route::get('/evaluaciones', [App\Http\Controllers\evaluacionController::class, '
 Route::get('/evaluaciones/{evaluacion}/bar', [App\Http\Controllers\evaluacionController::class, 'barChart'])->name('evaluaciones.barChart');
 Route::get('/evaluaciones/{evaluacion}/radar', [App\Http\Controllers\evaluacionController::class, 'radarChart'])->name('evaluaciones.radarChart');
 Route::get('/evaluaciones/{evaluacion}/scatter', [App\Http\Controllers\evaluacionController::class, 'scatterChart'])->name('evaluaciones.scatterChart');
+Route::get('/evaluaciones/dashboard', [App\Http\Controllers\evaluacionController::class, 'getUltimaEvaluacion'])->name('evaluaciones.getUltimaEvaluacion');

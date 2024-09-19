@@ -114,6 +114,6 @@ function formatNumber(value) {
 
 <template>
     <div class="card">
-        <Chart type="scatter" :data="chartData" :options="chartOptions" class="w-full h-full" />
+        <Chart type="scatter" :data="chartData" :options="chartOptions" class="w-full h-96 flex justify-center" />
     </div>
 </template>

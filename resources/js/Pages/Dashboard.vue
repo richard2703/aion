@@ -7,8 +7,7 @@ import tablapilares from "@/Pages/utils/tablapilares.vue";
 import Radar from "./Evaluacion/Chart/Radar.vue";
 
 onMounted(() => {
-    chartData.value = setChartData();
-    chartOptions.value = setChartOptions();
+    getLastAssessment();
     getItem();
 });
 
@@ -17,8 +16,6 @@ const props = defineProps({
     objetivos: Object || null
 });
 
-const chartData = ref();
-const chartOptions = ref();
 const item = ref({});
 const objetivos = ref({});
 const banner_path = ref();
@@ -27,49 +24,8 @@ const slogan = ref();
 const actuacion = ref();
 const template = ref('');
 const selectedPilar = ref(null);
-
-const setChartData = () => {
-    const documentStyle = getComputedStyle(document.documentElement);
-    const textColor = documentStyle.getPropertyValue('--p-text-color');
-
-    return {
-        labels: ['GyC', 'MyV', 'Ops', 'IT', 'Admon'],
-        datasets: [
-            {
-                label: 'Resultados por Pilar',
-                borderColor: documentStyle.getPropertyValue('--p-gray-400'),
-                pointBackgroundColor: documentStyle.getPropertyValue('--p-gray-400'),
-                pointBorderColor: documentStyle.getPropertyValue('--p-gray-400'),
-                pointHoverBackgroundColor: textColor,
-                pointHoverBorderColor: documentStyle.getPropertyValue('--p-gray-400'),
-                data: [80, 80, 90, 81, 67]
-            },
-
-        ]
-    };
-};
-const setChartOptions = () => {
-    const documentStyle = getComputedStyle(document.documentElement);
-    const textColor = documentStyle.getPropertyValue('--p-text-color');
-    const textColorSecondary = documentStyle.getPropertyValue('--p-text-muted-color');
-
-    return {
-        plugins: {
-            legend: {
-                labels: {
-                    color: textColor
-                }
-            }
-        },
-        scales: {
-            r: {
-                grid: {
-                    color: textColorSecondary
-                }
-            }
-        }
-    };
-}
+const lastAssessment = ref({});
+const loading = ref(true);
 
 const getItem = () => {
     axios
@@ -98,6 +54,16 @@ const getPilar = async (pilar) => {
 
 };
 
+const getLastAssessment = async () => {
+    try {
+        const response = await axios.get(route('evaluaciones.getUltimaEvaluacion'));
+        lastAssessment.value = response.data;
+    } catch (error) {
+        console.error(error);
+    } finally {
+        loading.value = false;
+    }
+};
 
 
 </script>
@@ -181,86 +147,16 @@ const getPilar = async (pilar) => {
                             </div>
 
                             <tablapilares :pilar="selectedPilar" v-if="template === 'open'" />
-
-                            <!-- <div v-if="template === 'open'"
-                                class="grid sm:grid-cols-1 md:grid-cols-2 gap-4 bg-gray-300 my-8">
-                                <div class="bg-gray-300">
-                                    <h2 class="text-center py-4 font-bold text-3xl">Autoevaluación</h2>
-                                    <Chart type="radar" :data="chartData" :options="chartOptions" class="h-96 m-4" />
-                                    <table class="w-full table-auto border-collapse border border-slate-400 m-4">
-                                        <tr>
-                                            <td class="text-center border border-slate-500">GyC</td>
-                                            <td class="text-center border border-slate-500 bg-yellow-400">80 %</td>
-                                            <td class="text-center border border-slate-500">Intermediate</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-center border border-slate-500">MyV</td>
-                                            <td class="text-center border border-slate-500 bg-yellow-400">80 %</td>
-                                            <td class="text-center border border-slate-500">Intermediate</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-center border border-slate-500">Ops</td>
-                                            <td class="text-center border border-slate-500 bg-green-400">90 %</td>
-                                            <td class="text-center border border-slate-500">Mature</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-center border border-slate-500">IT</td>
-                                            <td class="text-center border border-slate-500 bg-yellow-400">81 %</td>
-                                            <td class="text-center border border-slate-500">Intermediate</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-center border border-slate-500">Admon</td>
-                                            <td class="text-center border border-slate-500 bg-red-400">67 %</td>
-                                            <td class="text-center border border-slate-500">Basic</td>
-                                        </tr>
-
-                                    </table>
-                                </div>
-                                <div class="bg-gray-300 ">
-                                    <h2 class="text-center py-4 font-bold text-3xl">Objetivos</h2>
-                                    <ul>
-                                        <li v-for="objetivo in objetivos"
-                                            class="m-4 py-2 text-lg list-disc list-inside">{{
-                                                objetivo.objetivo }}
-                                        </li>
-                                    </ul>
-                                </div>
-                                <br>
-
-                            </div> -->
                             <!-- <br> -->
-                            <div class="grid sm:grid-cols-1 md:grid-cols-2 gap-4 bg-gray-300">
+                            <div class="grid sm:grid-cols-1 md:grid-cols-2 gap-4 bg-gray-300 h-screen">
                                 <div class="bg-gray-300">
                                     <h2 class="text-center py-4 font-bold text-3xl">Autoevaluación</h2>
-                                    <Radar class="h-96 m-4" />
-                                    <table class="w-full table-auto border-collapse border border-slate-400 m-4">
-                                        <tr>
-                                            <td class="text-center border border-slate-500">GyC</td>
-                                            <td class="text-center border border-slate-500 bg-yellow-400">80 %</td>
-                                            <td class="text-center border border-slate-500">Intermediate</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-center border border-slate-500">MyV</td>
-                                            <td class="text-center border border-slate-500 bg-yellow-400">80 %</td>
-                                            <td class="text-center border border-slate-500">Intermediate</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-center border border-slate-500">Ops</td>
-                                            <td class="text-center border border-slate-500 bg-green-400">90 %</td>
-                                            <td class="text-center border border-slate-500">Mature</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-center border border-slate-500">IT</td>
-                                            <td class="text-center border border-slate-500 bg-yellow-400">81 %</td>
-                                            <td class="text-center border border-slate-500">Intermediate</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-center border border-slate-500">Admon</td>
-                                            <td class="text-center border border-slate-500 bg-red-400">67 %</td>
-                                            <td class="text-center border border-slate-500">Basic</td>
-                                        </tr>
-
-                                    </table>
+                                    <div v-if="!loading && lastAssessment">
+                                        <Radar :evaluacion="lastAssessment" />
+                                    </div>
+                                    <div v-else>
+                                        Loading...
+                                    </div>
                                 </div>
                                 <div class="bg-gray-300 ">
                                     <h2 class="text-center py-4 font-bold text-3xl">Objetivos</h2>

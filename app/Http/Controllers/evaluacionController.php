@@ -231,4 +231,10 @@ class evaluacionController extends Controller
 
         return response()->json($result);
     }
+
+    function getUltimaEvaluacion()
+    {
+        $evaluacion = Assessment::orderBy('id', 'desc')->first();
+        return response()->json($evaluacion);
+    }
 }
