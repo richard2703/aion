@@ -2,34 +2,69 @@
 import { ref, onMounted } from "vue";
 import Chart from 'primevue/chart';
 
+const props = defineProps({
+    evaluacion: Object
+})
 
-onMounted(() => {
-    chartData.value = setChartData();
-    chartOptions.value = setChartOptions();
-});
-
+const evaluacion = ref(props.evaluacion);
+const results = ref({});
 const chartData = ref();
 const chartOptions = ref();
+// const chartValues = ref();
+const chartLabels = ref();
+const aionX = ref();
+const aionY = ref();
 
+onMounted(() => {
+    formatDataSet();
+});
+
+const formatDataSet = async () => {
+    await axios
+        .get(route('evaluaciones.scatterChart', evaluacion.value.id))
+        .then((response) => {
+
+
+            results.value = response.data;
+            aionX.value = Number(formatNumber(results.value.promedioGente))
+            aionY.value = Number(formatNumber(results.value.promedioProcess))
+            // Seinicializa el grafico con los valores iniciales de la BD
+            chartData.value = setChartData();
+            chartOptions.value = setChartOptions();
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
 const setChartData = () => {
     const documentStyle = getComputedStyle(document.documentElement);
 
     return {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        labels: chartLabels,
         datasets: [
             {
-                label: 'First Dataset',
-                data: [65, 59, 80, 81, 56, 55, 40],
-                fill: false,
-                borderColor: documentStyle.getPropertyValue('--p-cyan-500'),
-                tension: 0.4
+                label: 'Aion',
+                data: [
+                    { x: aionX.value, y: aionY.value },
+
+
+                ],
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
             },
             {
-                label: 'Second Dataset',
-                data: [28, 48, 40, 19, 86, 27, 90],
-                fill: false,
-                borderColor: documentStyle.getPropertyValue('--p-gray-500'),
-                tension: 0.4
+                label: 'Others',
+                data: [
+                    { x: 30, y: 78 },
+                    { x: 40, y: 48 },
+                    { x: 60, y: 38 },
+                    { x: 70, y: 58 },
+                    { x: 50, y: 48 }
+                ],
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
             }
         ]
     };
@@ -70,10 +105,15 @@ const setChartOptions = () => {
         }
     };
 }
+
+function formatNumber(value) {
+    if (value == null) return ''; // Manejar el caso cuando el valor es nulo o indefinido
+    return parseFloat(value).toFixed(2);
+}
 </script>
 
 <template>
     <div class="card">
-        <Chart type="line" :data="chartData" :options="chartOptions" class="h-[30rem]" />
+        <Chart type="scatter" :data="chartData" :options="chartOptions" class="w-full h-full" />
     </div>
 </template>

@@ -111,6 +111,20 @@ class evaluacionController extends Controller
 
     public function details(Assessment $evaluacion)
     {
+        $promedioGlobal = AreaEvaluacion::where('assessment_id', $evaluacion->id)
+            ->avg('score');
+
+        $promedioGente = AreaEvaluacion::where('area_id', 1)
+            ->where('assessment_id', $evaluacion->id)
+            ->avg('score');
+
+        $promedioProcess = AreaEvaluacion::where('area_id', '<>', 1)
+            ->where('assessment_id', $evaluacion->id)
+            ->avg('score');
+
+        $evaluacion->global = $promedioGlobal;
+        $evaluacion->gente = $promedioGente;
+        $evaluacion->proceso = $promedioProcess;
 
         return Inertia::render('Evaluacion/EvaluacionBenchmark', ['evaluacion' => $evaluacion]);
     }
@@ -188,5 +202,33 @@ class evaluacionController extends Controller
     }
 
 
-    function radarChart() {}
+    function radarChart(Assessment $evaluacion)
+    {
+        $areaEvaluacion = AreaEvaluacion::with('area', 'assessment')->where('assessment_id', $evaluacion->id)->get();
+        return response()->json($areaEvaluacion);
+    }
+    function barChart(Assessment $evaluacion)
+    {
+        $departamentoEvaluacion = DepartamentoEvaluacion::with('departamento', 'assessment')->where('assessment_id', $evaluacion->id)->get();
+        return response()->json($departamentoEvaluacion);
+    }
+    function scatterChart(Assessment $evaluacion)
+    {
+        $areaEvaluacion = AreaEvaluacion::with('area', 'assessment')->where('assessment_id', $evaluacion->id)->get();
+        $promedioGente = AreaEvaluacion::where('area_id', 1)
+            ->where('assessment_id', $evaluacion->id)
+            ->avg('score');
+
+        $promedioProcess = AreaEvaluacion::where('area_id', '<>', 1)
+            ->where('assessment_id', $evaluacion->id)
+            ->avg('score');
+
+        $result = [
+            'promedioGente' => $promedioGente,
+            'promedioProcess' => $promedioProcess,
+        ];
+
+
+        return response()->json($result);
+    }
 }

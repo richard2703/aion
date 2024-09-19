@@ -4,6 +4,7 @@ import { Head, Link } from "@inertiajs/vue3";
 import Layout from "@/Layouts/Layout.vue";
 import Chart from 'primevue/chart';
 import tablapilares from "@/Pages/utils/tablapilares.vue";
+import Radar from "./Evaluacion/Chart/Radar.vue";
 
 onMounted(() => {
     chartData.value = setChartData();
@@ -231,7 +232,7 @@ const getPilar = async (pilar) => {
                             <div class="grid sm:grid-cols-1 md:grid-cols-2 gap-4 bg-gray-300">
                                 <div class="bg-gray-300">
                                     <h2 class="text-center py-4 font-bold text-3xl">Autoevaluación</h2>
-                                    <Chart type="radar" :data="chartData" :options="chartOptions" class="h-96 m-4" />
+                                    <Radar class="h-96 m-4" />
                                     <table class="w-full table-auto border-collapse border border-slate-400 m-4">
                                         <tr>
                                             <td class="text-center border border-slate-500">GyC</td>
