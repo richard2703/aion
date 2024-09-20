@@ -250,7 +250,7 @@ async function getTareasTerminadas(minuta_id) {
 <template>
     <Layout :titulo="title">
 
-        <Head title="Departamento" />
+        <Head title="Minutas" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
                 <h3>Minutas</h3>

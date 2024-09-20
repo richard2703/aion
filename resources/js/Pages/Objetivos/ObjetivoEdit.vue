@@ -48,7 +48,7 @@ const submit = () => {
 <template>
     <Layout>
 
-        <Head title="Challenges" />
+        <Head title="Objetivos" />
 
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">

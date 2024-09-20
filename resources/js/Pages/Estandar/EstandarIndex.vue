@@ -111,7 +111,7 @@ const onSort = (event) => {
 <template>
     <Layout :titulo="title">
 
-        <Head title="estandares" />
+        <Head title="Estandares" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
                 <h3>Estandares</h3>

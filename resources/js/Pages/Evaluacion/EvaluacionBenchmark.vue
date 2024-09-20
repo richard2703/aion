@@ -44,10 +44,10 @@ function formatNumber(value) {
                 <Link href="#" class="px-1">
                 <h3>Assessment -</h3>
                 </Link>
-                <Link href="#" class="px-1">
+                <Link :href="route('evaluacion.index')" class="px-1">
                 <h3>Evaluaciones -</h3>
                 </Link>
-                <Link :href="route('evaluacion.index')" class="active">
+                <Link href="#" class="active">
                 <h3>Benchmark</h3>
                 </Link>
             </div>
@@ -62,7 +62,7 @@ function formatNumber(value) {
                         <div class="bg-slate-500 p-1 rounded content-center">
                             Fecha: {{ formatearFecha(evaluacion.created_at) }}
                         </div>
-                        <div class="bg-white p-1 rounded flex border">
+                        <div class="bg-white p-1 rounded flex justify-between border">
                             <div class="px-1 bg-slate-500 font-bold rounded content-center"> Score:</div>
                             <div class="px-1 content-center">{{ formatNumber(evaluacion.global) }} %</div>
                             <div v-if="evaluacion.global > 0 && evaluacion.global < 21" class="px-1 content-center">

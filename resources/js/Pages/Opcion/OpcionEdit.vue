@@ -102,7 +102,7 @@ onMounted(() => {
 <template>
     <Layout>
 
-        <Head title="Challenges" />
+        <Head title="Opciones" />
 
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">

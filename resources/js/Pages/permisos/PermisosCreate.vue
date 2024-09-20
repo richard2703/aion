@@ -113,7 +113,7 @@ const search = (event) => {
 <template>
     <Layout :titulo="title">
 
-        <Head title="Minutas" />
+        <Head title="Permisos" />
 
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">

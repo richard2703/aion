@@ -89,7 +89,7 @@ onMounted(() => {
 <template>
     <Layout :titulo="title">
 
-        <Head title="Encargados" />
+        <Head title="Desperdicios" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
                 <h3>Nuevo desperdicio</h3>

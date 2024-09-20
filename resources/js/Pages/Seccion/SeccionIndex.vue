@@ -112,7 +112,7 @@ const deleteSeccion = async (id) => {
 <template>
     <Layout :titulo="title" :subTitulo="subTitle">
 
-        <Head title="Departamento" />
+        <Head title="Secciones" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
                 <h3>Secciones</h3>

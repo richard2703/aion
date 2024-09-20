@@ -17,7 +17,7 @@ const template = ref('dashboard');
 <template>
     <Layout title="Configuraciones">
 
-        <Head title="Usuarios" />
+        <Head title="Configuraciones" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
                 <h3>Configuraciones</h3>
