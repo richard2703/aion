@@ -1,33 +1,50 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import Chart from 'primevue/chart';
+import axios from "axios";
 
+
+const props = defineProps({
+    evaluacion: Object
+})
+
+const evaluacion = ref(props.evaluacion);
+const results = ref({});
+const chartData = ref();
+const chartOptions = ref();
+const chartValues = ref();
+const chartLabels = ref();
 
 onMounted(() => {
     chartData.value = setChartData();
     chartOptions.value = setChartOptions();
+    formatDataSet();
 });
 
-const chartData = ref();
-const chartOptions = ref();
-
+const formatDataSet = async () => {
+    await axios
+        .get(route('evaluaciones.barChart', evaluacion.value.id))
+        .then((response) => {
+            // return
+            chartValues.value = response.data.map(record => record.score);
+            chartLabels.value = response.data.map(record => record.departamento.nombre);
+            results.value = response.data;
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
 const setChartData = () => {
     const documentStyle = getComputedStyle(document.documentElement);
 
     return {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        labels: chartLabels,
         datasets: [
             {
-                label: 'My First dataset',
+                label: 'Resultados por Flujo de valor',
                 backgroundColor: documentStyle.getPropertyValue('--p-cyan-500'),
                 borderColor: documentStyle.getPropertyValue('--p-cyan-500'),
-                data: [65, 59, 80, 81, 56, 55, 40]
-            },
-            {
-                label: 'My Second dataset',
-                backgroundColor: documentStyle.getPropertyValue('--p-gray-500'),
-                borderColor: documentStyle.getPropertyValue('--p-gray-500'),
-                data: [28, 48, 40, 19, 86, 27, 90]
+                data: chartValues
             }
         ]
     };
@@ -78,6 +95,6 @@ const setChartOptions = () => {
 
 <template>
     <div class="card">
-        <Chart type="bar" :data="chartData" :options="chartOptions" class="h-[30rem]" />
+        <Chart type="bar" :data="chartData" :options="chartOptions" class="w-full h-96 flex justify-center" />
     </div>
 </template>

@@ -118,3 +118,8 @@ Route::get('/secciones', [App\Http\Controllers\seccionController::class, 'findAl
 Route::get('/secciones/{departamento_id}', [App\Http\Controllers\seccionController::class, 'byDepartamento'])->name('secciones.byDepartamento');
 
 Route::get('/evaluaciones', [App\Http\Controllers\evaluacionController::class, 'findAll'])->name('evaluaciones.findAll');
+
+Route::get('/evaluaciones/{evaluacion}/bar', [App\Http\Controllers\evaluacionController::class, 'barChart'])->name('evaluaciones.barChart');
+Route::get('/evaluaciones/{evaluacion}/radar', [App\Http\Controllers\evaluacionController::class, 'radarChart'])->name('evaluaciones.radarChart');
+Route::get('/evaluaciones/{evaluacion}/scatter', [App\Http\Controllers\evaluacionController::class, 'scatterChart'])->name('evaluaciones.scatterChart');
+Route::get('/evaluaciones/dashboard', [App\Http\Controllers\evaluacionController::class, 'getUltimaEvaluacion'])->name('evaluaciones.getUltimaEvaluacion');
