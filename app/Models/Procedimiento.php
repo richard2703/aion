@@ -19,6 +19,7 @@ class Procedimiento extends Model
         'nombre',
         'descripcion',
         'link_externo',
+        'link_herramienta',
     ];
 
     public function proceso(): BelongsTo

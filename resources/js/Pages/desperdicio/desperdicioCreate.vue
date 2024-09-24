@@ -80,9 +80,15 @@ const submit = () => {
 };
 
 onMounted(() => {
-    // getAreas();
+    getAreas();
     getTipos(1);
 })
+
+const showTooltipRango = ref(false);
+const showTooltipRecurrencia = ref(false);
+const showTooltipDetectabilidad = ref(false);
+
+
 
 </script>
 
@@ -108,7 +114,7 @@ onMounted(() => {
         </div>
 
         <div class="py-2">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+            <div class="bg-white  shadow-xl sm:rounded-lg">
                 <div>
                     <div class="px-4 my-4 py-2 flex justify-end bg-white border-b border-gray-200"></div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
@@ -116,7 +122,7 @@ onMounted(() => {
                             <form @submit.prevent="submit">
 
                                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                                    <!--   <div class="mt-4">
+                                    <div class="mt-4">
                                         <InputLabel for="area_id" value="Pilar: " />
                                         <select ref="area_select" @change="onChange($event)"
                                             class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
@@ -130,7 +136,7 @@ onMounted(() => {
                                         </select>
                                     </div>
 
-                                    <div class="mt-4">
+                                    <!--   <div class="mt-4">
                                         <InputLabel for="departamento_id" value="Flujo de valor: " />
 
                                         <select ref="departamento_select" @change="getTipos($event)"
@@ -172,22 +178,118 @@ onMounted(() => {
                                             class="mt-1 block w-full" required autocomplete="descripcion"
                                             maxlength="250" />
                                     </div>
-                                    <div class="mt-4">
+                                    <!-- <div class="mt-4">
                                         <InputLabel for="Rango" value="Rango: " />
                                         <TextInput id="rango" v-model="form.rango" type="number"
                                             class="mt-1 block w-full" required autocomplete="rango" min="1" max="10" />
+                                    </div> -->
+                                    <div class="mt-4 relative">
+                                        <!-- Etiqueta del campo -->
+                                        <label for="Rango" class="block text-sm font-medium text-gray-700">Rango:
+                                            <!-- Ícono para el tooltip -->
+                                            <!-- <span class="ml-2 text-blue-500 cursor-pointer"
+                                                @mouseenter="showTooltipRango = true"
+                                                @mouseleave="showTooltipRango = false">
+                                                <i class="pi pi-save"></i>
+                                            </span> -->
+                                            <button @click="showTooltipRango = true"
+                                                class="ml-2 text-blue-500 underline">Ver ejemplo</button>
+
+                                        </label>
+
+                                        <!-- Campo de texto -->
+                                        <input id="rango" v-model="form.rango" type="number"
+                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                            required autocomplete="rango" min="1" max="10" />
+
+                                        <!-- Modal -->
+                                        <div v-if="showTooltipRango"
+                                            class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
+                                            <div
+                                                class="bg-white p-6 rounded-lg shadow-lg max-w-full max-h-full overflow-y-auto">
+                                                <h3 class="text-lg font-bold mb-4">Ejemplo de Rango</h3>
+
+                                                <!-- Contenido de la imagen con tamaño ajustado -->
+                                                <img src="../../../img/amef/rangoAMEF.png" alt="Ejemplo de Rango"
+                                                    style="width: 600px;">
+
+                                                <!-- Botón de cerrar -->
+                                                <button @click="showTooltipRango = false"
+                                                    class="mt-4 text-white bg-red-500 px-4 py-2 rounded">
+                                                    Cerrar
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="mt-4">
-                                        <InputLabel for="Recurrencia" value="Recurrencia: " />
-                                        <TextInput id="recurrencia" v-model="form.recurrencia" type="number"
-                                            class="mt-1 block w-full" required autocomplete="recurrencia" min="1"
-                                            max="10" />
+
+                                    <div class="mt-4 relative">
+                                        <!-- Etiqueta del campo -->
+                                        <label for="Recurrencia"
+                                            class="block text-sm font-medium text-gray-700">Recurrencia:
+                                            <!-- Ícono para el tooltip -->
+                                            <button @click="showTooltipRecurrencia = true"
+                                                class="ml-2 text-blue-500 underline">Ver ejemplo</button>
+                                        </label>
+
+                                        <!-- Campo de texto -->
+                                        <input id="recurrencia" v-model="form.recurrencia" type="number"
+                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                            required autocomplete="recurrencia" min="1" max="10" />
+
+                                        <!-- Modal -->
+
+                                        <div v-if="showTooltipRecurrencia"
+                                            class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
+                                            <div
+                                                class="bg-white p-6 rounded-lg shadow-lg max-w-full max-h-full overflow-y-auto">
+                                                <h3 class="text-lg font-bold mb-4">Ejemplo de Recurrencia</h3>
+
+                                                <!-- Contenido de la imagen con tamaño ajustado -->
+                                                <img src="../../../img/amef/ocurrenciaAMEF.png" alt="Ejemplo de Rango"
+                                                    style="width: 600px;">
+
+                                                <!-- Botón de cerrar -->
+                                                <button @click="showTooltipRecurrencia = false"
+                                                    class="mt-4 text-white bg-red-500 px-4 py-2 rounded">
+                                                    Cerrar
+                                                </button>
+                                            </div>
+                                        </div>
+
                                     </div>
-                                    <div class="mt-4">
-                                        <InputLabel for="Detectabilidad" value="Detectabilidad: " />
-                                        <TextInput id="detectabilidad" v-model="form.detectabilidad" type="number"
-                                            class="mt-1 block w-full" required autocomplete="detectabilidad" min="1"
-                                            max="10" />
+
+
+                                    <div class="mt-4 relative">
+                                        <!-- Etiqueta del campo -->
+                                        <label for="Detectabilidad"
+                                            class="block text-sm font-medium text-gray-700">Detectabilidad:
+                                            <button @click="showTooltipDetectabilidad = true"
+                                                class="ml-2 text-blue-500 underline">Ver ejemplo</button>
+                                        </label>
+
+                                        <!-- Campo de texto -->
+                                        <input id="detectabilidad" v-model="form.detectabilidad" type="number"
+                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                            required autocomplete="detectabilidad" min="1" max="10" />
+                                        <!-- Modal -->
+                                        <div v-if="showTooltipDetectabilidad"
+                                            class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
+                                            <div
+                                                class="bg-white p-6 rounded-lg shadow-lg max-w-full max-h-full overflow-y-auto">
+                                                <h3 class="text-lg font-bold mb-4">Ejemplo de Detectabilidad</h3>
+
+                                                <!-- Contenido de la imagen con tamaño ajustado -->
+                                                <img src="../../../img/amef/deteccionAMEF.png" alt="Ejemplo de Rango"
+                                                    style="width: 600px;">
+
+                                                <!-- Botón de cerrar -->
+                                                <button @click="showTooltipDetectabilidad = false"
+                                                    class="mt-4 text-white bg-red-500 px-4 py-2 rounded">
+                                                    Cerrar
+                                                </button>
+                                            </div>
+                                        </div>
+
                                     </div>
 
 

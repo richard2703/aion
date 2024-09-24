@@ -30,10 +30,11 @@ const form = useForm({
     nombre: procedimiento.value.nombre,
     descripcion: procedimiento.value.descripcion,
     link_externo: procedimiento.value.link_externo,
+    link_herramienta: procedimiento.value.link_herramienta,
 });
 
 onMounted(() => {
-    console.log('proceso', proceso.value);
+    // console.log('proceso', proceso.value);
     getAreas();
     getDepartamentos(proceso.value.area_id);
     getProcesos(proceso.value.departamento_id);
@@ -166,16 +167,26 @@ const submit = () => {
                                         <TextInput id="nombre" v-model="form.nombre" type="text"
                                             class="mt-1 block w-full" required autocomplete="new-challenge" />
                                     </div>
+                                    <div class="my-4">
+                                        <InputLabel for="Link Documentacion" value="Link Documentacion: " />
+                                        <TextInput id="nombre" v-model="form.link_externo" type="text"
+                                            class="mt-1 block w-full" required autocomplete="new-challenge" />
+                                    </div>
+                                    <div class="my-4">
+                                        <InputLabel for="Link Herramienta" value="Link Herramienta: " />
+                                        <TextInput id="nombre" v-model="form.link_herramienta" type="text"
+                                            class="mt-1 block w-full" required autocomplete="new-challenge" />
+                                    </div>
                                 </div>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
                                     <div class="my-4">
                                         <InputLabel for="descripcion" value="Descripcion: " />
                                         <Textarea v-model="form.descripcion" rows="5" cols="30" />
                                     </div>
-                                    <div class="my-4">
+                                    <!-- <div class="my-4">
                                         <InputLabel for="link_externo" value="Link externo: " />
                                         <Textarea v-model="form.link_externo" rows="5" cols="30" />
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <hr>
                                 <div class="flex items-center justify-end mt-4">

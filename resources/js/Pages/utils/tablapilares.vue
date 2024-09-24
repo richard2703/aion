@@ -60,7 +60,7 @@ const getDepartamentos = async (
             },
         });
         departamentos.value = response.data.data;
-        console.log(departamentos.value);
+        // console.log(departamentos.value);
         totalRecords.value = response.data.total;
         first.value = (response.data.current_page - 1) * rows.value;
     } catch (error) {
@@ -157,7 +157,7 @@ const getEstandares = async (
                 procedimiento,
             },
         });
-        console.log(response.data);
+        // console.log(response.data);
         estandares.value = response.data.data;
         totalRecords.value = response.data.total;
         first.value = (response.data.current_page - 1) * rows.value;
