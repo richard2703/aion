@@ -71,11 +71,17 @@ const setChartOptions = () => {
             r: {
                 grid: {
                     color: textColorSecondary
+                },
+                ticks: {
+                    beginAtZero: true,
+                    min: 1,
+                    max: 100,
+                    stepSize: 1,
                 }
             }
         }
     };
-}
+};
 
 function setClass(nota) {
     if (nota >= 0 && nota < 21) {
@@ -94,7 +100,7 @@ function setClass(nota) {
 
 <template>
     <div class="card">
-        <Chart type="radar" :data="chartData" :options="chartOptions" class="w-full h-96 flex justify-center" />
+        <Chart type="radar" :data="chartData" :options="chartOptions" class="radar w-full flex justify-center" />
         <div class="flex justify-center ">
             <table class="table w-80 border-collapse border border-slate-400  text-sm">
                 <tr v-for="result in results">

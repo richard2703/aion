@@ -16,8 +16,7 @@ const props = defineProps({
 });
 
 const opcion = ref(props.opcion);
-const areas = ref(props.areas);
-const departamentos = ref(props.departamentos);
+const areas = ref({});
 const challenges = ref(props.challenges);
 
 async function getAreas() {
@@ -29,18 +28,9 @@ async function getAreas() {
         });
 }
 
-async function getDepartamentos(area_id) {
+async function getChallenges(area_id) {
     await axios
-        .get(route("departamentos.byArea", area_id))
-        .then((response) => (departamentos.value = response.data.departamentos))
-        .catch((error) => {
-            console.log(error);
-        });
-}
-
-async function getChallenges(departamento_id) {
-    await axios
-        .get(route("challenges.byArea", departamento_id))
+        .get(route("challenges.byArea", area_id))
         .then((response) => (challenges.value = response.data.challenges))
         .catch((error) => {
             console.log(error);
@@ -48,7 +38,7 @@ async function getChallenges(departamento_id) {
 }
 
 const form = useForm({
-    area_id: opcion.value.area_id,
+    area_id: opcion.value.challenge.area_id,
     departamento_id: opcion.value.departamento_id,
     challenge_id: opcion.value.challenge_id,
     madurez: opcion.value.madurez,
@@ -57,16 +47,6 @@ const form = useForm({
 });
 
 const onChangeArea = async (event) => {
-    const taget_id = event.target.value;
-    await axios
-        .get(route("departamentos.byArea", taget_id))
-        .then((response) => (departamentos.value = response.data.departamentos))
-        .catch((error) => {
-            console.log(error);
-        });
-};
-
-const onChangeDepartamento = async (event) => {
     const taget_id = event.target.value;
     await axios
         .get(route("challenges.byArea", taget_id))
@@ -93,8 +73,7 @@ const submit = () => {
 
 onMounted(() => {
     getAreas();
-    getDepartamentos(opcion.value.area_id);
-    getChallenges(opcion.value.departamento_id);
+    getChallenges(opcion.value.challenge.area_id);
 })
 
 </script>
@@ -141,21 +120,6 @@ onMounted(() => {
                                             </option>
                                             <option v-for="area in areas" :key="area.id" :value="area.id">
                                                 {{ area.nombre }}
-                                            </option>
-                                        </select>
-                                    </div>
-                                    <div class="mt-4">
-                                        <InputLabel for="departamento_id" value="Departamento: " />
-
-                                        <select ref="departamento_select" @change="onChangeDepartamento($event)" class=" border-gray-300 focus:border-indigo-500 focus:ring-indigo-500
-                                            rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                            v-model="form.departamento_id" required>
-                                            <option value="" disabled selected>
-                                                Seleccione una opcion
-                                            </option>
-                                            <option v-for="departamento in departamentos" :key="departamento.id"
-                                                :value="departamento.id">
-                                                {{ departamento.nombre }}
                                             </option>
                                         </select>
                                     </div>

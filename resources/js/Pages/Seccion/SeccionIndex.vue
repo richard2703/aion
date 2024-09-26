@@ -55,8 +55,6 @@ async function getSecciones(
             },
         });
         secciones.value = response.data.data;
-        console.log({ secciones: secciones.value });
-
         totalRecords.value = response.data.total;
         first.value = (response.data.current_page - 1) * rows.value;
     } catch (error) {
@@ -153,7 +151,7 @@ const deleteSeccion = async (id) => {
                                     sortable></Column>
                                 <Column field="area.nombre" header="Pilar" headerStyle="width:4em;"
                                     bodyClass="text-center" sortable></Column>
-                                <Column field="departamento.nombre" header="Flujo de valor" headerStyle="width:4em;"
+                                <Column field="titulo" header="Sección" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">

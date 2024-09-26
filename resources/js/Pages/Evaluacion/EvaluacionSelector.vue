@@ -59,7 +59,7 @@ const goToEvaluacion = (assessment_asignado) => {
                         <button v-for="assessmentAsignado in evaluacion.assessment_asignado"
                             @click="goToEvaluacion(assessmentAsignado)"
                             :class="[assessmentAsignado.estatus === 'INCOMPLETO' ? incompleto : completo]">
-                            <span>{{ assessmentAsignado.seccion.departamento.nombre }}</span>
+                            <span>{{ assessmentAsignado.seccion.titulo }}</span>
                             <span>{{ assessmentAsignado.estatus }}</span>
                         </button>
                     </div>

@@ -44,7 +44,6 @@ async function getChallenges(
         challenges.value = response.data.data;
         totalRecords.value = response.data.total;
         first.value = (response.data.current_page - 1) * rows.value;
-        console.log({ challenges: challenges.value });
     } catch (error) {
         console.error(error);
     }
@@ -145,7 +144,7 @@ const onSort = (event) => {
                                 :globalFilterFields="[
                                     'id',
                                     'area.nombre',
-                                    'departamento.nombre',
+                                    'seccion.titulo',
                                     'challenge',
                                 ]" :sortField="sortField" :sortOrder="sortOrder"
                                 class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
@@ -154,7 +153,7 @@ const onSort = (event) => {
                                     sortable></Column>
                                 <Column field="area.nombre" header="Pilar" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                                <Column field="departamento.nombre" header="Flujo de valor" headerStyle="width:4em;"
+                                <Column field="seccion.titulo" header="Seccion" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                 <Column field="challenge" header="Challenge" headerStyle="width:4em;"
                                     bodyClass="text-center" sortable></Column>

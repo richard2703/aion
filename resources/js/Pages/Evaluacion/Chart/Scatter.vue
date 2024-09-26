@@ -87,6 +87,8 @@ const setChartOptions = () => {
         },
         scales: {
             x: {
+                min: 0,
+                max: 100,
                 ticks: {
                     color: textColorSecondary
                 },
@@ -95,6 +97,8 @@ const setChartOptions = () => {
                 }
             },
             y: {
+                min: 0,
+                max: 100,
                 ticks: {
                     color: textColorSecondary
                 },

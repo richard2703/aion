@@ -18,6 +18,7 @@ class Seccion extends Model
     protected $fillable = [
         'area_id',
         'departamento_id',
+        'titulo',
         'created_by',
     ];
 

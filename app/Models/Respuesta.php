@@ -17,6 +17,7 @@ class Respuesta extends Model
         'seccion_id',
         'area_id',
         'departamento_id',
+        'seccion_id',
         'challenge_id',
         'opcion_id',
         'valor_opcion'

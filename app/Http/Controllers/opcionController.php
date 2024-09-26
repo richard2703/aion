@@ -59,7 +59,7 @@ class opcionController extends Controller
 
     public function store(Request $request)
     {
-        Opcion::create($request->only('challenge_id', 'area_id', 'departamento_id', 'madurez', 'formal', 'informal'));
+        Opcion::create($request->only('challenge_id', 'madurez', 'formal', 'informal'));
         return redirect()->route('opcion.index');
     }
 
@@ -70,7 +70,7 @@ class opcionController extends Controller
 
     public function edit($id)
     {
-        $challenge = Opcion::find($id);
+        $challenge = Opcion::with('challenge')->find($id);
         return Inertia::render('Opcion/OpcionEdit', ['opcion' => $challenge]);
     }
 
@@ -78,7 +78,7 @@ class opcionController extends Controller
     {
 
         $challenge = Opcion::find($id);
-        $challenge->update($request->only('challenge_id', 'alias', 'formal', 'informal'));
+        $challenge->update($request->only('challenge_id', 'madurez', 'formal', 'informal'));
         return redirect()->route('opcion.index');
     }
 
