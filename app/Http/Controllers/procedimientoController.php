@@ -79,13 +79,13 @@ class procedimientoController extends Controller
 
     public function store(Request $request)
     {
-        $procedimiento = Procedimiento::create($request->only(['proceso_id', 'nombre', 'descripcion', 'link_externo']));
+        $procedimiento = Procedimiento::create($request->only(['proceso_id', 'nombre', 'descripcion', 'link_externo', 'link_herramienta']));
         return redirect()->route('procedimiento.index');
     }
 
     public function update(Request $request, Procedimiento $procedimiento)
     {
-        $procedimiento->update($request->only('proceso_id', 'nombre', 'descripcion', 'link_externo'));
+        $procedimiento->update($request->only('proceso_id', 'nombre', 'descripcion', 'link_externo', 'link_herramienta'));
         return redirect()->route('procedimiento.index');
     }
 
