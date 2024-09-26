@@ -101,6 +101,20 @@
                         <div>Mis Reportes</div>
                         </Link>
                     </li>
+                    <li>
+                        <Link class="group flex items-center py-2" :href="route('metas.index')" :class="subTitle === 'pdca' ? 'activo flex'
+                            : 'inactivo flex'">
+                        <icon name="circle" class="mr-2 w-3 h-3" />
+                        <div>Metas (30 60 90)</div>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link class="group flex items-center py-2" :href="route('Mismetas.index')" :class="subTitle === 'pdca' ? 'activo flex'
+                            : 'inactivo flex'">
+                        <icon name="circle" class="mr-2 w-3 h-3" />
+                        <div>Mis Metas (30 60 90)</div>
+                        </Link>
+                    </li>
                 </ul>
             </li>
 

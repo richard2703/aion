@@ -48,7 +48,7 @@ class reportesController extends Controller
         $numeroSemana = Carbon::now()->weekOfYear;
 
         // Buscar el reporte semanal por el número de semana actual
-        $reporteSemanal = ReporteSemanal::where('numeroSemana', $numeroSemana)->first();
+        $reporteSemanal = ReporteSemanal::where('numeroSemana', $numeroSemana)->orderby('created_at', 'desc')->first();
 
         // Si no existe, crear un nuevo registro en reportesemanal
         if (!$reporteSemanal) {

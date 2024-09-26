@@ -82,13 +82,13 @@ class procesoController extends Controller
 
     function store(Request $request)
     {
-        $proceso = Proceso::create($request->only(['area_id', 'departamento_id', 'nombre', 'descripcion', 'link_externo']));
+        $proceso = Proceso::create($request->only(['area_id', 'departamento_id', 'nombre', 'descripcion', 'link_externo', 'link_herramienta']));
         return redirect()->route('proceso.index');
     }
 
     function update(Request $request, Proceso $proceso)
     {
-        $proceso->update($request->only(['area_id', 'departamento_id', 'nombre', 'descripcion', 'link_externo']));
+        $proceso->update($request->only(['area_id', 'departamento_id', 'nombre', 'descripcion', 'link_externo', 'link_herramienta']));
         return redirect()->route('proceso.index');
     }
 

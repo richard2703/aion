@@ -209,4 +209,14 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::post('assessment/store', [App\Http\Controllers\evaluacionController::class, 'store'])->name('evaluacion.store');
     Route::patch('assessment/{evaluacion}/update', [App\Http\Controllers\evaluacionController::class, 'update'])->name('evaluacion.update');
     Route::delete('assessment/{evaluacion}/destroy', [App\Http\Controllers\evaluacionController::class, 'destroy'])->name('evaluacion.destroy');
+
+    //Metas (30 60 90)
+    Route::get('metas', [App\Http\Controllers\metasController::class, 'index'])->name('metas.index');
+    Route::get('metas/nuevo', [App\Http\Controllers\metasController::class, 'create'])->name('metas.create');
+    Route::post('metas/store', [App\Http\Controllers\metasController::class, 'store'])->name('metas.store');
+    // Route::get('metas/{reporte}/show', [App\Http\Controllers\reportesController::class, 'show'])->name('metas.show');
+    Route::get('metas/{metaFlujo}/edit', [App\Http\Controllers\metasController::class, 'edit'])->name('metas.edit');
+    Route::patch('metas/{metaFlujo}/update', [App\Http\Controllers\metasController::class, 'update'])->name('metas.update');
+    Route::get('Mismetas', [App\Http\Controllers\metasController::class, 'misMetas'])->name('Mismetas.index');
+    // Route::get('reportes/{reporte}/pdf', [App\Http\Controllers\reportesController::class, 'pdf'])->name('reporte.pdf');
 });
