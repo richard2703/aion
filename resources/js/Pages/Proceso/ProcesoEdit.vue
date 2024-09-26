@@ -47,6 +47,7 @@ const form = useForm({
     nombre: proceso.value.nombre,
     descripcion: proceso.value.descripcion,
     link_externo: proceso.value.link_externo,
+    link_herramienta: proceso.value.link_herramienta,
 });
 
 const onChange = async (event) => {
@@ -140,15 +141,20 @@ const submit = () => {
                                         <TextInput id="nombre" v-model="form.nombre" type="text"
                                             class="mt-1 block w-full" required autocomplete="new-challenge" />
                                     </div>
+                                    <div class="my-4">
+                                        <InputLabel for="descripcion" value="Descripcion: " />
+                                        <Textarea class="w-full" v-model="form.descripcion" rows="5" cols="30" />
+                                    </div>
                                 </div>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
                                     <div class="my-4">
-                                        <InputLabel for="descripcion" value="Descripcion: " />
-                                        <Textarea v-model="form.descripcion" rows="5" cols="30" />
+                                        <InputLabel for="link_externo" value="Link externo: " />
+                                        <Textarea class="w-full" v-model="form.link_externo" rows="5" cols="30" />
                                     </div>
                                     <div class="my-4">
-                                        <InputLabel for="link_externo" value="Link externo: " />
-                                        <Textarea v-model="form.link_externo" rows="5" cols="30" />
+                                        <InputLabel for="Link Herramienta" value="Link Herramienta: " />
+                                        <Textarea class="w-full" v-model="form.link_herramienta" rows="5" cols="30"
+                                            required />
                                     </div>
                                 </div>
                                 <hr>
