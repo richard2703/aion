@@ -133,27 +133,6 @@
                 </a>
                 <ul v-show="isOpen('assessment')" class="pl-6 space-y-2">
                     <li>
-                        <Link class="group flex items-center py-2" :href="route('seccion.index')" :class="subTitle === 'secciones' ? 'activo flex'
-                            : 'inactivo flex'">
-                        <icon name="circle" class="mr-2 w-3 h-3" />
-                        <div>Secciones</div>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link class="group flex items-center py-2" :href="route('challenge.index')" :class="subTitle === 'challenges' ? 'activo flex'
-                            : 'inactivo flex'">
-                        <icon name="circle" class="mr-2 w-3 h-3" />
-                        <div>Challenges</div>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link class="group flex items-center py-2" :href="route('opcion.index')" :class="subTitle === 'opciones' ? 'activo flex'
-                            : 'inactivo flex'">
-                        <icon name="circle" class="mr-2 w-3 h-3" />
-                        <div>Opciones</div>
-                        </Link>
-                    </li>
-                    <li>
                         <Link class="group flex items-center py-2" :href="route('evaluacion.index')" :class="subTitle === 'evaluaciones' ? 'activo flex'
                             : 'inactivo flex'">
                         <icon name="circle" class="mr-2 w-3 h-3" />
@@ -276,6 +255,20 @@
                             ">
                             <i class="pi pi-trash mr-2 w-4 h-4"></i>
                             Tipos de Desperdicios
+                        </div>
+                        </Link>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="mb-4">
+                        <Link class="group flex items-center py-3" :href="route('seccion.index')">
+                        <div :class="title === 'Secciones'
+                            ? 'activo flex'
+                            : 'inactivo flex'
+                            ">
+                            <i class="pi pi-list mr-2 w-4 h-4"></i>
+                            Secciones
                         </div>
                         </Link>
                     </div>

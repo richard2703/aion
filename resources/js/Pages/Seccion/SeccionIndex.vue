@@ -119,9 +119,6 @@ const deleteSeccion = async (id) => {
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
-                <Link href="#" class="px-1">
-                <h3>Assessment -</h3>
-                </Link>
                 <Link :href="route('seccion.index')" class="active">
                 <h3>Secciones</h3>
                 </Link>
