@@ -15,7 +15,6 @@ const props = defineProps({
 });
 
 const areas = ref(props.areas);
-const departamentos = ref(props.departamentos);
 const challenges = ref(props.challenges);
 
 async function getAreas() {
@@ -37,16 +36,6 @@ const form = useForm({
 });
 
 const onChangeArea = async (event) => {
-    const taget_id = event.target.value;
-    await axios
-        .get(route("departamentos.byArea", taget_id))
-        .then((response) => (departamentos.value = response.data.departamentos))
-        .catch((error) => {
-            console.log(error);
-        });
-};
-
-const onChangeDepartamento = async (event) => {
     const taget_id = event.target.value;
     await axios
         .get(route("challenges.byArea", taget_id))
@@ -80,7 +69,7 @@ onMounted(() => {
 <template>
     <Layout>
 
-        <Head title="Challenges" />
+        <Head title="Opciones" />
 
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
@@ -122,22 +111,6 @@ onMounted(() => {
                                             </option>
                                         </select>
                                     </div>
-                                    <div class="mt-4">
-                                        <InputLabel for="departamento_id" value="Departamento: " />
-
-                                        <select ref="departamento_select" @change="onChangeDepartamento($event)" class=" border-gray-300 focus:border-indigo-500 focus:ring-indigo-500
-                                            rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                            v-model="form.departamento_id" required>
-                                            <option value="" disabled selected>
-                                                Seleccione una opcion
-                                            </option>
-                                            <option v-for="departamento in departamentos" :key="departamento.id"
-                                                :value="departamento.id">
-                                                {{ departamento.nombre }}
-                                            </option>
-                                        </select>
-                                    </div>
-
                                     <div class="mt-4">
                                         <InputLabel for="challenge_id" value="Challenge: " />
 

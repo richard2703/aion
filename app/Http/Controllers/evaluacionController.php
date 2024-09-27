@@ -156,7 +156,6 @@ class evaluacionController extends Controller
                 'opcion_id' => $value['opcion_id'],
                 'valor_opcion' => $score,
             ];
-
             $assessmentRespuestas = Respuesta::create($data);
         }
 
@@ -169,16 +168,16 @@ class evaluacionController extends Controller
                 ->count();
 
             if ($countIncompleted === 0) {
-                $promedioDepartamentos = Respuesta::where('assessment_id', $assessmentId)
+                $promedioSeccion = Respuesta::where('assessment_id', $assessmentId)
                     ->select()
                     ->get()
-                    ->groupBy('departamento_id')
+                    ->groupBy('seccion_id')
                     ->map(fn($group) => $group->avg('valor_opcion'));
 
-                foreach ($promedioDepartamentos as $departamentoId => $score) {
+                foreach ($promedioSeccion as $seccionId => $score) {
                     DepartamentoEvaluacion::create([
                         'assessment_id' => $assessmentId,
-                        'departamento_id' => $departamentoId,
+                        'seccion_id' => $seccionId,
                         'score' => $score,
                     ]);
                 }
@@ -209,7 +208,7 @@ class evaluacionController extends Controller
     }
     function barChart(Assessment $evaluacion)
     {
-        $departamentoEvaluacion = DepartamentoEvaluacion::with('departamento', 'assessment')->where('assessment_id', $evaluacion->id)->get();
+        $departamentoEvaluacion = DepartamentoEvaluacion::with('departamento', 'assessment', 'seccion')->where('assessment_id', $evaluacion->id)->get();
         return response()->json($departamentoEvaluacion);
     }
     function scatterChart(Assessment $evaluacion)

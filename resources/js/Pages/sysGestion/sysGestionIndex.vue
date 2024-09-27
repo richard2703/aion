@@ -81,7 +81,7 @@ async function getProcesos() {
 <template>
     <Layout :titulo="title" :subTitulo="subTitle">
 
-        <Head title="Dashboard" />
+        <Head title="PDCA" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
                 <h3>Sistema de Gestion</h3>
@@ -90,8 +90,11 @@ async function getProcesos() {
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
-                <Link :href="route('sysgestion.index')" class="active">
+                <Link href="#" class="active">
                 <h3>Sistema de gestion</h3>
+                </Link>
+                <Link :href="route('sysgestion.index')" class="active">
+                <h3>PDCA</h3>
                 </Link>
             </div>
         </div>
@@ -158,7 +161,7 @@ async function getProcesos() {
                                         <tr v-for="proceso in procesos">
                                             <td class="py-2 px-4 border">
                                                 <div v-if="proceso.link_externo">
-                                                    <a target="blank" :href="proceso.link_externo"
+                                                    <a target="blank" :href="proceso.link_herramienta"
                                                         class="text-blue-500 hover:underline">
                                                         {{ proceso.nombre || '-' }}
                                                     </a>

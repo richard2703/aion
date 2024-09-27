@@ -41,10 +41,10 @@ const goToEvaluacion = (assessment_asignado) => {
                 <Link href="#" class="px-1">
                 <h3>Assessment -</h3>
                 </Link>
-                <Link href="#" class="px-1">
+                <Link :href="route('evaluacion.index')" class="px-1">
                 <h3>Evaluaciones -</h3>
                 </Link>
-                <Link :href="route('evaluacion.index')" class="active">
+                <Link href="#" class="active">
                 <h3>Selector</h3>
                 </Link>
             </div>
@@ -59,7 +59,7 @@ const goToEvaluacion = (assessment_asignado) => {
                         <button v-for="assessmentAsignado in evaluacion.assessment_asignado"
                             @click="goToEvaluacion(assessmentAsignado)"
                             :class="[assessmentAsignado.estatus === 'INCOMPLETO' ? incompleto : completo]">
-                            <span>{{ assessmentAsignado.seccion.departamento.nombre }}</span>
+                            <span>{{ assessmentAsignado.seccion.titulo }}</span>
                             <span>{{ assessmentAsignado.estatus }}</span>
                         </button>
                     </div>

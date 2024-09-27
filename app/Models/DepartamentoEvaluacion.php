@@ -15,6 +15,7 @@ class DepartamentoEvaluacion extends Model
     protected $fillable = [
         'assessment_id',
         'departamento_id',
+        'seccion_id',
         'score',
         'feedback',
     ];
@@ -27,5 +28,10 @@ class DepartamentoEvaluacion extends Model
     public function departamento(): BelongsTo
     {
         return $this->belongsTo(Departamento::class, 'departamento_id', 'id');
+    }
+
+    function seccion()
+    {
+        return $this->belongsTo(Seccion::class, 'seccion_id', 'id');
     }
 }

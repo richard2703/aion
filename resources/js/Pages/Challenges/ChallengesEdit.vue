@@ -10,13 +10,12 @@ import { showToast } from "../utils/SweetAlert.service";
 const props = defineProps({
     challenge: Object,
     areas: Array,
-    departamentos: Array || null,
 });
 
 const challenge = ref(props.challenge);
 const areas = ref(props.areas);
-const departamentos = ref(props.departamentos);
 const challengeArea = challenge.value.area_id;
+const secciones = ref([]);
 
 async function getAreas() {
     await axios
@@ -27,14 +26,6 @@ async function getAreas() {
         });
 }
 
-async function getDepartamentos(area_id) {
-    await axios
-        .get(route("departamentos.byArea", area_id))
-        .then((response) => (departamentos.value = response.data.departamentos))
-        .catch((error) => {
-            console.log(error);
-        });
-}
 
 const form = useForm({
     area_id: challenge.value.area_id,
@@ -46,24 +37,30 @@ const form = useForm({
 const onAreaChange = async (event) => {
     const taget_id = event.target.value;
     await axios
-        .get(route("departamentos.byArea", taget_id))
-        .then((response) => (departamentos.value = response.data.departamentos))
+        .get(route("secciones.byArea", taget_id))
+        .then((response) => {
+            secciones.value = response.data;
+            console.log({ secciones: secciones.value });
+
+        })
         .catch((error) => {
             console.log(error);
         });
 };
 
-const onDepartamentoChange = async (event) => {
-    const taget_id = event.target.value;
+const getSecciones = async (areaId) => {
     await axios
-        .get(route("secciones.byDepartamento", taget_id))
+        .get(route("secciones.byArea", areaId))
         .then((response) => {
-            form.seccion_id = response.data[0].id
+            secciones.value = response.data;
+            console.log({ secciones: secciones.value });
+
         })
         .catch((error) => {
             console.log(error);
         });
-}
+};
+
 const submit = () => {
     try {
         form.patch(route("challenge.update", challenge.value.id), {
@@ -81,7 +78,7 @@ const submit = () => {
 
 onMounted(() => {
     getAreas();
-    getDepartamentos(challengeArea);
+    getSecciones(challengeArea);
 })
 
 </script>
@@ -131,17 +128,16 @@ onMounted(() => {
                                     </select>
                                 </div>
                                 <div class="mt-4">
-                                    <InputLabel for="departamento_id" value="Flujo de valor: " />
+                                    <InputLabel for="seccion_select" value="Seccion: " />
 
-                                    <select ref="departamento_select" @change="onDepartamentoChange($event)"
+                                    <select ref="seccion_select"
                                         class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                        v-model="form.departamento_id" required>
+                                        v-model="form.seccion_id" required>
                                         <option value="" disabled selected>
                                             Seleccione una opcion
                                         </option>
-                                        <option v-for="departamento in departamentos" :key="departamento.id"
-                                            :value="departamento.id">
-                                            {{ departamento.nombre }}
+                                        <option v-for="seccion in secciones" :key="seccion.id" :value="seccion.id">
+                                            {{ seccion.titulo }}
                                         </option>
                                     </select>
                                 </div>

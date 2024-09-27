@@ -66,7 +66,7 @@ const submit = () => {
 <template>
     <Layout :titulo="title">
 
-        <Head title="Challenges" />
+        <Head title="Objetivos" />
 
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">

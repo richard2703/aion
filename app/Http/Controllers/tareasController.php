@@ -80,7 +80,7 @@ class tareasController extends Controller
         foreach ($filterableFields as $field) {
 
             if (isset($filters[$field]['value']) && !empty($filters[$field]['value'])) {
-                $query->orWhere($field, '=', $filters[$field]['value']);
+                $query->Where($field, '=', $filters[$field]['value']);
             }
         }
         // dd($query->toSql());

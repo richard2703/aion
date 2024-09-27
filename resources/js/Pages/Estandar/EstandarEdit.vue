@@ -107,7 +107,7 @@ const submit = () => {
 <template>
     <Layout>
 
-        <Head title="Procesos" />
+        <Head title="Estandares" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
                 <h3>Estandares</h3>

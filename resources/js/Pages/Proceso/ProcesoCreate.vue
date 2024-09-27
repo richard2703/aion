@@ -146,10 +146,16 @@ const submit = () => {
                                         <InputLabel for="descripcion" value="Descripcion: " />
                                         <Textarea v-model="form.descripcion" rows="5" cols="30" />
                                     </div>
-                                    <!-- <div class="my-4">
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+                                    <div class="my-4">
                                         <InputLabel for="link_externo" value="Link externo: " />
                                         <Textarea v-model="form.link_externo" rows="5" cols="30" />
-                                    </div> -->
+                                    </div>
+                                    <div class="my-4">
+                                        <InputLabel for="Link Herramienta" value="Link Herramienta: " />
+                                        <Textarea v-model="form.link_herramienta" rows="5" cols="30" required />
+                                    </div>
                                 </div>
                                 <hr>
                                 <div class="flex items-center justify-end mt-4">

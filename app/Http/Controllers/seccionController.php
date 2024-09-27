@@ -76,9 +76,9 @@ class seccionController extends Controller
         ]);
     }
 
-    public function byDepartamento($departamento_id)
+    public function byArea($area_id)
     {
-        $secciones = Seccion::where('departamento_id', $departamento_id)->get();
+        $secciones = Seccion::where('area_id', $area_id)->get();
         return response()->json($secciones);
     }
 
@@ -87,6 +87,7 @@ class seccionController extends Controller
         $data = [
             'area_id' => $request->area_id,
             'departamento_id' => $request->departamento_id,
+            'titulo' => $request->titulo,
             'descripcion' => $request->descripcion,
             'created_by' => auth()->user()->id,
         ];
@@ -96,7 +97,7 @@ class seccionController extends Controller
 
     public function update(Seccion $seccion, Request $request)
     {
-        $seccion->update($request->only('area_id', 'departamento_id'));
+        $seccion->update($request->only('area_id', 'departamento_id', 'titulo'));
         return redirect()->route('seccion.index');
     }
 

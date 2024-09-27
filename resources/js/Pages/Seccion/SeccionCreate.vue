@@ -9,17 +9,14 @@ import Textarea from 'primevue/textarea';
 import TextInput from "@/Components/TextInput.vue";
 
 const props = defineProps({
-    secciones: Array,
 })
 const title = "assessment";
 const subTitle = "secciones";
-const secciones = ref(props.secciones);
-const departamentos = ref([]);
 const areas = ref([]);
 
 const form = useForm({
     area_id: "",
-    departamento_id: "",
+    titulo: "",
 });
 
 onMounted(() => {
@@ -35,35 +32,8 @@ async function getAreas() {
         });
 }
 
-async function getDepartamentos() {
-    const newSecciones = secciones.value.map(a => a.titulo);
-    await axios
-        .get(route('departamentos.byArea',))
-        .then((response) => {
-            departamentos.value = response.data.filter((departamento) => {
-                return !newSecciones.some(seccion => seccion === departamento.nombre);
-            });
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-}
 
-const onChange = async (event) => {
-    const newSecciones = secciones.value.map(a => a);
-    const target_id = event.target.value;
-    await axios
-        .get(route("departamentos.byArea", target_id))
-        .then((response) => {
-            departamentos.value = response.data.departamentos.filter((departamento) => {
-                return !newSecciones.some(seccion => seccion.departamento_id === departamento.id);
-            });
 
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-};
 
 const submit = () => {
     try {
@@ -80,7 +50,7 @@ const submit = () => {
 <template>
     <Layout :titulo="title" :subTitulo="subTitle">
 
-        <Head title="Departamento" />
+        <Head title="Secciones" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
                 <h3>Secciones</h3>
@@ -108,7 +78,7 @@ const submit = () => {
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
                             <div class="mt-4">
                                 <InputLabel for="area_id" value="Pilar: " />
-                                <select ref="area_select" @change="onChange($event)"
+                                <select ref="area_select"
                                     class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
                                     v-model="form.area_id" required>
                                     <option value="" disabled selected>
@@ -119,21 +89,13 @@ const submit = () => {
                                     </option>
                                 </select>
                             </div>
-
                             <div class="mt-4">
-                                <InputLabel for="departamento_id" value="Flujo de valor: " />
-                                <select ref="departamento_select"
-                                    class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                    v-model="form.departamento_id" required>
-                                    <option value="" disabled selected>
-                                        Seleccione una opcion
-                                    </option>
-                                    <option v-for="departamento in departamentos" :key="departamento.id"
-                                        :value="departamento.id">
-                                        {{ departamento.nombre }}
-                                    </option>
-                                </select>
+                                <InputLabel for="titulo" value="Sección: " />
+                                <TextInput id="titulo" v-model="form.titulo" type="text" class="mt-1 block w-full"
+                                    required autocomplete="titulo" maxlength="250" />
                             </div>
+
+
                         </div>
                         <div class="flex items-center justify-end mt-4">
                             <PrimaryButton class="ms-4 pi pi-save" :class="{

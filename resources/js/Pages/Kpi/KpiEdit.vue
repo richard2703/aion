@@ -127,7 +127,7 @@ async function submit() {
 <template>
     <Layout>
 
-        <Head title="Procesos" />
+        <Head title="KPI´s" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
                 <h3>KPI's</h3>

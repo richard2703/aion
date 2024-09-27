@@ -26,7 +26,7 @@ Route::get('/challenges', [App\Http\Controllers\challengesController::class, 'fi
 
 Route::get('/config-dashboard', [App\Http\Controllers\dashboardController::class, 'getConfig'])->name('config.getConfig');
 
-Route::get('/challenges/{departamento_id}', [App\Http\Controllers\challengesController::class, 'byDepartamento'])->name('challenges.byArea');
+Route::get('/challenges/{area_id}', [App\Http\Controllers\challengesController::class, 'byArea'])->name('challenges.byArea');
 Route::get('/opciones', [App\Http\Controllers\opcionController::class, 'findAll'])->name('opciones.findAll');
 Route::get('/objetivos', [App\Http\Controllers\objetivosController::class, 'findAll'])->name('objetivos.findAll');
 Route::get('/minutas', [App\Http\Controllers\minutasController::class, 'findAll'])->name('minutas.findAll');
@@ -120,7 +120,7 @@ Route::get('/tiposDesperdicios/{departamento_id}', [App\Http\Controllers\tiposDe
 Route::get('/Desperdicio/findAll', [App\Http\Controllers\desperdiciosController::class, 'findAll'])->name('desperdicio.findAll');
 
 Route::get('/secciones', [App\Http\Controllers\seccionController::class, 'findAll'])->name('secciones.findAll');
-Route::get('/secciones/{departamento_id}', [App\Http\Controllers\seccionController::class, 'byDepartamento'])->name('secciones.byDepartamento');
+Route::get('/secciones/{area_id}', [App\Http\Controllers\seccionController::class, 'byArea'])->name('secciones.byArea');
 
 Route::get('/evaluaciones', [App\Http\Controllers\evaluacionController::class, 'findAll'])->name('evaluaciones.findAll');
 

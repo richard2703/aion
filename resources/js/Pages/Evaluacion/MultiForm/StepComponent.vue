@@ -63,12 +63,12 @@ watch(selectedOption, (newValue) => {
             <div v-if="checked" class="p-2 flex items-center gap-4 border rounded">
                 <input type="radio" :id="'opcion-' + index + 1" :name="`opcion${step}`" :value="opcion"
                     v-model="selectedOption">
-                <label :for="'opcion-' + index + 1">{{ opcion.formal }}</label><br>
+                <label class="w-full" :for="'opcion-' + index + 1">{{ opcion.formal }}</label><br>
             </div>
             <div v-else class="p-2 flex items-center gap-4 border rounded">
                 <input type="radio" :id="'opcion-' + index + 1" :name="`opcion${step}`" :value="opcion"
                     v-model="selectedOption">
-                <label :for="'opcion-' + index + 1">{{ opcion.informal }}</label><br>
+                <label class="w-full" :for="'opcion-' + index + 1">{{ opcion.informal }}</label><br>
             </div>
         </div>
 

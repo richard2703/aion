@@ -9,12 +9,10 @@ import { showToast } from "../utils/SweetAlert.service";
 
 const props = defineProps({
     areas: Array,
-    departamentos: Array || null,
 });
 
 const areas = ref(props.areas);
 const secciones = ref([]);
-const departamentos = ref(props.departamentos);
 
 async function getAreas() {
     await axios
@@ -35,24 +33,17 @@ const form = useForm({
 const onAreaChange = async (event) => {
     const taget_id = event.target.value;
     await axios
-        .get(route("departamentos.byArea", taget_id))
-        .then((response) => (departamentos.value = response.data.departamentos))
+        .get(route("secciones.byArea", taget_id))
+        .then((response) => {
+            secciones.value = response.data;
+            console.log({ secciones: secciones.value });
+
+        })
         .catch((error) => {
             console.log(error);
         });
 };
 
-const onDepartamentoChange = async (event) => {
-    const taget_id = event.target.value;
-    await axios
-        .get(route("secciones.byDepartamento", taget_id))
-        .then((response) => {
-            form.seccion_id = response.data[0].id
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-}
 
 const submit = () => {
     try {
@@ -120,17 +111,16 @@ onMounted(() => {
                                     </select>
                                 </div>
                                 <div class="mt-4">
-                                    <InputLabel for="departamento_select" value="Departamento: " />
+                                    <InputLabel for="seccion_select" value="Seccion: " />
 
-                                    <select ref="departamento_select" @change="onDepartamentoChange($event)"
+                                    <select ref="seccion_select"
                                         class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                        v-model="form.departamento_id" required>
+                                        v-model="form.seccion_id" required>
                                         <option value="" disabled selected>
                                             Seleccione una opcion
                                         </option>
-                                        <option v-for="departamento in departamentos" :key="departamento.id"
-                                            :value="departamento.id">
-                                            {{ departamento.nombre }}
+                                        <option v-for="seccion in secciones" :key="seccion.id" :value="seccion.id">
+                                            {{ seccion.titulo }}
                                         </option>
                                     </select>
                                 </div>

@@ -114,7 +114,7 @@ console.log(opciones.value);
 <template>
     <Layout :titulo="title" :subTitulo="subTitle">
 
-        <Head title="Departamento" />
+        <Head title="Opciones" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
                 <h3>Opciones</h3>

@@ -26,9 +26,12 @@ const formatDataSet = async () => {
         .get(route('evaluaciones.barChart', evaluacion.value.id))
         .then((response) => {
             // return
+
             chartValues.value = response.data.map(record => record.score);
-            chartLabels.value = response.data.map(record => record.departamento.nombre);
+            chartLabels.value = response.data.map(record => record.seccion.titulo);
             results.value = response.data;
+            console.log({ chartValues: chartValues.value, chartLabels: chartLabels.value, results: results.value });
+
         })
         .catch((error) => {
             console.log(error);
@@ -41,7 +44,7 @@ const setChartData = () => {
         labels: chartLabels,
         datasets: [
             {
-                label: 'Resultados por Flujo de valor',
+                label: 'Resultados por Sección',
                 backgroundColor: documentStyle.getPropertyValue('--p-cyan-500'),
                 borderColor: documentStyle.getPropertyValue('--p-cyan-500'),
                 data: chartValues
@@ -95,6 +98,13 @@ const setChartOptions = () => {
 
 <template>
     <div class="card">
-        <Chart type="bar" :data="chartData" :options="chartOptions" class="w-full h-96 flex justify-center" />
+        <Chart type="bar" :data="chartData" :options="chartOptions" class="bar w-full  flex justify-center" />
     </div>
 </template>
+
+<style>
+.bar {
+    width: 100%;
+    height: 800px;
+}
+</style>
