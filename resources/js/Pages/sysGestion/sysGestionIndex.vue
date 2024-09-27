@@ -160,7 +160,7 @@ async function getProcesos() {
                                     <tbody>
                                         <tr v-for="proceso in procesos">
                                             <td class="py-2 px-4 border">
-                                                <div v-if="proceso.link_externo">
+                                                <div v-if="proceso.link_herramienta">
                                                     <a target="blank" :href="proceso.link_herramienta"
                                                         class="text-blue-500 hover:underline">
                                                         {{ proceso.nombre || '-' }}

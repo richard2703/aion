@@ -149,24 +149,24 @@
                         <tr>
                             <td class="col-6">
                                 <div class="col-12">
-                                    <h2>Highlights</h2>
+                                    <h2>Aspecto destacado</h2>
                                     <ul class="mt-2">
                                         @forelse ($reporte->highlights as $highlight)
                                             <li>{{ $highlight->light }}</li>
                                         @empty
-                                            <p>No hay Highlight disponibles.</p>
+                                            <p>No hay Aspecto destacado disponibles.</p>
                                         @endforelse
                                     </ul>
                                 </div>
                             </td>
                             <td class="col-6">
                                 <div class="col-12">
-                                    <h2>Lowlights</h2>
+                                    <h2>Aspecto negativo</h2>
                                     <ul class="mt-2">
                                         @forelse ($reporte->lowlights as $lowlight)
                                             <li>{{ $lowlight->light }}</li>
                                         @empty
-                                            <p>No hay Lowlights disponibles.</p>
+                                            <p>No hay Aspecto negativo disponibles.</p>
                                         @endforelse
                                     </ul>
                                 </div>
@@ -205,7 +205,7 @@
                             </td>
                             <td class="col-6">
                                 <div class="col-12">
-                                    <h2>Avisos</h2>
+                                    <h2>Avisos Y acciones de Mejora</h2>
                                     <ul class="mt-2">
                                         @forelse ($reporte->avisos as $aviso)
                                             <li>{{ $aviso->aviso }}</li>
