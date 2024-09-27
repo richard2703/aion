@@ -108,16 +108,44 @@
                                 </div>
                             </th>
                         </tr>
+                        <tr colspan="3">
+                            <th style="text-align: center;">
+                                <div style="display: grid; justify-content: space-between;" class="grid grid-cols-3">
+                                    <div class="col-4 text-center" style="grid-column: 1;">
+                                        <h2>30</h2>
+                                        <ul class="mt-2">
+                                            @forelse ($reporte->treintas as $treinta)
+                                                <li>{{ $treinta->meta }}</li>
+                                            @empty
+                                                <p>No hay Metas a 30 días disponibles.</p>
+                                            @endforelse
+                                        </ul>
+                                    </div>
+                                    <div class="col-4 text-center" style="grid-column: 2;">
+                                        <h2>60</h2>
+                                        <ul class="mt-2">
+                                            @forelse ($reporte->sesentas as $sesenta)
+                                                <li>{{ $sesenta->meta }}</li>
+                                            @empty
+                                                <p>No hay Metas a 60 días disponibles.</p>
+                                            @endforelse
+                                        </ul>
+                                    </div>
+                                    <div class="col-4 text-center" style="grid-column: 3;">
+                                        <h2>90</h2>
+                                        <ul class="mt-2">
+                                            @forelse ($reporte->noventas as $noventa)
+                                                <li>{{ $noventa->meta }}</li>
+                                            @empty
+                                                <p>No hay Metas a 90 días disponibles.</p>
+                                            @endforelse
+                                        </ul>
+                                    </div>
+                                </div>
+                            </th>
+                        </tr>
                     </thead>
                     <tbody>
-                        {{--  <tr>
-                            <td>
-                                <h2>Highlights</h2>
-                            </td>
-                            <td>
-                                <h2>Lowlights</h2>
-                            </td>
-                        </tr>  --}}
                         <tr>
                             <td class="col-6">
                                 <div class="col-12">

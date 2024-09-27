@@ -9,6 +9,7 @@ use App\Models\Kpis;
 use App\Models\reporteSemanal;
 use App\Models\reportes;
 use App\Models\lights;
+use App\Models\metatrimestres;
 use App\Models\Personalizar;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -264,14 +265,55 @@ class reportesController extends Controller
 
     public function findAllReportes($id)
     {
+
+        // Obtener la fecha actual
+        $fechaActual = Carbon::now();
+
+        // Obtener el trimestre actual
+        $trimestreActual = $fechaActual->quarter;
+
+        // Obtener el año actual
+        $anioActual = $fechaActual->year;
+
+        $trimestreRegistrado = metatrimestres::where('trimestre', $trimestreActual)
+            ->where('ano', $anioActual)->first();
+
+        // dd($trimestreRegistrado->id);
+        // $reportes = reportes::where('semana_id', $id)
+        //     ->join('departamentos', 'reportes.departamento_id', '=', 'departamentos.id')
+        //     ->with(['departamento', 'highlights', 'lowlights', 'avisos', 'kpis' => function ($query) {
+        //         $query->where('tipo', 2);
+        //     }])
+        //     ->orderByRaw("CASE WHEN departamentos.nombre = 'Dirección General' THEN 1 ELSE 2 END")
+        //     ->orderBy('departamentos.nombre') // Para el resto de los departamentos
+        //     ->select('reportes.*') // Aseguramos seleccionar solo los campos de reportes
+        //     ->get();
+
+        // Buscar reportes semanales
         $reportes = reportes::where('semana_id', $id)
             ->join('departamentos', 'reportes.departamento_id', '=', 'departamentos.id')
-            ->with(['departamento', 'highlights', 'lowlights', 'avisos', 'kpis' => function ($query) {
-                $query->where('tipo', 2);
-            }])
+            ->with([
+                'departamento',
+                'highlights',
+                'lowlights',
+                'avisos',
+                'kpis' => function ($query) {
+                    $query->where('tipo', 2);
+                },
+                // Agregamos la relación con las metas trimestrales
+                'treintas' => function ($query) use ($trimestreRegistrado) {
+                    $query->where('trimestre_id', $trimestreRegistrado->id);
+                },
+                'sesentas' => function ($query) use ($trimestreRegistrado) {
+                    $query->where('trimestre_id', $trimestreRegistrado->id);
+                },
+                'noventas' => function ($query) use ($trimestreRegistrado) {
+                    $query->where('trimestre_id', $trimestreRegistrado->id);
+                }
+            ])
             ->orderByRaw("CASE WHEN departamentos.nombre = 'Dirección General' THEN 1 ELSE 2 END")
             ->orderBy('departamentos.nombre') // Para el resto de los departamentos
-            ->select('reportes.*') // Aseguramos seleccionar solo los campos de reportes
+            ->select('reportes.*') // Seleccionamos solo los campos de reportes
             ->get();
 
         return response()->json($reportes);
@@ -288,12 +330,40 @@ class reportesController extends Controller
         // dd($logo);
         // return response()->json($personalizar);
 
+        // Obtener la fecha actual
+        $fechaActual = Carbon::now();
+
+        // Obtener el trimestre actual
+        $trimestreActual = $fechaActual->quarter;
+
+        // Obtener el año actual
+        $anioActual = $fechaActual->year;
+
+        $trimestreRegistrado = metatrimestres::where('trimestre', $trimestreActual)
+            ->where('ano', $anioActual)->first();
+
         $reporteSemanal = $reporte;
         $reportes = reportes::where('semana_id', $reporteSemanal->id)
             ->join('departamentos', 'reportes.departamento_id', '=', 'departamentos.id')
-            ->with(['departamento', 'highlights', 'lowlights', 'avisos', 'kpis' => function ($query) {
-                $query->where('tipo', 2);
-            }])
+            ->with([
+                'departamento',
+                'highlights',
+                'lowlights',
+                'avisos',
+                'kpis' => function ($query) {
+                    $query->where('tipo', 2);
+                },
+                // Agregamos la relación con las metas trimestrales
+                'treintas' => function ($query) use ($trimestreRegistrado) {
+                    $query->where('trimestre_id', $trimestreRegistrado->id);
+                },
+                'sesentas' => function ($query) use ($trimestreRegistrado) {
+                    $query->where('trimestre_id', $trimestreRegistrado->id);
+                },
+                'noventas' => function ($query) use ($trimestreRegistrado) {
+                    $query->where('trimestre_id', $trimestreRegistrado->id);
+                }
+            ])
             ->orderByRaw("CASE WHEN departamentos.nombre = 'Dirección General' THEN 1 ELSE 2 END")
             ->orderBy('departamentos.nombre') // Para el resto de los departamentos
             ->select('reportes.*') // Aseguramos seleccionar solo los campos de reportes

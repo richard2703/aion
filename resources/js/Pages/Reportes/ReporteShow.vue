@@ -46,7 +46,7 @@ async function getreportes(
             },
         });
         reportes.value = response.data;
-        // console.log('reportes', response);
+        console.log('reportes', response);
 
         totalRecords.value = response.data.total;
         first.value = (response.data.current_page - 1) * rows.value;
@@ -196,6 +196,45 @@ const getClass = (kpiItem) => {
                     </div>
                 </div>
                 <div v-if="!iscollapsedReport(reporte.id)" class="departamento-content">
+                    <div class="grid grid-cols-3 gap-4">
+                        <!-- Highlights Section -->
+                        <div>
+                            <h2 class="text-xl font-bold text-purple-700">30</h2>
+                            <ul class=" pl-5 mt-2 pl-5">
+                                <li v-for="treinta in reporte.treintas" :key="treinta.id">
+                                    {{ treinta.meta }}
+                                </li>
+                            </ul>
+                            <div v-if="!reporte.treintas.length">
+                                <p>No hay Metas a 30 dias disponibles.</p>
+                            </div>
+                        </div>
+
+                        <!-- Low Lights Section -->
+                        <div>
+                            <h2 class="text-xl font-bold text-purple-700">60</h2>
+                            <ul class=" pl-5 mt-2">
+                                <li v-for="sesenta in reporte.sesentas" :key="sesenta.id">
+                                    {{ sesenta.meta }}
+                                </li>
+                            </ul>
+                            <div v-if="!reporte.sesentas.length">
+                                <p>No hay Metas a 60 dias disponibles.</p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h2 class="text-xl font-bold text-purple-700">90</h2>
+                            <ul class=" pl-5 mt-2">
+                                <li v-for="noventa in reporte.noventas" :key="noventa.id">
+                                    {{ noventa.meta }}
+                                </li>
+                            </ul>
+                            <div v-if="!reporte.noventas.length">
+                                <p>No hay Metas a 90 dias disponibles.</p>
+                            </div>
+                        </div>
+                    </div>
                     <div class="grid grid-cols-2 gap-4">
                         <!-- Highlights Section -->
                         <div>

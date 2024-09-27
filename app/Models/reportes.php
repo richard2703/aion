@@ -52,4 +52,17 @@ class reportes extends Model
         //mayuscula KPIs
         return $this->hasMany(Kpis::class, 'departamento_id', 'departamento_id');
     }
+
+    public function treintas()
+    {
+        return $this->hasMany(metas::class, 'departamento_id', 'departamento_id')->where('tipo', 1);
+    }
+    public function sesentas()
+    {
+        return $this->hasMany(metas::class, 'departamento_id', 'departamento_id')->where('tipo', 2);
+    }
+    public function noventas()
+    {
+        return $this->hasMany(metas::class, 'departamento_id', 'departamento_id')->where('tipo', 3);
+    }
 }
