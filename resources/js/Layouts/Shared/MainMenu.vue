@@ -393,7 +393,7 @@
                             <Link class="group flex items-center py-2" :href="route('permisos.index')" :class="subTitle === 'permisos' ? 'activo flex'
                                 : 'inactivo flex'">
                             <icon name="circle" class="mr-2 w-3 h-3" />
-                            <div>Permisos</div>
+                            <div>Permisoscalis</div>
                             </Link>
                         </li>
                     </ul>
