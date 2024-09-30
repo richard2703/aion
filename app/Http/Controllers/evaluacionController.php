@@ -83,19 +83,31 @@ class evaluacionController extends Controller
         $evaluacion->load(
             'AssessmentAsignado',
             'AssessmentAsignado.seccion',
-            'AssessmentAsignado.seccion.departamento',
-            'AssessmentAsignado.seccion.area'
+            'AssessmentAsignado.seccion.area',
         );
-        $AssessmentAsignado = AssessmentAsignado::with('assessment', 'seccion')
-            ->where('assessment_id', $evaluacion->id)
-            ->get();
+
+        $promedios = Respuesta::where('assessment_id', $evaluacion->id)
+            ->selectRaw('seccion_id, AVG(valor_opcion) as promedio_seccion')
+            ->groupBy('seccion_id')
+            ->get()
+            ->keyBy('seccion_id');
+
+        $asignadosPorArea = $evaluacion->AssessmentAsignado->groupBy(function ($asignado) {
+            return $asignado->seccion->area->nombre;
+        });
+
+        // Merge the averages with the existing data
+        foreach ($asignadosPorArea as $area => $asignados) {
+            foreach ($asignados as $asignado) {
+                $asignado->promedio_seccion = $promedios[$asignado->seccion_id]->promedio_seccion ?? null;
+            }
+        }
 
         return Inertia::render(
             'Evaluacion/EvaluacionSelector',
-            ['evaluacion' => $evaluacion,]
+            ['evaluacion' => $asignadosPorArea,]
         );
     }
-
     public function form(AssessmentAsignado $assessmentAsignado)
     {
         $assessmentAsignado->load(
