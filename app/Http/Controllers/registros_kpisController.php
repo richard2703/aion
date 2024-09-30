@@ -79,7 +79,12 @@ class registros_kpisController extends Controller
             'actual',
             'promedio',
             DB::raw("DATE_FORMAT(created_at, '%d %m %y') as mes")
-        )->where('kpi_id', $id)->get();
+        )
+            ->where('kpi_id', $id)
+            ->orderBy('created_at', 'asc')
+            ->skip(registros_kpi::where('kpi_id', $id)->count() - 22)
+            ->take(22)
+            ->get();
 
         Carbon::setLocale('es');
 

@@ -7,6 +7,8 @@ import Chart from 'primevue/chart';
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
+import { showToast } from "@/Pages/utils/SweetAlert.service";
+import { yearsToDays } from "date-fns";
 
 const props = defineProps({
     kpi: Object,
@@ -26,6 +28,8 @@ const registrosKpi = ref([]);
 const chartData = ref();
 const chartOptions = ref();
 const chartValues = ref();
+const chartYearToDate = ref();
+const chartTarget = ref();
 const chartLabels = ref();
 const isCreateModalVidible = ref(false);
 const isEditModalVidible = ref(false);
@@ -73,6 +77,10 @@ const formatDataSet = async () => {
             chartValues.value = response.data.map(record => record.actual);
             chartLabels.value = response.data.map(record => record.mes);
             registrosKpi.value = response.data;
+
+            chartYearToDate.value = chartValues.value.map(() => 0);
+            chartTarget.value = chartValues.value.map(() => kpi.value.objetivo);
+            chartYearToDate.value[chartYearToDate.value.length - 1] = kpi.value.promedio;
         })
         .catch((error) => {
             console.log(error);
@@ -85,10 +93,27 @@ const setChartData = () => {
         datasets: [
             {
                 // label: kpi.value.titulo,
+                type: 'bar',
                 label: 'kpi',
                 data: chartValues,
                 backgroundColor: ['rgba(115, 72, 207, 0.2)'],
                 borderColor: ['rgb(74, 13, 204)'],
+                borderWidth: 1
+            },
+            {
+                type: 'bar',
+                label: 'YTD',
+                data: chartYearToDate,
+                backgroundColor: ['rgba(145, 144, 147 , 0.7)'],
+                borderColor: ['rgb(145, 144, 147 )'],
+                borderWidth: 1
+            },
+            {
+                type: 'line',
+                label: 'Objectivo',
+                data: chartTarget,
+                backgroundColor: ['rgba(245, 11, 53, 0.2)'],
+                borderColor: ['rgb(245, 11, 53)'],
                 borderWidth: 1
             }
         ]
@@ -166,10 +191,9 @@ async function submitCreateModal() {
             getNewKpi(kpi.value.id);
             emit('updateKpi');
             showToast("El registro ha sido creado", "success");
-
         })
         .catch((error) => {
-            console.log(error);
+            showToast(error.response.data.error, "error");
         });
 }
 
