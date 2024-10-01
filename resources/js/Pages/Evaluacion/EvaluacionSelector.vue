@@ -11,6 +11,7 @@ const props = defineProps({
 
 const title = "assessment";
 const subTitle = "evaluaciones";
+const evaluacion = ref(props.evaluacion);
 const incompleto = ref();
 const completo = ref();
 
@@ -23,7 +24,11 @@ const goToEvaluacion = (assessment_asignado) => {
         window.location.href = route('evaluacion.form', assessment_asignado.id);
     }
 }
-
+console.log({ evaluacion: props.evaluacion });
+function formatNumber(value) {
+    if (value == null) return ''; // Manejar el caso cuando el valor es nulo o indefinido
+    return parseFloat(value).toFixed(2);
+}
 </script>
 
 <template>
@@ -54,14 +59,25 @@ const goToEvaluacion = (assessment_asignado) => {
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div>
 
-                    <div class="px-4 py-2 bg-white border-b border-gray-200">
+                    <div class="p-4 bg-white border-b border-gray-200">
+                        <div v-for="(pilar, key) in evaluacion">
+                            <h3 class="text-lg font-medium leading-6 text-gray-900">{{ key }}</h3>
+                            <br>
+                            <button v-for="assessmentAsignado in pilar" class="w-full"
+                                @click=" goToEvaluacion(assessmentAsignado)"
+                                :class="[assessmentAsignado.estatus === 'INCOMPLETO' ? incompleto : completo]">
+                                <div class="w-full flex justify-between">
+                                    <span class="w-full text-left">{{ assessmentAsignado.seccion.titulo }}</span>
+                                    <span class="w-full">{{ formatNumber(assessmentAsignado.promedio_seccion) ?? 'N/A'
+                                        }}</span>
+                                    <span class="w-full">{{ assessmentAsignado.estatus }}</span>
+                                </div>
+                            </button>
+                            <br>
+                            <hr>
+                            <br>
+                        </div>
 
-                        <button v-for="assessmentAsignado in evaluacion.assessment_asignado"
-                            @click="goToEvaluacion(assessmentAsignado)"
-                            :class="[assessmentAsignado.estatus === 'INCOMPLETO' ? incompleto : completo]">
-                            <span>{{ assessmentAsignado.seccion.titulo }}</span>
-                            <span>{{ assessmentAsignado.estatus }}</span>
-                        </button>
                     </div>
                 </div>
             </div>

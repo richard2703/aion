@@ -37,4 +37,9 @@ class Seccion extends Model
     {
         return $this->belongsTo(Departamento::class, 'departamento_id', 'id');
     }
+
+    public function departamentoEvaluacion(): HasMany
+    {
+        return $this->hasMany(DepartamentoEvaluacion::class, 'seccion_id', 'id');
+    }
 }

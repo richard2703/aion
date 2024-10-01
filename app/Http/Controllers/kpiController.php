@@ -58,7 +58,10 @@ class kpiController extends Controller
 
     public function byDepartamento($departamento_id)
     {
-        $kpis = Kpis::with('area', 'departamento', 'proceso', 'procedimiento', 'registros')->where('departamento_id', $departamento_id)->get();
+        $kpis = Kpis::with(['area', 'departamento', 'proceso', 'procedimiento', 'registros' => function ($query) {
+            $query->latest()->take(22); // Limit to latest 22 registros
+        }])->where('departamento_id', $departamento_id)->get();
+
         return response()->json($kpis);
     }
 
