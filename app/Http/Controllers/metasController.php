@@ -255,4 +255,11 @@ class metasController extends Controller
         // dd($metas);
         return Inertia::render('metas/MetasMisMetas', ['metas' => $metas]);
     }
+
+    public function metas($trimestre)
+    {
+        $metas = metaflujos::where('trimestre_id', $trimestre)->with(['trimestre', 'departamento'])->orderby('created_at', 'desc')->get();
+        // dd($metas);
+        return Inertia::render('metas/MetasMisMetas', ['metas' => $metas]);
+    }
 }

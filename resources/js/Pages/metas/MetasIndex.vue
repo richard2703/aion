@@ -171,7 +171,7 @@ function handleClick(id) {
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">
                                         <PrimaryButton class="pi pi-eye me-2"
-                                            :href="route('reporte.show', slotProps.data.id)">
+                                            :href="route('metas.trimestre', slotProps.data.id)">
                                         </PrimaryButton>
                                         <!-- <PrimaryButton class="pi pi-eye me-2" @click="handleClick(slotProps.data.id)"
                                             :disabled="isLoading">
@@ -181,9 +181,9 @@ function handleClick(id) {
                                             </span>
                                         </PrimaryButton> -->
 
-                                        <PrimaryButton class="pi pi-download me-2"
+                                        <!-- <PrimaryButton class="pi pi-download me-2"
                                             :href="route('reporte.pdf', slotProps.data.id)">
-                                        </PrimaryButton>
+                                        </PrimaryButton> -->
 
                                     </template>
                                 </Column>
