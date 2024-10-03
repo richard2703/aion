@@ -1,5 +1,5 @@
 <script setup>
-import { Head, Link } from "@inertiajs/vue3";
+import { Head, Link, useForm } from "@inertiajs/vue3";
 import { ref, onMounted, watch } from "vue";
 import axios from "axios";
 import Layout from "@/Layouts/Layout.vue";
@@ -9,6 +9,10 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import InputText from "primevue/inputtext";
 import { format } from 'date-fns';
+import Modal from "@/Components/Modal.vue";
+import InputLabel from "@/Components/InputLabel.vue";
+import TextInput from "@/Components/TextInput.vue";
+
 
 const formatDate = (rowData) => {
     if (rowData.created_at) {
@@ -21,6 +25,11 @@ const props = defineProps({
     tipos: Array,
 });
 
+const form = useForm({
+    from: "",
+    to: "",
+});
+
 const title = "Desperdicios";
 const tipos = ref([]);
 const encargados = ref([]);
@@ -31,6 +40,7 @@ const globalFilter = ref("");
 const filters = ref({});
 const sortField = ref("id");
 const sortOrder = ref(1);
+const isModal = ref(false);
 
 async function getdesperdicios(
     page = 1,
@@ -116,6 +126,31 @@ const formatearFecha = (dateString) => {
     return format(new Date(dateString), 'dd/MM/yyyy');
 };
 
+//////////////////////////
+const openEditModal = async () => {
+    isModal.value = true
+}
+
+const closeModal = () => {
+    isModal.value = false;
+}
+
+// TODO: crear funcion para exportar a excel "submitModal"
+
+const submitModal = async () => {
+    try {
+        window.location.href = (route('excel.desperdicios', {
+            from: form.from,
+            to: form.to
+        }));
+        form.reset();
+        closeModal();
+
+    } catch (error) {
+        console.log('error');
+    }
+}
+
 </script>
 
 <style scoped>
@@ -146,6 +181,7 @@ const formatearFecha = (dateString) => {
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div>
                     <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
+                        <PrimaryButton @click="openEditModal()" class="m-4 pi text-sm"> Excel </PrimaryButton>
                         <PrimaryButton :href="route('desperdicio.create')" class="m-4 pi pi-plus"></PrimaryButton>
                     </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
@@ -203,4 +239,47 @@ const formatearFecha = (dateString) => {
             </div>
         </div>
     </Layout>
+
+    <!-- Modals -->
+    <Modal :show="isModal" maxWidth="lg">
+        <template v-slot="">
+            <div>
+                <div class="px-4 my-4 py-2 flex justify-center bg-white border-b border-gray-200">
+                    <p class=" text-lg font-medium text-gray-900"> Desperdicio</p>
+                </div>
+                <div class="px-4 py-2 bg-white border-b border-gray-200">
+                    <div class="container mx-auto">
+                        <form @submit.prevent="submitModal">
+                            <div class=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+                                <div class="my-4">
+                                    <InputLabel for="Nuevo Valor" value="Nuevo Valor " />
+                                    <TextInput id="objetivo" v-model="form.from" type="date" step="any"
+                                        class="mt-1 block w-full" required autocomplete="new-challenge" />
+                                </div>
+                            </div>
+                            <div class=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+                                <div class="my-4">
+                                    <InputLabel for="Nuevo Valor" value="Nuevo Valor " />
+                                    <TextInput id="objetivo" v-model="form.to" type="date" step="any"
+                                        class="mt-1 block w-full" required autocomplete="new-challenge" />
+                                </div>
+                            </div>
+
+                            <div class="flex justify-between">
+                                <PrimaryButton @click.prevent="closeModal" class="bg-red-500 ms-4 pi pi-times" :class="{
+                                    'opacity-25': form.abort,
+                                }" :disabled="form.abort">
+                                </PrimaryButton>
+
+                                <PrimaryButton class="ms-4 pi pi-file-export" :class="{
+                                    'opacity-25': form.processing,
+                                }" :disabled="form.processing">
+                                </PrimaryButton>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </Modal>
 </template>
