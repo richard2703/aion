@@ -19,11 +19,47 @@ class areaController extends Controller
         ]);
     }
 
-    public function findAll()
+    public function findAll(Request $request)
     {
+        $query = Area::query();
 
-        return response()->json(['areas' => Area::all()]);
+        $pageSize = $request->get('rows');
+        $page = $request->get('page');
+        $filter = $request->get('filter', '');
+        $sortField = $request->get('sortField', 'id');
+        $sortOrder = $request->get('sortOrder', 'asc');
+
+        if (!$pageSize && !$page) {
+            if ($filter) {
+                $query->where('id', 'like', '%' . $filter . '%')
+                    ->orWhere('nombre', 'like', '%' . $filter . '%')
+                    ->orWhere('descripcion', 'like', '%' . $filter . '%');
+            }
+
+            if (in_array($sortField, ['id', 'nombre', 'descripcion'])) {
+                $query->orderBy($sortField, $sortOrder);
+            }
+
+            $areas = $query->get();
+            return response()->json($areas);
+        }
+
+        if ($pageSize && $page) {
+            if ($filter) {
+                $query->where('id', 'like', '%' . $filter . '%')
+                    ->orWhere('nombre', 'like', '%' . $filter . '%')
+                    ->orWhere('descripcion', 'like', '%' . $filter . '%');
+            }
+
+            if (in_array($sortField, ['id', 'nombre', 'descripcion'])) {
+                $query->orderBy($sortField, $sortOrder);
+            }
+
+            $areas = $query->where('deleted_at', null)->paginate($pageSize, ['*'], 'page', $page);
+            return response()->json($areas);
+        }
     }
+
 
     function create()
     {
@@ -37,14 +73,6 @@ class areaController extends Controller
         return redirect()->route('area.index');
     }
 
-    // function show($id)
-    // {
-    //     return Inertia::render('Area/AreaShow', [
-    //         'area' => Area::find($id),
-    //     ]);
-
-    // }
-
     function edit($id)
     {
         return Inertia::render('Area/AreaEdit', [
@@ -56,10 +84,7 @@ class areaController extends Controller
     {
         $area = Area::find($id);
         $area->update($request->only('nombre', 'descripcion'));
-
-        return Inertia::render('Area/AreaIndex', [
-            'areas' => Area::all(),
-        ]);
+        return redirect()->route('area.index');
     }
 
     function destroy($id)

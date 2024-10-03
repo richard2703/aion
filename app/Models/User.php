@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -19,6 +20,7 @@ class User extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
     use HasRoles;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -26,6 +28,8 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'area_id',
+        'departamento_id',
         'name',
         'email',
         'password',
@@ -63,5 +67,37 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function area()
+    {
+        return $this->belongsTo(Area::class, 'area_id', 'id');
+    }
+
+    public function departamento()
+    {
+        return $this->belongsTo(Departamento::class, 'departamento_id', 'id');
+    }
+
+    public function minutaAsistencia()
+    {
+        return $this->hasMany(Asistente::class, 'user_id', 'id');
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($user) {
+            // Elimina todos los posts relacionados
+            $user->minutaAsistencia()->each(function ($minutaAsistencia) {
+                $minutaAsistencia->delete();
+            });
+        });
+    }
+
+    public function tarea()
+    {
+        return $this->hasMany(tareas::class, 'responsable_id', 'id');
     }
 }

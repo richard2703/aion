@@ -1,0 +1,206 @@
+<script setup>
+import { Head, Link } from "@inertiajs/vue3";
+import { ref, onMounted, watch } from "vue";
+import axios from "axios";
+import Layout from "@/Layouts/Layout.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import { confirmDialog, showToast } from "../utils/SweetAlert.service";
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
+import InputText from "primevue/inputtext";
+import { format } from 'date-fns';
+
+const formatDate = (rowData) => {
+    if (rowData.created_at) {
+        return format(new Date(rowData.created_at), 'dd/MM/yy');
+    }
+    return '';
+};
+
+const props = defineProps({
+    tipos: Array,
+});
+
+const title = "Desperdicios";
+const tipos = ref([]);
+const encargados = ref([]);
+const totalRecords = ref(0);
+const rows = ref(10);
+const first = ref(0);
+const globalFilter = ref("");
+const filters = ref({});
+const sortField = ref("id");
+const sortOrder = ref(1);
+
+async function getdesperdicios(
+    page = 1,
+    rowsPerPage = rows.value,
+    filter = "",
+    sortField = "id",
+    sortOrder = 1
+) {
+    try {
+        const response = await axios.get("/api/Desperdicio/findAll", {
+            params: {
+                page,
+                rows: rowsPerPage,
+                filter,
+                sortField,
+                sortOrder: sortOrder === 1 ? "asc" : "desc",
+            },
+        });
+        tipos.value = response.data.data;
+        totalRecords.value = response.data.total;
+        first.value = (response.data.current_page - 1) * rows.value;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+const deleteItem = async (id) => {
+    try {
+        const result = await confirmDialog(
+            "Estas seguro?",
+            "Ya no podras revertir esto!",
+            "warning"
+        );
+        if (result.isConfirmed) {
+            await axios.delete(route("desperdicio.destroy", id));
+
+            tipos.value = tipos.value.filter(
+                (tipos) => tipos.id !== id
+            );
+            showToast("El registro ha sido eliminado", "success");
+        }
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const onPage = (event) => {
+    const page = event.page + 1;
+    rows.value = event.rows; // Actualizar filas por página
+    getdesperdicios(
+        page,
+        rows.value,
+        globalFilter.value,
+        sortField.value,
+        sortOrder.value
+    );
+};
+
+const onSort = (event) => {
+    sortField.value = event.sortField || "id";
+    sortOrder.value = event.sortOrder;
+    getdesperdicios(
+        1,
+        rows.value,
+        globalFilter.value,
+        sortField.value,
+        sortOrder.value
+    );
+};
+
+onMounted(() => {
+    // getDepartamentos();
+    getdesperdicios();
+});
+
+watch(globalFilter, (newValue) => {
+    filters.value = {
+        global: { value: newValue, matchMode: "contains" },
+    };
+    getdesperdicios(1, rows.value, newValue, sortField.value, sortOrder.value);
+});
+const formatearFecha = (dateString) => {
+    return format(new Date(dateString), 'dd/MM/yyyy');
+};
+
+</script>
+
+<style scoped>
+.mb-3 {
+    margin-bottom: 1rem;
+}
+</style>
+
+<template>
+    <Layout :titulo="title">
+
+        <Head title="Encargados" />
+        <div class="overflow-hidden sm:rounded-lg">
+            <div class="breadcrumbsTitulo px-1">
+                <h3>Desperdicio</h3>
+            </div>
+            <div class="breadcrumbs flex">
+                <Link :href="route('dashboard')" class="px-1">
+                <h3>Home -</h3>
+                </Link>
+                <Link class="active">
+                <h3>mis desperdicios</h3>
+                </Link>
+            </div>
+        </div>
+
+        <div class="py-2">
+            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                <div>
+                    <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
+                        <PrimaryButton :href="route('desperdicio.create')" class="m-4 pi pi-plus"></PrimaryButton>
+                    </div>
+                    <div class="px-4 py-2 bg-white border-b border-gray-200">
+                        <div class="container mx-auto overflow-x-auto">
+                            <!-- <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" /> -->
+
+                            <DataTable :value="tipos" paginator :rows="rows" :totalRecords="totalRecords" :lazy="true"
+                                :first="first" @page="onPage" @sort="onSort" :rowsPerPageOptions="[5, 10, 20, 50]"
+                                tableStyle="min-width: 50rem" :filters="filters" :globalFilterFields="[
+                                    'id',
+                                    'nombre',
+                                    'area.nombre',
+                                    'descripcion',
+                                ]" :sortField="sortField" :sortOrder="sortOrder"
+                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+                                <template #empty> Sin registros. </template>
+                                <!-- <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
+                                    sortable></Column> -->
+                                <Column field="created_at" header="Fecha" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" :body="formatDate" sortable>
+                                    <template #body="slotProps">
+                                        {{ formatearFecha(slotProps.data.created_at) }}
+                                    </template>
+                                </Column>
+                                <!-- <Column field="area.nombre" header="Pilar" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+                                <Column field="departamento.nombre" header="Flujo de valor" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column> -->
+                                <Column field="tipo.tipo" header="Tipo" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+                                <Column field="tipo.nombre" header="Nombre" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+                                <Column field="monto" header="Monto" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+                                <Column field="usuario.name" header="Usuario" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+                                <!-- <Column field="descripcion" header="Descripcion" headerStyle="width:4em;"
+                                    bodyClass="text-center" sortable></Column> -->
+
+                                <Column header="" headerStyle="width:4em;">
+                                    <template #body="slotProps" class="text-center">
+                                        <PrimaryButton class="me-2 pi pi-file-edit"
+                                            :href="route('desperdicio.edit', slotProps.data.id)">
+                                        </PrimaryButton>
+
+                                        <PrimaryButton class="me-2 pi pi-trash"
+                                            @click.prevent="deleteItem(slotProps.data.id)">
+                                        </PrimaryButton>
+                                    </template>
+                                </Column>
+                            </DataTable>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </Layout>
+</template>
