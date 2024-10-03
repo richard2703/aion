@@ -220,4 +220,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::patch('metas/{metaFlujo}/update', [App\Http\Controllers\metasController::class, 'update'])->name('metas.update');
     Route::get('Mismetas', [App\Http\Controllers\metasController::class, 'misMetas'])->name('Mismetas.index');
     // Route::get('reportes/{reporte}/pdf', [App\Http\Controllers\reportesController::class, 'pdf'])->name('reporte.pdf');
+
+    // Excel
+    Route::get('export/desperdicio', [App\Http\Controllers\ExcelExportController::class, 'exportDesperdicios'])->name('excel.desperdicios');
 });
