@@ -25,9 +25,6 @@ Una breve descripción de lo que hace tu proyecto.
 git clone https://github.com/richard2703/aion.git
 cd aion
 ```
-```bash
-
-```
 ### Configuración del Backend
 Instalar dependencias de PHP:
 ```bash
