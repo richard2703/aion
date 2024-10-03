@@ -34,6 +34,7 @@ Copiar el archivo de configuración .env.example a .env:
 ```bash
 cp .env.example .env
 ```
+importar la base de datos del archivo dump en raiz del proyecto "ams_aion.sql"
 
 Configurar las variables de entorno en el archivo .env (base de datos, servidor de correos, etc.).
 
