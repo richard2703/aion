@@ -269,7 +269,7 @@ const getClass = (kpiItem) => {
                     <!-- KPIs Section -->
                     <div class="grid grid-cols-2 gap-4 mt-8">
                         <div>
-                            <h2 class="text-xl font-bold text-purple-700">KPI's</h2>
+                            <h2 class="text-xl font-bold text-purple-700">Comprobacion de KPI's</h2>
                             <table v-for="kpis in reporte.kpis" :key="kpis.id" class="min-w-full border-collapse mb-4">
                                 <thead>
                                     <tr>
