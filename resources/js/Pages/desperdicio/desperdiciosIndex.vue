@@ -245,21 +245,24 @@ const submitModal = async () => {
         <template v-slot="">
             <div>
                 <div class="px-4 my-4 py-2 flex justify-center bg-white border-b border-gray-200">
-                    <p class=" text-lg font-medium text-gray-900"> Desperdicio</p>
+                    <p class=" text-lg font-medium text-gray-900"> Seleccionar el rango de fecha.</p>
                 </div>
                 <div class="px-4 py-2 bg-white border-b border-gray-200">
+                    <p>
+                        Seleccionar el rango de fecha para generar el reporte.
+                    </p>
                     <div class="container mx-auto">
                         <form @submit.prevent="submitModal">
-                            <div class=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
-                                <div class="my-4">
-                                    <InputLabel for="Nuevo Valor" value="Nuevo Valor " />
+                            <div class="w-full">
+                                <div class="my-4  w-full">
+                                    <InputLabel class="w-full" for="Desde" value="Desde: " />
                                     <TextInput id="objetivo" v-model="form.from" type="date" step="any"
                                         class="mt-1 block w-full" required autocomplete="new-challenge" />
                                 </div>
                             </div>
-                            <div class=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
-                                <div class="my-4">
-                                    <InputLabel for="Nuevo Valor" value="Nuevo Valor " />
+                            <div class="w-full">
+                                <div class="my-4  w-full">
+                                    <InputLabel class="w-full" for="Hasta" value="Hasta: " />
                                     <TextInput id="objetivo" v-model="form.to" type="date" step="any"
                                         class="mt-1 block w-full" required autocomplete="new-challenge" />
                                 </div>
