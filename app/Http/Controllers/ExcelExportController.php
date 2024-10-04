@@ -73,7 +73,7 @@ class ExcelExportController extends Controller
         }
 
         $writer = new Xlsx($spreadsheet);
-        $fileName = "ExcelExportedFromLaravel.xlsx";
+        $fileName = "Desperdicios AION Business " . date('d/m/Y', strtotime($request->from)) . " - " . date('d/m/Y', strtotime($request->to)) . ".xlsx";
         header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         header("Content-Disposition: attachment;filename=\"$fileName\"");
         header("Cache-Control: max-age=0");
