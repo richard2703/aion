@@ -108,11 +108,11 @@
                                 </div>
                             </th>
                         </tr>
-                        <tr colspan="3">
-                            <th style="text-align: center;">
-                                <div style="display: grid; justify-content: space-between;" class="grid grid-cols-3">
-                                    <div class="col-4 text-center" style="grid-column: 1;">
-                                        <h2>30</h2>
+                        <tr>
+                            <th colspan="2"> <!-- Nombre del departamento -->
+                                <div class="departamento-header">
+                                    <div class="" style="grid-column: 1;">
+                                        <h2>Plan a 30 Dias</h2>
                                         <ul class="mt-2">
                                             @forelse ($reporte->treintas as $treinta)
                                                 <li>{{ $treinta->meta }}</li>
@@ -121,8 +121,8 @@
                                             @endforelse
                                         </ul>
                                     </div>
-                                    <div class="col-4 text-center" style="grid-column: 2;">
-                                        <h2>60</h2>
+                                    <div class="" style="grid-column: 2;">
+                                        <h2>Plan a 60 Dias</h2>
                                         <ul class="mt-2">
                                             @forelse ($reporte->sesentas as $sesenta)
                                                 <li>{{ $sesenta->meta }}</li>
@@ -131,8 +131,8 @@
                                             @endforelse
                                         </ul>
                                     </div>
-                                    <div class="col-4 text-center" style="grid-column: 3;">
-                                        <h2>90</h2>
+                                    <div class="" style="grid-column: 3;">
+                                        <h2>Plan a 90 Dias</h2>
                                         <ul class="mt-2">
                                             @forelse ($reporte->noventas as $noventa)
                                                 <li>{{ $noventa->meta }}</li>
@@ -149,7 +149,7 @@
                         <tr>
                             <td class="col-6">
                                 <div class="col-12">
-                                    <h2>Aspecto destacado</h2>
+                                    <h2>Destacado</h2>
                                     <ul class="mt-2">
                                         @forelse ($reporte->highlights as $highlight)
                                             <li>{{ $highlight->light }}</li>
@@ -161,7 +161,7 @@
                             </td>
                             <td class="col-6">
                                 <div class="col-12">
-                                    <h2>Aspecto negativo</h2>
+                                    <h2>Negativo</h2>
                                     <ul class="mt-2">
                                         @forelse ($reporte->lowlights as $lowlight)
                                             <li>{{ $lowlight->light }}</li>
@@ -205,7 +205,7 @@
                             </td>
                             <td class="col-6">
                                 <div class="col-12">
-                                    <h2>Avisos Y acciones de Mejora</h2>
+                                    <h2>Avisos y Acciones</h2>
                                     <ul class="mt-2">
                                         @forelse ($reporte->avisos as $aviso)
                                             <li>{{ $aviso->aviso }}</li>

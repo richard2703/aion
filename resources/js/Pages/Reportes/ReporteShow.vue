@@ -199,7 +199,7 @@ const getClass = (kpiItem) => {
                     <div class="grid grid-cols-3 gap-4">
                         <!-- Highlights Section -->
                         <div>
-                            <h2 class="text-xl font-bold text-purple-700">30</h2>
+                            <h2 class="text-xl font-bold text-purple-700">Plan a 30 Dias</h2>
                             <ul class=" pl-5 mt-2 pl-5">
                                 <li v-for="treinta in reporte.treintas" :key="treinta.id">
                                     {{ treinta.meta }}
@@ -212,7 +212,7 @@ const getClass = (kpiItem) => {
 
                         <!-- Low Lights Section -->
                         <div>
-                            <h2 class="text-xl font-bold text-purple-700">60</h2>
+                            <h2 class="text-xl font-bold text-purple-700">Plan a 60 Dias</h2>
                             <ul class=" pl-5 mt-2">
                                 <li v-for="sesenta in reporte.sesentas" :key="sesenta.id">
                                     {{ sesenta.meta }}
@@ -224,7 +224,7 @@ const getClass = (kpiItem) => {
                         </div>
 
                         <div>
-                            <h2 class="text-xl font-bold text-purple-700">90</h2>
+                            <h2 class="text-xl font-bold text-purple-700">Plan a 90 Dias</h2>
                             <ul class=" pl-5 mt-2">
                                 <li v-for="noventa in reporte.noventas" :key="noventa.id">
                                     {{ noventa.meta }}
@@ -238,7 +238,7 @@ const getClass = (kpiItem) => {
                     <div class="grid grid-cols-2 gap-4">
                         <!-- Highlights Section -->
                         <div>
-                            <h2 class="text-xl font-bold text-purple-700">Highlights</h2>
+                            <h2 class="text-xl font-bold text-purple-700">Destacados</h2>
                             <ul class=" pl-5 mt-2 pl-5">
                                 <li v-for="highlight in reporte.highlights" :key="highlight.id">
                                     {{ highlight.light }}
@@ -251,7 +251,7 @@ const getClass = (kpiItem) => {
 
                         <!-- Low Lights Section -->
                         <div>
-                            <h2 class="text-xl font-bold text-purple-700">Low lights</h2>
+                            <h2 class="text-xl font-bold text-purple-700">Negativos</h2>
                             <ul class=" pl-5 mt-2">
                                 <li v-for="lowlight in reporte.lowlights" :key="lowlight.id">
                                     {{ lowlight.light }}
@@ -269,7 +269,7 @@ const getClass = (kpiItem) => {
                     <!-- KPIs Section -->
                     <div class="grid grid-cols-2 gap-4 mt-8">
                         <div>
-                            <h2 class="text-xl font-bold text-purple-700">KPI's</h2>
+                            <h2 class="text-xl font-bold text-purple-700">Comprobacion de KPI's</h2>
                             <table v-for="kpis in reporte.kpis" :key="kpis.id" class="min-w-full border-collapse mb-4">
                                 <thead>
                                     <tr>
@@ -312,7 +312,7 @@ const getClass = (kpiItem) => {
                             </p>
                         </div> -->
                         <div>
-                            <h2 class="text-xl font-bold text-purple-700">Avisos</h2>
+                            <h2 class="text-xl font-bold text-purple-700">Avisos y Acciones</h2>
                             <ul class=" pl-5 mt-2">
                                 <li v-for="aviso in reporte.avisos" :key="aviso.id">
                                     {{ aviso.aviso }}
