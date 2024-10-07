@@ -9,7 +9,7 @@ const props = defineProps({
 
 const area = ref(props.area);
 const departamentos = ref([]);
-const departamento_id = ref()
+const departamento_id = ref('');
 const kpis = ref([]);
 
 onMounted(() => {
@@ -78,14 +78,71 @@ const getKpisbyDepartamento = async (departamento_id) => {
                     </option>
                 </select>
             </div>
-            departamento: {{ departamento_id }}
-
-            <div v-for="kpi in kpis" class="mt-4">
-                {{ kpi }}
-                <br>
-                <br>
-                <br>
-                <br>
+            <div class="mt-4">
+                <table class="border border-collapse mb-4 w-full">
+                    <thead>
+                        <tr class="bg-slate-100">
+                            <th class="p-2 mx-2 text-left">KPI</th>
+                            <th class="p-2 mx-2 text-center">Actual</th>
+                            <th class="p-2 mx-2 text-center">Plan</th>
+                            <th class="p-2 mx-2 text-center">PY</th>
+                            <th class="p-2 mx-2 text-center">Status</th>
+                            <th class="p-2 mx-2 text-center">Trend</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="kpi in kpis" :key="kpi.id" class="border hover:bg-gray-100">
+                            <td class="p-2 mx-2 text-left">{{ kpi.titulo }}</td>
+                            <td class="p-2 mx-2 text-center">{{ kpi.actual }}</td>
+                            <td class="p-2 mx-2 text-center">{{ kpi.objetivo }}</td>
+                            <td class="p-2 mx-2 text-center">
+                                <div v-if="kpi.promedio">
+                                    {{ kpi.promedio }}
+                                </div>
+                                <div v-else>
+                                    <i class="pi pi-minus text-gray-500"></i>
+                                </div>
+                            </td>
+                            <td class="p-2 mx-2 text-center">
+                                <div v-if="kpi.promedio > kpi.objetivo"><i class="pi pi-check text-green-500"></i>
+                                </div>
+                                <div v-else-if="kpi.promedio < kpi.objetivo"><i class="pi pi-times text-red-500"></i>
+                                </div>
+                                <div v-else>
+                                    <i class="pi pi-times text-red-500"></i>
+                                </div>
+                            </td>
+                            <td class="p-2 mx-2 text-center">
+                                <div v-if="kpi.promedio">
+                                    <div v-if="kpi.promedio > kpi.objetivo * 1.05"><i
+                                            class="pi pi-arrow-up text-green-500"></i></div>
+                                    <!-- aumento más de 5%  -->
+                                    <div v-else-if="kpi.promedio > kpi.objetivo * 1.025"><i
+                                            class="pi pi-arrow-up text-green-300"></i></div>
+                                    <!-- aumento hasta 5% -->
+                                    <div v-else-if="kpi.promedio > kpi.objetivo * 1.0125"><i
+                                            class="pi pi-arrow-up text-yellow-500"></i></div>
+                                    <!-- aumento hasta 2.5% -->
+                                    <div v-else-if="kpi.promedio == kpi.objetivo"><i
+                                            class="pi pi-minus text-gray-500"></i>
+                                    </div>
+                                    <!-- no aumento ni disminuyó -->
+                                    <div v-else-if="kpi.promedio > kpi.objetivo * 0.9875"><i
+                                            class="pi pi-arrow-down text-red-200"></i></div>
+                                    <!-- disminuyó hasta -2.5% -->
+                                    <div v-else-if="kpi.promedio > kpi.objetivo * 0.95"><i
+                                            class="pi pi-arrow-down text-red-300"></i></div>
+                                    <!-- disminuyó hasta -5% -->
+                                    <div v-else><i class="pi pi-arrow-down text-red-500"></i></div>
+                                    <!-- disminuyó más de -5% -->
+                                </div>
+                                <div v-else>
+                                    <i class="pi pi-minus text-gray-500"></i>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

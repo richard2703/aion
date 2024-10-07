@@ -14,7 +14,7 @@ const props = defineProps({
 });
 
 const title = "ScoreCard";
-const areas = ref(props.areas);
+const areas = ref();
 
 
 onMounted(() => {
@@ -66,7 +66,7 @@ async function getAreas() {
                                 </Tab>
                             </TabList>
                             <TabPanels>
-                                <TabPanel v-for="( area, key ) in areas" :key=key :value=key>
+                                <TabPanel v-for="( area, key ) in areas" :key=key :value=key class="overflow-auto">
                                     <ContenidoPanel :area=area />
                                 </TabPanel>
                             </TabPanels>
