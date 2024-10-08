@@ -69,6 +69,14 @@ const getClass = (kpi) => {
     }
 };
 
+const getClassPromedio = (kpi) => {
+    if (kpi.regla === 1) {
+        return kpi.promedio >= kpi.objetivo ? 'bg-green-100' : 'bg-red-100';
+    } else {
+        return kpi.promedio <= kpi.objetivo ? 'bg-green-100' : 'bg-red-100';
+    }
+};
+
 /** chart */
 const formatDataSet = async () => {
     await axios
@@ -110,7 +118,7 @@ const setChartData = () => {
             },
             {
                 type: 'line',
-                label: 'Objectivo',
+                label: 'Objetivo',
                 data: chartTarget,
                 backgroundColor: ['rgba(245, 11, 53, 0.2)'],
                 borderColor: ['rgb(245, 11, 53)'],
@@ -239,8 +247,16 @@ function formatNumber(value) {
                                 <tr>
 
                                     <td class="py-2 px-4 border">{{ kpi.objetivo || '-' }}</td>
-                                    <td class="py-2 px-4 border">{{ kpi.actual || '-' }}</td>
                                     <td :class="getClass(kpi)" class="py-2 px-4 border "
+                                        style="text-align-last: justify;">{{ kpi.actual || '-' }}</td>
+                                    <!-- <td :class="getClass(kpi)" class="py-2 px-4 border "
+                                        style="text-align-last: justify;">
+                                        {{ formatNumber(kpi.promedio) || '-' }}
+                                        <PrimaryButton class="pi pi-plus"
+                                            @click="openCreateModal(kpi.id, kpi.actual, kpi.titulo)">
+                                        </PrimaryButton>
+                                    </td> -->
+                                    <td class="py-2 px-4 border" :class="getClassPromedio(kpi)"
                                         style="text-align-last: justify;">
                                         {{ formatNumber(kpi.promedio) || '-' }}
                                         <PrimaryButton class="pi pi-plus"

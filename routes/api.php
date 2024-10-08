@@ -34,6 +34,7 @@ Route::get('/procesos', [App\Http\Controllers\procesoController::class, 'findAll
 Route::get('/procedimientos', [App\Http\Controllers\procedimientoController::class, 'findAll'])->name('procedimientos.findAll');
 Route::get('/estandares', [App\Http\Controllers\EstandarController::class, 'findAll'])->name('estandares.findAll');
 Route::get('/kpis', [App\Http\Controllers\kpiController::class, 'findAll'])->name('kpis.findAll');
+Route::get('/kpis/{area_id}/area', [App\Http\Controllers\kpiController::class, 'byArea'])->name('kpis.byArea');
 Route::get('/kpis/{departamento_id}/departamento', [App\Http\Controllers\kpiController::class, 'byDepartamento'])->name('kpis.byDepartamento');
 Route::get('/kpis/{kpi}/find', [App\Http\Controllers\kpiController::class, 'byId'])->name('kpis.byId');
 Route::get('/roles', [App\Http\Controllers\rolesController::class, 'findAll'])->name('roles.findAll');

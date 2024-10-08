@@ -65,6 +65,14 @@ class kpiController extends Controller
         return response()->json($kpis);
     }
 
+    public function byArea($area_id)
+    {
+        $kpis = Kpis::with(['area', 'departamento', 'proceso', 'procedimiento', 'registros'])
+            ->where('area_id', $area_id)
+            ->get();
+        return response()->json($kpis);
+    }
+
     public function create()
     {
         return Inertia::render('Kpi/KpiCreate');
