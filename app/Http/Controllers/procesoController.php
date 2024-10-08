@@ -19,7 +19,7 @@ class procesoController extends Controller
 
     function byDepartamento($departamento_id)
     {
-        return response()->json(['procesos' => Proceso::where('departamento_id', $departamento_id)->get()]);
+        return response()->json(['procesos' => Proceso::with('procedimientos')->where('departamento_id', $departamento_id)->get()]);
     }
 
     public function findAll(Request $request)
