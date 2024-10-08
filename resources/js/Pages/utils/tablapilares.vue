@@ -348,7 +348,16 @@ watch(() => props.pilar, (newPilar) => {
                                         </button>
                                     </template>
                                 </Column>
-                                <Column field="link_externo" header="Link" headerStyle="width:4em;"
+                                <Column field="link_externo" header="Ejecución" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable>
+                                    <template #body="slotProps">
+                                        <a :href="slotProps.data.link_herramienta" target="_blank"
+                                            rel="noopener noreferrer">
+                                            {{ slotProps.data.link_herramienta }}
+                                        </a>
+                                    </template>
+                                </Column>
+                                <Column field="link_externo" header="Documentación" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable>
                                     <template #body="slotProps">
                                         <a :href="slotProps.data.link_externo" target="_blank"
@@ -375,15 +384,6 @@ watch(() => props.pilar, (newPilar) => {
                                             {{ slotProps.data.nombre }}
                                         </button>s
                                     </template> -->
-                                </Column>
-                                <Column field="link_externo" header="Link" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable>
-                                    <template #body="slotProps">
-                                        <a :href="slotProps.data.link_externo" target="_blank"
-                                            rel="noopener noreferrer">
-                                            {{ slotProps.data.link_externo }}
-                                        </a>
-                                    </template>
                                 </Column>
                             </DataTable>
                         </div>

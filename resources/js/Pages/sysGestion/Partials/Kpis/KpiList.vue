@@ -69,6 +69,14 @@ const getClass = (kpi) => {
     }
 };
 
+const getClassPromedio = (kpi) => {
+    if (kpi.regla === 1) {
+        return kpi.promedio >= kpi.objetivo ? 'bg-green-100' : 'bg-red-100';
+    } else {
+        return kpi.promedio <= kpi.objetivo ? 'bg-green-100' : 'bg-red-100';
+    }
+};
+
 /** chart */
 const formatDataSet = async () => {
     await axios
@@ -248,7 +256,8 @@ function formatNumber(value) {
                                             @click="openCreateModal(kpi.id, kpi.actual, kpi.titulo)">
                                         </PrimaryButton>
                                     </td> -->
-                                    <td class="py-2 px-4 border" style="text-align-last: justify;">
+                                    <td class="py-2 px-4 border" :class="getClassPromedio(kpi)"
+                                        style="text-align-last: justify;">
                                         {{ formatNumber(kpi.promedio) || '-' }}
                                         <PrimaryButton class="pi pi-plus"
                                             @click="openCreateModal(kpi.id, kpi.actual, kpi.titulo)">
