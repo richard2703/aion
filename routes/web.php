@@ -221,6 +221,10 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('Mismetas', [App\Http\Controllers\metasController::class, 'misMetas'])->name('Mismetas.index');
     // Route::get('reportes/{reporte}/pdf', [App\Http\Controllers\reportesController::class, 'pdf'])->name('reporte.pdf');
 
+
+    //ScoreCard
+    Route::get('scoreCard', [App\Http\Controllers\scoreCardController::class, 'index'])->name('scoreCard.index');
+
     // Excel
     Route::get('export/desperdicio', [App\Http\Controllers\ExcelExportController::class, 'exportDesperdicios'])->name('excel.desperdicios');
 });
