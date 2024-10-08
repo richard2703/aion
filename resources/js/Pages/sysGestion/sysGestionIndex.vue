@@ -71,7 +71,11 @@ async function getProcesos() {
     console.log('departamento_id', form.departamento_id);
 
     await axios.get(route("procesos.byDepartamento", form.departamento_id))
-        .then((response) => (procesos.value = response.data.procesos))
+        .then((response) => {
+            procesos.value = response.data.procesos;
+
+            console.log({ procesos: procesos.value });
+        })
         .catch((error) => {
             console.log(error);
         });
@@ -158,21 +162,24 @@ async function getProcesos() {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="proceso in procesos">
-                                            <td class="py-2 px-4 border">
-                                                <div v-if="proceso.link_herramienta">
-                                                    <a target="blank" :href="proceso.link_herramienta"
-                                                        class="text-blue-500 hover:underline">
-                                                        {{ proceso.nombre || '-' }}
-                                                    </a>
-                                                </div>
-                                                <div v-else>
-                                                    <a href="#" class="text-slate-400 hover:underline">
-                                                        {{ proceso.nombre || '-' }}
-                                                    </a>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                        <div v-for="proceso in procesos" class="w-full">
+                                            <tr v-for="procedimiento in proceso.procedimientos">
+                                                <td class="py-2 px-4">
+                                                    <div v-if="procedimiento.link_herramienta">
+                                                        <a target="blank" :href="procedimiento.link_herramienta"
+                                                            class="text-blue-500 hover:underline curson-pointer">
+                                                            {{ procedimiento.nombre || '-' }}
+                                                        </a>
+                                                    </div>
+                                                    <div v-else>
+                                                        <a href="#"
+                                                            class="text-slate-400 hover:underline cursor-not-allowed">
+                                                            {{ procedimiento.nombre || '-' }}
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </div>
                                     </tbody>
                                 </table>
                             </div>
