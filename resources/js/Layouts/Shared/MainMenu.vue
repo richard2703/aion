@@ -200,7 +200,8 @@
             </li> -->
 
             <!-- Other Menu Items -->
-            <div v-if="$page.props.auth.user.roles.includes('admin')">
+            <div
+                v-if="$page.props.auth.user.roles.includes('admin') || $page.props.auth.user.roles.includes('app-admin')">
                 <li>
                     <div class="mb-4 administrador">
                         <div>Administracion</div>
@@ -272,48 +273,50 @@
                         </Link>
                     </div>
                 </li>
+                <div v-if="$page.props.auth.user.roles.includes('app-admin')">
 
-                <li>
-                    <div class="mb-4">
-                        <Link class="group flex items-center py-3" :href="route('seccion.index')">
-                        <div :class="title === 'Secciones'
-                            ? 'activo flex'
-                            : 'inactivo flex'
-                            ">
-                            <i class="pi pi-list mr-2 w-4 h-4"></i>
-                            Secciones
+                    <li>
+                        <div class="mb-4">
+                            <Link class="group flex items-center py-3" :href="route('seccion.index')">
+                            <div :class="title === 'Secciones'
+                                ? 'activo flex'
+                                : 'inactivo flex'
+                                ">
+                                <i class="pi pi-list mr-2 w-4 h-4"></i>
+                                Secciones
+                            </div>
+                            </Link>
                         </div>
-                        </Link>
-                    </div>
-                </li>
+                    </li>
 
-                <li>
-                    <div class="mb-4">
-                        <Link class="group flex items-center py-3" :href="route('challenge.index')">
-                        <div :class="title === 'Challenges'
-                            ? 'activo flex'
-                            : 'inactivo flex'
-                            ">
-                            <i class="pi pi-verified mr-2 w-4 h-4"></i>
-                            Challenges
+                    <li>
+                        <div class="mb-4">
+                            <Link class="group flex items-center py-3" :href="route('challenge.index')">
+                            <div :class="title === 'Challenges'
+                                ? 'activo flex'
+                                : 'inactivo flex'
+                                ">
+                                <i class="pi pi-verified mr-2 w-4 h-4"></i>
+                                Challenges
+                            </div>
+                            </Link>
                         </div>
-                        </Link>
-                    </div>
-                </li>
+                    </li>
 
-                <li>
-                    <div class="mb-4">
-                        <Link class="group flex items-center py-3" :href="route('opcion.index')">
-                        <div :class="title === 'Opciones'
-                            ? 'activo flex'
-                            : 'inactivo flex'
-                            ">
-                            <i class="pi pi-question mr-2 w-4 h-4"></i>
-                            Opciones
+                    <li>
+                        <div class="mb-4">
+                            <Link class="group flex items-center py-3" :href="route('opcion.index')">
+                            <div :class="title === 'Opciones'
+                                ? 'activo flex'
+                                : 'inactivo flex'
+                                ">
+                                <i class="pi pi-question mr-2 w-4 h-4"></i>
+                                Opciones
+                            </div>
+                            </Link>
                         </div>
-                        </Link>
-                    </div>
-                </li>
+                    </li>
+                </div>
                 <li>
                     <div class="mb-4">
                         <Link class="group flex items-center py-3" :href="route('config.index')">
@@ -382,7 +385,8 @@
                         </Link>
                     </div>
                 </li>
-                <li v-if="$page.props.auth.user.roles.includes('admin')">
+                <li
+                    v-if="$page.props.auth.user.roles.includes('admin') || $page.props.auth.user.roles.includes('app-admin')">
                     <a class="group flex items-center py-3 cursor-pointer" @click="toggleMenu('rolesypermisos')">
 
                         <i class="pi pi-lock mr-2 w-4 h-4" :class="title === 'rolesypermisos' ? 'activo flex'
