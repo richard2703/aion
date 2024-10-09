@@ -248,12 +248,12 @@
                 <li>
                     <div class="mb-4">
                         <Link class="group flex items-center py-3" :href="route('encargadoFlujo.index')">
-                        <div :class="title === 'usuarios'
+                        <div :class="title === 'Lideres_flujo'
                             ? 'activo flex'
                             : 'inactivo flex'
                             ">
                             <i class="pi pi-users mr-2 w-4 h-4"></i>
-                            Encargados de Flujo
+                            Líderes de flujo
                         </div>
                         </Link>
                     </div>
