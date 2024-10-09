@@ -59,6 +59,7 @@ watch(() => [props.kpi, props.updateFlag],
     ([newKpi, newFlag]) => {
         kpi.value = newKpi;
         formatDataSet();
+        getNewKpi(kpi.value.id);
     });
 
 const getClass = (kpi) => {
@@ -210,7 +211,7 @@ async function submitCreateModal() {
 async function getNewKpi(id) {
     await axios.get(route("kpis.byId", id)).then((response) => {
         kpi.value = response.data;
-        formatDataSet();
+        // formatDataSet();
     })
 }
 
