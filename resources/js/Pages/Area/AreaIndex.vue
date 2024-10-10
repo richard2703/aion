@@ -136,9 +136,9 @@ watch(globalFilter, (newValue) => {
         <div class="py-2">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div>
-                    <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
+                    <!-- <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
                         <PrimaryButton :href="route('area.create')" class="m-4 pi pi-plus"></PrimaryButton>
-                    </div>
+                    </div> -->
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto">
                             <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
@@ -160,20 +160,20 @@ watch(globalFilter, (newValue) => {
                                     bodyClass="text-center" sortable></Column>
 
                                 <Column header="" headerStyle="width:4em;">
-                                    <template #body="slotProps" class="text-center">
-                                        <PrimaryButton class="pi pi-file-edit me-2" :href="route(
-                                            'area.edit',
-                                            slotProps.data.id
-                                        )
-                                            ">
+                                    <template #body="slotProps">
+                                        <div class="text-center">
+                                            <PrimaryButton class="pi pi-file-edit me-2" :href="route(
+                                                'area.edit',
+                                                slotProps.data.id
+                                            )
+                                                ">
+                                            </PrimaryButton>
 
-                                        </PrimaryButton>
-
-                                        <PrimaryButton class="pi pi-trash me-2" @click.prevent="
-                                            deleteArea(slotProps.data.id)
-                                            ">
-
-                                        </PrimaryButton>
+                                            <!-- <PrimaryButton class="pi pi-trash me-2" @click.prevent="
+                                                deleteArea(slotProps.data.id)
+                                                ">
+                                            </PrimaryButton> -->
+                                        </div>
                                     </template>
                                 </Column>
                             </DataTable>

@@ -25,7 +25,7 @@ const usuarios = ref(props.usuarios);
 const filteredUsuarios = ref();
 const tiposMinutas = ref([]);
 
-const title = "minutero";
+const title = "Lideres_flujo";
 
 
 async function getAreas() {
@@ -110,17 +110,17 @@ const search = (event) => {
 <template>
     <Layout :titulo="title">
 
-        <Head title="Encargados" />
+        <Head title="Líderes de flujo" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
-                <h3>Encargados</h3>
+                <h3>Líderes de flujo</h3>
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
                 <Link :href="route('encargadoFlujo.index')" class="px-1">
-                <h3>Encargados -</h3>
+                <h3>Líderes de flujo -</h3>
                 </Link>
                 <Link class="active">
                 <h3>Nuevo</h3>

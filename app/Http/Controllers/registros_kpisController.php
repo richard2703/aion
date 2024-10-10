@@ -90,7 +90,7 @@ class registros_kpisController extends Controller
             'kpi_id',
             'actual',
             'promedio',
-            DB::raw("DATE_FORMAT(created_at, '%d %m %y') as mes")
+            'created_at',
         )
             ->where('kpi_id', $id)
             ->orderBy('created_at', 'asc')

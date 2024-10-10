@@ -114,6 +114,13 @@ const onSort = (event) => {
         <div class="py-2">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div>
+                    <div v-if="$page.props.flash.error"
+                        class="py-1 px-2 alert bg-red-200 alert-dismissible w-full text-center font-semibold">
+                        {{ $page.props.flash.error }}
+                        <button type="button" class="close float-right gap-2" @click="$page.props.flash.error = null">
+                            <span aria-hidden="true"><i class="pi pi-times"></i></span>
+                        </button>
+                    </div>
                     <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
                         <PrimaryButton :href="route('evaluacion.create')" class="m-4 pi pi-plus"></PrimaryButton>
                     </div>
