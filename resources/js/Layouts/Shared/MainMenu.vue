@@ -201,7 +201,7 @@
 
             <!-- Other Menu Items -->
             <div
-                v-if="$page.props.auth.user.roles.includes('admin') || $page.props.auth.user.roles.includes('app-admin')">
+                v-if="$page.props.auth.user.roles.includes('admin') || $page.props.auth.user.roles.includes('superadmin')">
                 <li>
                     <div class="mb-4 administrador">
                         <div>Administracion</div>
@@ -273,7 +273,7 @@
                         </Link>
                     </div>
                 </li>
-                <div v-if="$page.props.auth.user.roles.includes('app-admin')">
+                <div v-if="$page.props.auth.user.roles.includes('superadmin')">
 
                     <li>
                         <div class="mb-4">
@@ -386,7 +386,7 @@
                     </div>
                 </li>
                 <li
-                    v-if="$page.props.auth.user.roles.includes('admin') || $page.props.auth.user.roles.includes('app-admin')">
+                    v-if="$page.props.auth.user.roles.includes('admin') || $page.props.auth.user.roles.includes('superadmin')">
                     <a class="group flex items-center py-3 cursor-pointer" @click="toggleMenu('rolesypermisos')">
 
                         <i class="pi pi-lock mr-2 w-4 h-4" :class="title === 'rolesypermisos' ? 'activo flex'

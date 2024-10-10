@@ -142,13 +142,13 @@ onMounted(() => {
                                     <div>
                                         <div v-for="role in roles" :key="role.id" class="mt-2">
                                             <label class="flex items-center">
-                                                <div v-if="$page.props.auth.user.roles.includes('app-admin')">
+                                                <div v-if="$page.props.auth.user.roles.includes('superadmin')">
                                                     <input type="checkbox" v-model="form.roles" :value="role.id"
                                                         class="form-checkbox" />
                                                     <span class="ml-2">{{ role.name }}</span>
                                                 </div>
                                                 <div v-else-if="$page.props.auth.user.roles.includes('admin')">
-                                                    <div v-if="role.name !== 'app-admin'">
+                                                    <div v-if="role.name === 'admin'">
                                                         <input type="checkbox" v-model="form.roles" :value="role.id"
                                                             class="form-checkbox" />
                                                         <span class="ml-2">{{ role.name }}</span>
