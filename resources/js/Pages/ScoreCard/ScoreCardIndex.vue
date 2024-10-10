@@ -34,6 +34,7 @@ async function getAreas() {
         });
 }
 
+
 </script>
 
 <template>
