@@ -13,7 +13,7 @@ const props = defineProps({
     departamentos: Array,
 });
 
-const title = "Flujos de valor";
+const title = "Lideres_flujo";
 const departamentos = ref([]);
 const encargados = ref([]);
 const totalRecords = ref(0);
@@ -143,17 +143,17 @@ watch(globalFilter, (newValue) => {
 <template>
     <Layout :titulo="title">
 
-        <Head title="Encargados" />
+        <Head title="Líderes de flujo" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
-                <h3>Encargados</h3>
+                <h3>Líderes de flujo</h3>
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
                 <Link class="active">
-                <h3>Encargados</h3>
+                <h3>Líderes de flujo</h3>
                 </Link>
             </div>
         </div>

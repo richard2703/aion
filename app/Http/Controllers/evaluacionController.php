@@ -59,27 +59,42 @@ class evaluacionController extends Controller
 
     public function create()
     {
-        $assessment = new Assessment;
-        $assessment->created_by = auth()->user()->id;
-        $assessment->save();
+        $userId = auth()->user()->id;
 
-        $seecciones = Seccion::get();
-        foreach ($seecciones as $key => $seccion) {
-            AssessmentAsignado::create([
-                'assessment_id' => $assessment->id,
-                'seccion_id' => $seccion->id,
-                'estatus' => 'INCOMPLETO',
-            ]);
+        // Get the latest assessment for the authenticated user
+        $lastAssessment = Assessment::latest('created_at')
+            ->first();
+        // Check if the latest assessment is older than 3 months or doesn't exist
+        if (!$lastAssessment || $lastAssessment->created_at->lt(now()->subMonths(3))) {
+            // Create a new assessment
+            $assessment = new Assessment;
+            $assessment->created_by = $userId;
+            $assessment->save();
+
+            // Fetch all sections and create associated records
+            $secciones = Seccion::get();
+            foreach ($secciones as $seccion) {
+                AssessmentAsignado::create([
+                    'assessment_id' => $assessment->id,
+                    'seccion_id' => $seccion->id,
+                    'estatus' => 'INCOMPLETO',
+                ]);
+            }
+
+            // Redirect to the evaluation selection route
+            return redirect(route('evaluacion.select', $assessment->id));
         }
 
-        return redirect(route('evaluacion.select', $assessment->id));
-        // return Inertia::render('Evaluacion/EvaluacionCreate');
+        // If the last assessment is less than 3 months old, return with an error message or redirect
+        return redirect()->back()->with('error', 'Solo puede crear una nueva evaluación cada 3 meses.');
     }
+
 
     public function show(Assessment $evaluacion) {}
 
     public function select(Assessment $evaluacion)
     {
+        $user = auth()->user();
         $evaluacion->load(
             'AssessmentAsignado',
             'AssessmentAsignado.seccion',
@@ -105,7 +120,10 @@ class evaluacionController extends Controller
 
         return Inertia::render(
             'Evaluacion/EvaluacionSelector',
-            ['evaluacion' => $asignadosPorArea,]
+            [
+                'evaluacion' => $asignadosPorArea,
+                'usuario' => $user,
+            ]
         );
     }
     public function form(AssessmentAsignado $assessmentAsignado)
@@ -179,7 +197,8 @@ class evaluacionController extends Controller
                 ->where('estatus', '=', 'INCOMPLETO')
                 ->count();
 
-            if ($countIncompleted === 0) {
+            // if ($countIncompleted === 0) {
+            if (1 == 1) {
                 $promedioSeccion = Respuesta::where('assessment_id', $assessmentId)
                     ->select()
                     ->get()

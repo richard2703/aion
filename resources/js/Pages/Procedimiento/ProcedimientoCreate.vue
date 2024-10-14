@@ -166,7 +166,7 @@ const submit = () => {
                                         </select>
                                     </div> -->
                                     <div class="my-4">
-                                        <InputLabel for="nombre" value="Nombre: " />
+                                        <InputLabel for="nombre" value="Procedimiento: " />
                                         <TextInput id="nombre" v-model="form.nombre" type="text"
                                             class="mt-1 block w-full" required autocomplete="new-challenge" />
                                     </div>

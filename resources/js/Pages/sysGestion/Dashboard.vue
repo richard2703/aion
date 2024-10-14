@@ -31,8 +31,11 @@ const subTitle = "dashboard"; // Este segundo es por siu viene de un menu desple
         </div>
 
         <div class="py-2">
-            <iframe title="KPI AION" width="100%" height="700"
+            <!-- <iframe title="KPI AION" width="100%" height="700"
                 src="https://app.powerbi.com/view?r=eyJrIjoiNWYxNThlMDktMTRlYy00NzYyLTgwZGUtYzAxYTVjMWNkNWU0IiwidCI6IjIyOWQ1ZTc5LTE0YjgtNDU1MS04MmExLTQ2ZGVkNTk3YzRhYSJ9"
+                frameborder="0" allowFullScreen="true"></iframe> -->
+            <iframe title="KPI AION" width="100%" height="700"
+                src="https://app.powerbi.com/view?r=eyJrIjoiMTYwOWYwNjQtNDUxMy00ZDZiLWIwNjMtOGZiMzA3NDM2OWU2IiwidCI6IjIyOWQ1ZTc5LTE0YjgtNDU1MS04MmExLTQ2ZGVkNTk3YzRhYSJ9"
                 frameborder="0" allowFullScreen="true"></iframe>
         </div>
     </Layout>

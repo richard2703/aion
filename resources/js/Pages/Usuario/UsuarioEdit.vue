@@ -233,10 +233,27 @@ onMounted(() => {
                                     <InputLabel for="roles" value="Rol: " />
                                     <div>
                                         <div v-for="role in roles" :key="role.id" class="mt-2">
+
                                             <label class="flex items-center">
-                                                <input type="checkbox" v-model="profileForm.selectedRoles"
-                                                    :value="role.id" class="form-checkbox" />
-                                                <span class="ml-2">{{ role.name }}</span>
+                                                <div v-if="$page.props.auth.user.roles.includes('superadmin')">
+                                                    <input type="checkbox" v-model="profileForm.selectedRoles"
+                                                        :value="role.id" class="form-checkbox" />
+                                                    <span class="ml-2">{{ role.name }}</span>
+                                                </div>
+                                                <div v-else-if="$page.props.auth.user.roles.includes('admin')">
+                                                    <div v-if="role.name !== 'superadmin'">
+                                                        <input type="checkbox" v-model="profileForm.selectedRoles"
+                                                            :value="role.id" class="form-checkbox" />
+                                                        <span class="ml-2">{{ role.name }}</span>
+                                                    </div>
+                                                </div>
+                                                <div v-else>
+                                                    <div v-if="role.name === 'user'">
+                                                        <input type="checkbox" v-model="profileForm.selectedRoles"
+                                                            :value="role.id" class="form-checkbox" />
+                                                        <span class="ml-2">{{ role.name }}</span>
+                                                    </div>
+                                                </div>
                                             </label>
                                         </div>
                                     </div>

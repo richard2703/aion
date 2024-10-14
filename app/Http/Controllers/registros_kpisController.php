@@ -40,7 +40,19 @@ class registros_kpisController extends Controller
 
     public function update(Request $request, registros_kpi $registros_kpi)
     {
-        $registros_kpi->update($request->only('actual'));
+        $latestRegistro = registros_kpi::where('kpi_id', $registros_kpi->kpi_id)
+            ->latest('created_at')
+            ->first();
+
+        if ($latestRegistro->id === $registros_kpi->id) {
+            $registros_kpi->update($request->only('actual'));
+            $kpi = Kpis::find($registros_kpi->kpi_id);
+            $kpi->actual = $request->actual;
+            $kpi->save();
+        } else {
+            $registros_kpi->update($request->only('actual'));
+        }
+
 
         $promedio = registros_kpi::where('kpi_id', $registros_kpi->kpi_id)
             ->latest('created_at')
@@ -78,7 +90,7 @@ class registros_kpisController extends Controller
             'kpi_id',
             'actual',
             'promedio',
-            DB::raw("DATE_FORMAT(created_at, '%d %m %y') as mes")
+            'created_at',
         )
             ->where('kpi_id', $id)
             ->orderBy('created_at', 'asc')

@@ -6,12 +6,13 @@ import { onMounted, ref } from 'vue';
 
 const props = defineProps({
     evaluacion: Object,
-
+    usuario: Object
 });
 
 const title = "assessment";
 const subTitle = "evaluaciones";
 const evaluacion = ref(props.evaluacion);
+const usuario = ref(props.usuario);
 const incompleto = ref();
 const completo = ref();
 
@@ -61,26 +62,38 @@ function formatNumber(value) {
 
                     <div class="p-4 bg-white border-b border-gray-200">
                         <div v-for="(pilar, key) in evaluacion">
-                            <h3 class="text-lg font-medium leading-6 text-gray-900">{{ key }}</h3>
-                            <br>
-                            <button v-for="assessmentAsignado in pilar" class="w-full"
-                                @click=" goToEvaluacion(assessmentAsignado)"
-                                :class="[assessmentAsignado.estatus === 'INCOMPLETO' ? incompleto : completo]">
-                                <div class="w-full flex justify-between">
-                                    <span class="w-full text-left">{{ assessmentAsignado.seccion.titulo }}</span>
-                                    <span class="w-full">{{ formatNumber(assessmentAsignado.promedio_seccion) ?? 'N/A'
-                                        }}</span>
-                                    <span class="w-full">{{ assessmentAsignado.estatus }}</span>
-                                </div>
-                            </button>
-                            <br>
-                            <hr>
-                            <br>
+                            <div
+                                v-if="($page.props.auth.user.roles.includes('lider_pilar') && usuario.area_id == pilar[0].seccion.area_id) || $page.props.auth.user.roles.includes('superadmin')">
+                                <h3 class="text-lg font-medium leading-6 text-gray-900">{{ key }}</h3>
+                                <br>
+                                <button v-for="assessmentAsignado in pilar" class="w-full"
+                                    @click=" goToEvaluacion(assessmentAsignado)"
+                                    :class="[assessmentAsignado.estatus === 'INCOMPLETO' ? incompleto : completo]">
+                                    <div class="w-full flex justify-between">
+                                        <span class="w-full text-left">{{ assessmentAsignado.seccion.titulo }}</span>
+                                        <span class="w-full">{{ formatNumber(assessmentAsignado.promedio_seccion) ??
+                                            'N/A'
+                                            }}</span>
+                                        <span class="w-full">{{ assessmentAsignado.estatus }}</span>
+                                    </div>
+                                </button>
+                                <br>
+                                <hr>
+                                <br>
+                            </div>
                         </div>
+                        <div v-if="!$page.props.auth.user.roles.includes('superadmin')">
+                            <div class="p-4 bg-white border-b border-gray-200 text-center rounded">
 
+                                Este módulo está reservado para líderes de pilar, para mayor información contacta
+                                con el
+                                administrador.
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
     </Layout>
 </template>

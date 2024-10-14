@@ -83,7 +83,7 @@ class sysGestionController extends Controller
             'kpi_id',
             'actual',
             'promedio',
-            DB::raw("DATE_FORMAT(created_at, '%d %m %y') as mes")
+            'created_at',
         )->where('kpi_id', $kpis[0]->id)->get();
 
         Carbon::setLocale('es');

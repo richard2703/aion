@@ -8,7 +8,7 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { showToast } from "@/Pages/utils/SweetAlert.service";
-import { yearsToDays } from "date-fns";
+import { format } from 'date-fns';
 
 const props = defineProps({
     kpi: Object,
@@ -59,6 +59,7 @@ watch(() => [props.kpi, props.updateFlag],
     ([newKpi, newFlag]) => {
         kpi.value = newKpi;
         formatDataSet();
+        getNewKpi(kpi.value.id);
     });
 
 const getClass = (kpi) => {
@@ -83,7 +84,7 @@ const formatDataSet = async () => {
         .get(route("registros_kpi.registros", kpi.value.id))
         .then((response) => {
             chartValues.value = response.data.map(record => record.actual);
-            chartLabels.value = response.data.map(record => record.mes);
+            chartLabels.value = response.data.map(record => formatearFecha(record.created_at));
             registrosKpi.value = response.data;
 
             chartYearToDate.value = chartValues.value.map(() => 0);
@@ -210,7 +211,7 @@ async function submitCreateModal() {
 async function getNewKpi(id) {
     await axios.get(route("kpis.byId", id)).then((response) => {
         kpi.value = response.data;
-        formatDataSet();
+        // formatDataSet();
     })
 }
 
@@ -218,6 +219,10 @@ function formatNumber(value) {
     if (value == null) return ''; // Manejar el caso cuando el valor es nulo o indefinido
     return parseFloat(value).toFixed(2);
 }
+
+const formatearFecha = (dateString) => {
+    return format(new Date(dateString), 'dd/MM/yyyy');
+};
 </script>
 
 <template>

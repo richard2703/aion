@@ -105,7 +105,7 @@ const search = (event) => {
                 <h3>Home -</h3>
                 </Link>
                 <Link :href="route('encargadoFlujo.index')" class="px-1">
-                <h3>Encargados -</h3>
+                <h3>Desperdicios -</h3>
                 </Link>
                 <Link class="active">
                 <h3>Nuevo</h3>
