@@ -197,7 +197,8 @@ class evaluacionController extends Controller
                 ->where('estatus', '=', 'INCOMPLETO')
                 ->count();
 
-            if ($countIncompleted === 0) {
+            // if ($countIncompleted === 0) {
+            if (1 == 1) {
                 $promedioSeccion = Respuesta::where('assessment_id', $assessmentId)
                     ->select()
                     ->get()
