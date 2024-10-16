@@ -241,7 +241,8 @@ onMounted(() => {
                                                     <span class="ml-2">{{ role.name }}</span>
                                                 </div>
                                                 <div v-else-if="$page.props.auth.user.roles.includes('admin')">
-                                                    <div v-if="role.name !== 'superadmin'">
+                                                    <div
+                                                        v-if="role.name !== 'superadmin' && role.name !== 'lider_pilar'">
                                                         <input type="checkbox" v-model="profileForm.selectedRoles"
                                                             :value="role.id" class="form-checkbox" />
                                                         <span class="ml-2">{{ role.name }}</span>
