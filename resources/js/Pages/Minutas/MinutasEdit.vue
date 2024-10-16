@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed } from "vue";
 import Layout from "@/Layouts/Layout.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
@@ -93,7 +93,9 @@ const form = useForm({
     alias: minuta.value.alias,
     notas: minuta.value.notas,
     estatus: minuta.value.estatus,
+    privada: minuta.value.privada,
 });
+
 
 const onChange = async (event) => {
     const taget_id = event.target.value;
@@ -142,6 +144,15 @@ const search = (event) => {
         }
     }, 250);
 }
+
+const isPrivadaChecked = computed({
+    get() {
+        return form.privada === 1;
+    },
+    set(value) {
+        form.privada = value ? 1 : 0;
+    },
+});
 
 </script>
 
@@ -262,6 +273,14 @@ const search = (event) => {
                                 <div class=" mt-4">
                                     <InputLabel for="notas" value="Notas: " />
                                     <Textarea v-model="form.notas" rows="3" style="width: 100%; " />
+                                </div>
+                                <div class=" mt-4">
+                                    <InputLabel for="Privada" value="Exclusivo para lideres de pilar?: " />
+                                    <!-- <input type="checkbox" @change="validateTarea(slotProps.data, $event)"
+                                                :disabled="slotProps.data.validacion ? true : false"
+                                                :checked="slotProps.data.validacion ? true : false" /> Validar -->
+                                    <input type="checkbox" v-model="isPrivadaChecked" />
+                                    Exclusivo
                                 </div>
 
                                 <div class="px-4 my-4 pt-2 flex justify-end bg-white border-t border-gray-200">

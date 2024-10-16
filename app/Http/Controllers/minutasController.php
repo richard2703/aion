@@ -15,7 +15,6 @@ class minutasController extends Controller
      */
     public function index(Request $request)
     {
-        // dd("objetivos");
         return Inertia::render('Minutas/MinutasIndex', [
             'area_id' => $request->get('area_id'),
             'departamento_id' => $request->get('departamento_id'),
@@ -29,7 +28,7 @@ class minutasController extends Controller
         $page = $request->get('page', 1);
         $filters = $request->get('filter', '');
         $sortField = $request->get('sortField', 'id');
-        $sortOrder = $request->get('sortOrder', 'asc');
+        $sortOrder = $request->get('sortOrder', 'desc');
 
         // Apply box filters
         // if ($request->formFilter) {
@@ -172,6 +171,12 @@ class minutasController extends Controller
             $query->orderBy('id', $sortOrder);
         }
 
+        $user = auth()->user();
+        if ($user->hasRole('lider_pilar')) {
+            // dd('Admin'); // Devuelve una colección de nombres de roles
+        } else {
+            $query->where('privada', 0);
+        }
         // $result = $query->with('challenge')->paginate($pageSize, ['*'], 'page', $page);
         $result = $query->with('area', 'departamento', 'lider', 'proceso', 'tipoMinuta')->paginate($pageSize, ['*'], 'page', $page);
         return response()->json($result);
@@ -187,7 +192,6 @@ class minutasController extends Controller
      */
     public function store(Request $request)
     {
-
         $minuta = new minutas();
         $minuta->area_id = $request->area_id;
         $minuta->departamento_id = $request->departamento_id;
@@ -200,6 +204,7 @@ class minutasController extends Controller
         $minuta->tipo = $request->tipo;
         $minuta->notas = $request->notas;
         $minuta->estatus = $request->estatus;
+        $minuta->privada = $request->privada;
         $minuta->save();
 
         return redirect()->route('minutas.show', $minuta->id);
@@ -249,6 +254,7 @@ class minutasController extends Controller
         $minuta->tipo = $request->tipo;
         $minuta->notas = $request->notas;
         $minuta->estatus = $request->estatus;
+        $minuta->privada = $request->privada;
 
         // Guardar los cambios en la base de datos
         $minuta->save();
