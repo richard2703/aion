@@ -87,6 +87,8 @@ const getTareas = async (
             tareas.value = response.data.data
             totalRecords.value = response.data.total
             first.value = (response.data.current_page - 1) * rows.value
+            console.log('tareas', tareas.value);
+
         })
         .catch((error) => {
             console.log(error);

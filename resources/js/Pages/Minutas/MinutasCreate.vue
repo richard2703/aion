@@ -40,8 +40,8 @@ async function getAreas() {
 
 async function getProcesos() {
     await axios
-        .get("/api/procesos")
-        .then((response) => (procesos.value = response.data.data))
+        .get("/api/procesosTodo")
+        .then((response) => (procesos.value = response.data))
         .catch((error) => {
             console.log(error);
         });
