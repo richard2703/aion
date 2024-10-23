@@ -372,6 +372,7 @@ class reportesController extends Controller
         // return view('ReportePDF', compact('reporteSemanal', 'reportes', 'personalizar'));
 
         $pdf = Pdf::loadView('ReportePDF', compact('reporteSemanal', 'reportes', 'personalizar'));
-        return $pdf->download('reporte-semanal.pdf');
+        // return $pdf->download('reporte-semanal.pdf');
+        return $pdf->stream('reporte-semanal.pdf');
     }
 }

@@ -7,27 +7,38 @@
     <title>Reporte Semanal: Semana {{ $reporteSemanal->numeroSemana }}</title>
 
     <style>
+        @page {
+            margin-left: 0;
+            margin-right: 0;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
         /* Global body styling */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f9fafb;
+            /* background-color: #f9fafb;*/
         }
 
         /* Report styling */
         .reporte {
-            background-color: #f9fafb;
+            /* background-color: #f9fafb;*/
             padding: 20px;
+            padding: 0px;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
+            /*margin-bottom: 20px;*/
+            margin-bottom: 0px;
+
         }
 
         /* Table styling */
         table {
             width: 100%;
             border-collapse: collapse;
+            padding: 20px;
         }
 
         th,
@@ -38,13 +49,13 @@
         }
 
         th {
-            background-color: #f7fafc;
+            /* background-color: #f7fafc;*/
             font-weight: bold;
         }
 
         /* Custom highlight class */
         .bg-green-100 {
-            background-color: #f0fff4;
+            /*background-color: #f0fff4;*/
         }
 
         h1,
@@ -87,7 +98,7 @@
 
         /* Container and layout styling */
         .container {
-            width: 90%;
+            width: 100%;
             margin: 0 auto;
         }
 
@@ -107,7 +118,8 @@
         .report-cover {
             position: relative;
             width: 100%;
-            height: 1100px;
+            /*height: 1100px;*/
+            height: 1050px;
             text-align: center;
         }
 
@@ -155,6 +167,8 @@
                                 </div>
                             </th>
                         </tr>
+                    </thead>
+                    <tbody>
                         <tr>
                             <th colspan="2">
                                 <div class="grid">
@@ -191,8 +205,6 @@
                                 </div>
                             </th>
                         </tr>
-                    </thead>
-                    <tbody>
                         <tr>
                             <td>
                                 <h2>Destacado</h2>
@@ -256,6 +268,7 @@
                     </tbody>
                 </table>
             </div>
+            <div style="page-break-after:always;"></div>
         @endforeach
     </div>
 
