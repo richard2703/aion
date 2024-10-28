@@ -44,7 +44,7 @@ async function getreporteSemanal(
             },
         });
         reporteSemanal.value = response.data;
-        // console.log('reporteSemanal', reporteSemanal.value);
+        console.log('reporteSemanal', reporteSemanal.value);
 
         totalRecords.value = response.data.total;
         first.value = (response.data.current_page - 1) * rows.value;
@@ -166,8 +166,13 @@ function handleClick(id) {
                                     sortable></Column>
                                 <Column field="numeroSemana" header="Numero de la Semana" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                                <Column field="reportes" header="Reportes Hechos " headerStyle="width:4em;"
-                                    bodyClass="text-center" sortable></Column>
+                                <Column header="Periodo" headerStyle="width:4em;">
+                                    <template #body="slotProps" class="text-center">
+                                        Del {{ slotProps.data.inicio }} <br> Al {{ slotProps.data.fin }}
+                                    </template>
+                                </Column>
+                                <!-- <Column field="reportes" header="Reportes Hechos " headerStyle="width:4em;"
+                                    bodyClass="text-center" sortable></Column> -->
 
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">
@@ -183,7 +188,7 @@ function handleClick(id) {
                                         </PrimaryButton> -->
 
                                         <PrimaryButton class="pi pi-download me-2"
-                                            :href="route('reporte.pdf', slotProps.data.id)">
+                                            :href="route('reporte.pdf', slotProps.data.id)" target="_blank">
                                         </PrimaryButton>
 
                                     </template>

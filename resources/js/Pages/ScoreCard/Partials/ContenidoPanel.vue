@@ -103,11 +103,11 @@ const getTrend = (promedio, objetivo, regla) => {
                     <thead>
                         <tr class="bg-slate-100">
                             <th class="p-2 mx-2 text-left">KPI</th>
-                            <th class="p-2 mx-2 text-center">Actual</th>
-                            <th class="p-2 mx-2 text-center">Plan</th>
-                            <th class="p-2 mx-2 text-center">PY</th>
-                            <th class="p-2 mx-2 text-center">Status</th>
-                            <th class="p-2 mx-2 text-center">Trend</th>
+                            <th class="p-2 mx-2 text-center">Real</th>
+                            <th class="p-2 mx-2 text-center">Objetivo</th>
+                            <th class="p-2 mx-2 text-center">PYD</th>
+                            <th class="p-2 mx-2 text-center">Estatus</th>
+                            <th class="p-2 mx-2 text-center">Tendencia</th>
                         </tr>
                     </thead>
                     <tbody>

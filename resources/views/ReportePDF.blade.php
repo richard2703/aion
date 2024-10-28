@@ -78,7 +78,7 @@
         }
 
         h3 {
-            font-size: 1.15rem;
+            font-size: 2.15rem;
             margin-bottom: 5px;
             color: #333;
         }
@@ -93,7 +93,8 @@
         }
 
         .departamento-header {
-            margin-bottom: 20px;
+            margin-bottom: 5px;
+            text-align: center;
         }
 
         /* Container and layout styling */
@@ -151,7 +152,8 @@
         <h1 class="report-title">
             Reporte Semanal <br>
             De Actividades <br>
-            Semana: {{ $reporteSemanal->numeroSemana }}
+            Semana: {{ $reporteSemanal->numeroSemana }} <br>
+            Del {{ $reporteSemanal->inicio }} al {{ $reporteSemanal->fin }}
         </h1>
     </div>
 

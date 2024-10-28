@@ -108,23 +108,23 @@ class kpiController extends Controller
         if ($request->departamento_id !== null) {
             $kpis->tipo = 2;
             $conteo = Kpis::where('departamento_id', $request->departamento_id)->count();
-            if ($conteo >= 3) {
-                return response()->json(['error' => 'El departamento ya tiene 3 KPIs'], 200);
-            }
+            // if ($conteo >= 3) {
+            //     return response()->json(['error' => 'El departamento ya tiene 3 KPIs'], 200);
+            // }
         }
         if ($request->proceso_id !== null) {
             $kpis->tipo = 3;
             $conteo = Kpis::where('proceso_id', $request->proceso_id)->count();
-            if ($conteo >= 3) {
-                return response()->json(['error' => 'El proceso ya tiene 3 KPIs'], 200);
-            }
+            // if ($conteo >= 3) {
+            //     return response()->json(['error' => 'El proceso ya tiene 3 KPIs'], 200);
+            // }
         }
         if ($request->procedimiento_id !== null) {
             $kpis->tipo = 4;
             $conteo = Kpis::where('procedimiento_id', $request->procedimiento_id)->count();
-            if ($conteo >= 3) {
-                return response()->json(['error' => 'El procedimiento ya tiene 3 KPIs'], 200);
-            }
+            // if ($conteo >= 3) {
+            //     return response()->json(['error' => 'El procedimiento ya tiene 3 KPIs'], 200);
+            // }
         }
         $kpis->save();
         return response()->json(['success' => 'KPI Creado'], 200);
@@ -148,23 +148,23 @@ class kpiController extends Controller
         if ($request->departamento_id !== null) {
             $kpi->tipo = 2;
             $conteo = Kpis::where('departamento_id', $request->departamento_id)->count();
-            if ($conteo >= 3) {
-                return response()->json(['error' => 'El departamento ya tiene 3 KPIs'], 200);
-            }
+            // if ($conteo >= 3) {
+            //     return response()->json(['error' => 'El departamento ya tiene 3 KPIs'], 200);
+            // }
         }
         if ($request->proceso_id !== null) {
             $kpi->tipo = 3;
             $conteo = Kpis::where('proceso_id', $request->proceso_id)->count();
-            if ($conteo >= 3) {
-                return response()->json(['error' => 'El proceso ya tiene 3 KPIs'], 200);
-            }
+            // if ($conteo >= 3) {
+            //     return response()->json(['error' => 'El proceso ya tiene 3 KPIs'], 200);
+            // }
         }
         if ($request->procedimiento_id !== null) {
             $kpi->tipo = 4;
             $conteo = Kpis::where('procedimiento_id', $request->procedimiento_id)->count();
-            if ($conteo >= 3) {
-                return response()->json(['error' => 'El procedimiento ya tiene 3 KPIs'], 200);
-            }
+            // if ($conteo >= 3) {
+            //     return response()->json(['error' => 'El procedimiento ya tiene 3 KPIs'], 200);
+            // }
         }
         $kpi->save();
         return redirect()->route('kpi.index');
