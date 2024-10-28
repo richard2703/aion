@@ -138,6 +138,13 @@ const getClass = (kpiItem) => {
         return kpiItem.actual <= kpiItem.objetivo ? 'bg-green-100' : 'bg-red-100';
     }
 };
+
+const getTerminada = (estatus) => {
+    if (estatus === 1) {
+        return 'text-decoration-line: line-through';
+    }
+};
+
 </script>
 
 <style scoped>
@@ -201,7 +208,8 @@ const getClass = (kpiItem) => {
                         <div>
                             <h2 class="text-xl font-bold text-purple-700">Plan a 30 Dias</h2>
                             <ul class=" pl-5 mt-2 pl-5">
-                                <li v-for="treinta in reporte.treintas" :key="treinta.id">
+                                <li v-for="treinta in reporte.treintas" :key="treinta.id"
+                                    :class="getTerminada(treinta.status)">
                                     {{ treinta.meta }}
                                 </li>
                             </ul>
@@ -214,7 +222,8 @@ const getClass = (kpiItem) => {
                         <div>
                             <h2 class="text-xl font-bold text-purple-700">Plan a 60 Dias</h2>
                             <ul class=" pl-5 mt-2">
-                                <li v-for="sesenta in reporte.sesentas" :key="sesenta.id">
+                                <li v-for="sesenta in reporte.sesentas" :key="sesenta.id"
+                                    :class="getTerminada(sesenta.status)">
                                     {{ sesenta.meta }}
                                 </li>
                             </ul>
@@ -226,7 +235,8 @@ const getClass = (kpiItem) => {
                         <div>
                             <h2 class="text-xl font-bold text-purple-700">Plan a 90 Dias</h2>
                             <ul class=" pl-5 mt-2">
-                                <li v-for="noventa in reporte.noventas" :key="noventa.id">
+                                <li v-for="noventa in reporte.noventas" :key="noventa.id"
+                                    :class="getTerminada(noventa.status)">
                                     {{ noventa.meta }}
                                 </li>
                             </ul>

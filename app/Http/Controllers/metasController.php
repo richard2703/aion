@@ -188,13 +188,16 @@ class metasController extends Controller
             'treintas' => 'array',
             'sesentas' => 'array',
             'noventas' => 'array',
+            'treintasStatus' => 'array',
+            'sesentasStatus' => 'array',
+            'noventasStatus' => 'array',
         ]);
 
         $metaFlujo = metaflujos::findOrFail($metaFlujo);
         $metaFlujo->update($validatedData);
 
         $metaFlujo->treintas()->delete(); // Elimina los existentes
-        foreach ($validatedData['treintas'] as $treinta) {
+        foreach ($validatedData['treintas'] as $index => $treinta) {
             // dd(!empty($highlight));
             if (!empty($treinta)) {
                 metas::create([
@@ -204,12 +207,13 @@ class metasController extends Controller
                     'tipo' => 1,
                     'meta' => $treinta,
                     'created_for' => auth()->id(), // Asignar al usuario autenticado
+                    // 'status' => $validatedData['treintasStatus'][$index], // Estado correspondiente
+                    'status' => $validatedData['treintasStatus'][$index], // Estado correspondiente
                 ]);
             }
         }
-
         $metaFlujo->sesentas()->delete(); // Elimina los existentes
-        foreach ($validatedData['sesentas'] as $sesenta) {
+        foreach ($validatedData['sesentas'] as $index => $sesenta) {
             // dd(!empty($highlight));
             if (!empty($sesenta)) {
                 metas::create([
@@ -219,12 +223,13 @@ class metasController extends Controller
                     'tipo' => 2,
                     'meta' => $sesenta,
                     'created_for' => auth()->id(), // Asignar al usuario autenticado
+                    'status' => $validatedData['sesentasStatus'][$index], // Estado correspondiente
                 ]);
             }
         }
 
         $metaFlujo->noventas()->delete(); // Elimina los existentes
-        foreach ($validatedData['noventas'] as $noventa) {
+        foreach ($validatedData['noventas'] as $index => $noventa) {
             // dd(!empty($highlight));
             if (!empty($noventa)) {
                 metas::create([
@@ -234,6 +239,7 @@ class metasController extends Controller
                     'tipo' => 3,
                     'meta' => $noventa,
                     'created_for' => auth()->id(), // Asignar al usuario autenticado
+                    'status' => $validatedData['noventasStatus'][$index], // Estado correspondiente
                 ]);
             }
         }

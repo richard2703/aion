@@ -178,7 +178,9 @@
                                         <h2>Plan a 30 Dias</h2>
                                         <ul>
                                             @forelse ($reporte->treintas as $treinta)
-                                                <li>{{ $treinta->meta }}</li>
+                                                <li
+                                                    style="{{ $treinta->status == 1 ? 'text-decoration: line-through;' : '' }}">
+                                                    {{ $treinta->meta }}</li>
                                             @empty
                                                 <p>No hay Metas a 30 días disponibles.</p>
                                             @endforelse
@@ -188,7 +190,9 @@
                                         <h2>Plan a 60 Dias</h2>
                                         <ul>
                                             @forelse ($reporte->sesentas as $sesenta)
-                                                <li>{{ $sesenta->meta }}</li>
+                                                <li
+                                                    style="{{ $treinta->status == 1 ? 'text-decoration: line-through;' : '' }}">
+                                                    {{ $sesenta->meta }}</li>
                                             @empty
                                                 <p>No hay Metas a 60 días disponibles.</p>
                                             @endforelse
@@ -198,7 +202,9 @@
                                         <h2>Plan a 90 Dias</h2>
                                         <ul>
                                             @forelse ($reporte->noventas as $noventa)
-                                                <li>{{ $noventa->meta }}</li>
+                                                <li
+                                                    style="{{ $treinta->status == 1 ? 'text-decoration: line-through;' : '' }}">
+                                                    {{ $noventa->meta }}</li>
                                             @empty
                                                 <p>No hay Metas a 90 días disponibles.</p>
                                             @endforelse

@@ -20,6 +20,7 @@ class metas extends Model
         'tipo',
         'meta',
         'created_for',
+        'status',
     ];
 
     public function metaflujo(): BelongsTo
