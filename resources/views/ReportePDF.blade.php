@@ -237,33 +237,47 @@
                         </tr>
                         <tr>
                             <td>
-                                <h2>Kpis</h2>
+                                <h2>KPIs</h2>
                                 @forelse ($reporte->kpis as $kpi)
-                                    <table class="table">
+                                    <table style="border-collapse: collapse; width: 100%; margin-bottom: 10px;">
                                         <thead>
                                             <tr>
-                                                <th colspan="3">{{ $kpi->titulo }}</th>
+                                                <th colspan="3"
+                                                    style="border: 1px solid black; padding: 8px; background-color: #f3f3f3;">
+                                                    {{ $kpi->titulo }}
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>Plan</td>
-                                                <td>Hoy</td>
-                                                <td>Promedio</td>
+                                                <td style="border: 1px solid black; padding: 8px;">Plan</td>
+                                                <td style="border: 1px solid black; padding: 8px;">Hoy</td>
+                                                <td style="border: 1px solid black; padding: 8px;">Promedio</td>
                                             </tr>
                                             <tr>
-                                                <td>{{ $kpi->objetivo }}</td>
-                                                <td class="bg-green-100">{{ $kpi->actual }}</td>
-                                                <td class="bg-green-100">{{ $kpi->promedio }}</td>
+                                                <td style="border: 1px solid black; padding: 8px;">{{ $kpi->objetivo }}
+                                                </td>
+
+                                                <td
+                                                    style="border: 1px solid black; padding: 8px;
+                                                    background-color: {{ $kpi->regla == 1 ? ($kpi->actual >= $kpi->objetivo ? '#d4edda' : '#f8d7da') : ($kpi->actual <= $kpi->objetivo ? '#d4edda' : '#f8d7da') }};">
+                                                    {{ $kpi->actual }}
+                                                </td>
+
+                                                <td
+                                                    style="border: 1px solid black; padding: 8px;
+                                                    background-color: {{ $kpi->regla == 1 ? ($kpi->promedio >= $kpi->objetivo ? '#d4edda' : '#f8d7da') : ($kpi->promedio <= $kpi->objetivo ? '#d4edda' : '#f8d7da') }};">
+                                                    {{ $kpi->promedio }}
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 @empty
-                                    <p>No hay kpis disponibles.</p>
+                                    <p>No hay KPIs disponibles.</p>
                                 @endforelse
                             </td>
                             <td>
-                                <h2>Avisos y Acciones</h2>
+                                <h2>Aviso y Acciones de mejora</h2>
                                 <ul>
                                     @forelse ($reporte->avisos as $aviso)
                                         <li>{{ $aviso->aviso }}</li>
