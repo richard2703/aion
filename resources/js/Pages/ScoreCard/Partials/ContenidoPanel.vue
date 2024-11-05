@@ -60,6 +60,7 @@ const getKpisbyDepartamento = async (departamento_id) => {
 };
 
 const getTrend = (promedio, objetivo, regla) => {
+
     const diferencia = (promedio - objetivo) / objetivo;
 
     if (diferencia > 0.05) {
@@ -76,6 +77,15 @@ const getTrend = (promedio, objetivo, regla) => {
         return regla === 1 ? 'pi pi-arrow-down text-red-500 font-black' : 'pi pi-arrow-down text-green-500 font-black';
     } else {
         return 'pi pi-minus text-gray-500';
+    }
+};
+
+const getStatus = (actual, objetivo, regla) => {
+
+    if (regla === 1) {
+        return actual >= objetivo ? 'pi pi-check text-green-500 font-black' : 'pi pi-times text-red-500 font-black';
+    } else {
+        return actual <= objetivo ? 'pi pi-check text-green-500 font-black' : 'pi pi-times text-red-500 font-black';
     }
 };
 
@@ -124,12 +134,15 @@ const getTrend = (promedio, objetivo, regla) => {
                                 </div>
                             </td>
                             <td class="p-2 mx-2 text-center">
-                                <div v-if="kpi.promedio > kpi.objetivo"><i class="pi pi-check text-green-500"></i>
+                                <!-- <div v-if="kpi.promedio > kpi.objetivo"><i class="pi pi-check text-green-500"></i>
                                 </div>
                                 <div v-else-if="kpi.promedio < kpi.objetivo"><i class="pi pi-times text-red-500"></i>
                                 </div>
                                 <div v-else>
                                     <i class="pi pi-times text-red-500"></i>
+                                </div> -->
+                                <div>
+                                    <i :class="getStatus(kpi.actual, kpi.objetivo, kpi.regla)"></i>
                                 </div>
                             </td>
                             <td class="p-2 mx-2 text-center">

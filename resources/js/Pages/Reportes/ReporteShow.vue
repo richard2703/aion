@@ -322,7 +322,7 @@ const getTerminada = (estatus) => {
                             </p>
                         </div> -->
                         <div>
-                            <h2 class="text-xl font-bold text-purple-700">Avisos y Acciones</h2>
+                            <h2 class="text-xl font-bold text-purple-700">Avisos y Acciones de mejora</h2>
                             <ul class=" pl-5 mt-2">
                                 <li v-for="aviso in reporte.avisos" :key="aviso.id">
                                     {{ aviso.aviso }}
