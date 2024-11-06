@@ -302,6 +302,7 @@ class reportesController extends Controller
                 'highlights',
                 'lowlights',
                 'avisos',
+                'actividades',
                 'kpis' => function ($query) {
                     $query->where('tipo', 2);
                 },

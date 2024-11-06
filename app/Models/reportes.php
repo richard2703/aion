@@ -50,7 +50,7 @@ class reportes extends Model
     public function kpis()
     {
         //mayuscula KPIs
-        return $this->hasMany(Kpis::class, 'departamento_id', 'departamento_id');
+        return $this->hasMany(Kpis::class, 'departamento_id', 'departamento_id')->where('tipo', 2);
     }
 
     public function treintas()
@@ -64,5 +64,10 @@ class reportes extends Model
     public function noventas()
     {
         return $this->hasMany(metas::class, 'departamento_id', 'departamento_id')->where('tipo', 3);
+    }
+
+    public function actividades()
+    {
+        return $this->hasMany(Accion::class, 'departamento_id', 'departamento_id');
     }
 }
