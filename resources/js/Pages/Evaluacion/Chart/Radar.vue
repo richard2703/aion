@@ -50,8 +50,18 @@ const setChartData = () => {
                 pointHoverBorderColor: documentStyle.getPropertyValue('--p-gray-400'),
                 data: chartValues
             },
-
+            {
+                label: 'Resultados por Pilar',
+                fill: false,
+                // borderColor: documentStyle.getPropertyValue('--p-gray-50'),
+                // pointBackgroundColor: documentStyle.getPropertyValue('--p-gray-50'),
+                // pointBorderColor: documentStyle.getPropertyValue('--p-gray-50'),
+                // pointHoverBackgroundColor: textColor,
+                // pointHoverBorderColor: documentStyle.getProspertyValue('--p-gray-50'),
+                data: [100, 100, 100, 100, 100]
+            },
         ]
+
     };
 };
 const setChartOptions = () => {
@@ -76,7 +86,9 @@ const setChartOptions = () => {
                     beginAtZero: true,
                     min: 1,
                     max: 100,
-                    stepSize: 1,
+                    stepSize: 20,
+                    suggestedMin: 50,
+                    suggestedMax: 100
                 }
             }
         }
