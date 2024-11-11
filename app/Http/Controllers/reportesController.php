@@ -253,12 +253,17 @@ class reportesController extends Controller
     public function findAllReporteSemanal()
     {
         $query = reporteSemanal::query();
-        // if ($pageSize && $page) {
-        //     $departamentos = $query->with('kpis')->paginate($pageSize, ['*'], 'page', $page);
-        // } else {
-        //     $departamentos = $query->with('kpis')->get();
-        // }
-        $reporteSemanal = $query->orderBy('created_at', 'desc')->get();
+
+        // $reporteSemanal = $query->orderBy('created_at', 'desc')->get();
+
+        // Obtener los datos y ordenarlos
+        $reporteSemanal = $query->orderBy('created_at', 'desc')->get()->map(function ($item) {
+            // Formatear las fechas
+            $item->inicio = Carbon::parse($item->inicio)->format('d-m-Y');
+            $item->fin = Carbon::parse($item->fin)->format('d-m-Y');
+
+            return $item; // Retornar el item modificado
+        });
 
         return response()->json($reporteSemanal);
     }
@@ -297,6 +302,7 @@ class reportesController extends Controller
                 'highlights',
                 'lowlights',
                 'avisos',
+                'actividades',
                 'kpis' => function ($query) {
                     $query->where('tipo', 2);
                 },
@@ -369,9 +375,16 @@ class reportesController extends Controller
             ->select('reportes.*') // Aseguramos seleccionar solo los campos de reportes
             ->get();
 
+        $inicio = Carbon::parse($reporteSemanal->inicio);
+        $fin = Carbon::parse($reporteSemanal->fin);
+
+        $reporteSemanal->inicio = $inicio->format('d/m/Y');
+        $reporteSemanal->fin = $fin->format('d/m/Y');
+
         // return view('ReportePDF', compact('reporteSemanal', 'reportes', 'personalizar'));
 
         $pdf = Pdf::loadView('ReportePDF', compact('reporteSemanal', 'reportes', 'personalizar'));
-        return $pdf->download('reporte-semanal.pdf');
+        // return $pdf->download('reporte-semanal.pdf');
+        return $pdf->stream('reporte-semanal.pdf');
     }
 }

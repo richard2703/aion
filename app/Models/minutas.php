@@ -23,7 +23,8 @@ class minutas extends Model
         'alias',
         'tipo',
         'notas',
-        'estatus'
+        'estatus',
+        'oculto'
     ];
 
     public function area(): BelongsTo

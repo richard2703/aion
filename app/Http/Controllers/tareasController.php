@@ -129,7 +129,13 @@ class tareasController extends Controller
             $query->orderBy('id', $sortOrder);
         }
 
-        if ($user_rol == 'admin') {
+        $user = auth()->user();
+        if ($user->hasRole('lider_pilar')) {
+            $result = $query->with('area', 'departamento', 'minuta', 'responsable', 'estatus', 'revisor')->paginate($pageSize, ['*'], 'page', $page);
+        } elseif ($user_rol == 'admin') {
+            $query->join('minutas', 'tareas.minuta_id', '=', 'minutas.id')
+                ->select('tareas.*', 'minutas.alias as minuta_alias') // Select distinct columns
+                ->where('minutas.privada', 0);
             $result = $query->with('area', 'departamento', 'minuta', 'responsable', 'estatus', 'revisor')->paginate($pageSize, ['*'], 'page', $page);
         } else {
 

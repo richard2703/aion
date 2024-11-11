@@ -7,27 +7,38 @@
     <title>Reporte Semanal: Semana {{ $reporteSemanal->numeroSemana }}</title>
 
     <style>
+        @page {
+            margin-left: 0;
+            margin-right: 0;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
         /* Global body styling */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f9fafb;
+            /* background-color: #f9fafb;*/
         }
 
         /* Report styling */
         .reporte {
-            background-color: #f9fafb;
+            /* background-color: #f9fafb;*/
             padding: 20px;
+            padding: 0px;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
+            /*margin-bottom: 20px;*/
+            margin-bottom: 0px;
+
         }
 
         /* Table styling */
         table {
             width: 100%;
             border-collapse: collapse;
+            padding: 20px;
         }
 
         th,
@@ -38,13 +49,13 @@
         }
 
         th {
-            background-color: #f7fafc;
+            /* background-color: #f7fafc;*/
             font-weight: bold;
         }
 
         /* Custom highlight class */
         .bg-green-100 {
-            background-color: #f0fff4;
+            /*background-color: #f0fff4;*/
         }
 
         h1,
@@ -67,7 +78,7 @@
         }
 
         h3 {
-            font-size: 1.15rem;
+            font-size: 2.15rem;
             margin-bottom: 5px;
             color: #333;
         }
@@ -82,12 +93,13 @@
         }
 
         .departamento-header {
-            margin-bottom: 20px;
+            margin-bottom: 5px;
+            text-align: center;
         }
 
         /* Container and layout styling */
         .container {
-            width: 90%;
+            width: 100%;
             margin: 0 auto;
         }
 
@@ -107,7 +119,8 @@
         .report-cover {
             position: relative;
             width: 100%;
-            height: 1100px;
+            /*height: 1100px;*/
+            height: 1050px;
             text-align: center;
         }
 
@@ -129,6 +142,12 @@
             text-align: right;
             padding-right: 40px;
         }
+
+        .check-icon {
+            color: green;
+            font-size: 1.1em;
+            padding-left: 5px;
+        }
     </style>
 </head>
 
@@ -139,7 +158,8 @@
         <h1 class="report-title">
             Reporte Semanal <br>
             De Actividades <br>
-            Semana: {{ $reporteSemanal->numeroSemana }}
+            Semana: {{ $reporteSemanal->numeroSemana }} <br>
+            Del {{ $reporteSemanal->inicio }} al {{ $reporteSemanal->fin }}
         </h1>
     </div>
 
@@ -155,14 +175,32 @@
                                 </div>
                             </th>
                         </tr>
+                    </thead>
+                    <tbody>
                         <tr>
                             <th colspan="2">
                                 <div class="grid">
                                     <div>
                                         <h2>Plan a 30 Dias</h2>
+                                        {{--  <ul>
+                                            @forelse ($reporte->treintas as $treinta)
+                                                <li
+                                                    style="{{ $treinta->status == 1 ? 'text-decoration: line-through;' : '' }}">
+                                                    {{ $treinta->meta }}</li>
+                                            @empty
+                                                <p>No hay Metas a 30 días disponibles.</p>
+                                            @endforelse
+                                        </ul>  --}}
                                         <ul>
                                             @forelse ($reporte->treintas as $treinta)
-                                                <li>{{ $treinta->meta }}</li>
+                                                <li
+                                                    style="{{ $treinta->status == 1 ? 'color: green; font-weight: bold;' : '' }}">
+                                                    @if ($treinta->status == 1)
+                                                        <span style="font-family: DejaVu Sans;">&#10004;</span>
+                                                    @endif
+                                                    {{ $treinta->meta }}
+
+                                                </li>
                                             @empty
                                                 <p>No hay Metas a 30 días disponibles.</p>
                                             @endforelse
@@ -172,7 +210,13 @@
                                         <h2>Plan a 60 Dias</h2>
                                         <ul>
                                             @forelse ($reporte->sesentas as $sesenta)
-                                                <li>{{ $sesenta->meta }}</li>
+                                                <li
+                                                    style="{{ $sesenta->status == 1 ? 'color: green; font-weight: bold; ' : '' }}">
+                                                    @if ($sesenta->status == 1)
+                                                        <span style="font-family: DejaVu Sans;">&#10004;</span>
+                                                    @endif
+                                                    {{ $sesenta->meta }}
+                                                </li>
                                             @empty
                                                 <p>No hay Metas a 60 días disponibles.</p>
                                             @endforelse
@@ -182,7 +226,13 @@
                                         <h2>Plan a 90 Dias</h2>
                                         <ul>
                                             @forelse ($reporte->noventas as $noventa)
-                                                <li>{{ $noventa->meta }}</li>
+                                                <li
+                                                    style="{{ $noventa->status == 1 ? 'color: green; font-weight: bold;' : '' }}">
+                                                    @if ($noventa->status == 1)
+                                                        <span style="font-family: DejaVu Sans;">&#10004;</span>
+                                                    @endif
+                                                    {{ $noventa->meta }}
+                                                </li>
                                             @empty
                                                 <p>No hay Metas a 90 días disponibles.</p>
                                             @endforelse
@@ -191,8 +241,6 @@
                                 </div>
                             </th>
                         </tr>
-                    </thead>
-                    <tbody>
                         <tr>
                             <td>
                                 <h2>Destacado</h2>
@@ -217,33 +265,47 @@
                         </tr>
                         <tr>
                             <td>
-                                <h2>Kpis</h2>
+                                <h2>KPIs</h2>
                                 @forelse ($reporte->kpis as $kpi)
-                                    <table class="table">
+                                    <table style="border-collapse: collapse; width: 100%; margin-bottom: 10px;">
                                         <thead>
                                             <tr>
-                                                <th colspan="3">{{ $kpi->titulo }}</th>
+                                                <th colspan="3"
+                                                    style="border: 1px solid black; padding: 8px; background-color: #f3f3f3;">
+                                                    {{ $kpi->titulo }}
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>Plan</td>
-                                                <td>Hoy</td>
-                                                <td>Promedio</td>
+                                                <td style="border: 1px solid black; padding: 8px;">Plan</td>
+                                                <td style="border: 1px solid black; padding: 8px;">Hoy</td>
+                                                <td style="border: 1px solid black; padding: 8px;">Promedio</td>
                                             </tr>
                                             <tr>
-                                                <td>{{ $kpi->objetivo }}</td>
-                                                <td class="bg-green-100">{{ $kpi->actual }}</td>
-                                                <td class="bg-green-100">{{ $kpi->promedio }}</td>
+                                                <td style="border: 1px solid black; padding: 8px;">{{ $kpi->objetivo }}
+                                                </td>
+
+                                                <td
+                                                    style="border: 1px solid black; padding: 8px;
+                                                    background-color: {{ $kpi->regla == 1 ? ($kpi->actual >= $kpi->objetivo ? '#d4edda' : '#f8d7da') : ($kpi->actual <= $kpi->objetivo ? '#d4edda' : '#f8d7da') }};">
+                                                    {{ $kpi->actual }}
+                                                </td>
+
+                                                <td
+                                                    style="border: 1px solid black; padding: 8px;
+                                                    background-color: {{ $kpi->regla == 1 ? ($kpi->promedio >= $kpi->objetivo ? '#d4edda' : '#f8d7da') : ($kpi->promedio <= $kpi->objetivo ? '#d4edda' : '#f8d7da') }};">
+                                                    {{ $kpi->promedio }}
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 @empty
-                                    <p>No hay kpis disponibles.</p>
+                                    <p>No hay KPIs disponibles.</p>
                                 @endforelse
                             </td>
                             <td>
-                                <h2>Avisos y Acciones</h2>
+                                <h2>Aviso y Acciones de mejora</h2>
                                 <ul>
                                     @forelse ($reporte->avisos as $aviso)
                                         <li>{{ $aviso->aviso }}</li>
@@ -256,6 +318,7 @@
                     </tbody>
                 </table>
             </div>
+            <div style="page-break-after:always;"></div>
         @endforeach
     </div>
 

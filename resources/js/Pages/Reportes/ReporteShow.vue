@@ -138,6 +138,33 @@ const getClass = (kpiItem) => {
         return kpiItem.actual <= kpiItem.objetivo ? 'bg-green-100' : 'bg-red-100';
     }
 };
+
+const getTerminada = (estatus) => {
+    if (estatus === 1) {
+        return estatus === 1 ? 'text-green-500 font-bold' : '';
+    }
+};
+
+const getTrend = (promedio, objetivo, regla) => {
+
+    const diferencia = (promedio - objetivo) / objetivo;
+
+    if (diferencia > 0.05) {
+        return regla === 1 ? 'pi pi-arrow-up text-green-500 font-black' : 'pi pi-arrow-up text-red-500 font-black';
+    } else if (diferencia > 0.03) {
+        return regla === 1 ? 'pi pi-arrow-up text-green-300' : 'pi pi-arrow-up text-red-300';
+    } else if (diferencia > 0.01) {
+        return regla === 1 ? 'pi pi-arrow-up text-yellow-500' : 'pi pi-arrow-up text-orange-500';
+    } else if (diferencia < -0.01) {
+        return regla === 1 ? 'pi pi-arrow-down text-orange-500' : 'pi pi-arrow-down text-yellow-500 ';
+    } else if (diferencia < -0.03) {
+        return regla === 1 ? 'pi pi-arrow-down font-weight: bolder' : 'pi pi-arrow-down text-green-300';
+    } else if (diferencia < -0.05) {
+        return regla === 1 ? 'pi pi-arrow-down text-red-500 font-black' : 'pi pi-arrow-down text-green-500 font-black';
+    } else {
+        return 'pi pi-minus text-gray-500';
+    }
+};
 </script>
 
 <style scoped>
@@ -163,6 +190,13 @@ const getClass = (kpiItem) => {
 
 .departamento-content {
     padding: 10px;
+}
+
+.trend-cell {
+    font-size: 1rem;
+    /* Tamaño de fuente similar al resto */
+    padding: 0.5rem;
+    text-align: center;
 }
 </style>
 
@@ -201,7 +235,13 @@ const getClass = (kpiItem) => {
                         <div>
                             <h2 class="text-xl font-bold text-purple-700">Plan a 30 Dias</h2>
                             <ul class=" pl-5 mt-2 pl-5">
-                                <li v-for="treinta in reporte.treintas" :key="treinta.id">
+                                <!-- <li v-for="treinta in reporte.treintas" :key="treinta.id"
+                                    :class="getTerminada(treinta.status)">
+                                    {{ treinta.meta }}
+                                </li> -->
+                                <li v-for="treinta in reporte.treintas" :key="treinta.id"
+                                    :class="getTerminada(treinta.status)">
+                                    <span v-if="treinta.status === 1" class="pi pi-check ml-2"></span>
                                     {{ treinta.meta }}
                                 </li>
                             </ul>
@@ -214,7 +254,9 @@ const getClass = (kpiItem) => {
                         <div>
                             <h2 class="text-xl font-bold text-purple-700">Plan a 60 Dias</h2>
                             <ul class=" pl-5 mt-2">
-                                <li v-for="sesenta in reporte.sesentas" :key="sesenta.id">
+                                <li v-for="sesenta in reporte.sesentas" :key="sesenta.id"
+                                    :class="getTerminada(sesenta.status)">
+                                    <span v-if="sesenta.status === 1" class="pi pi-check ml-2"></span>
                                     {{ sesenta.meta }}
                                 </li>
                             </ul>
@@ -226,7 +268,9 @@ const getClass = (kpiItem) => {
                         <div>
                             <h2 class="text-xl font-bold text-purple-700">Plan a 90 Dias</h2>
                             <ul class=" pl-5 mt-2">
-                                <li v-for="noventa in reporte.noventas" :key="noventa.id">
+                                <li v-for="noventa in reporte.noventas" :key="noventa.id"
+                                    :class="getTerminada(noventa.status)">
+                                    <span v-if="noventa.status === 1" class="pi pi-check ml-2"></span>
                                     {{ noventa.meta }}
                                 </li>
                             </ul>
@@ -268,12 +312,39 @@ const getClass = (kpiItem) => {
 
                     <!-- KPIs Section -->
                     <div class="grid grid-cols-2 gap-4 mt-8">
+
+                        <div>
+                            <h2 class="text-xl font-bold text-purple-700">Acciones PDCA</h2>
+                            <ul class=" pl-5 mt-2">
+                                <li v-for="actividad in reporte.actividades" :key="actividad.id">
+                                    {{ actividad.titulo }}
+                                </li>
+                            </ul>
+                            <div v-if="!reporte.actividades.length">
+                                <p>No hay acciones disponibles.</p>
+                            </div>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-purple-700">Avisos y Acciones de mejora</h2>
+                            <ul class=" pl-5 mt-2">
+                                <li v-for="aviso in reporte.avisos" :key="aviso.id">
+                                    {{ aviso.aviso }}
+                                </li>
+                            </ul>
+                            <div v-if="!reporte.avisos.length">
+                                <p>No hay Avisos disponibles.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Seccion de CAPAIA y ScoreCard -->
+                    <div class="grid grid-cols-1 gap-4 mt-8">
                         <div>
                             <h2 class="text-xl font-bold text-purple-700">Comprobacion de KPI's</h2>
                             <table v-for="kpis in reporte.kpis" :key="kpis.id" class="min-w-full border-collapse mb-4">
                                 <thead>
                                     <tr>
-                                        <th class="py-2 px-4 border" colspan="3" style="border-color: black;">
+                                        <th class="py-2 px-4 border" colspan="4" style="border-color: black;">
                                             {{ kpis?.titulo }}
                                         </th>
                                     </tr>
@@ -283,6 +354,7 @@ const getClass = (kpiItem) => {
                                         <td class="py-2 px-4 border" style="border-color: black;">Plan</td>
                                         <td class="py-2 px-4 border" style="border-color: black;">Hoy</td>
                                         <td class="py-2 px-4 border" style="border-color: black;">Promedio</td>
+                                        <td class="py-2 px-4 border" style="border-color: black;">Tendencia</td>
                                     </tr>
                                     <tr>
                                         <td class="py-2 px-4 border " style="border-color: black;">
@@ -296,6 +368,11 @@ const getClass = (kpiItem) => {
                                             style="text-align-last: justify; border-color: black;">
                                             {{ formatNumber(kpis?.promedio) }}
                                         </td>
+
+                                        <td class="py-2 px-4 border "
+                                            style="text-align-last: justify; border-color: black;">
+                                            <p :class="getTrend(kpis.promedio, kpis.objetivo, kpis.regla)"></p>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -304,24 +381,6 @@ const getClass = (kpiItem) => {
                             </div>
                         </div>
 
-                        <!-- Avisos Section -->
-                        <!-- <div>
-                            <h2 class="text-xl font-bold text-purple-700">Avisos parroquiales</h2>
-                            <p class="mt-2">
-                                {{ reportes[0].aviso }}
-                            </p>
-                        </div> -->
-                        <div>
-                            <h2 class="text-xl font-bold text-purple-700">Avisos y Acciones</h2>
-                            <ul class=" pl-5 mt-2">
-                                <li v-for="aviso in reporte.avisos" :key="aviso.id">
-                                    {{ aviso.aviso }}
-                                </li>
-                            </ul>
-                            <div v-if="!reporte.avisos.length">
-                                <p>No hay Avisos disponibles.</p>
-                            </div>
-                        </div>
                     </div>
 
                 </div>

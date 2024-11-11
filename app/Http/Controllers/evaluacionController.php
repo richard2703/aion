@@ -197,34 +197,40 @@ class evaluacionController extends Controller
                 ->where('estatus', '=', 'INCOMPLETO')
                 ->count();
 
-            // if ($countIncompleted === 0) {
-            if (1 == 1) {
-                $promedioSeccion = Respuesta::where('assessment_id', $assessmentId)
-                    ->select()
-                    ->get()
-                    ->groupBy('seccion_id')
-                    ->map(fn($group) => $group->avg('valor_opcion'));
+            // if (1 == 1) { // Aquí podrías mantener tu condición real
+            $promedioSeccion = Respuesta::where('assessment_id', $assessmentId)
+                ->where('seccion_id', $assessmentAsignado->seccion_id)
+                ->get()
+                ->groupBy('seccion_id')
+                ->map(fn($group) => $group->avg('valor_opcion'));
 
-                foreach ($promedioSeccion as $seccionId => $score) {
-                    DepartamentoEvaluacion::create([
-                        'assessment_id' => $assessmentId,
-                        'seccion_id' => $seccionId,
-                        'score' => $score,
-                    ]);
-                }
+            foreach ($promedioSeccion as $seccionId => $score) {
+                DepartamentoEvaluacion::create([
+                    'assessment_id' => $assessmentId,
+                    'seccion_id' => $seccionId,
+                    'score' => $score,
+                ]);
+                // }
 
+                // if (1 == 1) { // Aquí podrías mantener tu condición real
                 $promedioArea = Respuesta::where('assessment_id', $assessmentId)
+                    ->where('area_id', $data['area_id'])
                     ->get()
                     ->groupBy('area_id')
                     ->map(fn($group) => $group->avg('valor_opcion'));
 
                 foreach ($promedioArea as $areaId => $score) {
-                    AreaEvaluacion::create([
-                        'assessment_id' => $assessmentId,
-                        'area_id' => $areaId,
-                        'score' => $score,
-                    ]);
+                    AreaEvaluacion::updateOrCreate(
+                        [
+                            'assessment_id' => $assessmentId,
+                            'area_id' => $areaId,
+                        ],
+                        [
+                            'score' => $score,
+                        ]
+                    );
                 }
+                // }
             }
         }
 
