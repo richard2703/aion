@@ -170,6 +170,18 @@
                     </Link>
                 </div>
             </li>
+
+            <!-- CApacitacion -->
+            <li>
+                <div class="mb-4">
+                    <a class="group flex items-center py-3" href="https://laproductivitycenter.com" target="_blank">
+                        <div :class="title === 'Capacitacion' ? 'activo flex' : 'inactivo flex'">
+                            <i class="pi pi-chart-bar mr-2 w-4 h-4"></i>
+                            Capacitacion
+                        </div>
+                    </a>
+                </div>
+            </li>
             <!-- Usuarios Menu Item with Submenus -->
             <!-- <li>
                 <a class="group flex items-center py-3 cursor-pointer" @click="toggleMenu('usuarios')">
