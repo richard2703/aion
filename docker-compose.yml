@@ -1,0 +1,69 @@
+version: '3'
+services:
+  # We need to run the FPM container for our application
+  laravel.fpm:
+    build:
+      context: .
+      target: fpm_server
+    image: aion-k8s/fpm_server
+    # We can override any env values here.
+    # By default the .env in the project root will be loaded as the environment for all containers
+    environment:
+      APP_DEBUG: "true"
+    # Mount the codebase, so any code changes we make will be propagated to the running application
+    volumes:
+      # Here we mount in our codebase so any changes are immediately reflected into the container
+      - './src:/opt/apps/aion-k8s'
+    networks:
+      - aion-k8s
+
+  # Run the web server container for static content, and proxying to our FPM container
+  laravel.web:
+    build:
+      context: .
+      target: web_server
+    image: aion-k8s/web_server
+    # Expose our application port (80) through a port on our local machine (8080)
+    ports:
+      - '8080:80'
+    environment:
+      # We need to pass in the new FPM hst as the name of the fpm container on port 9000
+      FPM_HOST: "laravel.fpm:9000"
+    # Mount the public directory into the container so we can serve any static files directly when they change
+    volumes:
+      # Here we mount in our codebase so any changes are immediately reflected into the container
+      - './src/public:/opt/apps/aion-k8s/public'
+    networks:
+      - aion-k8s
+  # Run the Laravel Scheduler
+#  laravel.cron:
+#    build:
+#      context: .
+#      target: cron
+#    image: aion-k8s/cron
+#    # Here we mount in our codebase so any changes are immediately reflected into the container
+#    volumes:
+#      # Here we mount in our codebase so any changes are immediately reflected into the container
+#      - '.:/opt/apps/aion-k8s'
+#    networks:
+#      - aion-k8s
+#  # Run the frontend, and file watcher in a container, so any changes are immediately compiled and servable
+# laravel.frontend:
+#   build:
+#     context: .
+#     target: frontend
+#   # Override the default CMD, so we can watch changes to frontend files, and re-transpile them.
+#   command: ["npm", "run", "watch"]
+#   image: aion-k8s/frontend
+#   volumes:
+#     # Here we mount in our codebase so any changes are immediately reflected into the container
+#     - '.:/opt/apps/aion-k8s'
+#     # Add node_modeules as singular volume.
+#     # This prevents our local node_modules from being propagated into the container,
+#     # So the node_modules can be compiled for each of the different architectures (Local, Image)
+#     - '/opt/app/node_modules/'
+#   networks:
+#     - aion-k8s
+
+networks:
+  aion-k8s:

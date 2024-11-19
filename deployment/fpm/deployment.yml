@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aion-k8s-fpm
+  labels:
+    tier: backend
+    layer: fpm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      tier: backend
+      layer: fpm
+  template:
+    metadata:
+      labels:
+        tier: backend
+        layer: fpm
+    spec:
+      imagePullSecrets:
+        - name: registry-credentials
+      containers:
+        - name: fpm
+          image: registry.gitlab.com/analyticowl/aion/fpm_server:v0.0.1
+          ports:
+              - containerPort: 9000
+          envFrom:
+            - configMapRef:
+                name: aion-k8s
+            - secretRef:
+                name: aion-k8s

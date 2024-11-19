@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aion-k8s-webserver
+  labels:
+    tier: backend
+    layer: webserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      tier: backend
+      layer: webserver
+  template:
+    metadata:
+      labels:
+        tier: backend
+        layer: webserver
+    spec:
+      imagePullSecrets:
+        - name: registry-credentials
+      containers:
+        - name: webserver
+          image: registry.gitlab.com/analyticowl/aion/web_server:v0.0.1
+          ports:
+              - containerPort: 80
+          env:
+            # Inject the FPM Host as we did with Docker Compose
+            - name: FPM_HOST
+              value: aion-k8s-fpm:9000
