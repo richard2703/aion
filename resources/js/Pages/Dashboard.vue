@@ -5,7 +5,7 @@
 <template>
     <Layout2>
         <div class="p-10">
-            <h1>Here is a child component!</h1>
+            <h1>Here is a child componendt!</h1>
         </div>
     </Layout2>
 </template>
