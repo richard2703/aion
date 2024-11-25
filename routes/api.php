@@ -131,3 +131,9 @@ Route::get('/evaluaciones/{evaluacion}/bar', [App\Http\Controllers\evaluacionCon
 Route::get('/evaluaciones/{evaluacion}/radar', [App\Http\Controllers\evaluacionController::class, 'radarChart'])->name('evaluaciones.radarChart');
 Route::get('/evaluaciones/{evaluacion}/scatter', [App\Http\Controllers\evaluacionController::class, 'scatterChart'])->name('evaluaciones.scatterChart');
 Route::get('/evaluaciones/dashboard', [App\Http\Controllers\evaluacionController::class, 'getUltimaEvaluacion'])->name('evaluaciones.getUltimaEvaluacion');
+
+Route::get('/comentarios/{minuta_id}/', [App\Http\Controllers\comentarioController::class, 'index'])->name('comentario.getComentarios');
+Route::post('/comentarios', [App\Http\Controllers\comentarioController::class, 'store'])->name('comentario.store');
+Route::get('/comentarios/{comentario}/edit', [App\Http\Controllers\comentarioController::class, 'edit'])->name('comentario.edit');
+Route::patch('/comentarios/{comentario}/update', [App\Http\Controllers\comentarioController::class, 'update'])->name('comentario.update');
+Route::delete('/comentarios/{comentario}/destroy', [App\Http\Controllers\comentarioController::class, 'destroy'])->name('comentario.destroy');
