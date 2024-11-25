@@ -299,11 +299,30 @@ class minutasController extends Controller
             $query->orderBy('id', $sortOrder);
         }
 
+        // $user = auth()->user();
+        // if ($user->hasRole('lider_pilar')) {
+
+        // } else {
+        //     $query->where('privada', 0);
+        // }
+
         $user = auth()->user();
-        if ($user->hasRole('lider_pilar')) {
-            // dd('Admin'); // Devuelve una colección de nombres de roles
+
+        if ($user->hasRole('superadmin')) {
+            // Superadmin ve todo (niveles 0 al 3)
+            $query->whereBetween('privada', [0, 3]);
+        } elseif ($user->hasRole('lider_pilar')) {
+            // Líder de pilar ve niveles 1 al 3
+            $query->whereBetween('privada', [1, 3]);
+        } elseif ($user->hasRole('admin')) {
+            // Admin ve niveles 2 al 3 (puedes ajustar esto según lo que necesites)
+            $query->whereBetween('privada', [2, 3]);
+        } elseif ($user->hasRole('user')) {
+            // User solo ve nivel 3
+            $query->where('privada', 3);
         } else {
-            $query->where('privada', 0);
+            // Si no tiene roles o no se define, puedes decidir qué mostrar (por ejemplo, ningún nivel)
+            $query->where('privada', -1); // Opcional, ajusta según tu lógica
         }
 
         // Filtrar las minutas ocultas

@@ -81,7 +81,7 @@ const form = useForm({
     alias: "",
     notas: "",
     estatus: "",
-    privada: 0,
+    privada: 3,
 });
 
 const onChange = async (event) => {
@@ -252,11 +252,24 @@ const search = (event) => {
                                         <Textarea v-model="form.notas" rows="3" style="width: 100%; " />
                                     </div>
                                     <div class=" mt-4">
-                                        <InputLabel for="Privada" value="Exclusivo para lideres de pilar?: " />
+                                        <!-- <InputLabel for="Privada" value="Exclusivo para lideres de pilar?: " /> -->
                                         <!-- <input type="checkbox" @change="validateTarea(slotProps.data, $event)"
                                                 :disabled="slotProps.data.validacion ? true : false"
                                                 :checked="slotProps.data.validacion ? true : false" /> Validar -->
-                                        <input type="checkbox" v-model="form.privada" /> Exclusivo
+                                        <!-- <input type="checkbox" v-model="form.privada" /> Exclusivo -->
+                                        <InputLabel for="Privada" value="Nivel de la minuta: " />
+                                        <select ref="departamento_select"
+                                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                            v-model="form.privada" required>
+                                            <option value=3 selected>
+                                                3 </option>
+                                            <option value=2 selected>
+                                                2 </option>
+                                            <option value=1 selected>
+                                                1 </option>
+                                            <option value=0 selected>
+                                                0 </option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="px-4 my-4 pt-2 flex justify-end bg-white border-t border-gray-200">
