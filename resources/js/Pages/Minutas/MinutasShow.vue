@@ -18,6 +18,7 @@ import TareasEdit from "@/Pages/Minutas/Partials/Tareas/TareasEdit.vue";
 import TareasDetail from "@/Pages/Minutas/Partials/Tareas/TareasDetail.vue";
 import InputText from "primevue/inputtext";
 import TextInput from "@/Components/TextInput.vue";
+import Comentario from '@/Components/Comentarios/Comentario.vue'
 
 
 
@@ -691,7 +692,7 @@ const sendMail = async () => {
                                     </Column>
                                 </DataTable>
                             </div>
-
+                            <Comentario :minuta_id="minuta.id" />
                         </div>
                     </div>
                 </div>
