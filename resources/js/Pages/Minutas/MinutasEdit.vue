@@ -286,12 +286,33 @@ const isHidden = computed({
                                 </div>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
                                     <div class=" mt-4">
-                                        <InputLabel for="Privada" value="¿Exclusivo para lideres de pilar? " />
+                                        <!-- <InputLabel for="Privada" value="¿Exclusivo para lideres de pilar? " /> -->
                                         <!-- <input type="checkbox" @change="validateTarea(slotProps.data, $event)"
                                                 :disabled="slotProps.data.validacion ? true : false"
                                                 :checked="slotProps.data.validacion ? true : false" /> Validar -->
-                                        <input type="checkbox" v-model="isPrivadaChecked" />
-                                        Exclusivo
+                                        <!-- <input type="checkbox" v-model="isPrivadaChecked" />
+                                        Exclusivo -->
+
+                                        <div class=" mt-4">
+                                            <!-- <InputLabel for="Privada" value="Exclusivo para lideres de pilar?: " /> -->
+                                            <!-- <input type="checkbox" @change="validateTarea(slotProps.data, $event)"
+                                                :disabled="slotProps.data.validacion ? true : false"
+                                                :checked="slotProps.data.validacion ? true : false" /> Validar -->
+                                            <!-- <input type="checkbox" v-model="form.privada" /> Exclusivo -->
+                                            <InputLabel for="Privada" value="Nivel de la minuta: " />
+                                            <select ref="departamento_select"
+                                                class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                                v-model="form.privada" required>
+                                                <option value=3 selected>
+                                                    3 </option>
+                                                <option value=2 selected>
+                                                    2 </option>
+                                                <option value=1 selected>
+                                                    1 </option>
+                                                <option value=0 selected>
+                                                    0 </option>
+                                            </select>
+                                        </div>
                                     </div>
 
                                     <div class=" mt-4">
