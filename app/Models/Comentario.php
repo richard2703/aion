@@ -11,13 +11,13 @@ class Comentario extends Model
 
     protected $fillable = [
         'user_id',
-        'minuta_id',
+        'reporte_semanal_id',
         'texto',
     ];
 
-    public function minuta()
+    public function reporte()
     {
-        return $this->belongsTo(minutas::class, 'minuta_id', 'id');
+        return $this->belongsTo(reporteSemanal::class, 'reporte_semanal_id', 'id');
     }
 
     public function user()

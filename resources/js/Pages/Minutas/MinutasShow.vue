@@ -692,7 +692,6 @@ const sendMail = async () => {
                                     </Column>
                                 </DataTable>
                             </div>
-                            <Comentario :minuta_id="minuta.id" />
                         </div>
                     </div>
                 </div>
