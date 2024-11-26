@@ -8,9 +8,9 @@ use Illuminate\Http\Request;
 class comentarioController extends Controller
 {
     //
-    public function index($minuta_id)
+    public function index($reporte_semanal_id)
     {
-        return  response()->json(Comentario::orderBy('created_at', 'desc')->where('minuta_id', $minuta_id)->where('user_id', auth()->user()->id)->get());
+        return  response()->json(Comentario::orderBy('created_at', 'desc')->where('reporte_semanal_id', $reporte_semanal_id)->where('user_id', auth()->user()->id)->get());
     }
 
     function edit(Comentario $comentario)
@@ -22,7 +22,7 @@ class comentarioController extends Controller
     {
         $user = auth()->user();
         $data = [
-            'minuta_id' => $request->minuta_id,
+            'reporte_semanal_id' => $request->reporte_semanal_id,
             'user_id' => $user->id,
             'texto' => $request->texto
         ];

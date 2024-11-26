@@ -8,18 +8,18 @@
     import { showToast } from "@/Pages/utils/SweetAlert.service";
 
     const props = defineProps({
-        minuta_id: Number,
+        reporte_semanal_id: Number,
     });
-    const minuta_id = props.minuta_id;
+    const reporte_semanal_id = props.reporte_semanal_id;
     const emit = defineEmits(['list']);
     const form = useForm({
         texto: "",
-        minuta_id: "",
+        reporte_semanal_id: "",
     });
     const submit = async (comentario_id) => {
         await axios.post(route("comentario.store"), {
             texto: form.texto,
-            minuta_id: minuta_id
+            reporte_semanal_id: reporte_semanal_id
         }).then(() => {
             showToast("Comentario creado correctamente", "success");
             form.reset();
@@ -33,7 +33,7 @@
 <template>
     <form @submit.prevent="submit()">
         <div class="mt-4">
-            <InputLabel for="texto" value="Deja tu observacion o anotacio:" />
+            <InputLabel for="texto" value="Deja tu observación o anotación:" />
             <Textarea class="p-3 w-full" v-model="form.texto" rows="5" cols="30" />
         </div>
 
