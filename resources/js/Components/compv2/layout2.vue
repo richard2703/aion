@@ -1,4 +1,6 @@
-<script>
+<script setup>
+  import TabsUi from '@/Components/compv2/tabui.vue';
+
   function toggleMenu() {
     const menu = document.getElementById('user-menu');
     const isVisible = menu.classList.contains('hidden');
@@ -14,7 +16,7 @@
  <div>
     <div>
     <!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. -->
-    <div class="relative z-50 lg:hidden" role="dialog" aria-modal="true">
+    <div class="relative z-50 hidden" role="dialog" aria-modal="true">
         <div class="fixed inset-0 bg-gray-900/80" aria-hidden="true"></div>
 
         <div class="fixed inset-0 flex">
@@ -232,12 +234,21 @@
             </div>
         </div>
         </div>
-
         <main>
         <div>
+        <div class="border-b-[1px] border-gray-200 p-4 pl-10">
+            <div class="w-auto overflow-x-scroll">
+                <div class="flex gap-5">
+                    <TabsUi text="Gente y cultura" icon="pi pi-home" iconColor="orange" />
+                    <TabsUi text="T.I" icon="pi pi-home" iconColor="orange" />
+                    <TabsUi text="Ventas" icon="pi pi-home" iconColor="orange" />
+                    <TabsUi text="Operaciones" icon="pi pi-home" iconColor="orange" />
+                    <TabsUi text="Administracion" icon="pi pi-home" iconColor="orange" />
+                </div>
+            </div>
+         </div>
             <!-- Your content -->
             <slot></slot>
-             
         </div>
         </main>
     </div>
