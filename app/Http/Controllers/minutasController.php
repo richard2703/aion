@@ -329,7 +329,15 @@ class minutasController extends Controller
             $query->where('privada', -1); // Opcional, ajusta según tu lógica
         }
 
-        if (isset($filters['tier']['value']) && !empty($filters['tier']['value'])) {
+        // if (isset($filters['tier']['value'])) {
+        //     if ($filters['tier']['value'] == 0 && $filters['tier']['value'] != null) {
+        //         $query->where('privada', 0);
+        //     } elseif (isset($filters['tier']['value']) && !empty($filters['tier']['value'])) {
+        //         $query->where('privada', $filters['tier']['value']);
+        //     }
+        // }
+
+        if (isset($filters['tier']['value'])) {
             $query->where('privada', $filters['tier']['value']);
         }
 

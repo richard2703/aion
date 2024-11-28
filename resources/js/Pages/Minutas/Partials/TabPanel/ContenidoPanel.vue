@@ -309,7 +309,7 @@ const getTiposMinuta = async () => {
                                 2 </option>
                             <option value=1 selected>
                                 1 </option>
-                            <option value=0 selected>
+                            <option value="0" selected>
                                 0 </option>
                         </select>
                     </div>
