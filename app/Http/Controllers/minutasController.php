@@ -75,6 +75,10 @@ class minutasController extends Controller
             $query->where('created_at', '<=', $filters['hasta']['value']);
         }
 
+        if (isset($filters['hasta']['value']) && !empty($filters['hasta']['value'])) {
+            $query->where('created_at', '<=', $filters['hasta']['value']);
+        }
+
         //
 
 
@@ -323,6 +327,10 @@ class minutasController extends Controller
         } else {
             // Si no tiene roles o no se define, puedes decidir qué mostrar (por ejemplo, ningún nivel)
             $query->where('privada', -1); // Opcional, ajusta según tu lógica
+        }
+
+        if (isset($filters['tier']['value']) && !empty($filters['tier']['value'])) {
+            $query->where('privada', $filters['tier']['value']);
         }
 
         // Filtrar las minutas ocultas
