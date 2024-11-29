@@ -40,7 +40,7 @@ USER composer
 # We want to leave the rest of the code base out for now,
 # so Docker can build a cache of this layer,
 # and only rebuild when the dependencies of our application changes.
-COPY --chown=composer composer.json composer.lock ./
+COPY --chown=composer composer.json ./
 
 # Install all the dependencies without running any installation scripts.
 # We skip scripts as the code base hasn't been copied in yet and script will likely fail,
@@ -72,7 +72,7 @@ WORKDIR /opt/apps/aion-k8s
 
 # We want to install all the NPM packages,
 # and compile the MIX bundle for production
-RUN npm install
+RUN npm install && npm run build
     #npm run serve-all
 
 

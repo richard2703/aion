@@ -22,7 +22,7 @@ server {
         # to prevent injecting PHP code as static assets,
         # and then executing them via a URL.
         # See https://www.nginx.com/resources/wiki/start/topics/tutorials/config_pitfalls/#passing-uncontrolled-requests-to-php
-        try_files $uri $uri/ /index.php?$query_string;
+        try_files $uri /index.php?$query_string;
     }
 
     # Some static assets are loaded on every page load,

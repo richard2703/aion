@@ -13,7 +13,7 @@ services:
     # Mount the codebase, so any code changes we make will be propagated to the running application
     volumes:
       # Here we mount in our codebase so any changes are immediately reflected into the container
-      - './src:/opt/apps/aion-k8s'
+      - './:/opt/apps/aion-k8s'
     networks:
       - aion-k8s
 
@@ -32,7 +32,7 @@ services:
     # Mount the public directory into the container so we can serve any static files directly when they change
     volumes:
       # Here we mount in our codebase so any changes are immediately reflected into the container
-      - './src/public:/opt/apps/aion-k8s/public'
+      - './public:/opt/apps/aion-k8s/public'
     networks:
       - aion-k8s
   # Run the Laravel Scheduler

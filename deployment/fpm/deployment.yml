@@ -21,7 +21,7 @@ spec:
         - name: registry-credentials
       containers:
         - name: fpm
-          image: registry.gitlab.com/analyticowl/aion/fpm_server:v0.0.1
+          image: registry.gitlab.com/moisesbreton/aion/fpm_server:v0.0.1
           ports:
               - containerPort: 9000
           envFrom:
