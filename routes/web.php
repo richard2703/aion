@@ -227,4 +227,14 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
 
     // Excel
     Route::get('export/desperdicio', [App\Http\Controllers\ExcelExportController::class, 'exportDesperdicios'])->name('excel.desperdicios');
+
+    //eventos
+    Route::get('eventos', [App\Http\Controllers\eventoController::class, 'index'])->name('eventos.index');
+    Route::get('eventos/get', [App\Http\Controllers\eventoController::class, 'findAll'])->name('eventos.findAll');
+    Route::get('evento/create', [App\Http\Controllers\eventoController::class, 'create'])->name('eventos.create');
+    Route::get('evento/{evento}/show', [App\Http\Controllers\eventoController::class, 'show'])->name('eventos.show');
+    Route::get('evento/{evento}/edit', [App\Http\Controllers\eventoController::class, 'edit'])->name('eventos.edit');
+    Route::post('evento/store', [App\Http\Controllers\eventoController::class, 'store'])->name('eventos.store');
+    Route::patch('evento/{evento}/update', [App\Http\Controllers\eventoController::class, 'update'])->name('eventos.update');
+    Route::delete('evento/{evento}/destroy', [App\Http\Controllers\eventoController::class, 'destroy'])->name('eventos.destroy');
 });

@@ -182,6 +182,18 @@
                     </a>
                 </div>
             </li>
+
+            <!-- Eventos -->
+            <li>
+                <div class="mb-4">
+                    <a class="group flex items-center py-3" :href="route('eventos.index')">
+                        <div :class="title === 'Eventos' ? 'activo flex' : 'inactivo flex'">
+                            <i class="pi pi-calendar mr-2 w-4 h-4"></i>
+                            Eventos
+                        </div>
+                    </a>
+                </div>
+            </li>
             <!-- Usuarios Menu Item with Submenus -->
             <!-- <li>
                 <a class="group flex items-center py-3 cursor-pointer" @click="toggleMenu('usuarios')">

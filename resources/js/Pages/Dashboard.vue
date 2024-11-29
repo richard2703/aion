@@ -5,6 +5,7 @@ import Layout from "@/Layouts/Layout.vue";
 import Chart from 'primevue/chart';
 import tablapilares from "@/Pages/utils/tablapilares.vue";
 import Radar from "./Evaluacion/Chart/Radar.vue";
+import Calendario from "@/Components/Calendario.vue";
 
 onMounted(() => {
     getLastAssessment();
@@ -26,6 +27,7 @@ const template = ref('');
 const selectedPilar = ref(null);
 const lastAssessment = ref({});
 const loading = ref(true);
+
 
 const getItem = () => {
     axios
