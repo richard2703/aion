@@ -8,7 +8,7 @@
 
              <!-- Legend -->
             <div>
-              <h2 class="text-2xl font-semibold text-gray-800">Comparativo entre Evaluaciones</h2>
+              <h2 class="text-2xl mb-3 font-semibold text-gray-800">Comparativo entre Evaluaciones</h2>
               <div class="space-y-3">
                 <div v-for="(item, index) in evaluationTypes" :key="index" class="flex items-center gap-3">
                   <div class="w-6 h-[2px]" :style="{ backgroundColor: item.color }"></div>

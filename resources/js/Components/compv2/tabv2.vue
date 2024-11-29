@@ -38,7 +38,7 @@ import { defineComponent, ref } from "vue";
 export default defineComponent({
   name: "TabsUi",
   setup() {
-    const activeTab = ref<"autoEval" | "metroMap">("autoEval");
+    const activeTab = ref<"metroMap" | "autoEval">("metroMap");
 
     return {
       activeTab,
