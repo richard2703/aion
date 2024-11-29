@@ -5,7 +5,12 @@ import ListUi from "@/Components/compv2/listUi.vue";
 import NavagationMenu from "@/Components/compv2/navigationMenu.vue";
 import CardUi from "@/Components/compv2/cardui.vue";
 
-const columns = [
+const columnsflujoDeValor = [
+  { header: "Flujo de valor", key: "name" },
+  { header: "KPI", key: "execution" },
+];
+
+const columnProcedimientos = [
   { header: "Procedimientos", key: "name" },
   { header: "Ejecución", key: "execution" },
   { header: "Documentación", key: "documentation" },
@@ -14,19 +19,23 @@ const columns = [
 const data = {
   flujoDeValor: {
     items: [
-      { name: "Bonos / Comisiones", execution: "En proceso", documentation: "Completa" },
-      { name: "Vales de despensa", execution: "Pendiente", documentation: "Pendiente" },
+      { name: "Bonos / Comisiones", execution: "En proceso" },
+      { name: "Vales de despensa", execution: "Pendiente" },
     ],
   },
   proceso: {
     cards: [
       { title: "Administración de Prestaciones y Beneficios Adicionales a la Ley" },
       { title: "Administración de Prestaciones y Beneficios De Ley" },
+      { title: "Administración de Prestaciones y Beneficios De Ley" },
       { title: "Administración y legislación laboral" },
     ],
   },
   procedimientos: {
-    description: "Aquí puedes consultar los procedimientos detallados...",
+    items: [
+      { name: "Procedimiento / Comisiones", execution: "En proceso", documentation: "Completa" },
+      { name: "Vales de despensa", execution: "Pendiente", documentation: "Pendiente" },
+    ],
   },
 };
 
@@ -54,7 +63,7 @@ const selectedItem = ref("flujoDeValor"); // El ítem seleccionado
         <!-- Contenido para Flujo de Valor -->
         <div v-if="selectedItem === 'flujoDeValor'" class="border border-gray-300 p-8 rounded-md">
           <h2 class="text-lg font-medium mb-4">Procedimientos</h2>
-          <ListUi :columns="columns" :items="data.flujoDeValor.items" />
+          <ListUi :columns="columnsflujoDeValor" :items="data.flujoDeValor.items" />
         </div>
 
         <!-- Contenido para Proceso -->
@@ -68,7 +77,7 @@ const selectedItem = ref("flujoDeValor"); // El ítem seleccionado
         <!-- Contenido para Procedimientos -->
         <div v-if="selectedItem === 'procedimientos'" class="border border-gray-300 p-8 rounded-md">
           <h2 class="text-lg font-medium mb-4">Procedimientos</h2>
-          <p>{{ data.procedimientos.description }}</p>
+          <ListUi :columns="columnProcedimientos" :items="data.procedimientos.items" />
         </div>
       </div>
     </div>
