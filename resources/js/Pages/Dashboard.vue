@@ -1,5 +1,6 @@
 <script setup>
     import Layout2 from "@/Components/compv2/layout2.vue";
+    import { Link } from "@inertiajs/vue3";
     import BtnUi from '@/Components/compv2/btnUi.vue';
     import AutoEvaluacion from "@/Components/compv2/autoEvaluacion.vue";
     import Image from 'primevue/image';
@@ -20,20 +21,23 @@ import Tabv2 from "@/Components/compv2/tabv2.vue";
                             <div class="p-[100px] bg-[url('/branch_background.svg')] bg-cover bg-no-repeat bg-center"  style="background-position: -70px 0px;">
                                 <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                                     <!-- Gente y cultura -->
-                                    <div class="shadow-md flex items-center justify-center p-7 w-24 h-24  transition ease-in-out delay-0 hover:-translate-y-1 hover:scale-110 bg-white border hover:bg-orange-400 cursor-pointer border-gray-200 rounded-full">
-                                        <svg id="Group_132" data-name="Group 132" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="52.799" height="80.091" viewBox="0 0 52.799 80.091">
-                                            <defs>
-                                                <clipPath id="clip-path">
-                                                <rect id="Rectangle_64" data-name="Rectangle 64" width="532.799" height="80.091" fill="#555658"/>
-                                                </clipPath>
-                                            </defs>
-                                            <g id="Group_132-2" data-name="Group 132" clip-path="url(#clip-path)">
-                                                <path id="Path_604" data-name="Path 604" d="M3.413,204.631a9.371,9.371,0,0,1,9.011-6.8H26.395l13.164,6.582,9.76-3.9,3.48,8.7-9.76,3.9a9.372,9.372,0,0,1-7.671-.319l-.7-.351-2.506,10.022,4.086,2.335a9.372,9.372,0,0,1,4.442,10.409L35.975,254.06H26.316L31.6,232.94,23.649,228.4,17.233,254.06H7.574l11.714-46.855H12.424l-2.677,9.371H0Z" transform="translate(0 -173.969)" fill="#494a4b"/>
-                                                <path id="Path_605" data-name="Path 605" d="M185.791,21.59l-1.05,2.452m-1.75,4.087.016.007m-5.095,2.816L176.22,34.9a3.557,3.557,0,1,0,6.538,2.8l1.691-3.949m6.242-23.605-.7,1.635m9.258,7.13-1.651.661M178.444,10l.661,1.651m-7.791,7.607-1.635-.7m29.423,12.6-1.635-.7m-4.9-2.1a8.891,8.891,0,1,1-4.672-11.674A8.891,8.891,0,0,1,192.564,28.361Z" transform="translate(-149.211 -8.794)" fill="none" stroke="#494a4b" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
-                                                <path id="Path_606" data-name="Path 606" d="M218.127,250.309l2.258,4.943,4.943-2.258a2.413,2.413,0,0,0,1.258-1.351l.038-.1a2.3,2.3,0,0,0-3.342-2.783l-.612.366-.223-.677a2.3,2.3,0,0,0-4.348-.085l-.038.1a2.412,2.412,0,0,0,.066,1.845" transform="translate(-191.623 -217.084)" fill="#fff"/>
-                                            </g>
-                                        </svg>      
-                                    </div>
+
+                                    <Link :href="route('formMetroMap')">
+                                        <div class="shadow-md flex items-center justify-center p-7 w-24 h-24  transition ease-in-out delay-0 hover:-translate-y-1 hover:scale-110 bg-white border hover:bg-orange-400 cursor-pointer border-gray-200 rounded-full">
+                                            <svg id="Group_132" data-name="Group 132" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="52.799" height="80.091" viewBox="0 0 52.799 80.091">
+                                                <defs>
+                                                    <clipPath id="clip-path">
+                                                    <rect id="Rectangle_64" data-name="Rectangle 64" width="532.799" height="80.091" fill="#555658"/>
+                                                    </clipPath>
+                                                </defs>
+                                                <g id="Group_132-2" data-name="Group 132" clip-path="url(#clip-path)">
+                                                    <path id="Path_604" data-name="Path 604" d="M3.413,204.631a9.371,9.371,0,0,1,9.011-6.8H26.395l13.164,6.582,9.76-3.9,3.48,8.7-9.76,3.9a9.372,9.372,0,0,1-7.671-.319l-.7-.351-2.506,10.022,4.086,2.335a9.372,9.372,0,0,1,4.442,10.409L35.975,254.06H26.316L31.6,232.94,23.649,228.4,17.233,254.06H7.574l11.714-46.855H12.424l-2.677,9.371H0Z" transform="translate(0 -173.969)" fill="#494a4b"/>
+                                                    <path id="Path_605" data-name="Path 605" d="M185.791,21.59l-1.05,2.452m-1.75,4.087.016.007m-5.095,2.816L176.22,34.9a3.557,3.557,0,1,0,6.538,2.8l1.691-3.949m6.242-23.605-.7,1.635m9.258,7.13-1.651.661M178.444,10l.661,1.651m-7.791,7.607-1.635-.7m29.423,12.6-1.635-.7m-4.9-2.1a8.891,8.891,0,1,1-4.672-11.674A8.891,8.891,0,0,1,192.564,28.361Z" transform="translate(-149.211 -8.794)" fill="none" stroke="#494a4b" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+                                                    <path id="Path_606" data-name="Path 606" d="M218.127,250.309l2.258,4.943,4.943-2.258a2.413,2.413,0,0,0,1.258-1.351l.038-.1a2.3,2.3,0,0,0-3.342-2.783l-.612.366-.223-.677a2.3,2.3,0,0,0-4.348-.085l-.038.1a2.412,2.412,0,0,0,.066,1.845" transform="translate(-191.623 -217.084)" fill="#fff"/>
+                                                </g>
+                                            </svg>      
+                                        </div>
+                                    </Link>
                                     <!-- T.I -->
                                     <div class="shadow-md flex items-center justify-center p-7 w-24 h-24 transition ease-in-out delay-0 hover:-translate-y-1 hover:scale-110 bg-white border hover:bg-blue-400 cursor-pointer border-gray-200 rounded-full">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="57.477" height="43.107" viewBox="0 0 57.477 43.107">
