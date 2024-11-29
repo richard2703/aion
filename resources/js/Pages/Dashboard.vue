@@ -94,7 +94,6 @@ import Tabv2 from "@/Components/compv2/tabv2.vue";
                 <template #autoEval>
                     <AutoEvaluacion />
                 </template>
-
             </Tabv2>
             </div>
         </div>
