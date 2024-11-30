@@ -1,3 +1,18 @@
+<script lang="ts">
+import { defineComponent, ref } from "vue";
+
+export default defineComponent({
+  name: "HomeTab",
+  setup() {
+    const activeTab = ref<"metroMap" | "autoEval">("metroMap");
+
+    return {
+      activeTab,
+    };
+  },
+});
+</script>
+
 <template>
   <div class="w-full">
     <!-- Tab Buttons -->
@@ -31,18 +46,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts">
-import { defineComponent, ref } from "vue";
-
-export default defineComponent({
-  name: "TabsUi",
-  setup() {
-    const activeTab = ref<"metroMap" | "autoEval">("metroMap");
-
-    return {
-      activeTab,
-    };
-  },
-});
-</script>

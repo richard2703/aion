@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, ref } from "vue";
-import Layout from "@/Layouts/Layout.vue";
+import Layout from "@/Layouts/Layout2.vue";
 import { Head, useForm, Link } from "@inertiajs/vue3";
 import SectionBorder from "@/Components/SectionBorder.vue";
 import InputLabel from "@/Components/InputLabel.vue";

@@ -5,7 +5,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { showToast } from "../utils/SweetAlert.service";
-import Layout from "@/Layouts/Layout.vue";
+import Layout from "@/Layouts/Layout2.vue";
 
 
 const props = defineProps({

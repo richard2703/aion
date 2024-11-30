@@ -8,7 +8,7 @@ import AutoComplete from 'primevue/autocomplete';
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { format } from 'date-fns';
-import Layout from "@/Layouts/Layout.vue";
+import Layout from "@/Layouts/Layout2.vue";
 import Modal from "@/Components/Modal.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import InputLabel from "@/Components/InputLabel.vue";

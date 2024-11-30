@@ -3,7 +3,7 @@ import { Head, Link, useForm } from "@inertiajs/vue3";
 import { ref, onMounted, watch } from "vue";
 import axios from "axios";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import Layout from "@/Layouts/Layout.vue";
+import Layout from "@/Layouts/Layout2.vue";
 import { confirmDialog, showToast } from "../utils/SweetAlert.service";
 import { format } from 'date-fns';
 import DataTable from "primevue/datatable";

@@ -1,9 +1,9 @@
 <script setup>
 import { ref } from "vue";
-import Layout2 from "@/Components/compv2/layout2.vue";
-import ListUi from "@/Components/compv2/listUi.vue";
-import NavagationMenu from "@/Components/compv2/navigationMenu.vue";
-import CardUi from "@/Components/compv2/cardui.vue";
+import Layout2 from "@/Layouts/Layout2.vue";
+import List from "@/Components/v2/List.vue";
+import NavagationMenu from "@/Components/v2/NavigationMenu.vue";
+import Card from "@/Components/v2/Card.vue";
 
 const columnsflujoDeValor = [
   { header: "Flujo de valor", key: "name" },
@@ -63,21 +63,21 @@ const selectedItem = ref("flujoDeValor"); // El ítem seleccionado
         <!-- Contenido para Flujo de Valor -->
         <div v-if="selectedItem === 'flujoDeValor'" class="border border-gray-300 p-8 rounded-md">
           <h2 class="text-lg font-medium mb-4">Procedimientos</h2>
-          <ListUi :columns="columnsflujoDeValor" :items="data.flujoDeValor.items" />
+          <List :columns="columnsflujoDeValor" :items="data.flujoDeValor.items" />
         </div>
 
         <!-- Contenido para Proceso -->
         <div v-if="selectedItem === 'proceso'" class="h-[620px] overflow-scroll">
           <h2 class="text-lg font-medium mb-4">Proceso</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <CardUi v-for="(card, index) in data.proceso.cards" :key="index" :title="card.title" />
+            <Card v-for="(card, index) in data.proceso.cards" :key="index" :title="card.title" />
           </div>
         </div>
 
         <!-- Contenido para Procedimientos -->
         <div v-if="selectedItem === 'procedimientos'" class="border border-gray-300 p-8 rounded-md">
           <h2 class="text-lg font-medium mb-4">Procedimientos</h2>
-          <ListUi :columns="columnProcedimientos" :items="data.procedimientos.items" />
+          <List :columns="columnProcedimientos" :items="data.procedimientos.items" />
         </div>
       </div>
     </div>

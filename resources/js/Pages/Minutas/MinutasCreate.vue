@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, ref } from "vue";
-import Layout from "@/Layouts/Layout.vue";
+import Layout2 from "@/Layouts/Layout2.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
@@ -134,7 +134,7 @@ const search = (event) => {
 </script>
 
 <template>
-    <Layout :titulo="title">
+    <Layout2 :titulo="title">
 
         <Head title="Minutas" />
 
@@ -271,5 +271,5 @@ const search = (event) => {
                 </div>
             </div>
         </div>
-    </Layout>
+    </Layout2>
 </template>

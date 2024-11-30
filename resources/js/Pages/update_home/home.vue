@@ -1,7 +1,7 @@
 <script setup>
     import Layout2 from "@/Components/compv2/layout2.vue";
     import BtnUi from '@/Components/compv2/btnUi.vue';
-    import AutoEvaluacion from "@/Components/compv2/autoEvaluacion.vue";
+    import AutoEvaluacion from "@/Components/v2/AutoEvaluacion.vue";
     import Image from 'primevue/image';
 import Tabv2 from "@/Components/compv2/tabv2.vue";
 

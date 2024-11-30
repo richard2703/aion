@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { Head, useForm, Link } from "@inertiajs/vue3";
-import Layout from "@/Layouts/Layout.vue";
+import Layout from "@/Layouts/Layout2.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { showToast } from "../utils/SweetAlert.service";

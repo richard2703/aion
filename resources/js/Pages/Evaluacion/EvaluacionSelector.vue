@@ -1,6 +1,6 @@
 <script setup>
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import Layout from '@/Layouts/Layout.vue';
+import Layout from '@/Layouts/Layout2.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import { onMounted, ref } from 'vue';
 

@@ -97,7 +97,7 @@
   import axios from 'axios';
   import PrimaryButton from '@/Components/PrimaryButton.vue';
   import dangerButton from '@/Components/DangerButton.vue';
-  import Layout from '@/Layouts/Layout.vue';
+  import Layout from '@/Layouts/Layout2.vue';
   import Checkbox from '@/Components/Checkbox.vue';
   import InputError from '@/Components/InputError.vue';
   import InputLabel from '@/Components/InputLabel.vue';

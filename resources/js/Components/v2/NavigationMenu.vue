@@ -1,3 +1,23 @@
+<script setup>
+import { ref, defineProps, defineEmits } from 'vue';
+
+const props = defineProps({
+  modelValue: String, // La propiedad que recibe el valor seleccionado
+});
+
+const emit = defineEmits(['update:modelValue']); // Evento para actualizar el valor seleccionado
+
+// Variable para manejar la sección activa
+const selectedSection = ref('flujoDeValor'); // Sección por defecto
+
+// Función para manejar la selección de una sección
+const toggleSection = (section) => {
+  // Cambia la sección activa. Si ya está activa, la cierra.
+  selectedSection.value = selectedSection.value === section ? '' : section;
+  emit('update:modelValue', section); // Emitimos el evento para la actualización del modelo
+};
+</script>
+
 <template>
   <nav class="max-w-xl">
     <!-- Flujo de valor section -->
@@ -70,23 +90,3 @@
     </div>
   </nav>
 </template>
-
-<script setup>
-import { ref, defineProps, defineEmits } from 'vue';
-
-const props = defineProps({
-  modelValue: String, // La propiedad que recibe el valor seleccionado
-});
-
-const emit = defineEmits(['update:modelValue']); // Evento para actualizar el valor seleccionado
-
-// Variable para manejar la sección activa
-const selectedSection = ref('flujoDeValor'); // Sección por defecto
-
-// Función para manejar la selección de una sección
-const toggleSection = (section) => {
-  // Cambia la sección activa. Si ya está activa, la cierra.
-  selectedSection.value = selectedSection.value === section ? '' : section;
-  emit('update:modelValue', section); // Emitimos el evento para la actualización del modelo
-};
-</script>

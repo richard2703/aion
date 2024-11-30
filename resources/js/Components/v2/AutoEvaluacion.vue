@@ -1,41 +1,4 @@
-<template>
-    <div class="grid grid-cols-4 bg-white gap-[100px]">
-        <div class="xl:col-span-2 col-span-3">
-            <!-- Chart -->
-            <div class="relative aspect-square max-w-xl md:max-w-3xl mx-auto">
-              <canvas ref="radarChart"></canvas>
-            </div>
-
-             <!-- Legend -->
-            <div>
-              <h2 class="text-2xl mb-3 font-semibold text-gray-800">Comparativo entre Evaluaciones</h2>
-              <div class="space-y-3">
-                <div v-for="(item, index) in evaluationTypes" :key="index" class="flex items-center gap-3">
-                  <div class="w-6 h-[2px]" :style="{ backgroundColor: item.color }"></div>
-                  <span class="text-gray-700">{{ item.label }} ({{ item.percentage }}%)</span>
-                </div>
-              </div>
-            </div>
-        </div>
-
-        <div class="xl:col-span-2 col-span-3 mt-5">
-            <h2 class="text-2xl mb-3 font-semibold text-gray-800">Objetivos</h2>
-            <div class="text-sm leading-10">
-                <ul>
-                  <li>- Gestión por procesos mediante PDCA.</li>
-                  <li>- Ejecución de los procesos de verificacion y auditoria.</li>
-                  <li>- Definir y arrancar le evaluación del desempeño del equipo.</li>
-                  <li>- Actuar por principios de actuación.</li>
-                  <li>- Sistematizar la gestion de procedimientos por medio de Odoo.</li>
-                  <li>- Definir y administrar por presupuestos por departamento.</li>
-                  <li>- Desarrollar el proceso comercial de nuestros 3 canales de venta.</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-  </template>
-  
-  <script setup>
+<script setup>
   import { ref, onMounted, onUnmounted } from 'vue'
   import { Chart, RadarController, RadialLinearScale, PointElement, LineElement, Tooltip } from 'chart.js'
   
@@ -175,4 +138,42 @@
       chart.destroy()
     }
   })
-  </script>
+</script>
+
+<template>
+  <div class="grid grid-cols-4 bg-white gap-[100px]">
+      <div class="xl:col-span-2 col-span-3">
+          <!-- Chart -->
+          <div class="relative aspect-square max-w-xl md:max-w-3xl mx-auto">
+            <canvas ref="radarChart"></canvas>
+          </div>
+
+            <!-- Legend -->
+          <div>
+            <h2 class="text-2xl mb-3 font-semibold text-gray-800">Comparativo entre Evaluaciones</h2>
+            <div class="space-y-3">
+              <div v-for="(item, index) in evaluationTypes" :key="index" class="flex items-center gap-3">
+                <div class="w-6 h-[2px]" :style="{ backgroundColor: item.color }"></div>
+                <span class="text-gray-700">{{ item.label }} ({{ item.percentage }}%)</span>
+              </div>
+            </div>
+          </div>
+      </div>
+
+      <div class="xl:col-span-2 col-span-3 mt-5">
+          <h2 class="text-2xl mb-3 font-semibold text-gray-800">Objetivos</h2>
+          <div class="text-sm leading-10">
+              <ul>
+                <li>- Gestión por procesos mediante PDCA.</li>
+                <li>- Ejecución de los procesos de verificacion y auditoria.</li>
+                <li>- Definir y arrancar le evaluación del desempeño del equipo.</li>
+                <li>- Actuar por principios de actuación.</li>
+                <li>- Sistematizar la gestion de procedimientos por medio de Odoo.</li>
+                <li>- Definir y administrar por presupuestos por departamento.</li>
+                <li>- Desarrollar el proceso comercial de nuestros 3 canales de venta.</li>
+              </ul>
+          </div>
+      </div>
+  </div>
+</template>
+  
