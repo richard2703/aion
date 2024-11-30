@@ -2,7 +2,7 @@
 import { onMounted, ref } from "vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import axios from "axios";
-import Layout from "@/Layouts/Layout.vue";
+import Layout from "@/Layouts/Layout2.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import AccionIndex from "@/Pages/sysGestion/Partials/Accion/AccionIndex.vue";
 import KpiIndex from "@/Pages/sysGestion/Partials/Kpis/KpiIndex.vue";

@@ -1,5 +1,6 @@
 <script>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import axios from "axios";
 import TabItem from '@/Components/v2/TabItem.vue';
 import Sidebar from '@/Components/v2/Sidebar.vue';
 import { Link } from "@inertiajs/vue3";
@@ -15,6 +16,7 @@ export default {
         subTitulo: String,
     },
     setup() {
+        // Sidebar
         const openSidebar = ref(false);
 
         const toggleSidebar = () => {
@@ -25,21 +27,66 @@ export default {
             return openSidebar.value === true;
         };
 
+        // Notifications
+        const userNotifications = ref([]);
+        const countNotifications = ref(0);
+        const getNotifications = async () => {
+            try {
+                const response = await axios.get(route("notificaciones.getByUser"));
+                userNotifications.value = response.data;
+                countNotifications.value = response.data.filter((notification) => notification.readed == 0).length
+
+            } catch (error) {
+                console.error("Error fetching notifications:", error);
+            }
+        };
+
+        onMounted(() => {
+            getNotifications();
+            let notifications = document.querySelector('#user-notifications');
+            let menu = document.querySelector('#user-menu');
+
+            notifications.addEventListener('blur', () => {
+                notifications.classList.add('hidden');
+            });
+
+            menu.addEventListener('blur', () => {
+                menu.classList.add('hidden');
+            });
+        });
+
         return {
             toggleSidebar,
             isSidebarOpen,
+            userNotifications,
+            countNotifications,
         };
     },
     methods: {
-        toggleMenu() {
+        toggleMenu(force) {
             const menu = document.getElementById('user-menu');
             const isVisible = menu.classList.contains('hidden');
-            if (isVisible) {
+            if (isVisible || force) {
                 menu.classList.remove('hidden');
             } else {
                 menu.classList.add('hidden');
             }
-        }
+        },
+        toggleNotifications(force) {
+            const menu = document.getElementById('user-notifications');
+            const isVisible = menu.classList.contains('hidden');
+            if (isVisible || force) {
+                menu.classList.remove('hidden');
+            } else {
+                menu.classList.add('hidden');
+            }
+        },
+        async markAsRead() {
+            await axios.get(route("notificaciones.markAsRead"));
+        },
+        async deleteReaded() {
+            await axios.get(route("notificaciones.deleteReaded"));
+        },
     }
 };
 </script>
@@ -48,7 +95,7 @@ export default {
     <div>
         <div>
             <!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. -->
-            <div class="relative z-50" :class="isSidebarOpen() ? '' : 'hidden' " role="dialog" aria-modal="true">
+            <div class="relative z-50" :class="isSidebarOpen() ? '' : 'hidden'" role="dialog" aria-modal="true">
                 <div class="fixed inset-0 bg-gray-900/80" aria-hidden="true"></div>
 
                 <div class="fixed inset-0 flex">
@@ -107,7 +154,9 @@ export default {
                     <div class="h-6 w-px bg-gray-900/10 lg:hidden" aria-hidden="true"></div>
                     <div class="flex justify-between flex-1 gap-x-4 self-stretch lg:gap-x-6">
 
-                        <button type="button" class="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500">
+                        <button id="user-notifications-button" aria-expanded="false" aria-haspopup="true"
+                            @click="toggleNotifications()" type="button"
+                            class="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500">
                             <span class="sr-only">View notifications</span>
                             <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                 aria-hidden="true" data-slot="icon">
@@ -116,20 +165,36 @@ export default {
                             </svg>
                         </button>
 
+                        <div id="user-notifications"
+                            class="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 hidden"
+                            role="menu" aria-orientation="vertical" aria-labelledby="user-notifications-button">
+                            <div class="block flex justify-end">
+                                <Link @click="markAsRead" class="block px-3 py-2 text-sm text-gray-900" role="menuitem">
+                                Marcar como leido</Link>
+                                <Link @click="deleteReaded" class="block px-3 py-2 text-sm text-gray-900"
+                                    role="menuitem">Borrar leidos</Link>
+                            </div>
+                            <div v-for="notification in userNotifications">
+                                <Link :href="notification.link" class="block px-3 py-2 text-sm text-gray-900"
+                                    role="menuitem">{{ notification.titulo }}
+                                <div v-if="notification.readed == 1">&nbsp;&nbsp;&nbsp; ✅</div>
+                                </Link>
+                            </div>
+                        </div>
+
                         <div class="flex items-center gap-x-4 lg:gap-x-6">
                             <!-- Separator -->
                             <div class="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-900/10" aria-hidden="true"></div>
                             <!-- Dropdown component-->
                             <div class="relative">
                                 <button @click="toggleMenu()" type="button" class="-m-1.5 flex items-center p-1.5"
-                                    id="user-menu-button" aria-expanded="false" aria-haspopup="true"
-                                    onclick="toggleMenu()">
+                                    id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                     <span class="sr-only">Open user menu</span>
                                     <img class="w-8 h-8 rounded-full bg-gray-50"
-                                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                        alt="">
+                                        src="https://avatar.iran.liara.run/public" alt="">
                                     <span class="hidden lg:flex lg:items-center">
-                                        <span class="ml-4 text-sm font-semibold text-gray-900">Tom Cook</span>
+                                        <span class="ml-4 text-sm font-semibold text-gray-900">{{
+                                            $page.props.auth.user.user.name }}</span>
                                         <svg class="ml-2 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor"
                                             aria-hidden="true">
                                             <path fill-rule="evenodd"
@@ -142,10 +207,13 @@ export default {
                                 <div id="user-menu"
                                     class="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 hidden"
                                     role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button">
-                                    <a href="#" class="block px-3 py-1 text-sm text-gray-900" role="menuitem">Your
-                                        profile</a>
-                                    <a href="#" class="block px-3 py-1 text-sm text-gray-900" role="menuitem">Sign
-                                        out</a>
+                                    <Link href="/user/profile" class="block px-3 py-2 text-sm text-gray-900"
+                                        role="menuitem">Perfil</Link>
+                                    <Link href="/tareas/mis-tareas" class="block px-3 py-2 text-sm text-gray-900"
+                                        role="menuitem">Mis tareas</Link>
+                                    <Link href="/logout" method="post" as="button"
+                                        class="block px-3 py-2 text-sm text-gray-900" role="menuitem">Cerrar sesión
+                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -165,9 +233,9 @@ export default {
                             </div>
                         </div>
                         <!-- Your content -->
-                         <div class="p-6">
-                             <slot></slot>
-                         </div>
+                        <div class="p-6">
+                            <slot></slot>
+                        </div>
                     </div>
                 </main>
             </div>
