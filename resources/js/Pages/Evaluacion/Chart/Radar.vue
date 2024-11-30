@@ -13,7 +13,6 @@ const chartData = ref();
 const chartOptions = ref();
 const chartValues = ref();
 const chartLabels = ref();
-const evaluacionClass = ref();
 
 onMounted(() => {
     chartData.value = setChartData();
@@ -95,44 +94,48 @@ const setChartOptions = () => {
     };
 };
 
-function setClass(nota) {
-    if (nota >= 0 && nota < 21) {
-        return evaluacionClass.value = 'text-center border border-slate-500 px-1 content-center bg-red-800 text-white';
-    } else if (nota >= 21 && nota < 41) {
-        return evaluacionClass.value = 'text-center border border-slate-500 px-1 content-center bg-red-500 text-white';
-    } else if (nota >= 41 && nota < 61) {
-        return evaluacionClass.value = 'text-center border border-slate-500 px-1 content-center bg-yellow-500 text-white';
-    } else if (nota >= 61 && nota < 81) {
-        return evaluacionClass.value = 'text-center border border-slate-500 px-1 content-center bg-green-500 text-white';
-    } else if (nota >= 81) {
-        return evaluacionClass.value = 'text-center border border-slate-500 px-1 content-center bg-blue-500 text-white';
+function getResultLabel(score) {
+    if (score < 21) {
+        return 'Inicial';
+    } else if (score < 41) {
+        return 'Básico';
+    } else if (score < 61) {
+        return 'Intermedio';
+    } else if (score < 81) {
+        return 'Avanzado';
+    } else {
+        return 'Líder';
     }
 }
+
+function getBackgroundColor(score) {
+    if (score < 21) {
+        return 'bg-red-800';
+    } else if (score < 41) {
+        return 'bg-red-500';
+    } else if (score < 61) {
+        return 'bg-yellow-500';
+    } else if (score < 81) {
+        return 'bg-green-500';
+    } else {
+        return 'bg-blue-500';
+    }
+}
+
 </script>
 
 <template>
     <div class="card">
         <Chart type="radar" :data="chartData" :options="chartOptions" class="radar w-full flex justify-center" />
-        <div class="flex justify-center ">
-            <table class="table w-80 border-collapse border border-slate-400  text-sm">
-                <tr v-for="result in results">
-                    <td class="text-center border border-slate-500">{{ result.area.nombre }}</td>
-                    <td :class="setClass(result.score)">{{ result.score }}%</td>
-                    <td v-if="result.score >= 0 && result.score < 21" :class="setClass(result.score)">
-                        INICIAL
-                    </td>
-                    <td v-if="result.score >= 21 && result.score < 41" :class="setClass(result.score)">
-                        BÁSICO
-                    </td>
-                    <td v-if="result.score >= 41 && result.score < 61" :class="setClass(result.score)">
-                        INTERMEDIO
-                    </td>
-                    <td v-if="result.score >= 61 && result.score < 81" :class="setClass(result.score)">
-                        AVANZADO
-                    </td>
-                    <td v-if="result.score >= 81" :class="setClass(result.score)">LÍDER</td>
-                </tr>
-            </table>
+
+        <div class="flex">
+            <h2 class="text-2xl mb-3 font-semibold text-gray-800">Comparativo entre Evaluaciones</h2>
+            <div class="space-y-3">
+                <div v-for="result in results" class="flex items-center gap-3">
+                    <div class="w-6 h-[2px]" :class="getBackgroundColor(result.score)"></div>
+                    <span class="text-gray-700">{{ result.area.nombre }} ({{ result.score }}%) - {{ getResultLabel(result.score) }}</span>
+                </div>
+            </div>
         </div>
     </div>
 </template>
