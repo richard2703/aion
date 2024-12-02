@@ -68,17 +68,33 @@ class encargado_flujoController extends Controller
 
     public function store(Request $request)
     {
-        $encargado_flujo = new encargado_flujo();
+        // $encargado_flujo = new encargado_flujo();
         // $encargado_flujo->area_id = $request->area_id;
-        $encargado_flujo->departamento_id = $request->departamento_id;
-        $encargado_flujo->user_id = $request->lider_id["id"];
-        $revision = encargado_flujo::where('departamento_id', $request->departamento_id)->where('user_id', $request->lider_id["id"])->first();
-        if ($revision) {
-            // dd("no hay revision");
-            return redirect()->route('encargadoFlujo.index');
-        }
+        // $encargado_flujo->departamento_id = $request->departamento_id;
+        // $encargado_flujo->user_id = $request->lider_id["id"];
+        // $revision = encargado_flujo::where('departamento_id', $request->departamento_id)->where('user_id', $request->lider_id["id"])->first();
+        // if ($revision) {
+        //     // dd("no hay revision");
+        //     return redirect()->route('encargadoFlujo.index');
+        // }
         // dd("si hay revision");
-        $encargado_flujo->save();
+        // $encargado_flujo->save();
+
+        // return redirect()->route('encargadoFlujo.index');
+        // Verificar si ya existe un líder para el departamento
+        $encargado_flujo = encargado_flujo::where('departamento_id', $request->departamento_id)->first();
+
+        if ($encargado_flujo) {
+            // Si ya existe un líder, actualizar el registro existente
+            $encargado_flujo->user_id = $request->lider_id["id"];
+            $encargado_flujo->save();
+        } else {
+            // Si no existe un líder, crear uno nuevo
+            $encargado_flujo = new encargado_flujo();
+            $encargado_flujo->departamento_id = $request->departamento_id;
+            $encargado_flujo->user_id = $request->lider_id["id"];
+            $encargado_flujo->save();
+        }
 
         return redirect()->route('encargadoFlujo.index');
     }
