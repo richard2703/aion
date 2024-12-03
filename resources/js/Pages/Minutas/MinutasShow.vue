@@ -675,12 +675,13 @@ const sendMail = async () => {
                                             <div class="flex justify-center">
                                                 <PrimaryButton v-if="slotProps.data.validacion !== 1"
                                                     class="m-2 pi pi-file-edit"
-                                                    @click="openModal('edit', slotProps.data.id)">
+                                                    @click="openModal('edit', slotProps.data.id)"> <span
+                                                        :style="{ fontSize: '10px' }">editar</span>
                                                 </PrimaryButton>
 
-                                                <PrimaryButton class="m-2 pi pi-file-check"
+                                                <!-- <PrimaryButton class="m-2 pi pi-file-check"
                                                     @click="openModal('detail', slotProps.data.id)">
-                                                </PrimaryButton>
+                                                </PrimaryButton> -->
 
                                                 <PrimaryButton v-if="slotProps.data.validacion !== 1"
                                                     class="m-2 pi pi-trash" @click.prevent="

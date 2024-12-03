@@ -151,7 +151,7 @@ const getEvidencias = async () => {
                         <hr class="my-4">
 
                         <div class="mt-4">
-                            <InputLabel for="tarea" value="Titulo:" />
+                            <InputLabel for="tarea" value="Tarea:" />
                             <TextInput id="tarea" type="text" :value="task.tarea" class="mt-1 block w-full" disabled />
                         </div>
                         <div class="mt-4 z-30">
