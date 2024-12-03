@@ -20,6 +20,7 @@ class Area extends Model
     protected $fillable = [
         'nombre',
         'descripcion',
+        'color',
     ];
     function departamentos(): HasMany
     {
