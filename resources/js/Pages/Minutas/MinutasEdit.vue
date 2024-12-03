@@ -304,13 +304,13 @@ const isHidden = computed({
                                                 class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
                                                 v-model="form.privada" required>
                                                 <option value=3 selected>
-                                                    3 </option>
+                                                    3 Líderes flujo de valor - Equipo </option>
                                                 <option value=2 selected>
-                                                    2 </option>
+                                                    2 Gerentes de pilar - líderes flujo de valor</option>
                                                 <option value=1 selected>
-                                                    1 </option>
+                                                    1 staff directivo</option>
                                                 <option value=0 selected>
-                                                    0 </option>
+                                                    0 Consejo de Admin</option>
                                             </select>
                                         </div>
                                     </div>
