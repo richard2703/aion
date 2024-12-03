@@ -182,9 +182,9 @@ const search = (event) => {
 
                                         <select ref="departamento_select"
                                             class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                            v-model="form.departamento_id" required>
-                                            <option value="" disabled selected>
-                                                Seleccione una opcion
+                                            v-model="form.departamento_id">
+                                            <option value="" selected>
+                                                Todos los flujos
                                             </option>
                                             <option v-for="departamento in departamentos" :key="departamento.id"
                                                 :value="departamento.id">

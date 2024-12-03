@@ -30,7 +30,7 @@
                 </div>
             </li>
 
-            <li>
+            <!-- <li>
                 <div class="mb-4">
                     <Link class="group flex items-center py-3" :href="route('tareas.index')">
                     <div :class="title === 'tareas'
@@ -42,7 +42,7 @@
                     </div>
                     </Link>
                 </div>
-            </li>
+            </li> -->
 
             <li>
                 <a class="group flex items-center py-3 cursor-pointer" @click="toggleMenu('sysGestion')">

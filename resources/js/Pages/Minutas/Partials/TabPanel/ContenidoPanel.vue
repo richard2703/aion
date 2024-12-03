@@ -241,6 +241,10 @@ const getTiposMinuta = async () => {
         console.error(error);
     }
 };
+
+const flujoBody = (rowData) => {
+    return rowData.departamento?.nombre || 'Todos los flujos';
+};
 </script>
 
 <template>
@@ -366,8 +370,14 @@ const getTiposMinuta = async () => {
             class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
             <template #empty> Sin registros </template>
             <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;" sortable></Column>
-            <Column field="departamento.nombre" header="Fujo de valor" headerStyle="width:4em;"
-                bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+            <!-- <Column field="departamento?.nombre" header="Fujo de valor" headerStyle="width:4em;"
+                bodyStyle="text-align:center;" bodyClass="text-center" :body="flujoBody" sortable></Column> -->
+            <Column field="departamento?.nombre" header="Flujo de valor" headerStyle="width:4em;"
+                bodyStyle="text-align:center;" bodyClass="text-center" sortable>
+                <template #body="slotProps">
+                    {{ slotProps.data.departamento?.nombre || 'Todos los flujos' }}
+                </template>
+            </Column>
             <Column field="tipo_minuta.titulo" header="Tipo" headerStyle="width:4em;" bodyStyle="text-align:center;"
                 bodyClass="text-center" sortable></Column>
             <Column field="alias" header="Alias" headerStyle="width:4em;" bodyClass="text-center" sortable></Column>
@@ -405,9 +415,9 @@ const getTiposMinuta = async () => {
                         <PrimaryButton class="pi pi-file-edit m-2" :href="route('minutas.edit', slotProps.data.id)">
                             <span class="p-1" :style="{ fontSize: '10px' }">Editar</span>
                         </PrimaryButton>
-                        <!-- <PrimaryButton class="pi pi-list m-2" :href="route('minutas.show', slotProps.data.id)">
+                        <PrimaryButton class="pi pi-list m-2" :href="route('minutas.show', slotProps.data.id)">
                             <span class="p-1" :style="{ fontSize: '10px' }">Tareas</span>
-                        </PrimaryButton> -->
+                        </PrimaryButton>
                         <PrimaryButton class="pi pi-trash m-2" @click.prevent="deleteMinuta(slotProps.data.id)">
                         </PrimaryButton>
                     </div>
