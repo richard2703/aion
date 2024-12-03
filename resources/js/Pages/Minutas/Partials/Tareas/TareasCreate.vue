@@ -156,7 +156,7 @@ onMounted(() => {
                         <hr class="my-4">
 
                         <div class="mt-4">
-                            <InputLabel for="tarea" value="Titulo:" />
+                            <InputLabel for="tarea" value="Tarea:" />
                             <TextInput id="tarea" v-model="form.tarea" type="text" class="mt-1 block w-full" required
                                 autocomplete="tarea" />
                         </div>
