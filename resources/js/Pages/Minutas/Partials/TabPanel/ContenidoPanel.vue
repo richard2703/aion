@@ -37,6 +37,7 @@ const tipo = ref("");
 const proceso = ref("");
 const desde = ref("");
 const hasta = ref("");
+const tier = ref("");
 const tiposMinutas = ref([]);
 
 const formFilter = useForm({
@@ -47,6 +48,7 @@ const formFilter = useForm({
     proceso_id: "",
     fecha_from: "",
     fecha_to: "",
+    tier: "",
 });
 
 onMounted(() => {
@@ -62,8 +64,8 @@ onMounted(() => {
 });
 
 watch(
-    [globalFilter, flujoValor, lider, tipo, proceso, desde, hasta],
-    ([newglobalFilter, newflujoValor, newlider, newtipo, newproceso, newdesde, newhasta]) => {
+    [globalFilter, flujoValor, lider, tipo, proceso, desde, hasta, tier],
+    ([newglobalFilter, newflujoValor, newlider, newtipo, newproceso, newdesde, newhasta, newtier]) => {
         filters.value = {
             global: { value: newglobalFilter, matchMode: "contains" },
             departamento_id: { value: newflujoValor, matchMode: "contains" },
@@ -72,6 +74,7 @@ watch(
             proceso: { value: newproceso, matchMode: "contains" },
             desde: { value: newdesde, matchMode: "contains" },
             hasta: { value: newhasta, matchMode: "contains" },
+            tier: { value: newtier, matchMode: "contains" },
         };
         getMinutas(1, rows.value, filters.value, sortField.value, sortOrder.value);
     });
@@ -189,7 +192,7 @@ const clearFilter = () => {
     proceso.value = "";
     desde.value = "";
     hasta.value = "";
-
+    tier.value = "";
     getMinutas();
 };
 
@@ -291,6 +294,24 @@ const getTiposMinuta = async () => {
                         <InputLabel for="created_at" value="Fecha de entrega hasta: " />
                         <TextInput id="fecha" v-model="hasta" type="date" class="mt-1 block w-full"
                             autocomplete="fecha" />
+                    </div>
+                    <div class="m-4">
+                        <InputLabel for="created_at" value="Nivel de minuta: " />
+                        <select ref="departamento_select"
+                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                            v-model="tier">
+                            <option value="" selected>
+                                Seleccione una opcion
+                            </option>
+                            <option value=3 selected>
+                                3 </option>
+                            <option value=2 selected>
+                                2 </option>
+                            <option value=1 selected>
+                                1 </option>
+                            <option value="0" selected>
+                                0 </option>
+                        </select>
                     </div>
                 </div>
             </form>
