@@ -2,19 +2,35 @@
 import { ref, onMounted, computed } from "vue";
 import { Head, Link } from "@inertiajs/vue3";
 import Layout from "@/Layouts/Layout.vue";
-import axios from 'axios'
-import ColorPicker from 'primevue/colorpicker';
+import axios from "axios";
+import ColorPicker from "primevue/colorpicker";
 import { confirmDialog, showToast } from "../utils/SweetAlert.service";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+
+
 
 // Calendar state
 const currentYear = ref(new Date().getFullYear());
 const currentMonth = ref(new Date().getMonth());
-const daysInMonth = computed(() => new Date(currentYear.value, currentMonth.value + 1, 0).getDate());
-const firstDayOfMonth = computed(() => new Date(currentYear.value, currentMonth.value, 1).getDay());
+const daysInMonth = computed(() =>
+    new Date(currentYear.value, currentMonth.value + 1, 0).getDate()
+);
+const firstDayOfMonth = computed(() =>
+    new Date(currentYear.value, currentMonth.value, 1).getDay()
+);
 const monthNames = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
 ];
 
 // Event data
@@ -23,65 +39,102 @@ const events = ref({}); // Events organized by date
 // Modals
 const modal = ref({
     show: false,
-    type: 'create',
+    type: "create",
     day: null,
-    event: { id: null, titulo: '', descripcion: '', fecha_inicio: '', fecha_final: '', color: '' }
+    event: {
+        id: null,
+        titulo: "",
+        descripcion: "",
+        fecha_inicio: "",
+        fecha_final: "",
+        color: "",
+    },
 });
 const viewModal = ref({ show: false, event: null });
 
+const colors = ['purple', 'blue', 'Indigo', 'green', 'teal', 'pink'];
+const options = [
+    {
+        label: 'Gente y Cultura',
+        color: ''
+    },
+    {
+        label: 'TI',
+        color: ''
+    },
+    {
+        label: 'Ventas',
+        color: ''
+    },
+    {
+        label: 'Operaciones',
+        color: ''
+    },
+    {
+        label: 'Administración',
+        color: ''
+    },
+    {
+        label: 'Nuevos productos',
+        color: ''
+    }
+];
+const selectedColor = ref("");
+
 // formatear fecha
 const formatDate = (year, month, day) => {
-    const paddedMonth = String(month).padStart(2, '0');
-    const paddedDay = String(day).padStart(2, '0');
+    const paddedMonth = String(month).padStart(2, "0");
+    const paddedDay = String(day).padStart(2, "0");
     return `${year}-${paddedMonth}-${paddedDay}`;
-}
-
+};
 
 const getEventos = async () => {
     try {
-        const { data } = await axios.get(route('eventos.findAll'), {
+        const { data } = await axios.get(route("eventos.findAll"), {
             params: {
                 year: currentYear.value,
-                month: currentMonth.value + 1
-            }
+                month: currentMonth.value + 1,
+            },
         });
 
         // Organize events by date
         const organizedEvents = {};
-        data.forEach(event => {
-            const dateKey = event.fecha_inicio
+        data.forEach((event) => {
+            const dateKey = event.fecha_inicio;
             if (!organizedEvents[dateKey]) {
-                organizedEvents[dateKey] = []
+                organizedEvents[dateKey] = [];
             }
-            organizedEvents[dateKey].push(event)
+            organizedEvents[dateKey].push(event);
         });
         events.value = organizedEvents;
     } catch (error) {
-        console.error('Error fetching events:', error);
+        console.error("Error fetching events:", error);
     }
-}
+};
 
 // cerrar modales
 const closeModal = () => {
     modal.value.show = false;
-}
+};
 const closeviewModal = () => {
     viewModal.value.show = false;
-}
-
-
+};
 
 const submit = async () => {
     try {
-        const formattedDate = formatDate(currentYear.value, currentMonth.value + 1, modal.value.day);
+        const formattedDate = formatDate(
+            currentYear.value,
+            currentMonth.value + 1,
+            modal.value.day
+        );
 
-        if (modal.value.type === 'create') {
-            const { data } = await axios.post(route('eventos.store'), {
+        if (modal.value.type === "create") {
+            const { data } = await axios.post(route("eventos.store"), {
                 titulo: modal.value.event.titulo,
                 descripcion: modal.value.event.descripcion,
                 fecha_inicio: formattedDate,
                 fecha_final: modal.value.event.fecha_final,
-                color: modal.value.event.color
+                color: modal.value.event.color,
             });
 
             if (!events.value[formattedDate]) {
@@ -90,14 +143,17 @@ const submit = async () => {
             events.value[formattedDate].push(data);
             await getEventos();
         } else {
-            await axios.patch(route('eventos.update', modal.value.event.id), modal.value.event);
+            await axios.patch(
+                route("eventos.update", modal.value.event.id),
+                modal.value.event
+            );
             await getEventos(); // Refresh events
         }
-        closeModal()
+        closeModal();
     } catch (error) {
-        console.error('Error saving event:', error);
+        console.error("Error saving event:", error);
     }
-}
+};
 
 const deleteEvento = async (event) => {
     try {
@@ -107,7 +163,7 @@ const deleteEvento = async (event) => {
             "warning"
         );
         if (result.isConfirmed) {
-            await axios.delete(route('eventos.destroy', event.id));
+            await axios.delete(route("eventos.destroy", event.id));
             showToast("El registro ha sido eliminado", "success");
             closeviewModal();
             await getEventos();
@@ -115,34 +171,45 @@ const deleteEvento = async (event) => {
     } catch (error) {
         console.error(error);
     }
-}
+};
 
 // Mostrar modales
 const showCreateModal = (day) => {
-    const formattedDate = formatDate(currentYear.value, currentMonth.value + 1, day)
+    const formattedDate = formatDate(
+        currentYear.value,
+        currentMonth.value + 1,
+        day
+    );
     modal.value = {
         show: true,
-        type: 'create',
+        type: "create",
         day,
-        event: { id: null, titulo: '', descripcion: '', fecha_inicio: formattedDate, fecha_final: '', color: '' }
-    }
-}
+        event: {
+            id: null,
+            titulo: "",
+            descripcion: "",
+            fecha_inicio: formattedDate,
+            fecha_final: "",
+            color: "",
+        },
+    };
+};
 
 const showEditModal = (event) => {
     modal.value = {
         show: true,
-        type: 'edit',
-        event
-    }
+        type: "edit",
+        event,
+    };
     closeviewModal();
-}
+};
 const showEvent = (event) => {
     viewModal.value = { show: true, event };
-}
+};
 
 onMounted(() => {
     getEventos();
-})
+});
 
 // Navegacion entre meses
 const changeMonth = (delta) => {
@@ -155,7 +222,7 @@ const changeMonth = (delta) => {
         currentYear.value += 1;
     }
     getEventos();
-}
+};
 </script>
 
 <template>
@@ -219,12 +286,17 @@ const changeMonth = (delta) => {
                         </button>
                         <ul class="mt-2 text-sm">
 
-
-                            <li v-for="event in events[formatDate(currentYear, currentMonth + 1, day)] || []"
-                                :key="event.id" class="rounded mb-1 cursor-pointer hover:bg-gray-200 flex "
+                            <li v-for="event in events[
+                                formatDate(
+                                    currentYear,
+                                    currentMonth + 1,
+                                    day
+                                )
+                            ] || []" :key="event.id" class="rounded mb-1 cursor-pointer hover:bg-gray-200 flex"
                                 @click="showEvent(event)">
-                                <input type="color" name="color" :value="`#${event.color}`" disabled id="color"
-                                    class="w-6 h-6">{{
+                                <label :for="color"
+                                    :style="{ backgroundColor: event.color, color: event.color, width: '20px', height: '20px' }"
+                                    class=" rounded-full cursor-pointer border-2 border-transparent peer-checked:border-gray-4 00 transition"></label>{{
                                         event.titulo }}
                             </li>
                         </ul>
@@ -243,7 +315,7 @@ const changeMonth = (delta) => {
                         </h2>
                         <form @submit.prevent="submit">
                             <div class="mb-4">
-                                <label class="block text-sm font-medium mb-1">Tutulo</label>
+                                <label class="block text-sm font-medium mb-1">Titulo</label>
                                 <input v-model="modal.event.titulo" type="text" class="w-full border rounded p-2"
                                     required />
                             </div>
@@ -263,15 +335,32 @@ const changeMonth = (delta) => {
                                     required />
                             </div> -->
                             <div class="mb-4">
-                                <label class="block text-sm font-medium mb-1">Color</label>
-                                <ColorPicker v-model="modal.event.color" inputId="cp-hex" format="hex" class="mb-4" />
+                                <div class="flex gap-4">
+                                    <div v-for="color in colors" :key="color" class="relative">
+                                        <!-- Hidden radio input -->
+                                        <input type="radio" :id="color" name="color" :value="color"
+                                            v-model="selectedColor" class="peer hidden" />
+                                        <!-- Styled label -->
+                                        <label :for="color"
+                                            :style="{ backgroundColor: color, color: color, width: '20px', height: '20px' }"
+                                            class="rounded-full cursor-pointer border-2 border-transparent peer-checked:border-gray-4 00 transition">00</label>
+                                    </div>
+                                </div>
+                                <p class="mt-4">Pilar seleccionado:
+
+                                    <span v-if="selectedColor == 'purple'" class="font-bold">Gente y Cultura</span>
+                                    <span v-if="selectedColor == 'blue'" class="font-bold">TI</span>
+                                    <span v-if="selectedColor == 'Indigo'" class="font-bold">Ventas</span>
+                                    <span v-if="selectedColor == 'green'" class="font-bold">Operaciones</span>
+                                    <span v-if="selectedColor == 'teal'" class="font-bold">Administración</span>
+                                    <span v-if="selectedColor == 'pink'" class="font-bold">Nuevos productos</span>
+                                </p>
                             </div>
                             <div class="flex justify-end space-x-2">
-                                <button type="button" class="px-4 py-2 bg-gray-300 rounded" @click="closeModal">
-                                    Cancel
+                                <button type="button" class="px-4 py-2 bg-slate-800 text-white rounded pi pi-times"
+                                    @click="closeModal">
                                 </button>
-                                <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded">
-                                    Save
+                                <button type="submit" class="px-4 py-2 bg-[#BEA34B] text-white rounded pi pi-save">
                                 </button>
                             </div>
                         </form>
@@ -296,16 +385,14 @@ const changeMonth = (delta) => {
                         <ColorPicker v-model="viewModal.event.color" inputId="cp-hex" format="hex" class="mb-4"
                             disabled />
                         <div class="flex justify-end space-x-2">
-                            <button class="px-4 py-2 bg-slate-800 text-white rounded " @click="closeviewModal">
-                                Cancelar
+                            <button class="px-4 py-2 bg-slate-800 text-white rounded pi pi-times"
+                                @click="closeviewModal">
                             </button>
-                            <button class="px-4 py-2 bg-[#BEA34B] text-white rounded"
+                            <button class="px-4 py-2 bg-[#BEA34B] text-white rounded pi pi-pencil"
                                 @click="showEditModal(viewModal.event)">
-                                Editar
                             </button>
                             <button class="px-4 py-2 bg-red-500 text-white rounded pi pi-trash"
-                                @click="deleteEvento(viewModal.event)">
-                            </button>
+                                @click="deleteEvento(viewModal.event)"></button>
                         </div>
                     </div>
                 </div>
