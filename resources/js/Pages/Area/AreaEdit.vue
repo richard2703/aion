@@ -8,10 +8,11 @@ import TextInput from "@/Components/TextInput.vue";
 import { confirmDialog, showToast } from "../utils/SweetAlert.service";
 const props = defineProps({
     area: Object,
+    areas: Array,
 });
 
 const area = ref(props.area);
-const areas = ref([]);
+const areas = ref(props.areas);
 const colors = [
     "gray",
     "red",
@@ -33,23 +34,14 @@ const form = useForm({
 });
 
 onMounted(() => {
-    getAreas();
+    console.log({ areas: areas.value });
     filteredColors.value = colors.filter(
-        (color) => !areas.value.some((area) => area.color === color)
+        (color) =>
+            !areas.value.some(
+                (area) => area.color === color && area.id !== props.area.id
+            )
     );
-    console.log({ filteredColors: filteredColors.value });
 });
-
-const getAreas = async () => {
-    try {
-        const response = await axios.get(route("areas.findAll"));
-        console.log(response.data);
-
-        areas.value = response.data;
-    } catch (error) {
-        console.error(error);
-    }
-};
 
 const submit = async () => {
     try {

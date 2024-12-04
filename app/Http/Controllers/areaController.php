@@ -79,6 +79,7 @@ class areaController extends Controller
     {
         return Inertia::render('Area/AreaEdit', [
             'area' => Area::find($id),
+            'areas' => Area::all(),
         ]);
     }
 

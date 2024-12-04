@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Evento;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Carbon\Carbon;
 
 class eventoController extends Controller
 {
@@ -12,13 +13,17 @@ class eventoController extends Controller
     function index()
     {
         return Inertia::render('Evento/EventoIndex', [
-            'eventos' => Evento::all()
+            'eventos' => Evento::with('area')->get()
         ]);
     }
 
     function findAll()
     {
-        return response()->json(Evento::all());
+        $eventos = Evento::where('fecha_inicio', '>=', date('Y-m-d'))
+            ->orderBy('fecha_inicio', 'asc')
+            ->with('area')
+            ->get();
+        return response()->json($eventos);
     }
 
     function edit() {}
@@ -34,7 +39,7 @@ class eventoController extends Controller
             'descripcion' => $request->descripcion,
             'fecha_inicio' => $request->fecha_inicio,
             'fecha_final' => $request->fecha_final,
-            'color' => $request->color
+            'area_id' => $request->area_id
         ];
         Evento::create($data);
         return response()->json(['success' => true]);
@@ -47,7 +52,7 @@ class eventoController extends Controller
             'descripcion' => $request->descripcion,
             'fecha_inicio' => $request->fecha_inicio,
             'fecha_final' => $request->fecha_final,
-            'color' => $request->color
+            'area_id' => $request->area_id
         ];
         $evento->update($data);
         return response()->json(['success' => true]);
