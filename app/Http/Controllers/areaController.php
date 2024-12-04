@@ -63,13 +63,15 @@ class areaController extends Controller
 
     function create()
     {
-        return Inertia::render('Area/AreaCreate');
+        return Inertia::render('Area/AreaCreate', [
+            'areas' => Area::all(),
+        ]);
     }
 
     function store(Request $request)
     {
 
-        $area = Area::create($request->only('nombre', 'descripcion'));
+        $area = Area::create($request->only('nombre', 'descripcion', 'color'));
         return redirect()->route('area.index');
     }
 
@@ -77,13 +79,14 @@ class areaController extends Controller
     {
         return Inertia::render('Area/AreaEdit', [
             'area' => Area::find($id),
+            'areas' => Area::all(),
         ]);
     }
 
     function update(Request $request, $id)
     {
         $area = Area::find($id);
-        $area->update($request->only('nombre', 'descripcion'));
+        $area->update($request->only('nombre', 'descripcion', 'color'));
         return redirect()->route('area.index');
     }
 

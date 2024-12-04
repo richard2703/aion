@@ -136,9 +136,9 @@ watch(globalFilter, (newValue) => {
         <div class="py-2">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div>
-                    <!-- <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
+                    <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
                         <PrimaryButton :href="route('area.create')" class="m-4 pi pi-plus"></PrimaryButton>
-                    </div> -->
+                    </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto">
                             <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
