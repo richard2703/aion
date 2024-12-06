@@ -283,20 +283,10 @@ class reportesController extends Controller
         $trimestreRegistrado = metatrimestres::where('trimestre', $trimestreActual)
             ->where('ano', $anioActual)->first();
 
-        // dd($trimestreRegistrado->id);
-        // $reportes = reportes::where('semana_id', $id)
-        //     ->join('departamentos', 'reportes.departamento_id', '=', 'departamentos.id')
-        //     ->with(['departamento', 'highlights', 'lowlights', 'avisos', 'kpis' => function ($query) {
-        //         $query->where('tipo', 2);
-        //     }])
-        //     ->orderByRaw("CASE WHEN departamentos.nombre = 'Dirección General' THEN 1 ELSE 2 END")
-        //     ->orderBy('departamentos.nombre') // Para el resto de los departamentos
-        //     ->select('reportes.*') // Aseguramos seleccionar solo los campos de reportes
-        //     ->get();
-
         // Buscar reportes semanales
         $reportes = reportes::where('semana_id', $id)
             ->join('departamentos', 'reportes.departamento_id', '=', 'departamentos.id')
+            ->join('areas', 'departamentos.area_id', '=', 'areas.id') // Join con la tabla de áreas
             ->with([
                 'departamento',
                 'highlights',
@@ -317,8 +307,8 @@ class reportesController extends Controller
                     $query->where('trimestre_id', $trimestreRegistrado->id);
                 }
             ])
-            ->orderByRaw("CASE WHEN departamentos.nombre = 'Dirección General' THEN 1 ELSE 2 END")
-            ->orderBy('departamentos.nombre') // Para el resto de los departamentos
+            ->orderBy('areas.id') // Ordenar por área
+            ->orderBy('departamentos.nombre') // Ordenar dentro de cada área por nombre del departamento
             ->select('reportes.*') // Seleccionamos solo los campos de reportes
             ->get();
 

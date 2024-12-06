@@ -111,6 +111,7 @@ const getEventos = async () => {
     <Layout title="Home">
         <div class="flex px-2">
             <div>
+
                 <Head title="Usuarios" />
                 <div class="overflow-hidden sm:rounded-lg">
                     <div class="breadcrumbsTitulo px-1">
@@ -118,33 +119,20 @@ const getEventos = async () => {
                     </div>
                     <div class="breadcrumbs flex">
                         <Link :href="route('dashboard')" class="px-1">
-                            <h3>Home</h3>
+                        <h3>Home</h3>
                         </Link>
                     </div>
                 </div>
 
                 <div class="py-2">
-                    <div
-                        class="bg-white overflow-hidden shadow-xl sm:rounded-lg"
-                    >
+                    <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                         <div>
-                            <div
-                                class="px-4 my-4 py-2 flex justify-end bg-white border-b border-gray-200"
-                            ></div>
-                            <div
-                                class="px-4 py-2 bg-white border-b border-gray-200"
-                            >
+                            <div class="px-4 my-4 py-2 flex justify-end bg-white border-b border-gray-200"></div>
+                            <div class="px-4 py-2 bg-white border-b border-gray-200">
                                 <div class="container mx-auto">
-                                    <div
-                                        class="grid sm:grid-cols-1 md:grid-cols-2 bg-gray-300"
-                                    >
+                                    <div class="grid sm:grid-cols-1 md:grid-cols-2 bg-gray-300">
                                         <div class="bg-gray-300">
-                                            <img
-                                                class="h-96"
-                                                :src="banner_path"
-                                                alt="Banner actual"
-                                                srcset=""
-                                            />
+                                            <img class="h-96" :src="banner_path" alt="Banner actual" srcset="" />
                                             <div>
                                                 <p class="italic m-4 text-lg">
                                                     {{ slogan }}
@@ -153,9 +141,7 @@ const getEventos = async () => {
                                         </div>
                                         <div class="bg-gray-300">
                                             <div>
-                                                <h2
-                                                    class="text-center py-4 font-bold text-3xl"
-                                                >
+                                                <h2 class="text-center py-4 font-bold text-3xl">
                                                     Propósito
                                                 </h2>
                                                 <p class="italic m-4 text-lg">
@@ -163,9 +149,7 @@ const getEventos = async () => {
                                                 </p>
                                             </div>
                                             <div>
-                                                <h2
-                                                    class="text-center py-4 font-bold text-3xl"
-                                                >
+                                                <h2 class="text-center py-4 font-bold text-3xl">
                                                     Principios de actuación
                                                 </h2>
                                                 <p class="italic m-4 text-lg">
@@ -177,100 +161,67 @@ const getEventos = async () => {
                                     <br />
                                     <div class="grid grid-cols-1 bg-gray-300">
                                         <div class="bg-gray-300">
-                                            <h2
-                                                class="text-center py-4 font-bold text-3xl"
-                                            >
+                                            <h2 class="text-center py-4 font-bold text-3xl">
                                                 Metromap
                                             </h2>
                                         </div>
                                     </div>
-                                    <div
-                                        class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 bg-gray-300"
-                                    >
+                                    <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 bg-gray-300">
                                         <div class="bg-gray-300">
                                             <!-- <h2 class="text-center py-4 font-bold text-3xl">Metromap</h2> -->
                                             <button @click="getPilar(1)">
-                                                <img
-                                                    class="w-full"
-                                                    src="../../img/metromaps/gyc.jpg"
-                                                    alt=""
-                                                />
+                                                <img class="w-full" src="../../img/metromaps/GenteYCultura.jpg"
+                                                    alt="" />
                                             </button>
                                         </div>
                                         <div class="bg-gray-300">
                                             <button @click="getPilar(2)">
-                                                <img
-                                                    class="w-full"
-                                                    src="../../img/metromaps/ti.jpg"
-                                                    alt=""
-                                                />
+                                                <img class="w-full" src="../../img/metromaps/TI.jpg" alt="" />
+                                            </button>
+                                        </div>
+                                        <div class="bg-gray-300">
+                                            <button @click="getPilar(23)">
+                                                <img class="w-full" src="../../img/metromaps/DNP.jpg" alt="" />
                                             </button>
                                         </div>
                                         <div class="bg-gray-300">
                                             <button @click="getPilar(3)">
-                                                <img
-                                                    class="w-full"
-                                                    src="../../img/metromaps/ventas.jpg"
-                                                    alt=""
-                                                />
+                                                <img class="w-full" src="../../img/metromaps/Ventas.jpg" alt="" />
                                             </button>
                                         </div>
                                         <div class="bg-gray-300">
                                             <button @click="getPilar(4)">
-                                                <img
-                                                    class="w-full"
-                                                    src="../../img/metromaps/ops.jpg"
-                                                    alt=""
-                                                />
+                                                <img class="w-full" src="../../img/metromaps/Operaciones.jpg" alt="" />
                                             </button>
                                         </div>
                                         <div class="bg-gray-300">
                                             <button @click="getPilar(5)">
-                                                <img
-                                                    class="w-full"
-                                                    src="../../img/metromaps/admin.jpg"
-                                                    alt=""
-                                                />
+                                                <img class="w-full" src="../../img/metromaps/Admon.jpg" alt="" />
                                             </button>
                                         </div>
                                     </div>
 
-                                    <tablapilares
-                                        :pilar="selectedPilar"
-                                        v-if="template === 'open'"
-                                    />
+                                    <tablapilares :pilar="selectedPilar" v-if="template === 'open'" />
                                     <!-- <br> -->
-                                    <div
-                                        class="grid sm:grid-cols-1 md:grid-cols-2 gap-4 bg-gray-300 h-screen"
-                                    >
+                                    <div class="grid sm:grid-cols-1 md:grid-cols-2 gap-4 bg-gray-300 h-screen">
                                         <div class="bg-gray-300">
-                                            <h2
-                                                class="text-center py-4 font-bold text-3xl"
-                                            >
+                                            <h2 class="text-center py-4 font-bold text-3xl">
                                                 Autoevaluación
                                             </h2>
-                                            <div
-                                                v-if="
-                                                    !loading && lastAssessment
-                                                "
-                                            >
-                                                <Radar
-                                                    :evaluacion="lastAssessment"
-                                                />
+                                            <div v-if="
+                                                !loading && lastAssessment
+                                            ">
+                                                <Radar :evaluacion="lastAssessment" />
                                             </div>
                                             <div v-else>Loading...</div>
                                         </div>
                                         <div class="bg-gray-300">
-                                            <h2
-                                                class="text-center py-4 font-bold text-3xl"
-                                            >
+                                            <h2 class="text-center py-4 font-bold text-3xl">
                                                 Objetivos
                                             </h2>
                                             <ul>
-                                                <li
-                                                    v-for="objetivo in objetivos"
-                                                    class="m-4 py-2 text-lg list-disc list-inside"
-                                                >
+                                                <li v-for="objetivo in objetivos"
+                                                    class="m-4 py-2 text-lg list-disc list-inside">
                                                     {{ objetivo.objetivo }}
                                                 </li>
                                             </ul>
@@ -286,67 +237,42 @@ const getEventos = async () => {
 
             <div class="flex h-screen justify-end">
                 <!-- Collapsible Panel -->
-                <div
-                    :class="[
-                        'transition-all duration-300 bg-gray-200 overflow-y-auto overflow-hidden',
-                        isCollapsed ? 'w-16' : 'w-96',
-                    ]"
-                    class="h-screen"
-                >
+                <div :class="[
+                    'transition-all duration-300 bg-gray-200 overflow-y-auto overflow-hidden',
+                    isCollapsed ? 'w-16' : 'w-96',
+                ]" class="h-screen">
                     <div class="p-4 flex flex-col items-center">
                         <!-- Toggle Button -->
-                        <button
-                            @click="togglePanel"
-                            :class="isCollapsed ? 'w-16' : 'w-96'"
-                            class="top-50 text-3xl"
-                            v-tooltip.left="'Abre la sección de Eventos '"
-                        >
-                            <span
-                                class="pi pi-calendar text-slate-800 font-bold shadow"
-                            ></span>
+                        <button @click="togglePanel" :class="isCollapsed ? 'w-16' : 'w-96'" class="top-50 text-3xl"
+                            v-tooltip.left="'Abre la sección de Eventos '">
+                            <span class="pi pi-calendar text-slate-800 font-bold shadow"></span>
                         </button>
 
                         <!-- Panel Content -->
-                        <div
-                            v-show="!isCollapsed"
-                            class="py-6 w-full flex justify-center"
-                        >
+                        <div v-show="!isCollapsed" class="py-6 w-full flex justify-center">
                             <VCalendar :attributes="attrs" />
                         </div>
-                        <ul
-                            v-show="!isCollapsed"
-                            class="mt-2 text-sm w-full h-full"
-                        >
+                        <ul v-show="!isCollapsed" class="mt-2 text-sm w-full h-full">
                             <li v-for="evento in eventos" class="">
                                 <div class="flex flex-col md:flex-row">
-                                    <div
-                                        class="p-4 font-normal text-gray-800 w-full"
-                                    >
-                                        <h3
-                                            class="mb-4 text-base font-bold leading-none tracking-tight text-gray-800"
-                                        >
+                                    <div class="p-4 font-normal text-gray-800 w-full">
+                                        <h3 class="mb-4 text-base font-bold leading-none tracking-tight text-gray-800">
                                             {{ evento.titulo }}
                                         </h3>
                                         <h4
-                                            class="mb-4 text-sm font-bold leading-none tracking-tight text-gray-800 text-right"
-                                        >
+                                            class="mb-4 text-sm font-bold leading-none tracking-tight text-gray-800 text-right">
                                             {{ evento.fecha_inicio }}
                                         </h4>
                                         <p class="leading-normal">
                                             {{ evento.descripcion }}
                                         </p>
-                                        <div
-                                            class="flex flex-row items-center mt-4 text-gray-700"
-                                        >
+                                        <div class="flex flex-row items-center mt-4 text-gray-700">
                                             <div class="w-1/2">
                                                 {{ evento.area.nombre }}
-                                                <div
-                                                    :style="{
-                                                        backgroundColor:
-                                                            evento.area.color,
-                                                    }"
-                                                    class="w-full h-2"
-                                                ></div>
+                                                <div :style="{
+                                                    backgroundColor:
+                                                        evento.area.color,
+                                                }" class="w-full h-2"></div>
                                             </div>
                                         </div>
                                     </div>
