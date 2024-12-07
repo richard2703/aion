@@ -176,7 +176,7 @@ const getEventos = async () => {
                                         </div>
                                         <div class="bg-gray-300">
                                             <button @click="getPilar(2)">
-                                                <img class="w-full" src="../../img/metromaps/TI.jpg" alt="" />
+                                                <img class="w-full" src="../../img/metromaps/Ti.jpg" alt="" />
                                             </button>
                                         </div>
                                         <div class="bg-gray-300">
