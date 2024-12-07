@@ -18,8 +18,6 @@ const banner_path = ref();
 const proposito = ref();
 const slogan = ref();
 const actuacion = ref();
-const template = ref('');
-const selectedPilar = ref(null);
 const lastAssessment = ref({});
 const loading = ref(true);
 
@@ -38,16 +36,6 @@ const getItem = () => {
         .catch((error) => {
             console.error('Error fetching item:', error);
         });
-};
-
-const getPilar = async (pilar) => {
-    if (template.value === 'open' && selectedPilar.value === pilar) {
-        template.value = 'close';
-        return;
-    }
-    template.value = 'open';
-    selectedPilar.value = pilar;
-
 };
 
 const getLastAssessment = async () => {

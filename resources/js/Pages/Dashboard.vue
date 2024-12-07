@@ -20,7 +20,7 @@ import HomeTab from "@/Components/v2/HomeTab.vue";
                                 <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                                     
                                     <!-- Gente y cultura -->
-                                    <Link :href="route('MetroMapDetail')">
+                                    <Link :href="route('metromap', 1)">
                                         <div class="shadow-md flex items-center justify-center p-7 w-24 h-24  transition ease-in-out delay-0 hover:-translate-y-1 hover:scale-110 bg-white border hover:bg-orange-400 cursor-pointer border-gray-200 rounded-full">
                                             <svg id="Group_132" data-name="Group 132" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="52.799" height="80.091" viewBox="0 0 52.799 80.091">
                                                 <defs>
@@ -37,7 +37,7 @@ import HomeTab from "@/Components/v2/HomeTab.vue";
                                         </div>
                                     </Link>
                                     <!-- T.I -->
-                                    <Link :href="route('MetroMapDetail')">
+                                    <Link :href="route('metromap', 2)">
                                         <div class="shadow-md flex items-center justify-center p-7 w-24 h-24 transition ease-in-out delay-0 hover:-translate-y-1 hover:scale-110 bg-white border hover:bg-blue-400 cursor-pointer border-gray-200 rounded-full">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="57.477" height="43.107" viewBox="0 0 57.477 43.107">
                                                 <g id="wifi-svgrepo-com" transform="translate(0 -3)">
@@ -49,7 +49,7 @@ import HomeTab from "@/Components/v2/HomeTab.vue";
                                         </div>
                                     </Link>
                                     <!-- Ventas -->
-                                    <Link :href="route('MetroMapDetail')">
+                                    <Link :href="route('metromap', 3)">
                                         <div class="shadow-md flex items-center justify-center p-7 w-24 h-24 transition ease-in-out delay-0 hover:-translate-y-1 hover:scale-110 bg-white border hover:bg-red-400 cursor-pointer border-gray-200 rounded-full">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="60.501" height="51.911" viewBox="0 0 60.501 51.911">
                                                 <g id="sales-amount-svgrepo-com" transform="translate(-0.001 -71.68)">
@@ -62,7 +62,7 @@ import HomeTab from "@/Components/v2/HomeTab.vue";
                                         </div>
                                     </Link>
                                     <!-- Operaciones -->
-                                    <Link :href="route('MetroMapDetail')">
+                                    <Link :href="route('metromap', 4)">
                                         <div class="shadow-md flex items-center justify-center p-7 w-24 h-24 transition ease-in-out delay-0 hover:-translate-y-1 hover:scale-110 bg-white border hover:bg-green-400 cursor-pointer border-gray-200 rounded-full">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60">
                                                 <g id="operations-record-svgrepo-com" transform="translate(0.123 0.123)">
@@ -78,7 +78,7 @@ import HomeTab from "@/Components/v2/HomeTab.vue";
                                         </div>
                                     </Link>
                                     <!-- Administración -->
-                                    <Link :href="route('MetroMapDetail')">
+                                    <Link :href="route('metromap', 5)">
                                         <div class="shadow-md flex items-center justify-center p-7 w-24 h-24 transition ease-in-out delay-0 hover:-translate-y-1 hover:scale-110 bg-white border hover:bg-gray-400 cursor-pointer border-gray-200 rounded-full">
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="61.156" height="71.286" viewBox="0 0 61.156 71.286">
                                                 <defs>

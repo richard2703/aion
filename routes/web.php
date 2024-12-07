@@ -18,9 +18,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
-    Route::get('/metromap', function () {
-        return Inertia::render('MetroMap/MetroMapDetail');
-    })->name('MetroMapDetail');
+    Route::get('/metromap/{id}', [App\Http\Controllers\areaController::class, 'metromap'])->name('metromap');
 
 
     Route::get('/test', [App\Http\Controllers\testController::class, 'primero'])->name('test.primero');

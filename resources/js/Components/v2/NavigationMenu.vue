@@ -9,6 +9,7 @@ const emit = defineEmits(['update:modelValue']); // Evento para actualizar el va
 
 // Variable para manejar la sección activa
 const selectedSection = ref('flujoDeValor'); // Sección por defecto
+selectedSection.value = props.modelValue || 'flujoDeValor'
 
 // Función para manejar la selección de una sección
 const toggleSection = (section) => {
@@ -73,7 +74,7 @@ const toggleSection = (section) => {
         class="flex items-center text-md font-regular hover:text-gray-600"
       >
         <svg 
-          :class="{'rotate-90': selectedSection === 'procedimientos'}" 
+          :class="{'rotate-90': selectedSection === 'procedimiento'}" 
           class="w-5 h-5 transform transition-transform duration-200" 
           viewBox="0 0 24 24"
         >

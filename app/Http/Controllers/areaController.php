@@ -93,4 +93,12 @@ class areaController extends Controller
         $area->delete();
         return response()->json(['areas' => Area::all()]);
     }
+
+    function metromap($id)
+    {
+        return Inertia::render('MetroMap/MetroMapDetail', [
+            'pilar' => Area::find($id),
+            'pilar_id' => $id,
+        ]);
+    }
 }

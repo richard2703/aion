@@ -6,15 +6,12 @@ import { ref, computed } from 'vue';
 const props = defineProps({
   items: {
     type: Array,
-    default: () => [],
   },
   columns: {
     type: Array,
-    default: () => [
-      { field: 'name', header: 'Nombre' },
-      { field: 'execution', header: 'Ejecución' },
-      { field: 'documentation', header: 'Documentación' },
-    ],
+  },
+  onClick: {
+    type: Function,
   },
 });
 
@@ -78,13 +75,12 @@ const nextPage = () => {
   
       <!-- Table Rows -->
       <div
-        v-for="(item, index) in paginatedItems"
+        v-for="item in items"
         :key="index"
+        @click="props.onClick(item)"
         class="grid grid-cols-3 items-center py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100"
       >
-        <div class="px-4">{{ item.name }}</div>
-        <div class="px-4">{{ item.execution }}</div>
-        <div class="px-4">{{ item.documentation }}</div>
+        <div class="px-4" v-for="column in columns">{{ column.parse ? column.parse(item[column.key]) : item[column.key] }}</div>
       </div>
     </div>
     
