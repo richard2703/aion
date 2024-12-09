@@ -1,185 +1,493 @@
 <template>
-    <div class="bg-general">
-        <div id="dropdown" />
-        <div class="md:flex md:flex-col">
-            <div class="md:flex md:flex-col md:h-screen">
-                <div class="md:flex md:shrink-0">
+    <div class="flex flex-col h-screen">
+        <!-- Header -->
+        <header
+            class="flex items-center justify-between bg-gray-800 text-white p-4"
+        >
+            <div class="flex items-center gap-4">
+                <button @click="isOpen = !isOpen" class="text-white md:hidden">
+                    <i class="pi pi-bars text-2xl"></i>
+                </button>
+                <Link href="/" class="flex items-center gap-2">
+                    <Logo class="h-10" />
+                    <span class="text-lg font-bold">AION Business</span>
+                </Link>
+            </div>
+            <nav class="flex items-center gap-4">
+                <div class="relative">
+                    <button
+                        class="relative text-gray-300 hover:text-white"
+                        @click="toggleNotificationMenu"
+                    >
+                        <i class="pi pi-bell text-xl"></i>
+                        <span
+                            v-if="countNotifications"
+                            class="absolute top-0 right-0 bg-red-500 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full"
+                            >{{ countNotifications }}</span
+                        >
+                    </button>
+                </div>
+                <div class="relative">
+                    <button
+                        @click="toggleProfileMenu"
+                        class="flex items-center gap-2"
+                    >
+                        <i
+                            :class="[
+                                'pi',
+                                profileMenuOpen
+                                    ? 'pi-chevron-up'
+                                    : 'pi-chevron-down',
+                            ]"
+                        ></i>
+                    </button>
+
                     <div
-                        class="flex items-center justify-between  bg-neutral-900 md:shrink-0 md:justify-center md:w-56">
-                        <Link class="mt-1" href="/">
-                        <logo class="fill-white m-1" width="150" height="150" />
-                        </Link>
-                        <dropdown class="md:hidden float-right" placement="bottom-end">
-                            <template #default>
-                                <svg class="w-6 h-6 fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
-                                </svg>
-                            </template>
-                            <template #dropdown>
-                                <div class="mt-2 px-8 py-4 bg-neutral-800 rounded shadow-lg">
-                                    <main-menu :title="titulo" :subTitle="subTitulo" />
-                                </div>
-                            </template>
-                        </dropdown>
-                    </div>
-                    <!-- notifications -->
-                    <div
-                        class="md:text-md flex items-center justify-between p-2 w-full text-sm bg-white border-b md:px-2 md:py-0 ">
-                        <div>
-                            <dropdown class="mt-1 float-right" placement="bottom-end">
-                                <template #default>
-                                    <div class="group flex items-center cursor-pointer select-none">
-                                        <div class="relative m-6 inline-flex w-fit">
-                                            <!-- bolita roja -->
-                                            <div v-if="countNotifications > 0"
-                                                class="absolute bottom-auto left-auto right-0 top-0 z-10 inline-block -translate-y-1/2 translate-x-2/4 rotate-0 skew-x-0 skew-y-0 scale-x-50 scale-y-50 rounded-full bg-red-600 p-2.5 text-xs">
-                                            </div>
-
-                                            <div
-                                                class="flex items-center justify-center rounded-lg bg-primary-500 p-2 text-center text-white shadow-lg dark:text-gray-200">
-                                                <span class="[&>svg]:h-10 [&>svg]:w-10">
-                                                    <i class="pi pi-bell text-slate-600" style="font-size: 2vh" />
-
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </template>
-                                <template #dropdown>
-                                    <div class="mt-2 text-sm bg-white rounded shadow-xl">
-                                        <div class="block flex justify-end">
-                                            <Link
-                                                class="px-2 py-1 hover:bg-blue-50 text-sm text-blue-500 position-fixed hover:text-blue-300"
-                                                @click="markAsRead">
-                                            marcarcon como leido
-                                            </Link>
-                                            <Link
-                                                class="px-2 py-1 hover:bg-blue-50 text-sm text-blue-500 position-fixed hover:text-blue-300"
-                                                @click="deleteReaded">
-                                            Borrar leidos
-                                            </Link>
-                                        </div>
-                                        <div v-for="notification in userNotifications">
-
-                                            <Link v-if="notification.readed == 0"
-                                                class="block px-6 py-2 hover:text-white hover:bg-neutral-500"
-                                                :href="notification.link">
-                                            {{ notification.titulo }}
-                                            </Link>
-                                            <Link v-if="notification.readed == 1"
-                                                class="block px-6 py-2 text-white bg-neutral-400 hover:bg-neutral-500"
-                                                :href="notification.link">
-                                            {{ notification.titulo }} &nbsp;&nbsp;&nbsp; ✅
-                                            </Link>
-                                        </div>
-                                    </div>
-                                </template>
-                            </dropdown>
+                        v-if="notificationMenuOpen"
+                        class="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded shadow-lg"
+                    >
+                        <h3
+                            class="px-4 py-2 border-b bg-gray-800 text-sm text-gray-100"
+                        >
+                            Notificaciones
+                        </h3>
+                        <div class="mt-2 text-sm bg-white rounded shadow-xl">
+                            <div class="block flex justify-end">
+                                <Link
+                                    class="px-2 py-1 hover:bg-blue-50 text-xs text-blue-500 position-fixed hover:text-blue-300"
+                                    @click="markAsRead"
+                                >
+                                    marcarcon como leido
+                                </Link>
+                                <Link
+                                    class="px-2 py-1 hover:bg-blue-50 text-xs text-blue-500 position-fixed hover:text-blue-300"
+                                    @click="deleteReaded"
+                                >
+                                    Borrar leidos
+                                </Link>
+                            </div>
+                            <div v-for="notification in userNotifications">
+                                <Link
+                                    v-if="notification.readed == 0"
+                                    class="block px-6 py-2 hover:text-white hover:bg-neutral-500"
+                                    :href="notification.link"
+                                >
+                                    {{ notification.titulo }}
+                                </Link>
+                                <Link
+                                    v-if="notification.readed == 1"
+                                    class="flex justify-between block px-6 py-2 text-white bg-neutral-400 hover:bg-neutral-500"
+                                    :href="notification.link"
+                                >
+                                    <span>
+                                        {{ notification.titulo }}
+                                    </span>
+                                    <span> ✅ </span>
+                                </Link>
+                            </div>
                         </div>
                     </div>
-                    <!-- original -->
                     <div
-                        class="md:text-md flex items-center justify-between p-4 w-full text-sm bg-white border-b md:px-12 md:py-0">
-                        <div class="mr-4 mt-1">{{ }}</div>
-                        <dropdown class="mt-1 float-right" placement="bottom-end">
-                            <template #default>
-                                <div class="group flex items-center cursor-pointer select-none">
-                                    <div
-                                        class="mr-1 text-gray-700 group-hover:text-indigo-600 focus:text-indigo-600 whitespace-nowrap">
-                                        <!-- <span>{{ auth.user.first_name }}</span> -->
-                                        <span>
-                                            {{ $page.props.auth.user.user.name }}
-                                        </span>
+                        v-if="profileMenuOpen"
+                        class="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded shadow-lg"
+                    >
+                        <h3
+                            class="px-4 py-2 border-b bg-gray-800 text-gray-100"
+                        >
+                            {{ $page.props.auth.user.user.name }}
+                        </h3>
 
-                                        <!-- <span class="hidden md:inline">&nbsp;{{ auth.user.last_name }}</span> -->
-                                    </div>
-                                    <icon
-                                        class="w-5 h-5 fill-gray-700 group-hover:fill-indigo-600 focus:fill-indigo-600"
-                                        name="cheveron-down" />
-                                </div>
-                            </template>
-                            <template #dropdown>
-                                <div class="mt-2 py-2 text-sm bg-white rounded shadow-xl">
-                                    <!-- <Link class="block px-6 py-2 hover:text-white hover:bg-neutral-500" :href="`/users/${auth.user.id}/edit`">My Profile</Link> -->
-
-                                    <Link class="block px-6 py-2 hover:text-white hover:bg-neutral-500"
-                                        href="/user/profile"><i class="pi pi-user mr-2"></i> Perfil</Link>
-                                    <Link class="block px-6 py-2 hover:text-white hover:bg-neutral-500"
-                                        href="/tareas/mis-tareas"><i class="pi pi-list mr-2"></i> Mis Tareas</Link>
-                                    <Link class="block px-6 py-2 w-full text-left hover:text-white hover:bg-neutral-500"
-                                        href="/logout" method="post" as="button"><i
-                                        class="pi pi-sign-out mr-2"></i>Cerrar sesión</Link>
-                                </div>
-                            </template>
-                        </dropdown>
+                        <Link
+                            class="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                            href="/user/profile"
+                            >Perfil de Usuario</Link
+                        >
+                        <Link
+                            class="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                            href="/tareas/mis-tareas"
+                            >Mis Tareas</Link
+                        >
+                        <Link
+                            class="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                            href="/logout"
+                            method="post"
+                            as="button"
+                            >Cerrar sesión</Link
+                        >
                     </div>
                 </div>
-                <div class="md:flex md:grow md:overflow-hidden">
-                    <main-menu class="hidden shrink-0 p-4 w-56 bg-neutral-800 overflow-y-auto no-scrollbar md:block"
-                        :title="titulo" :subTitle="subTitulo" />
-                    <div class="px-2 py-4 md:flex-1 md:p-4 md:overflow-y-auto" scroll-region>
-                        <slot />
+            </nav>
+        </header>
+
+        <!-- Content Area -->
+        <div class="flex flex-1 h-full mb-4">
+            <!-- Sidebar -->
+            <div
+                :class="[
+                    'bg-gray-800 text-white w-64 p-4',
+                    { hidden: !isOpen, block: isOpen },
+                    'md:block',
+                    'z-50',
+                    'md:static',
+                    'absolute',
+                    'h-screen overflow-auto',
+                    'mb-4',
+                ]"
+            >
+                <nav class="flex flex-col space-y-2">
+                    <div v-for="item in filteredMenu" :key="item.label">
+                        <button
+                            @click="
+                                item.children
+                                    ? toggleSubmenu(item)
+                                    : $inertia.visit(route(`${item.route}`))
+                            "
+                            class="flex items-center justify-between p-2 rounded-md hover:bg-gray-700 hover:text-[#dfb569] w-full"
+                        >
+                            <div class="flex items-center gap-3">
+                                <i :class="item.icon" class="pi w-5 h-5"></i>
+                                <span
+                                    :class="
+                                        openMenus.includes(item)
+                                            ? 'text-[#dfb569]'
+                                            : ''
+                                    "
+                                    >{{ item.label }}</span
+                                >
+                            </div>
+                            <i
+                                v-if="item.children"
+                                :class="[
+                                    'pi',
+                                    openMenus.includes(item)
+                                        ? 'pi-chevron-down'
+                                        : 'pi-chevron-right',
+                                ]"
+                                class="transition-transform"
+                            ></i>
+                        </button>
+                        <div
+                            v-if="item.children && openMenus.includes(item)"
+                            class="pl-6 space-y-2 max-h-screen"
+                        >
+                            <button
+                                v-for="child in item.children"
+                                :key="child.label"
+                                @click="
+                                    child.label === 'Capacitacion'
+                                        ? navigate(
+                                              'https://laproductivitycenter.com'
+                                          )
+                                        : $inertia.visit(
+                                              route(`${child.route}`)
+                                          )
+                                "
+                                class="flex items-center gap-3 p-2 rounded-md hover:bg-gray-700"
+                            >
+                                <i :class="child.icon" class="pi w-5 h-5"></i>
+                                <span>{{ child.label }}</span>
+                            </button>
+                        </div>
                     </div>
-                </div>
+                </nav>
+            </div>
+
+            <!-- Main content -->
+            <div class="flex-1 bg-gray-100 p-6 overflow-auto">
+                <main>
+                    <slot />
+                </main>
             </div>
         </div>
     </div>
-
 </template>
 
-<script>
-import { ref, onMounted } from "vue";
-import axios from "axios";
-import { Link } from "@inertiajs/vue3";
-import Icon from "@/Layouts/Shared/Icon.vue";
-import Logo from "@/Layouts/Shared/Logo.vue";
-import Dropdown from "@/Layouts/Shared/Dropdown.vue";
-import MainMenu from "@/Layouts/Shared/MainMenu.vue";
-import "../../css/general.css";
+<script setup>
+import { onMounted, ref } from "vue";
+import Logo from "./Shared/Logo.vue";
+import { Link, usePage } from "@inertiajs/vue3";
 
-export default {
-    components: {
-        Dropdown,
-        Icon,
-        Link,
-        Logo,
-        MainMenu,
+const isOpen = ref(false);
+const profileMenuOpen = ref(false);
+const notificationMenuOpen = ref(false);
+const openMenus = ref([]);
+const userAuth = usePage().props.auth.user.roles;
+
+const menuItems = [
+    {
+        label: "Alineacion",
+        route: "dashboard",
+        icon: "",
+        role: ["admin", "user", "superadmin", "lider_pilar"],
     },
-    props: {
-        titulo: String,
-        subTitulo: String,
+    {
+        label: "Identificacion",
+        icon: "",
+        role: ["admin", "superadmin", "user"],
+        children: [
+            {
+                label: "Evaluaciones",
+                route: "evaluacion.index",
+                icon: "",
+                role: ["lider_pilar", "admin", "superadmin", "user"],
+            },
+            {
+                label: "Metas (30 60 90)",
+                route: "metas.index",
+                icon: "",
+                role: ["admin", "superadmin", "user"],
+            },
+            {
+                label: "Mis Metas (30 60 90)",
+                route: "Mismetas.index",
+                icon: "",
+                role: ["admin", "superadmin", "user"],
+            },
+            {
+                label: "Mis Reportes",
+                route: "misreporte.index",
+                icon: "",
+                role: ["admin", "superadmin", "user"],
+            },
+            {
+                label: "Desperdicios",
+                route: "desperdicio.index",
+                icon: "",
+                role: ["admin", "superadmin", "user"],
+            },
+        ],
     },
-    setup() {
-        const userNotifications = ref([]);
-        const countNotifications = ref(0);
-        const getNotifications = async () => {
-            try {
-                const response = await axios.get(route("notificaciones.getByUser"));
-                userNotifications.value = response.data;
-                countNotifications.value = response.data.filter((notification) => notification.readed == 0).length
-
-            } catch (error) {
-                console.error("Error fetching notifications:", error);
-            }
-        };
-
-        onMounted(() => {
-            getNotifications();
-        });
-
-        return {
-            userNotifications, countNotifications
-        };
+    {
+        label: "Optimizacion",
+        icon: "",
+        role: ["admin", "superadmin", "user"],
+        children: [
+            {
+                label: "Dashboard",
+                route: "sysgestion.dashboard",
+                icon: "",
+                role: ["admin", "superadmin", "user"],
+            },
+            {
+                label: "PDCA",
+                route: "sysgestion.index",
+                icon: "",
+                role: ["admin", "superadmin", "user"],
+            },
+            {
+                label: "Minutas",
+                route: "minutas.index",
+                icon: "",
+                role: ["admin", "superadmin", "user"],
+            },
+            {
+                label: "Reportes",
+                route: "reporte.index",
+                icon: "",
+                role: ["admin", "superadmin", "user"],
+            },
+            {
+                label: "Mis Reportes",
+                route: "misreporte.index",
+                icon: "",
+                role: ["admin", "superadmin", "user"],
+            },
+            {
+                label: "ScoreCard",
+                route: "scoreCard.index",
+                icon: "",
+                role: ["admin", "superadmin", "user"],
+            },
+        ],
     },
-    methods: {
-        async markAsRead() {
-            await axios.get(route("notificaciones.markAsRead"));
-        },
-        async deleteReaded() {
-
-            await axios.get(route("notificaciones.deleteReaded"));
-        },
+    {
+        label: "Networking",
+        icon: "",
+        role: ["admin", "user", "superadmin"],
+        children: [
+            {
+                label: "Capacitacion",
+                route: "https://laproductivitycenter.com",
+                icon: "",
+                role: ["admin", "user", "superadmin", "lider_pilar"],
+            },
+        ],
     },
+    {
+        label: "Configuraciones",
+        icon: "",
+        role: ["admin", "superadmin"],
+        children: [
+            {
+                label: "Pilares",
+                route: "area.index",
+                icon: "",
+                role: ["admin", "superadmin"],
+            },
+            {
+                label: "Flujos de valor",
+                route: "departamento.index",
+                icon: "",
+                role: ["admin", "superadmin"],
+            },
+            {
+                label: "Usuarios",
+                route: "user.index",
+                icon: "",
+                role: ["admin", "superadmin"],
+            },
+            {
+                label: "Líderes de flujo",
+                route: "encargadoFlujo.index",
+                icon: "",
+                role: ["admin", "superadmin"],
+            },
+            {
+                label: "Tipos de Desperdicios",
+                route: "tiposDesperdicios.index",
+                icon: "",
+                role: ["admin", "superadmin"],
+            },
+            {
+                label: "Eventos",
+                route: "eventos.index",
+                icon: "",
+                role: ["superadmin"], // TODO: LIMITAR A SUPERADMIN Y LIDER_PILAR ( PRINCIPALMENTE A GYC)
+            },
+            {
+                label: "Secciones",
+                route: "seccion.index",
+                icon: "",
+                role: ["superadmin"],
+            },
+            {
+                label: "Challenges",
+                route: "challenge.index",
+                icon: "",
+                role: ["superadmin"],
+            },
+            {
+                label: "Opciones",
+                route: "opcion.index",
+                icon: "",
+                role: ["superadmin"],
+            },
+            {
+                label: "Configuración de Alineación",
+                route: "config.index",
+                icon: "",
+                role: ["admin", "superadmin"],
+            },
+            {
+                label: "Objetivo",
+                route: "objetivo.index",
+                icon: "",
+                role: ["admin", "superadmin"],
+            },
+            {
+                label: "Procesos",
+                route: "proceso.index",
+                icon: "",
+                role: ["admin", "superadmin"],
+            },
+            {
+                label: "Procedimientos",
+                route: "procedimiento.index",
+                icon: "",
+                role: ["admin", "superadmin"],
+            },
+            {
+                label: "Estandares",
+                route: "estandar.index",
+                icon: "",
+                role: ["admin", "superadmin"],
+            },
+            {
+                label: "KPI's",
+                route: "kpi.index",
+                icon: "",
+                role: ["admin", "superadmin"],
+            },
+            {
+                label: "Roles",
+                route: "roles.index",
+                icon: "",
+                role: ["admin", "superadmin"],
+            },
+            {
+                label: "Permisos",
+                route: "permisos.index",
+                icon: "",
+                role: ["admin", "superadmin"],
+            },
+        ],
+    },
+];
+const userNotifications = ref([]);
+const countNotifications = ref(0);
 
+onMounted(() => {
+    getNotifications();
+});
+
+function navigate(route) {
+    window.open(route, "_blank").focus();
+    // Use your router here, e.g., router.push(route)
+}
+
+function toggleSubmenu(item) {
+    if (openMenus.value.includes(item)) {
+        openMenus.value = openMenus.value.filter((i) => i !== item);
+    } else {
+        openMenus.value.push(item);
+    }
+}
+
+function toggleProfileMenu() {
+    profileMenuOpen.value = !profileMenuOpen.value;
+    notificationMenuOpen.value = false;
+}
+
+function toggleNotificationMenu() {
+    notificationMenuOpen.value = !notificationMenuOpen.value;
+    profileMenuOpen.value = false;
+}
+
+function logout() {
+    console.log("Logging out");
+    // Implement logout logic
+}
+
+// const hasRole = (role) => roles.includes(role);
+// Función para filtrar el menú según roles
+const filterMenuByRole = (menu, roles) => {
+    return menu
+        .filter((item) => item.role.some((role) => roles.includes(role))) // Filtra elementos con roles válidos
+        .map((item) => ({
+            ...item,
+            children: item.children
+                ? filterMenuByRole(item.children, roles)
+                : undefined, // Filtra hijos recursivamente
+        }))
+        .filter((item) => !item.children || item.children.length > 0); // Remueve padres sin hijos válidos
+};
+const filteredMenu = filterMenuByRole(menuItems, userAuth);
+
+const getNotifications = async () => {
+    try {
+        const response = await axios.get(route("notificaciones.getByUser"));
+        userNotifications.value = response.data;
+        countNotifications.value = response.data.filter(
+            (notification) => notification.readed == 0
+        ).length;
+    } catch (error) {
+        console.error("Error fetching notifications:", error);
+    }
 };
 </script>
+
+<style>
+body {
+    @apply antialiased;
+}
+</style>
