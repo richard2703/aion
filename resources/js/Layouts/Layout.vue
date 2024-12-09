@@ -124,7 +124,8 @@
             <!-- Sidebar -->
             <div
                 :class="[
-                    'bg-gray-800 text-white w-64 p-4',
+                    'bg-gray-800 text-white w-48 p-4',
+
                     { hidden: !isOpen, block: isOpen },
                     'md:block',
                     'z-50',
@@ -142,10 +143,10 @@
                                     ? toggleSubmenu(item)
                                     : $inertia.visit(route(`${item.route}`))
                             "
-                            class="flex items-center justify-between p-2 rounded-md hover:bg-gray-700 hover:text-[#dfb569] w-full"
+                            class="flex text-left items-center justify-between p-2 rounded-md hover:bg-gray-700 hover:text-[#dfb569] w-full"
                         >
-                            <div class="flex items-center gap-3">
-                                <i :class="item.icon" class="pi w-5 h-5"></i>
+                            <div class="flex items-center gap-1">
+                                <!-- <i :class="item.icon" class="pi w-5 h-5"></i> -->
                                 <span
                                     :class="
                                         openMenus.includes(item)
@@ -182,7 +183,7 @@
                                               route(`${child.route}`)
                                           )
                                 "
-                                class="flex items-center gap-3 p-2 rounded-md hover:bg-gray-700"
+                                class="flex text-left w-full gap-3 p-2 rounded-md hover:bg-gray-700 hover:text-[#dfb569]"
                             >
                                 <i :class="child.icon" class="pi w-5 h-5"></i>
                                 <span>{{ child.label }}</span>

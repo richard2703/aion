@@ -4,6 +4,7 @@ import { Head, Link } from "@inertiajs/vue3";
 import Layout from "@/Layouts/Layout.vue";
 import tablapilares from "@/Pages/utils/tablapilares.vue";
 import Radar from "./Evaluacion/Chart/Radar.vue";
+import Modal from "@/Components/Modal.vue";
 
 onMounted(() => {
     getLastAssessment();
@@ -105,6 +106,15 @@ const getEventos = async () => {
         console.error("Error fetching events:", error);
     }
 };
+
+const selectedDate = ref(null); // Para almacenar la fecha seleccionada
+const showModal = ref(false); // Controla la visibilidad del modal
+
+// Función para manejar el clic en una fecha
+const handleDateClick = ({ date }) => {
+    selectedDate.value = date;
+    showModal.value = true;
+};
 </script>
 
 <template>
@@ -185,14 +195,14 @@ const getEventos = async () => {
                                         </div>
                                     </div>
                                     <div
-                                        class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 bg-gray-300"
+                                        class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 bg-gray-300"
                                     >
                                         <div class="bg-gray-300">
                                             <!-- <h2 class="text-center py-4 font-bold text-3xl">Metromap</h2> -->
                                             <button @click="getPilar(1)">
                                                 <img
                                                     class="w-full"
-                                                    src="../../img/metromaps/gyc.jpg"
+                                                    src="../../img/metromaps/GenteYCultura.jpg"
                                                     alt=""
                                                 />
                                             </button>
@@ -202,6 +212,15 @@ const getEventos = async () => {
                                                 <img
                                                     class="w-full"
                                                     src="../../img/metromaps/ti.jpg"
+                                                    alt=""
+                                                />
+                                            </button>
+                                        </div>
+                                        <div class="bg-gray-300">
+                                            <button @click="getPilar(23)">
+                                                <img
+                                                    class="w-full"
+                                                    src="../../img/metromaps/DNP.jpg"
                                                     alt=""
                                                 />
                                             </button>
@@ -219,7 +238,7 @@ const getEventos = async () => {
                                             <button @click="getPilar(4)">
                                                 <img
                                                     class="w-full"
-                                                    src="../../img/metromaps/ops.jpg"
+                                                    src="../../img/metromaps/Operaciones.jpg"
                                                     alt=""
                                                 />
                                             </button>
@@ -228,7 +247,7 @@ const getEventos = async () => {
                                             <button @click="getPilar(5)">
                                                 <img
                                                     class="w-full"
-                                                    src="../../img/metromaps/admin.jpg"
+                                                    src="../../img/metromaps/Admon.jpg"
                                                     alt=""
                                                 />
                                             </button>
@@ -311,9 +330,73 @@ const getEventos = async () => {
                             v-show="!isCollapsed"
                             class="py-6 w-full flex justify-center"
                         >
-                            <VCalendar :attributes="attrs" />
+                            <VDatePicker
+                                :attributes="attrs"
+                                @dayclick="handleDateClick"
+                            />
                         </div>
-                        <ul
+
+                        <Modal :show="showModal" maxWidth="lg">
+                            <div
+                                class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full"
+                            >
+                                <div class="flex flex-col w-full md:flex-row">
+                                    <div
+                                        class="p-4 font-normal text-gray-800 w-full"
+                                    >
+                                        <h1
+                                            class="mb-4 text-4xl font-bold leading-none tracking-tight text-gray-800"
+                                        >
+                                            alñskdf
+                                        </h1>
+                                        <h2
+                                            class="mb-4 text-xl font-bold leading-none tracking-tight text-gray-800 text-right"
+                                        >
+                                            asdf
+                                        </h2>
+                                        <p class="leading-normal">asdfasdf</p>
+                                        <div
+                                            class="flex flex-row items-center mt-4 text-gray-700"
+                                        >
+                                            <div class="w-1/2">
+                                                asdfasd
+                                                <div
+                                                    :style="{
+                                                        backgroundColor:
+                                                            viewModal.event.area
+                                                                .color,
+                                                    }"
+                                                    class="w-full h-2"
+                                                ></div>
+                                            </div>
+                                            <div class="w-1/2 flex justify-end">
+                                                <img
+                                                    src="../../img/logos/logoAionBusiness_color.png"
+                                                    alt=""
+                                                    class="w-14"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex justify-end space-x-2">
+                                    <button
+                                        class="px-4 py-2 bg-slate-800 text-white rounded pi pi-times"
+                                        @click="closeviewModal"
+                                    ></button>
+                                    <button
+                                        class="px-4 py-2 bg-[#BEA34B] text-white rounded pi pi-pencil"
+                                        @click="showEditModal(viewModal.event)"
+                                    ></button>
+                                    <button
+                                        class="px-4 py-2 bg-red-500 text-white rounded pi pi-trash"
+                                        @click="deleteEvento(viewModal.event)"
+                                    ></button>
+                                </div>
+                            </div>
+                        </Modal>
+                        <!-- <ul
                             v-show="!isCollapsed"
                             class="mt-2 text-sm w-full h-full"
                         >
@@ -352,7 +435,7 @@ const getEventos = async () => {
                                     </div>
                                 </div>
                             </li>
-                        </ul>
+                        </ul> -->
                     </div>
                 </div>
             </div>
