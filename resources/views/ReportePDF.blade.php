@@ -172,6 +172,7 @@
                             <th colspan="2">
                                 <div class="departamento-header">
                                     <h3>{{ $reporte->departamento->nombre }}</h3>
+                                    <h4>{{ $reporte->usuario->name }}</h4>
                                 </div>
                             </th>
                         </tr>
