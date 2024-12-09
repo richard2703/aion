@@ -117,11 +117,11 @@ const getEventos = async () => {
                     <div class="breadcrumbsTitulo px-1">
                         <h3>Home</h3>
                     </div>
-                    <div class="breadcrumbs flex">
+                    <!-- <div class="breadcrumbs flex">
                         <Link :href="route('dashboard')" class="px-1">
                         <h3>Home</h3>
                         </Link>
-                    </div>
+                    </div> -->
                 </div>
 
                 <div class="py-2">
@@ -235,7 +235,7 @@ const getEventos = async () => {
                 </div>
             </div>
 
-            <div class="flex h-screen justify-end">
+            <div class="flex h-full justify-end">
                 <!-- Collapsible Panel -->
                 <div :class="[
                     'transition-all duration-300 bg-gray-200 overflow-y-auto overflow-hidden',
