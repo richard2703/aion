@@ -315,7 +315,7 @@ const menuItems = [
     },
     {
         label: "Configuraciones",
-        icon: "pi pi-cog",
+        icon: "",
         role: ["admin", "superadmin"],
         children: [
             {
