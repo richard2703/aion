@@ -284,7 +284,7 @@ const getEventos = async () => {
                 </div>
             </div>
 
-            <div class="flex h-screen justify-end">
+            <div class="flex h-full justify-end">
                 <!-- Collapsible Panel -->
                 <div
                     :class="[

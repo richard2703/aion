@@ -72,7 +72,7 @@
         </header>
 
         <!-- Content Area -->
-        <div class="flex flex-1">
+        <div class="flex flex-1 h-full">
             <!-- Sidebar -->
             <div
                 :class="[
@@ -81,7 +81,7 @@
                     'md:block',
                     'z-50',
                     'md:static',
-                    'sm:fixed',
+                    'absolute',
                     'h-screen',
                 ]"
             >
@@ -93,11 +93,18 @@
                                     ? toggleSubmenu(item)
                                     : $inertia.visit(route(`${item.route}`))
                             "
-                            class="flex items-center justify-between p-2 rounded-md hover:bg-gray-700 w-full"
+                            class="flex items-center justify-between p-2 rounded-md hover:bg-gray-700 hover:text-[#dfb569] w-full"
                         >
                             <div class="flex items-center gap-3">
                                 <i :class="item.icon" class="pi w-5 h-5"></i>
-                                <span>{{ item.label }}</span>
+                                <span
+                                    :class="
+                                        openMenus.includes(item)
+                                            ? 'text-[#dfb569]'
+                                            : ''
+                                    "
+                                    >{{ item.label }}</span
+                                >
                             </div>
                             <i
                                 v-if="item.children"
@@ -112,7 +119,7 @@
                         </button>
                         <div
                             v-if="item.children && openMenus.includes(item)"
-                            class="pl-6 space-y-2"
+                            class="pl-6 space-y-2 overflow-y-auto max-h-screen"
                         >
                             <button
                                 v-for="child in item.children"
@@ -163,27 +170,27 @@ const menuItems = [
             {
                 label: "Evaluaciones",
                 route: "evaluacion.index",
-                icon: "pi pi-circle",
+                icon: "",
             },
             {
                 label: "Metas (30 60 90)",
                 route: "metas.index",
-                icon: "pi pi-circle",
+                icon: "",
             },
             {
                 label: "Mis Metas (30 60 90)",
                 route: "Mismetas.index",
-                icon: "pi pi-circle",
+                icon: "",
             },
             {
                 label: "Mis Reportes",
                 route: "misreporte.index",
-                icon: "pi pi-circle",
+                icon: "",
             },
             {
                 label: "Desperdicios",
                 route: "desperdicio.index",
-                icon: "pi pi-circle",
+                icon: "",
             },
         ],
     },
@@ -194,32 +201,32 @@ const menuItems = [
             {
                 label: "Dashboard",
                 route: "sysgestion.dashboard",
-                icon: "pi pi-circle",
+                icon: "",
             },
             {
                 label: "PDCA",
                 route: "sysgestion.index",
-                icon: "pi pi-circle",
+                icon: "",
             },
             {
                 label: "Minutas",
                 route: "minutas.index",
-                icon: "pi pi-circle",
+                icon: "",
             },
             {
                 label: "Reportes",
                 route: "reporte.index",
-                icon: "pi pi-circle",
+                icon: "",
             },
             {
                 label: "Mis Reportes",
                 route: "misreporte.index",
-                icon: "pi pi-circle",
+                icon: "",
             },
             {
                 label: "ScoreCard",
                 route: "scoreCard.index",
-                icon: "pi pi-circle",
+                icon: "",
             },
         ],
     },
@@ -230,18 +237,7 @@ const menuItems = [
             {
                 label: "Capacitacion",
                 route: "https://laproductivitycenter.com",
-                icon: "pi pi-circle",
-            },
-        ],
-    },
-    {
-        label: "Administracion",
-        icon: "",
-        children: [
-            {
-                label: "ToDo",
-                route: "/",
-                icon: "pi pi-circle",
+                icon: "",
             },
         ],
     },
@@ -250,14 +246,94 @@ const menuItems = [
         icon: "pi pi-cog",
         children: [
             {
-                label: "Account Settings",
-                route: "/settings/account",
-                icon: "pi pi-user-edit",
+                label: "Pilares",
+                route: "area.index",
+                icon: "",
             },
             {
-                label: "Privacy Settings",
-                route: "/settings/privacy",
-                icon: "pi pi-lock",
+                label: "Flujos de valor",
+                route: "departamento.index",
+                icon: "",
+            },
+            {
+                label: "Usuarios",
+                route: "user.index",
+                icon: "",
+            },
+            {
+                label: "Líderes de flujo",
+                route: "encargadoFlujo.index",
+                icon: "",
+            },
+            {
+                label: "Tipos de Desperdicios",
+                route: "tiposDesperdicios.index",
+                icon: "",
+            },
+            {
+                label: "Eventos",
+                route: "eventos.index",
+                icon: "",
+            },
+            {
+                label: "Secciones",
+                route: "seccion.index",
+                icon: "",
+            },
+            {
+                label: "Challenges",
+                route: "challenge.index",
+                icon: "",
+            },
+            {
+                label: "Opciones",
+                route: "opcion.index",
+                icon: "",
+            },
+            {
+                label: "Configuración de Alineación",
+                route: "config.index",
+                icon: "",
+            },
+            {
+                label: "Objetivo",
+                route: "objetivo.index",
+                icon: "",
+            },
+            {
+                label: "Procesos",
+                route: "proceso.index",
+                icon: "",
+            },
+            {
+                label: "Procedimientos",
+                route: "procedimiento.index",
+                icon: "",
+            },
+            {
+                label: "Estandares",
+                route: "estandar.index",
+                icon: "",
+            },
+            {
+                label: "KPI's",
+                route: "kpi.index",
+                icon: "",
+            },
+            {
+                label: "Roles",
+                route: "roles.index",
+                icon: "",
+            },
+            {
+                label: "Permisos",
+                route: "permisos.index",
+                icon: "",
+            },
+            {
+                label: "",
+                route: "",
+                icon: "",
             },
         ],
     },
