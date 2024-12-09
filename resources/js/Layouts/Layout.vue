@@ -14,24 +14,24 @@
                 </Link>
             </div>
             <nav class="flex items-center gap-4">
-                <button class="relative text-gray-300 hover:text-white">
-                    <i class="pi pi-bell text-xl"></i>
-                    <span
-                        class="absolute top-0 right-0 bg-red-500 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full"
-                        >3</span
+                <div class="relative">
+                    <button
+                        class="relative text-gray-300 hover:text-white"
+                        @click="toggleNotificationMenu"
                     >
-                </button>
+                        <i class="pi pi-bell text-xl"></i>
+                        <span
+                            v-if="countNotifications"
+                            class="absolute top-0 right-0 bg-red-500 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full"
+                            >{{ countNotifications }}</span
+                        >
+                    </button>
+                </div>
                 <div class="relative">
                     <button
                         @click="toggleProfileMenu"
                         class="flex items-center gap-2"
                     >
-                        <!-- <img
-                            src="/profile.jpg"
-                            alt="Profile"
-                            class="w-8 h-8 rounded-full"
-                        /> -->
-
                         <i
                             :class="[
                                 'pi',
@@ -41,6 +41,52 @@
                             ]"
                         ></i>
                     </button>
+
+                    <div
+                        v-if="notificationMenuOpen"
+                        class="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded shadow-lg"
+                    >
+                        <h3
+                            class="px-4 py-2 border-b bg-gray-800 text-sm text-gray-100"
+                        >
+                            Notificaciones
+                        </h3>
+                        <div class="mt-2 text-sm bg-white rounded shadow-xl">
+                            <div class="block flex justify-end">
+                                <Link
+                                    class="px-2 py-1 hover:bg-blue-50 text-xs text-blue-500 position-fixed hover:text-blue-300"
+                                    @click="markAsRead"
+                                >
+                                    marcarcon como leido
+                                </Link>
+                                <Link
+                                    class="px-2 py-1 hover:bg-blue-50 text-xs text-blue-500 position-fixed hover:text-blue-300"
+                                    @click="deleteReaded"
+                                >
+                                    Borrar leidos
+                                </Link>
+                            </div>
+                            <div v-for="notification in userNotifications">
+                                <Link
+                                    v-if="notification.readed == 0"
+                                    class="block px-6 py-2 hover:text-white hover:bg-neutral-500"
+                                    :href="notification.link"
+                                >
+                                    {{ notification.titulo }}
+                                </Link>
+                                <Link
+                                    v-if="notification.readed == 1"
+                                    class="flex justify-between block px-6 py-2 text-white bg-neutral-400 hover:bg-neutral-500"
+                                    :href="notification.link"
+                                >
+                                    <span>
+                                        {{ notification.titulo }}
+                                    </span>
+                                    <span> ✅ </span>
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
                     <div
                         v-if="profileMenuOpen"
                         class="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded shadow-lg"
@@ -50,24 +96,24 @@
                         >
                             {{ $page.props.auth.user.user.name }}
                         </h3>
-                        <button
-                            @click="navigate('/profile')"
-                            class="w-full text-left px-4 py-2 hover:bg-gray-100"
+
+                        <Link
+                            class="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                            href="/user/profile"
+                            >Perfil de Usuario</Link
                         >
-                            Perfil de Usuario
-                        </button>
-                        <button
-                            @click="navigate('/settings')"
-                            class="w-full text-left px-4 py-2 hover:bg-gray-100"
+                        <Link
+                            class="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                            href="/tareas/mis-tareas"
+                            >Mis Tareas</Link
                         >
-                            Mis Tareas
-                        </button>
-                        <button
-                            @click="logout"
-                            class="w-full text-left px-4 py-2 hover:bg-gray-100"
+                        <Link
+                            class="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                            href="/logout"
+                            method="post"
+                            as="button"
+                            >Cerrar sesión</Link
                         >
-                            Logout
-                        </button>
                     </div>
                 </div>
             </nav>
@@ -157,15 +203,15 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import Logo from "./Shared/Logo.vue";
 import { Link, usePage } from "@inertiajs/vue3";
 
 const isOpen = ref(false);
 const profileMenuOpen = ref(false);
+const notificationMenuOpen = ref(false);
 const openMenus = ref([]);
 const userAuth = usePage().props.auth.user.roles;
-console.log({ userAuth });
 
 const menuItems = [
     {
@@ -377,6 +423,12 @@ const menuItems = [
         ],
     },
 ];
+const userNotifications = ref([]);
+const countNotifications = ref(0);
+
+onMounted(() => {
+    getNotifications();
+});
 
 function navigate(route) {
     window.open(route, "_blank").focus();
@@ -393,6 +445,12 @@ function toggleSubmenu(item) {
 
 function toggleProfileMenu() {
     profileMenuOpen.value = !profileMenuOpen.value;
+    notificationMenuOpen.value = false;
+}
+
+function toggleNotificationMenu() {
+    notificationMenuOpen.value = !notificationMenuOpen.value;
+    profileMenuOpen.value = false;
 }
 
 function logout() {
@@ -413,10 +471,19 @@ const filterMenuByRole = (menu, roles) => {
         }))
         .filter((item) => !item.children || item.children.length > 0); // Remueve padres sin hijos válidos
 };
-
-// Menú filtrado
 const filteredMenu = filterMenuByRole(menuItems, userAuth);
-console.log({ filteredMenu });
+
+const getNotifications = async () => {
+    try {
+        const response = await axios.get(route("notificaciones.getByUser"));
+        userNotifications.value = response.data;
+        countNotifications.value = response.data.filter(
+            (notification) => notification.readed == 0
+        ).length;
+    } catch (error) {
+        console.error("Error fetching notifications:", error);
+    }
+};
 </script>
 
 <style>
