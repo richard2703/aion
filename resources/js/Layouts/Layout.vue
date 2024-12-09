@@ -242,7 +242,7 @@ const menuItems = [
         ],
     },
     {
-        label: "Settings",
+        label: "Configuraciones",
         icon: "pi pi-cog",
         children: [
             {
