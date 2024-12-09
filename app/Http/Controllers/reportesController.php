@@ -229,15 +229,12 @@ class reportesController extends Controller
 
     public function findAll()
     {
-        // $query = Departamento::query();
+        if (!auth()->check()) {
+            return response()->json(['error' => 'Usuario no autenticado'], 401);
+        }
         $query = encargado_flujo::query();
-        // if ($pageSize && $page) {
-        //     $departamentos = $query->with('kpis')->paginate($pageSize, ['*'], 'page', $page);
-        // } else {
-        //     $departamentos = $query->with('kpis')->get();
-        // }
-        // $reporteSemanal = $query->orderBy('nombre', 'asc')->get();
         $reporteSemanal = $query->where('user_id', auth()->id())->with('Departamento')->get();
+        // $reporteSemanal = auth()->id();
 
         return response()->json($reporteSemanal);
     }
