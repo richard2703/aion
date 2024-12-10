@@ -124,7 +124,7 @@
             <!-- Sidebar -->
             <div
                 :class="[
-                    'bg-gray-800 text-white w-64 p-4',
+                    'bg-gray-800 text-white w-48 p-1',
                     { hidden: !isOpen, block: isOpen },
                     'md:block',
                     'z-50',
@@ -145,7 +145,7 @@
                             class="flex items-center justify-between p-2 rounded-md hover:bg-gray-700 hover:text-[#dfb569] w-full"
                         >
                             <div class="flex items-center gap-3">
-                                <i :class="item.icon" class="pi w-5 h-5"></i>
+                                <!-- <i :class="item.icon" class="pi w-5 h-5"></i> -->
                                 <span
                                     :class="
                                         openMenus.includes(item)

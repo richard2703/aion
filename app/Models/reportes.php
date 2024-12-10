@@ -70,4 +70,8 @@ class reportes extends Model
     {
         return $this->hasMany(Accion::class, 'departamento_id', 'departamento_id');
     }
+    public function usuario()
+    {
+        return $this->belongsTo(User::class, 'created_for', 'id');
+    }
 }

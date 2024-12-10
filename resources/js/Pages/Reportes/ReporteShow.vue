@@ -237,6 +237,7 @@ const getTrend = (promedio, objetivo, regla) => {
                     <div v-for="reporte in reportes" :key="reporte.id" class="reporte w-full">
                         <div @click="collapsedReportReport(reporte.id)" class="departamento-header">
                             <h3 class="text-xl font-bold text-purple-700">{{ reporte.departamento.nombre }}</h3>
+                            <h3 class="text-s font-bold text-purple-700">{{ reporte.usuario.name }}</h3>
                             <div v-if="reporte.departamento.deleted_at">
                                 <p class="text-red-500">Este Flujo ha sido eliminado.</p>
                             </div>
