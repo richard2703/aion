@@ -1,5 +1,6 @@
 <script setup>
 import { Head, Link, useForm } from "@inertiajs/vue3";
+import InputText from "primevue/inputtext";
 import { ref, onMounted, watch } from "vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import axios from "axios";
@@ -11,6 +12,11 @@ import TabPanels from 'primevue/tabpanels';
 import TabPanel from 'primevue/tabpanel';
 import ContenidoPanel from "./Partials/TabPanel/ContenidoPanel.vue";
 
+
+const openFilter = () => {
+    customFilter.value = !customFilter.value
+
+};
 const props = defineProps({
     area_id: Number,
     departamento_id: Number,
@@ -71,13 +77,25 @@ const getAreas = async () => {
             <div class="bg-white shadow-xl sm:rounded-lg overflow-hidden">
                 <div class="border-gray-200 bg-white px-4 py-2 border-b">
                     <h3 class="px-4 font-semibold text-xl">Minutas</h3>
-                    <div class="flex justify-end">
-                        <PrimaryButton class="bg-black m-4 p-[100px]" :href="route('minutas.create')" label="Nueva Minuta">
-                            <i class="mr-2 pi pi-plus"></i>
-                        </PrimaryButton>
-                    </div>
-                    <div class="mx-auto overflow-x-auto container">
+                    <div class="mx-auto overflow-x-auto">
                         <div class="card">
+                            <!-- Filtre input -->
+                            <div class="block md:flex justify-between items-end content-center">
+                                <div class="flex gap-4">
+                                    <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3 h-11" />
+                                    <PrimaryButton
+                                        class="border-[#E4E4E7] border-1 bg-black border-solid h-11 text-[#9AA0A7] hover:text-white pi pi-filter"
+                                        @click="openFilter">
+                                    </PrimaryButton>
+                   
+                                </div>
+
+                                <PrimaryButton class="bg-black m-4 p-[100px]" :href="route('minutas.create')"
+                                    label="Nueva Minuta">
+                                    <i class="mr-2 pi pi-plus"></i>
+                                </PrimaryButton>
+                            </div>
+                            <!-- content table -->
                             <Tabs :value="area_id ? area_id : 0">
                                 <TabPanels>
                                     <TabPanel v-for="( area, key ) in areas" :key=key :value=key class="overflow-auto">
@@ -89,6 +107,8 @@ const getAreas = async () => {
                     </div>
                 </div>
             </div>
+
+
         </div>
     </Layout>
 </template>

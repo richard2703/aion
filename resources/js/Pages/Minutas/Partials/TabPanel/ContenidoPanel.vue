@@ -212,13 +212,13 @@ const getTiposMinuta = async () => {
 <template>
 
     <div class="mt-4 overflow-x-auto">
-        <div class="flex gap-4">
+        <!-- <div class="flex gap-4">
             <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3 px-2 py-2" />
             <PrimaryButton class="float-right border-[#E4E4E7] border-1 hover:bg-black mb-4 border-solid text-[#9AA0A7] pi pi-filter" @click="openFilter">
             </PrimaryButton>
             <PrimaryButton v-if="customFilter" class="float-right mb-4 pi pi-times" @click="clearFilter">
             </PrimaryButton>
-        </div>
+        </div> -->
 
         <!-- formulario de filtrado de tareas -->
         <div v-if="customFilter" class="">

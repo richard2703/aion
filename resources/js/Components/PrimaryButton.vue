@@ -25,7 +25,15 @@ defineProps({
     },
     label: {
         type: String,
-        default: '', // Por defecto, el texto está vacío
+        default: '', 
+    },
+    disabled: {
+        type: Boolean,
+        default: false, 
+    },
+    customClasses: {
+        type: String,
+        default: '', 
     },
 });
 </script>
@@ -35,9 +43,15 @@ defineProps({
         :is="href ? 'a' : 'button'"
         :type="href ? null : type"
         :href="href"
-        class="inline-flex items-center focus:bg-gray-700 active:bg-gray-900 disabled:opacity-50 px-5 py-4 border border-transparent rounded-md focus:ring-2 font-semibold text-white text-xs uppercase tracking-widest transition duration-150 ease-in-out focus:outline-none"
+        :disabled="disabled"
+        :class="[
+            'inline-flex items-center justify-center py-3 px-4 border border-transparent rounded-md font-semibold text-white text-[0.9rem]  transition duration-150 ease-in-out focus:outline-none',
+            customClasses,
+            { 'opacity-25': disabled }
+        ]"
     >
-        <slot />
-        <span v-if="label">{{ label }}</span> <!-- Mostramos el label solo si se pasa -->
+        <slot /> <!-- Permite pasar iconos y otros elementos personalizados -->
+        <span v-if="label">{{ label }}</span> <!-- Muestra la prop de texto -->
     </component>
 </template>
+

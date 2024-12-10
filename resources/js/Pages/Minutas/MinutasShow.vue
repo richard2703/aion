@@ -406,7 +406,7 @@ const sendMail = async () => {
             <div class="bg-white shadow-xl sm:rounded-lg overflow-hidden">
                 <div>
                     <div
-                        class="flex justify-end gap-4 border-gray-200 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 bg-white my-4 px-4 py-2 border-b">
+                        class="justify-end gap-4 border-gray-200 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 bg-white my-4 px-4 py-2 border-b">
                         <div class="bg-white px-4 py-2">
                             <Fieldset legend="Información general" class="h-80 overflow-y-auto">
                                 <div class="gap-4 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
