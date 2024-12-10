@@ -26,6 +26,15 @@ class eventoController extends Controller
         return response()->json($eventos);
     }
 
+    function byDate($date)
+    {
+        $eventos = Evento::where('fecha_inicio', '=', $date)
+            ->orderBy('fecha_inicio', 'asc')
+            ->with('area')
+            ->get();
+        return response()->json($eventos);
+    }
+
     function edit() {}
 
     function show() {}
