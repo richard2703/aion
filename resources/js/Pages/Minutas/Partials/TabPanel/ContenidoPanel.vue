@@ -211,23 +211,23 @@ const getTiposMinuta = async () => {
 
 <template>
 
-    <div class="overflow-x-auto mt-4">
+    <div class="mt-4 overflow-x-auto">
         <div class="flex gap-4">
-            <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
-            <PrimaryButton class=" mb-4 float-right pi pi-filter" @click="openFilter">
+            <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3 px-2 py-2" />
+            <PrimaryButton class="float-right border-[#E4E4E7] border-1 hover:bg-black mb-4 border-solid text-[#9AA0A7] pi pi-filter" @click="openFilter">
             </PrimaryButton>
-            <PrimaryButton v-if="customFilter" class=" mb-4 float-right pi pi-times" @click="clearFilter">
+            <PrimaryButton v-if="customFilter" class="float-right mb-4 pi pi-times" @click="clearFilter">
             </PrimaryButton>
         </div>
 
         <!-- formulario de filtrado de tareas -->
         <div v-if="customFilter" class="">
             <form @submit.prevent="filterTable()">
-                <div class="m-4 border rounded-lg border-gray-200 flex gap-2 grid grid-cols-4">
+                <div class="gap-2 border-gray-200 grid grid-cols-4 m-4 border rounded-lg">
                     <div class="m-4">
                         <InputLabel for="departamento_id" value="Flujo de valor: " />
                         <select ref="departamento_select"
-                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                            class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                             v-model="flujoValor">
                             <option value="" selected>
                                 Seleccione una opcion
@@ -242,7 +242,7 @@ const getTiposMinuta = async () => {
                     <div class="m-4">
                         <InputLabel for="lider_id" value="Lider: " />
                         <select ref="lider_select"
-                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                            class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                             v-model="lider">
                             <option value="" selected>
                                 Seleccione una opcion
@@ -256,7 +256,7 @@ const getTiposMinuta = async () => {
                         <InputLabel for="tipo" value="Tipo: " />
 
                         <select ref="tipo_select"
-                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                            class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                             v-model="tipo" required>
                             <option value="" disabled selected>
                                 Seleccione una opcion
@@ -270,7 +270,7 @@ const getTiposMinuta = async () => {
                     <div class="m-4">
                         <InputLabel for="proceso_id" value="Proceso: " />
                         <select ref="departamento_select"
-                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                            class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                             v-model="proceso">
                             <option value="" selected>
                                 Seleccione una opcion
@@ -283,13 +283,13 @@ const getTiposMinuta = async () => {
 
                     <div class="m-4">
                         <InputLabel for="fecha" value="Fecha de entrega de: " />
-                        <TextInput id="fecha" v-model="desde" type="date" class="mt-1 block w-full"
+                        <TextInput id="fecha" v-model="desde" type="date" class="block mt-1 w-full"
                             autocomplete="fecha" />
                     </div>
 
                     <div class="m-4">
                         <InputLabel for="created_at" value="Fecha de entrega hasta: " />
-                        <TextInput id="fecha" v-model="hasta" type="date" class="mt-1 block w-full"
+                        <TextInput id="fecha" v-model="hasta" type="date" class="block mt-1 w-full"
                             autocomplete="fecha" />
                     </div>
                 </div>
@@ -307,7 +307,7 @@ const getTiposMinuta = async () => {
                 'notas',
                 'created_at',
             ]" :sortField="sortField" :sortOrder="sortOrder"
-            class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+            class="p-datatable-gridlines p-datatable-sm p-datatable-striped">
             <template #empty> Sin registros </template>
             <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;" sortable></Column>
             <Column field="departamento.nombre" header="Fujo de valor" headerStyle="width:4em;"
@@ -341,11 +341,11 @@ const getTiposMinuta = async () => {
             <Column header="" headerStyle="width:4em;">
                 <template #body="slotProps" class="text-center">
                     <div class="flex justify-center">
-                        <PrimaryButton class="pi pi-file-edit m-2" :href="route('minutas.edit', slotProps.data.id)">
+                        <PrimaryButton class="m-2 pi pi-file-edit" :href="route('minutas.edit', slotProps.data.id)">
                         </PrimaryButton>
-                        <PrimaryButton class="pi pi-file-check m-2" :href="route('minutas.show', slotProps.data.id)">
+                        <PrimaryButton class="m-2 pi pi-file-check" :href="route('minutas.show', slotProps.data.id)">
                         </PrimaryButton>
-                        <PrimaryButton class="pi pi-trash m-2" @click.prevent="deleteMinuta(slotProps.data.id)">
+                        <PrimaryButton class="m-2 pi pi-trash" @click.prevent="deleteMinuta(slotProps.data.id)">
                         </PrimaryButton>
                     </div>
                 </template>
