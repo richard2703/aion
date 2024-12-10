@@ -180,66 +180,34 @@
                     <tbody>
                         <tr>
                             <th colspan="2">
-                                <div class="grid">
-                                    <div>
-                                        <h2>Plan a 30 Dias</h2>
-                                        {{--  <ul>
-                                            @forelse ($reporte->treintas as $treinta)
-                                                <li
-                                                    style="{{ $treinta->status == 1 ? 'text-decoration: line-through;' : '' }}">
-                                                    {{ $treinta->meta }}</li>
-                                            @empty
-                                                <p>No hay Metas a 30 días disponibles.</p>
-                                            @endforelse
-                                        </ul>  --}}
-                                        <ul>
-                                            @forelse ($reporte->treintas as $treinta)
-                                                <li
-                                                    style="{{ $treinta->status == 1 ? 'color: green; font-weight: bold;' : '' }}">
-                                                    @if ($treinta->status == 1)
-                                                        <span style="font-family: DejaVu Sans;">&#10004;</span>
-                                                    @endif
-                                                    {{ $treinta->meta }}
-
-                                                </li>
-                                            @empty
-                                                <p>No hay Metas a 30 días disponibles.</p>
-                                            @endforelse
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <h2>Plan a 60 Dias</h2>
-                                        <ul>
-                                            @forelse ($reporte->sesentas as $sesenta)
-                                                <li
-                                                    style="{{ $sesenta->status == 1 ? 'color: green; font-weight: bold; ' : '' }}">
-                                                    @if ($sesenta->status == 1)
-                                                        <span style="font-family: DejaVu Sans;">&#10004;</span>
-                                                    @endif
-                                                    {{ $sesenta->meta }}
-                                                </li>
-                                            @empty
-                                                <p>No hay Metas a 60 días disponibles.</p>
-                                            @endforelse
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <h2>Plan a 90 Dias</h2>
-                                        <ul>
-                                            @forelse ($reporte->noventas as $noventa)
-                                                <li
-                                                    style="{{ $noventa->status == 1 ? 'color: green; font-weight: bold;' : '' }}">
-                                                    @if ($noventa->status == 1)
-                                                        <span style="font-family: DejaVu Sans;">&#10004;</span>
-                                                    @endif
-                                                    {{ $noventa->meta }}
-                                                </li>
-                                            @empty
-                                                <p>No hay Metas a 90 días disponibles.</p>
-                                            @endforelse
-                                        </ul>
-                                    </div>
-                                </div>
+                                <table style="width: 100%; text-align: center; border-collapse: collapse;">
+                                    <tr>
+                                        <td style="width: 33.33%;">
+                                            <h2>Plan a 30 Días</h2>
+                                            <p>
+                                                {{ $reporte->treintas->where('status', 1)->count() }} tareas completas
+                                                de
+                                                {{ $reporte->treintas->count() }}
+                                            </p>
+                                        </td>
+                                        <td style="width: 33.33%;">
+                                            <h2>Plan a 60 Días</h2>
+                                            <p>
+                                                {{ $reporte->sesentas->where('status', 1)->count() }} tareas completas
+                                                de
+                                                {{ $reporte->sesentas->count() }}
+                                            </p>
+                                        </td>
+                                        <td style="width: 33.33%;">
+                                            <h2>Plan a 90 Días</h2>
+                                            <p>
+                                                {{ $reporte->noventas->where('status', 1)->count() }} tareas completas
+                                                de
+                                                {{ $reporte->noventas->count() }}
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </table>
                             </th>
                         </tr>
                         <tr>
