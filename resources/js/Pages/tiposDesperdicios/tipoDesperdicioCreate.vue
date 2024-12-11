@@ -6,10 +6,9 @@ import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { showToast } from "../utils/SweetAlert.service";
-import Textarea from 'primevue/textarea';
-import AutoComplete from 'primevue/autocomplete';
-import Select from 'primevue/select';
-
+import Textarea from "primevue/textarea";
+import AutoComplete from "primevue/autocomplete";
+import Select from "primevue/select";
 
 const props = defineProps({
     areas: Array,
@@ -27,7 +26,6 @@ const tiposMinutas = ref([]);
 
 const title = "tiposDesperdicios";
 
-
 async function getAreas() {
     await axios
         .get("/api/areas")
@@ -37,8 +35,6 @@ async function getAreas() {
         });
 }
 
-
-
 async function getUsuarios() {
     await axios
         .get("/api/usuarios/all/todo")
@@ -46,7 +42,6 @@ async function getUsuarios() {
         .catch((error) => {
             console.log(error);
         });
-
 }
 
 const form = useForm({
@@ -66,7 +61,6 @@ const onChange = async (event) => {
         .catch((error) => {
             console.log(error);
         });
-
 };
 
 const submit = () => {
@@ -77,7 +71,6 @@ const submit = () => {
                 form.reset();
             },
         });
-
     } catch (error) {
         showToast("Ocurrio un error", "error");
         console.error(error);
@@ -87,7 +80,7 @@ const submit = () => {
 onMounted(() => {
     getAreas();
     getUsuarios();
-})
+});
 console.log({ procesos: procesos });
 const search = (event) => {
     console.log("buscando");
@@ -97,17 +90,17 @@ const search = (event) => {
             filteredUsuarios.value = [...usuarios.value];
         } else {
             filteredUsuarios.value = usuarios.value.filter((usuario) => {
-                return usuario.name.toLowerCase().startsWith(event.query.toLowerCase());
+                return usuario.name
+                    .toLowerCase()
+                    .includes(event.query.toLowerCase());
             });
         }
     }, 250);
-}
-
+};
 </script>
 
 <template>
     <Layout :titulo="title">
-
         <Head title="Desperdicio" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
@@ -115,13 +108,13 @@ const search = (event) => {
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
-                <h3>Home -</h3>
+                    <h3>Home -</h3>
                 </Link>
                 <Link :href="route('tiposDesperdicios.index')" class="px-1">
-                <h3>Tipo de desperdicio -</h3>
+                    <h3>Tipo de desperdicio -</h3>
                 </Link>
                 <Link class="active">
-                <h3>Nuevo</h3>
+                    <h3>Nuevo</h3>
                 </Link>
             </div>
         </div>
@@ -129,12 +122,15 @@ const search = (event) => {
         <div class="py-2">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div>
-                    <div class="px-4 my-4 py-2 flex justify-end bg-white border-b border-gray-200"></div>
+                    <div
+                        class="px-4 my-4 py-2 flex justify-end bg-white border-b border-gray-200"
+                    ></div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto">
                             <form @submit.prevent="submit">
-
-                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+                                <div
+                                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4"
+                                >
                                     <!-- <div class="mt-4">
                                         <InputLabel for="area_id" value="Pilar: " />
                                         <select ref="area_select" @change="onChange($event)"
@@ -164,11 +160,17 @@ const search = (event) => {
                                         </select>
                                     </div> -->
                                     <div class="mt-4">
-                                        <InputLabel for="departamento_id" value="Tipo: " />
+                                        <InputLabel
+                                            for="departamento_id"
+                                            value="Tipo: "
+                                        />
 
-                                        <select ref="departamento_select"
+                                        <select
+                                            ref="departamento_select"
                                             class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                            v-model="form.tipo" required>
+                                            v-model="form.tipo"
+                                            required
+                                        >
                                             <option value="" disabled selected>
                                                 Seleccione una opcion
                                             </option>
@@ -181,12 +183,8 @@ const search = (event) => {
                                             <option value="Energia">
                                                 Energia
                                             </option>
-                                            <option value="Gente">
-                                                Gente
-                                            </option>
-                                            <option value="Otros">
-                                                Otros
-                                            </option>
+                                            <option value="Gente">Gente</option>
+                                            <option value="Otros">Otros</option>
                                         </select>
                                     </div>
                                     <!-- <div class="mt-4">
@@ -196,28 +194,50 @@ const search = (event) => {
                                             required autocomplete="tipo" />
                                     </div> -->
                                     <div class="mt-4">
-                                        <InputLabel for="Nombre" value="Nombre: " />
+                                        <InputLabel
+                                            for="Nombre"
+                                            value="Nombre: "
+                                        />
                                         <!-- <AutoComplete v-model="form.lider_id" optionLabel="name"
                                             :suggestions="filteredUsuarios" forceSelection @complete="search"
                                             placeholder="" /> -->
-                                        <TextInput id="tarea" v-model="form.nombre" type="text"
-                                            class="mt-1 block w-full" required autocomplete="tarea" />
+                                        <TextInput
+                                            id="tarea"
+                                            v-model="form.nombre"
+                                            type="text"
+                                            class="mt-1 block w-full"
+                                            required
+                                            autocomplete="tarea"
+                                        />
                                     </div>
                                     <div class="mt-4">
-                                        <InputLabel for="Descripcion" value="Descripcion: " />
+                                        <InputLabel
+                                            for="Descripcion"
+                                            value="Descripcion: "
+                                        />
                                         <!-- <AutoComplete v-model="form.lider_id" optionLabel="name"
                                             :suggestions="filteredUsuarios" forceSelection @complete="search"
                                             placeholder="" /> -->
-                                        <TextInput id="descripcion" v-model="form.descripcion" type="text"
-                                            class="mt-1 block w-full" required autocomplete="descripcion" />
+                                        <TextInput
+                                            id="descripcion"
+                                            v-model="form.descripcion"
+                                            type="text"
+                                            class="mt-1 block w-full"
+                                            required
+                                            autocomplete="descripcion"
+                                        />
                                     </div>
-
-
                                 </div>
-                                <div class="px-4 my-4 pt-2 flex justify-end bg-white border-t border-gray-200">
-                                    <PrimaryButton class="ms-4 pi pi-save" :class="{ 'opacity-25': form.processing, }"
-                                        :disabled="form.processing">
-
+                                <div
+                                    class="px-4 my-4 pt-2 flex justify-end bg-white border-t border-gray-200"
+                                >
+                                    <PrimaryButton
+                                        class="ms-4 pi pi-save"
+                                        :class="{
+                                            'opacity-25': form.processing,
+                                        }"
+                                        :disabled="form.processing"
+                                    >
                                     </PrimaryButton>
                                 </div>
                             </form>
