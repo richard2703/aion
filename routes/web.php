@@ -234,6 +234,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('eventos', [App\Http\Controllers\eventoController::class, 'index'])->name('eventos.index');
     Route::get('eventos/get', [App\Http\Controllers\eventoController::class, 'findAll'])->name('eventos.findAll');
     Route::get('evento/create', [App\Http\Controllers\eventoController::class, 'create'])->name('eventos.create');
+    Route::get('evento/{date}/date', [App\Http\Controllers\eventoController::class, 'byDate'])->name('eventos.byDate');
     Route::get('evento/{evento}/show', [App\Http\Controllers\eventoController::class, 'show'])->name('eventos.show');
     Route::get('evento/{evento}/edit', [App\Http\Controllers\eventoController::class, 'edit'])->name('eventos.edit');
     Route::post('evento/store', [App\Http\Controllers\eventoController::class, 'store'])->name('eventos.store');
