@@ -205,9 +205,10 @@ const closeModalTaks = () => {
     <Modalv2 :isOpen="isModalOpenTaks" @close="closeModal">
       <form>   
             <!-- icons group -->
-            <div class="flex justify-end gap-7 mb-8">
-                <i class="pi-pen-to-square cursor-pointer pi" style="color: black; font-size: 1.2rem"></i>
-                <i class="cursor-pointer pi pi-trash" style="color: red; font-size: 1.2rem"></i>
+            <div class="flex justify-end gap-3 mb-8">
+              
+                <i class="hover:bg-gray-100 pi-pen-to-square p-3 hover:rounded-md cursor-pointer pi" style="color: black; font-size: 1.3rem"></i>
+                <i class="hover:bg-red-100 p-3 hover:rounded-md cursor-pointer pi pi-trash" style="color: red; font-size: 1.3rem"></i>
             </div>
             <h2 class="mb-2 text-xl">ID:50 - Titulo para describir la tarea</h2>
             <div class="flex">
