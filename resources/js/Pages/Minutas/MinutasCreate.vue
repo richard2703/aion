@@ -138,7 +138,7 @@ const search = (event) => {
 
         <Head title="Minutas" />
 
-        <div class="px-10 sm:rounded-lg overflow-hidden">
+        <div class="px-5 overflow-hidden">
             <div class="breadcrumbsTitulo">
                 <h3 class="font-semibold text-xl">Nueva Minuta</h3>
             </div>
@@ -154,13 +154,11 @@ const search = (event) => {
             </div>
         </div>
 
-
-        <div class="bg-white shadow-xl p-10 sm:rounded-lg overflow-hidden">
-            <div class="border-gray-200 bg-white border-b">
+        <div class="bg-white p-5 overflow-hidden">
+            <div class="bg-white">
                 <div class="mx-auto container">
                     <form @submit.prevent="submit">
                         <div class="gap-7 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 2xl:grid-cols-4">
-
                             <div class="mt-4">
                                 <InputLabel for="area_id" value="Pilar: " />
                                 <select ref="area_select" @change="onChange($event)"

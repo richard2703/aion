@@ -74,8 +74,8 @@ const getAreas = async () => {
         <Head title="Minutas" />
 
         <div class="py-2">
-            <div class="bg-white shadow-xl sm:rounded-lg overflow-hidden">
-                <div class="border-gray-200 bg-white px-4 py-2 border-b">
+            <div class="bg-white overflow-hidden">
+                <div class="border-gray-200 bg-white">
                     <h3 class="px-4 font-semibold text-xl">Minutas</h3>
                     <div class="mx-auto overflow-x-auto">
                         <div class="card">
@@ -87,7 +87,6 @@ const getAreas = async () => {
                                         class="border-[#E4E4E7] border-1 bg-black border-solid h-11 text-[#9AA0A7] hover:text-white pi pi-filter"
                                         @click="openFilter">
                                     </PrimaryButton>
-                   
                                 </div>
 
                                 <PrimaryButton class="bg-black m-4 p-[100px]" :href="route('minutas.create')"

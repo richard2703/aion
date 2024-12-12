@@ -84,3 +84,8 @@
 .p-autocomplete{
     width: 100% !important;
 }
+
+
+.p-tabpanels{
+    padding: 0px !important;
+}
