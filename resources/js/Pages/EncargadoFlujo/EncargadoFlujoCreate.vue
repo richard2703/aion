@@ -205,6 +205,14 @@ const search = (event) => {
                                         }"
                                         :disabled="form.processing"
                                     >
+                                        <span
+                                            class="p-1"
+                                            :style="{
+                                                fontSize: '10px',
+                                            }"
+                                        >
+                                            Guardar</span
+                                        >
                                     </PrimaryButton>
                                 </div>
                             </form>

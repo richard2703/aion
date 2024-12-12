@@ -622,7 +622,15 @@ const sendMail = async () => {
                                     <PrimaryButton
                                         class="mb-4 float-right pi pi-plus"
                                         @click="openModal('create')"
-                                    >
+                                        >&nbsp;
+                                        <span
+                                            class="p-1"
+                                            :style="{
+                                                fontSize: '10px',
+                                            }"
+                                        >
+                                            Nueva tarea</span
+                                        >
                                     </PrimaryButton>
                                     <!-- Spacer to push the button to the right -->
                                     <div class="flex-grow"></div>

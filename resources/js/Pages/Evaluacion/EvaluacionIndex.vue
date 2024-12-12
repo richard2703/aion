@@ -1,16 +1,15 @@
 <script setup>
-import { onMounted, ref, watch } from 'vue';
-import { Head, Link } from '@inertiajs/vue3';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import Layout from '@/Layouts/Layout.vue';
+import { onMounted, ref, watch } from "vue";
+import { Head, Link } from "@inertiajs/vue3";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import Layout from "@/Layouts/Layout.vue";
 import { confirmDialog, showToast } from "../utils/SweetAlert.service";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import InputText from "primevue/inputtext";
-import { format } from 'date-fns';
+import { format } from "date-fns";
 
-const props = defineProps({
-});
+const props = defineProps({});
 
 const title = "assessment";
 const subTitle = "evaluaciones";
@@ -26,7 +25,7 @@ const sortOrder = ref(1);
 
 onMounted(() => {
     getEvaluaciones();
-})
+});
 
 watch(globalFilter, (newValue) => {
     filters.value = {
@@ -61,7 +60,7 @@ async function getEvaluaciones(
     }
 }
 const formatearFecha = (dateString) => {
-    return format(new Date(dateString), 'dd/MM/yyyy');
+    return format(new Date(dateString), "dd/MM/yyyy");
 };
 
 const onPage = (event) => {
@@ -87,12 +86,10 @@ const onSort = (event) => {
         sortOrder.value
     );
 };
-
 </script>
 
 <template>
     <Layout :titulo="title" :subTitulo="subTitle">
-
         <Head title="Assessment" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
@@ -100,13 +97,13 @@ const onSort = (event) => {
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
-                <h3>Home -</h3>
+                    <h3>Home -</h3>
                 </Link>
                 <Link href="#" class="px-1">
-                <h3>Assessment -</h3>
+                    <h3>Assessment -</h3>
                 </Link>
                 <Link :href="route('evaluacion.index')" class="active">
-                <h3>Evaluaciones</h3>
+                    <h3>Evaluaciones</h3>
                 </Link>
             </div>
         </div>
@@ -114,56 +111,147 @@ const onSort = (event) => {
         <div class="py-2">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div>
-                    <div v-if="$page.props.flash.error"
-                        class="py-1 px-2 alert bg-red-200 alert-dismissible w-full text-center font-semibold">
+                    <div
+                        v-if="$page.props.flash.error"
+                        class="py-1 px-2 alert bg-red-200 alert-dismissible w-full text-center font-semibold"
+                    >
                         {{ $page.props.flash.error }}
-                        <button type="button" class="close float-right gap-2" @click="$page.props.flash.error = null">
-                            <span aria-hidden="true"><i class="pi pi-times"></i></span>
+                        <button
+                            type="button"
+                            class="close float-right gap-2"
+                            @click="$page.props.flash.error = null"
+                        >
+                            <span aria-hidden="true"
+                                ><i class="pi pi-times"></i
+                            ></span>
                         </button>
                     </div>
-                    <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
-                        <PrimaryButton :href="route('evaluacion.create')" class="m-4 pi pi-plus"></PrimaryButton>
+                    <div
+                        class="px-4 py-2 flex justify-end bg-white border-b border-gray-200"
+                    >
+                        <PrimaryButton
+                            :href="route('evaluacion.create')"
+                            class="m-4 pi pi-plus"
+                        >
+                            <span
+                                class="p-1"
+                                :style="{
+                                    fontSize: '10px',
+                                }"
+                            >
+                                Nueva evaluación</span
+                            >
+                        </PrimaryButton>
                     </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto overflow-x-auto">
-                            <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
-                            <DataTable :value="evaluaciones" paginator :rows="rows" :totalRecords="totalRecords"
-                                :lazy="true" :first="first" @page="onPage" @sort="onSort"
-                                :rowsPerPageOptions="[5, 10, 20, 50]" tableStyle="min-width: 50rem" :filters="filters"
-                                :globalFilterFields="[
-                                    'id'
-                                ]" :sortField="sortField" :sortOrder="sortOrder"
-                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+                            <InputText
+                                v-model="globalFilter"
+                                placeholder="Buscar..."
+                                class="mb-3"
+                            />
+                            <DataTable
+                                :value="evaluaciones"
+                                paginator
+                                :rows="rows"
+                                :totalRecords="totalRecords"
+                                :lazy="true"
+                                :first="first"
+                                @page="onPage"
+                                @sort="onSort"
+                                :rowsPerPageOptions="[5, 10, 20, 50]"
+                                tableStyle="min-width: 50rem"
+                                :filters="filters"
+                                :globalFilterFields="['id']"
+                                :sortField="sortField"
+                                :sortOrder="sortOrder"
+                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines"
+                            >
                                 <template #empty> No data found. </template>
-                                <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
-                                    sortable></Column>
-                                <Column header="Fecha" headerStyle="width:4em;" bodyStyle="text-align:center;"
-                                    bodyClass="text-center" sortable>
+                                <Column
+                                    field="id"
+                                    header="ID"
+                                    headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;"
+                                    sortable
+                                ></Column>
+                                <Column
+                                    header="Fecha"
+                                    headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;"
+                                    bodyClass="text-center"
+                                    sortable
+                                >
                                     <template #body="slotProps">
-                                        {{ formatearFecha(slotProps.data.created_at) }}
+                                        {{
+                                            formatearFecha(
+                                                slotProps.data.created_at
+                                            )
+                                        }}
                                     </template>
                                 </Column>
-                                <Column header="Progreso" headerStyle="width:4em;" bodyStyle="text-align:center;"
-                                    bodyClass="text-center">
+                                <Column
+                                    header="Progreso"
+                                    headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;"
+                                    bodyClass="text-center"
+                                >
                                     <template #body="slotProps">
-                                        {{ slotProps.data.seccion_completa }} / {{ slotProps.data.seccion_total }}
+                                        {{ slotProps.data.seccion_completa }} /
+                                        {{ slotProps.data.seccion_total }}
                                     </template>
                                 </Column>
 
-                                <Column header="" headerStyle="width:4em;" bodyStyle=" justify-content-center;">
-                                    <template #body="slotProps" class="justify-center">
+                                <Column
+                                    header=""
+                                    headerStyle="width:4em;"
+                                    bodyStyle=" justify-content-center;"
+                                >
+                                    <template
+                                        #body="slotProps"
+                                        class="justify-center"
+                                    >
                                         <PrimaryButton
-                                            v-if="slotProps.data.seccion_completa !== slotProps.data.seccion_total"
-                                            class="m-2 pi pi-file-edit" :href="route(
-                                                'evaluacion.select',
-                                                slotProps.data.id
-                                            )">
+                                            v-if="
+                                                slotProps.data
+                                                    .seccion_completa !==
+                                                slotProps.data.seccion_total
+                                            "
+                                            class="m-2 pi pi-file-edit"
+                                            :href="
+                                                route(
+                                                    'evaluacion.select',
+                                                    slotProps.data.id
+                                                )
+                                            "
+                                        >
+                                            <span
+                                                class="p-1"
+                                                :style="{
+                                                    fontSize: '10px',
+                                                }"
+                                            >
+                                                Secciones</span
+                                            >
                                         </PrimaryButton>
 
-                                        <PrimaryButton class="m-2 pi pi-chart-scatter" :href="route(
-                                            'evaluacion.details',
-                                            slotProps.data.id
-                                        )">
+                                        <PrimaryButton
+                                            class="m-2 pi pi-chart-scatter"
+                                            :href="
+                                                route(
+                                                    'evaluacion.details',
+                                                    slotProps.data.id
+                                                )
+                                            "
+                                        >
+                                            <span
+                                                class="p-1"
+                                                :style="{
+                                                    fontSize: '10px',
+                                                }"
+                                            >
+                                                Benchmark</span
+                                            >
                                         </PrimaryButton>
 
                                         <!-- <PrimaryButton class="m-2 pi pi-trash" @click.prevent="

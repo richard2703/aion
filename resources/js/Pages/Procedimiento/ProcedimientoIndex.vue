@@ -1,7 +1,7 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue';
-import { Head, Link } from '@inertiajs/vue3';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
+import { ref, onMounted, watch } from "vue";
+import { Head, Link } from "@inertiajs/vue3";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
 import axios from "axios";
 import Layout from "@/Layouts/Layout.vue";
 import { confirmDialog, showToast } from "../utils/SweetAlert.service";
@@ -60,13 +60,13 @@ const deleteProcedimiento = async (id) => {
         );
         if (result.isConfirmed) {
             await axios.delete(route("procedimiento.destroy", id));
-            procedimientos.value = procedimientos.value.filter((procedimiento) => procedimiento.id !== id);
+            procedimientos.value = procedimientos.value.filter(
+                (procedimiento) => procedimiento.id !== id
+            );
             showToast("El registro ha sido eliminado", "success");
-
         }
     } catch (error) {
         console.log(error);
-
     }
 };
 
@@ -74,7 +74,13 @@ watch(globalFilter, (newValue) => {
     filters.value = {
         global: { value: newValue, matchMode: "contains" },
     };
-    getProcedimientos(1, rows.value, newValue, sortField.value, sortOrder.value);
+    getProcedimientos(
+        1,
+        rows.value,
+        newValue,
+        sortField.value,
+        sortOrder.value
+    );
 });
 
 const onPage = (event) => {
@@ -110,7 +116,6 @@ const onSort = (event) => {
 
 <template>
     <Layout :titulo="title">
-
         <Head title="Procedimientos" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
@@ -118,10 +123,10 @@ const onSort = (event) => {
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
-                <h3>Home -</h3>
+                    <h3>Home -</h3>
                 </Link>
                 <Link class="active">
-                <h3>Procedimientos</h3>
+                    <h3>Procedimientos</h3>
                 </Link>
             </div>
         </div>
@@ -129,47 +134,121 @@ const onSort = (event) => {
         <div class="py-2">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div>
-                    <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
-                        <PrimaryButton :href="route('procedimiento.create')" class="m-4 pi pi-plus"></PrimaryButton>
+                    <div
+                        class="px-4 py-2 flex justify-end bg-white border-b border-gray-200"
+                    >
+                        <PrimaryButton
+                            :href="route('procedimiento.create')"
+                            class="m-4 pi pi-plus"
+                        >
+                            <span
+                                class="p-1"
+                                :style="{
+                                    fontSize: '10px',
+                                }"
+                            >
+                                Nuevo procedimiento</span
+                            >
+                        </PrimaryButton>
                     </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto overflow-x-auto">
-                            <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
-                            <DataTable :value="procedimientos" paginator :rows="rows" :totalRecords="totalRecords"
-                                :lazy="true" :first="first" @page="onPage" @sort="onSort"
-                                :rowsPerPageOptions="[5, 10, 20, 50]" tableStyle="min-width: 50rem" :filters="filters"
+                            <InputText
+                                v-model="globalFilter"
+                                placeholder="Buscar..."
+                                class="mb-3"
+                            />
+                            <DataTable
+                                :value="procedimientos"
+                                paginator
+                                :rows="rows"
+                                :totalRecords="totalRecords"
+                                :lazy="true"
+                                :first="first"
+                                @page="onPage"
+                                @sort="onSort"
+                                :rowsPerPageOptions="[5, 10, 20, 50]"
+                                tableStyle="min-width: 50rem"
+                                :filters="filters"
                                 :globalFilterFields="[
                                     'id',
                                     'nombre',
                                     'descripcion',
                                     'link_externo',
-                                ]" :sortField="sortField" :sortOrder="sortOrder"
-                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+                                ]"
+                                :sortField="sortField"
+                                :sortOrder="sortOrder"
+                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines"
+                            >
                                 <template #empty> No data found. </template>
-                                <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
-                                    sortable></Column>
-                                <Column field="proceso.nombre" header="Proceso" headerStyle="width:4em;"
-                                    bodyClass="text-center" sortable></Column>
-                                <Column field="nombre" header="Procedimiento" headerStyle="width:4em;"
-                                    bodyClass="text-center" sortable></Column>
-                                <Column field="descripcion" header="Descripción" headerStyle="width:4em;"
-                                    bodyClass="text-center" sortable></Column>
-                                <Column field="link_externo" header="Link" headerStyle="width:4em;"
-                                    bodyClass="text-center" sortable></Column>
+                                <Column
+                                    field="id"
+                                    header="ID"
+                                    headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;"
+                                    sortable
+                                ></Column>
+                                <Column
+                                    field="proceso.nombre"
+                                    header="Proceso"
+                                    headerStyle="width:4em;"
+                                    bodyClass="text-center"
+                                    sortable
+                                ></Column>
+                                <Column
+                                    field="nombre"
+                                    header="Procedimiento"
+                                    headerStyle="width:4em;"
+                                    bodyClass="text-center"
+                                    sortable
+                                ></Column>
+                                <Column
+                                    field="descripcion"
+                                    header="Descripción"
+                                    headerStyle="width:4em;"
+                                    bodyClass="text-center"
+                                    sortable
+                                ></Column>
+                                <Column
+                                    field="link_externo"
+                                    header="Link"
+                                    headerStyle="width:4em;"
+                                    bodyClass="text-center"
+                                    sortable
+                                ></Column>
 
                                 <Column header="" headerStyle="width:4em;">
-                                    <template #body="slotProps" class="text-center">
-                                        <PrimaryButton class="m-2 pi pi-file-edit" :href="route(
-                                            'procedimiento.edit',
-                                            slotProps.data.id
-                                        )">
-
+                                    <template
+                                        #body="slotProps"
+                                        class="text-center"
+                                    >
+                                        <PrimaryButton
+                                            class="m-2 pi pi-file-edit"
+                                            :href="
+                                                route(
+                                                    'procedimiento.edit',
+                                                    slotProps.data.id
+                                                )
+                                            "
+                                        >
+                                            <span
+                                                class="p-1"
+                                                :style="{
+                                                    fontSize: '10px',
+                                                }"
+                                            >
+                                                Editar</span
+                                            >
                                         </PrimaryButton>
 
-                                        <PrimaryButton class="m-2 pi pi-trash" @click.prevent="
-                                            deleteProcedimiento(slotProps.data.id)
-                                            ">
-
+                                        <PrimaryButton
+                                            class="m-2 pi pi-trash"
+                                            @click.prevent="
+                                                deleteProcedimiento(
+                                                    slotProps.data.id
+                                                )
+                                            "
+                                        >
                                         </PrimaryButton>
                                     </template>
                                 </Column>

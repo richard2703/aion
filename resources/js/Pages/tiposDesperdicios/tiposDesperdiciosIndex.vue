@@ -104,9 +104,7 @@ const deleteItem = async (id) => {
         if (result.isConfirmed) {
             await axios.delete(route("tiposDesperdicios.destroy", id));
 
-            tipos.value = tipos.value.filter(
-                (tipos) => tipos.id !== id
-            );
+            tipos.value = tipos.value.filter((tipos) => tipos.id !== id);
             showToast("El registro ha sido eliminado", "success");
         }
     } catch (error) {
@@ -135,7 +133,6 @@ watch(globalFilter, (newValue) => {
 
 <template>
     <Layout :titulo="title">
-
         <Head title="Desperdicio" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
@@ -143,10 +140,10 @@ watch(globalFilter, (newValue) => {
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
-                <h3>Home -</h3>
+                    <h3>Home -</h3>
                 </Link>
                 <Link class="active">
-                <h3>Tipos de desperdicio</h3>
+                    <h3>Tipos de desperdicio</h3>
                 </Link>
             </div>
         </div>
@@ -154,44 +151,115 @@ watch(globalFilter, (newValue) => {
         <div class="py-2">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div>
-                    <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
-                        <PrimaryButton :href="route('tiposDesperdicios.create')" class="m-4 pi pi-plus"></PrimaryButton>
+                    <div
+                        class="px-4 py-2 flex justify-end bg-white border-b border-gray-200"
+                    >
+                        <PrimaryButton
+                            :href="route('tiposDesperdicios.create')"
+                            class="m-4 pi pi-plus"
+                        >
+                            <span
+                                class="p-1"
+                                :style="{
+                                    fontSize: '10px',
+                                }"
+                            >
+                                Nuevo tipo de desperdicio</span
+                            >
+                        </PrimaryButton>
                     </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto overflow-x-auto">
                             <!-- <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" /> -->
 
-                            <DataTable :value="tipos" paginator :rows="rows" :totalRecords="totalRecords" :lazy="true"
-                                :first="first" @page="onPage" @sort="onSort" :rowsPerPageOptions="[5, 10, 20, 50]"
-                                tableStyle="min-width: 50rem" :filters="filters" :globalFilterFields="[
+                            <DataTable
+                                :value="tipos"
+                                paginator
+                                :rows="rows"
+                                :totalRecords="totalRecords"
+                                :lazy="true"
+                                :first="first"
+                                @page="onPage"
+                                @sort="onSort"
+                                :rowsPerPageOptions="[5, 10, 20, 50]"
+                                tableStyle="min-width: 50rem"
+                                :filters="filters"
+                                :globalFilterFields="[
                                     'id',
                                     'nombre',
                                     'area.nombre',
                                     'descripcion',
-                                ]" :sortField="sortField" :sortOrder="sortOrder"
-                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+                                ]"
+                                :sortField="sortField"
+                                :sortOrder="sortOrder"
+                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines"
+                            >
                                 <template #empty> Sin registros. </template>
-                                <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
-                                    sortable></Column>
-                                <Column field="tipo" header="Tipo" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                                <Column field="nombre" header="Nombre:" headerStyle="width:4em;" bodyClass="text-center"
-                                    sortable></Column>
-                                <Column field="descripcion" header="Descripcion" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+                                <Column
+                                    field="id"
+                                    header="ID"
+                                    headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;"
+                                    sortable
+                                ></Column>
+                                <Column
+                                    field="tipo"
+                                    header="Tipo"
+                                    headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;"
+                                    bodyClass="text-center"
+                                    sortable
+                                ></Column>
+                                <Column
+                                    field="nombre"
+                                    header="Nombre:"
+                                    headerStyle="width:4em;"
+                                    bodyClass="text-center"
+                                    sortable
+                                ></Column>
+                                <Column
+                                    field="descripcion"
+                                    header="Descripcion"
+                                    headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;"
+                                    bodyClass="text-center"
+                                    sortable
+                                ></Column>
                                 <!-- <Column field="departamento.nombre" header="Flujo de valor" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column> -->
                                 <!-- <Column field="descripcion" header="Descripcion" headerStyle="width:4em;"
                                     bodyClass="text-center" sortable></Column> -->
 
                                 <Column header="" headerStyle="width:4em;">
-                                    <template #body="slotProps" class="text-center">
-                                        <PrimaryButton class="me-2 pi pi-file-edit"
-                                            :href="route('tiposDesperdicios.edit', slotProps.data.id)">
+                                    <template
+                                        #body="slotProps"
+                                        class="text-center"
+                                    >
+                                        <PrimaryButton
+                                            class="me-2 pi pi-file-edit"
+                                            :href="
+                                                route(
+                                                    'tiposDesperdicios.edit',
+                                                    slotProps.data.id
+                                                )
+                                            "
+                                        >
+                                            <span
+                                                class="p-1"
+                                                :style="{
+                                                    fontSize: '10px',
+                                                }"
+                                            >
+                                                Editar</span
+                                            >
                                         </PrimaryButton>
 
-                                        <PrimaryButton class="me-2 pi pi-trash"
-                                            @click.prevent="deleteItem(slotProps.data.id)">
+                                        <PrimaryButton
+                                            class="me-2 pi pi-trash"
+                                            @click.prevent="
+                                                deleteItem(slotProps.data.id)
+                                            "
+                                        >
                                         </PrimaryButton>
                                     </template>
                                 </Column>

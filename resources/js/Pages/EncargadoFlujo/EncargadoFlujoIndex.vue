@@ -165,7 +165,16 @@ watch(globalFilter, (newValue) => {
                         <PrimaryButton
                             :href="route('encargadoFlujo.create')"
                             class="m-4 pi pi-plus"
-                        ></PrimaryButton>
+                        >
+                            <span
+                                class="p-1"
+                                :style="{
+                                    fontSize: '10px',
+                                }"
+                            >
+                                Nuevo lider de flujo</span
+                            >
+                        </PrimaryButton>
                     </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto overflow-x-auto">

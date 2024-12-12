@@ -6,9 +6,8 @@ import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { showToast } from "../utils/SweetAlert.service";
-import Textarea from 'primevue/textarea';
-import AutoComplete from 'primevue/autocomplete';
-
+import Textarea from "primevue/textarea";
+import AutoComplete from "primevue/autocomplete";
 
 const props = defineProps({
     areas: Array,
@@ -23,7 +22,6 @@ const filteredUsuarios = ref();
 const responsable_id = ref();
 
 const title = "rolesypermisos";
-
 
 async function getAreas() {
     await axios
@@ -41,7 +39,6 @@ async function getUsuarios() {
         .catch((error) => {
             console.log(error);
         });
-
 }
 
 const form = useForm({
@@ -82,7 +79,6 @@ const submit = () => {
                 form.reset();
             },
         });
-
     } catch (error) {
         showToast("Ocurrio un error", "error");
         console.error(error);
@@ -92,7 +88,7 @@ const submit = () => {
 onMounted(() => {
     getAreas();
     getUsuarios();
-})
+});
 
 const search = (event) => {
     console.log("buscando");
@@ -102,17 +98,17 @@ const search = (event) => {
             filteredUsuarios.value = [...usuarios.value];
         } else {
             filteredUsuarios.value = usuarios.value.filter((usuario) => {
-                return usuario.name.toLowerCase().includes(event.query.toLowerCase());
+                return usuario.name
+                    .toLowerCase()
+                    .includes(event.query.toLowerCase());
             });
         }
     }, 250);
-}
-
+};
 </script>
 
 <template>
     <Layout :titulo="title">
-
         <Head title="Permisos" />
 
         <div class="overflow-hidden sm:rounded-lg">
@@ -121,13 +117,13 @@ const search = (event) => {
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
-                <h3>Home -</h3>
+                    <h3>Home -</h3>
                 </Link>
                 <Link :href="route('permisos.index')" class="px-1">
-                <h3>Permisos -</h3>
+                    <h3>Permisos -</h3>
                 </Link>
                 <Link class="active">
-                <h3>Nuevo</h3>
+                    <h3>Nuevo</h3>
                 </Link>
             </div>
         </div>
@@ -135,25 +131,48 @@ const search = (event) => {
         <div class="py-2">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div>
-                    <div class="px-4 my-4 py-2 flex justify-end bg-white border-b border-gray-200"></div>
+                    <div
+                        class="px-4 my-4 py-2 flex justify-end bg-white border-b border-gray-200"
+                    ></div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto">
                             <form @submit.prevent="submit">
-
-                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
-
-
+                                <div
+                                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4"
+                                >
                                     <div class="mt-4">
-                                        <InputLabel for="nombre" value="Nombre: " />
-                                        <TextInput id="name" v-model="form.name" type="text" class="mt-1 block w-full"
-                                            required autocomplete="new-challenge" />
+                                        <InputLabel
+                                            for="nombre"
+                                            value="Nombre: "
+                                        />
+                                        <TextInput
+                                            id="name"
+                                            v-model="form.name"
+                                            type="text"
+                                            class="mt-1 block w-full"
+                                            required
+                                            autocomplete="new-challenge"
+                                        />
                                     </div>
-
                                 </div>
-                                <div class="px-4 my-4 pt-2 flex justify-end bg-white border-t border-gray-200">
-                                    <PrimaryButton class="ms-4 pi pi-save" :class="{ 'opacity-25': form.processing, }"
-                                        :disabled="form.processing">
-
+                                <div
+                                    class="px-4 my-4 pt-2 flex justify-end bg-white border-t border-gray-200"
+                                >
+                                    <PrimaryButton
+                                        class="ms-4 pi pi-save"
+                                        :class="{
+                                            'opacity-25': form.processing,
+                                        }"
+                                        :disabled="form.processing"
+                                    >
+                                        <span
+                                            class="p-1"
+                                            :style="{
+                                                fontSize: '10px',
+                                            }"
+                                        >
+                                            Guardar</span
+                                        >
                                     </PrimaryButton>
                                 </div>
                             </form>

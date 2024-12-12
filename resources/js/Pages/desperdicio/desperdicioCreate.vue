@@ -26,8 +26,8 @@ const form = useForm({
     descripcion: "",
     monto: "",
     rango: "",
-    recurrencia: '',
-    detectabilidad: '',
+    recurrencia: "",
+    detectabilidad: "",
 });
 
 async function getAreas() {
@@ -47,7 +47,6 @@ const onChange = async (event) => {
         .catch((error) => {
             console.log(error);
         });
-
 };
 
 const getTipos = async (event) => {
@@ -60,9 +59,7 @@ const getTipos = async (event) => {
         .catch((error) => {
             console.log(error);
         });
-
 };
-
 
 const submit = () => {
     try {
@@ -72,7 +69,6 @@ const submit = () => {
                 form.reset();
             },
         });
-
     } catch (error) {
         showToast("Ocurrio un error", "error");
         console.error(error);
@@ -82,19 +78,15 @@ const submit = () => {
 onMounted(() => {
     getAreas();
     getTipos(1);
-})
+});
 
 const showTooltipRango = ref(false);
 const showTooltipRecurrencia = ref(false);
 const showTooltipDetectabilidad = ref(false);
-
-
-
 </script>
 
 <template>
     <Layout :titulo="title">
-
         <Head title="Desperdicios" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
@@ -102,35 +94,49 @@ const showTooltipDetectabilidad = ref(false);
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
-                <h3>Home -</h3>
+                    <h3>Home -</h3>
                 </Link>
                 <Link :href="route('desperdicio.index')" class="px-1">
-                <h3>Desperdicios -</h3>
+                    <h3>Desperdicios -</h3>
                 </Link>
                 <Link class="active">
-                <h3>Nuevo</h3>
+                    <h3>Nuevo</h3>
                 </Link>
             </div>
         </div>
 
         <div class="py-2">
-            <div class="bg-white  shadow-xl sm:rounded-lg">
+            <div class="bg-white shadow-xl sm:rounded-lg">
                 <div>
-                    <div class="px-4 my-4 py-2 flex justify-end bg-white border-b border-gray-200"></div>
+                    <div
+                        class="px-4 my-4 py-2 flex justify-end bg-white border-b border-gray-200"
+                    ></div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto">
                             <form @submit.prevent="submit">
-
-                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                <div
+                                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+                                >
                                     <div class="mt-4">
-                                        <InputLabel for="area_id" value="Pilar: " />
-                                        <select ref="area_select" @change="onChange($event)"
+                                        <InputLabel
+                                            for="area_id"
+                                            value="Pilar: "
+                                        />
+                                        <select
+                                            ref="area_select"
+                                            @change="onChange($event)"
                                             class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                            v-model="form.area_id" required>
+                                            v-model="form.area_id"
+                                            required
+                                        >
                                             <option value="" disabled selected>
                                                 Seleccione una opcion
                                             </option>
-                                            <option v-for="area in areas" :key="area.id" :value="area.id">
+                                            <option
+                                                v-for="area in areas"
+                                                :key="area.id"
+                                                :value="area.id"
+                                            >
                                                 {{ area.nombre }}
                                             </option>
                                         </select>
@@ -153,30 +159,60 @@ const showTooltipDetectabilidad = ref(false);
                                     </div> -->
 
                                     <div class="mt-4">
-                                        <InputLabel for="departamento_id" value="Tipo desperdicio: " />
+                                        <InputLabel
+                                            for="departamento_id"
+                                            value="Tipo desperdicio: "
+                                        />
 
-                                        <select ref="departamento_select"
+                                        <select
+                                            ref="departamento_select"
                                             class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                            v-model="form.tipoDesperdicio_id" required>
+                                            v-model="form.tipoDesperdicio_id"
+                                            required
+                                        >
                                             <option value="" disabled selected>
                                                 Seleccione una opcion
                                             </option>
-                                            <option v-for="tipo in tipos" :key="tipo.id" :value="tipo.id">
-                                                {{ tipo.tipo }} - {{ tipo.nombre }}
+                                            <option
+                                                v-for="tipo in tipos"
+                                                :key="tipo.id"
+                                                :value="tipo.id"
+                                            >
+                                                {{ tipo.tipo }} -
+                                                {{ tipo.nombre }}
                                             </option>
                                         </select>
                                     </div>
 
                                     <div class="mt-4">
-                                        <InputLabel for="monto" value="Monto $ : " />
-                                        <TextInput id="tarea" v-model="form.monto" type="number" step="any"
-                                            class="mt-1 block w-full" required autocomplete="tarea" />
+                                        <InputLabel
+                                            for="monto"
+                                            value="Monto $ : "
+                                        />
+                                        <TextInput
+                                            id="tarea"
+                                            v-model="form.monto"
+                                            type="number"
+                                            step="any"
+                                            class="mt-1 block w-full"
+                                            required
+                                            autocomplete="tarea"
+                                        />
                                     </div>
                                     <div class="mt-4">
-                                        <InputLabel for="Descripcion" value="Descripcion: " />
-                                        <TextInput id="descripcion" v-model="form.descripcion" type="text"
-                                            class="mt-1 block w-full" required autocomplete="descripcion"
-                                            maxlength="250" />
+                                        <InputLabel
+                                            for="Descripcion"
+                                            value="Descripcion: "
+                                        />
+                                        <TextInput
+                                            id="descripcion"
+                                            v-model="form.descripcion"
+                                            type="text"
+                                            class="mt-1 block w-full"
+                                            required
+                                            autocomplete="descripcion"
+                                            maxlength="250"
+                                        />
                                     </div>
                                     <!-- <div class="mt-4">
                                         <InputLabel for="Rango" value="Rango: " />
@@ -185,37 +221,64 @@ const showTooltipDetectabilidad = ref(false);
                                     </div> -->
                                     <div class="mt-4 relative">
                                         <!-- Etiqueta del campo -->
-                                        <label for="Rango" class="block text-sm font-medium text-gray-700">Rango:
+                                        <label
+                                            for="Rango"
+                                            class="block text-sm font-medium text-gray-700"
+                                            >Rango:
                                             <!-- Ícono para el tooltip -->
                                             <!-- <span class="ml-2 text-blue-500 cursor-pointer"
                                                 @mouseenter="showTooltipRango = true"
                                                 @mouseleave="showTooltipRango = false">
                                                 <i class="pi pi-save"></i>
                                             </span> -->
-                                            <button @click="showTooltipRango = true"
-                                                class="ml-2 text-blue-500 underline">Ver ejemplo</button>
-
+                                            <button
+                                                @click="showTooltipRango = true"
+                                                class="ml-2 text-blue-500 underline"
+                                            >
+                                                Ver ejemplo
+                                            </button>
                                         </label>
 
                                         <!-- Campo de texto -->
-                                        <input id="rango" v-model="form.rango" type="number"
+                                        <input
+                                            id="rango"
+                                            v-model="form.rango"
+                                            type="number"
                                             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                            required autocomplete="rango" min="1" max="10" />
+                                            required
+                                            autocomplete="rango"
+                                            min="1"
+                                            max="10"
+                                        />
 
                                         <!-- Modal -->
-                                        <div v-if="showTooltipRango"
-                                            class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
+                                        <div
+                                            v-if="showTooltipRango"
+                                            class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50"
+                                        >
                                             <div
-                                                class="bg-white p-6 rounded-lg shadow-lg max-w-full max-h-full overflow-y-auto">
-                                                <h3 class="text-lg font-bold mb-4">Ejemplo de Rango</h3>
+                                                class="bg-white p-6 rounded-lg shadow-lg max-w-full max-h-full overflow-y-auto"
+                                            >
+                                                <h3
+                                                    class="text-lg font-bold mb-4"
+                                                >
+                                                    Ejemplo de Rango
+                                                </h3>
 
                                                 <!-- Contenido de la imagen con tamaño ajustado -->
-                                                <img src="../../../img/amef/rangoAMEF.png" alt="Ejemplo de Rango"
-                                                    style="width: 600px;">
+                                                <img
+                                                    src="../../../img/amef/rangoAMEF.png"
+                                                    alt="Ejemplo de Rango"
+                                                    style="width: 600px"
+                                                />
 
                                                 <!-- Botón de cerrar -->
-                                                <button @click="showTooltipRango = false"
-                                                    class="mt-4 text-white bg-red-500 px-4 py-2 rounded">
+                                                <button
+                                                    @click="
+                                                        showTooltipRango = false
+                                                    "
+                                                    class="mt-4 text-white bg-red-500 px-4 py-2 rounded"
+                                                >
                                                     Cerrar
                                                 </button>
                                             </div>
@@ -224,80 +287,147 @@ const showTooltipDetectabilidad = ref(false);
 
                                     <div class="mt-4 relative">
                                         <!-- Etiqueta del campo -->
-                                        <label for="Recurrencia"
-                                            class="block text-sm font-medium text-gray-700">Recurrencia:
+                                        <label
+                                            for="Recurrencia"
+                                            class="block text-sm font-medium text-gray-700"
+                                            >Recurrencia:
                                             <!-- Ícono para el tooltip -->
-                                            <button @click="showTooltipRecurrencia = true"
-                                                class="ml-2 text-blue-500 underline">Ver ejemplo</button>
+                                            <button
+                                                @click="
+                                                    showTooltipRecurrencia = true
+                                                "
+                                                class="ml-2 text-blue-500 underline"
+                                            >
+                                                Ver ejemplo
+                                            </button>
                                         </label>
 
                                         <!-- Campo de texto -->
-                                        <input id="recurrencia" v-model="form.recurrencia" type="number"
+                                        <input
+                                            id="recurrencia"
+                                            v-model="form.recurrencia"
+                                            type="number"
                                             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                            required autocomplete="recurrencia" min="1" max="10" />
+                                            required
+                                            autocomplete="recurrencia"
+                                            min="1"
+                                            max="10"
+                                        />
 
                                         <!-- Modal -->
 
-                                        <div v-if="showTooltipRecurrencia"
-                                            class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
+                                        <div
+                                            v-if="showTooltipRecurrencia"
+                                            class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50"
+                                        >
                                             <div
-                                                class="bg-white p-6 rounded-lg shadow-lg max-w-full max-h-full overflow-y-auto">
-                                                <h3 class="text-lg font-bold mb-4">Ejemplo de Recurrencia</h3>
+                                                class="bg-white p-6 rounded-lg shadow-lg max-w-full max-h-full overflow-y-auto"
+                                            >
+                                                <h3
+                                                    class="text-lg font-bold mb-4"
+                                                >
+                                                    Ejemplo de Recurrencia
+                                                </h3>
 
                                                 <!-- Contenido de la imagen con tamaño ajustado -->
-                                                <img src="../../../img/amef/ocurrenciaAMEF.png" alt="Ejemplo de Rango"
-                                                    style="width: 600px;">
+                                                <img
+                                                    src="../../../img/amef/ocurrenciaAMEF.png"
+                                                    alt="Ejemplo de Rango"
+                                                    style="width: 600px"
+                                                />
 
                                                 <!-- Botón de cerrar -->
-                                                <button @click="showTooltipRecurrencia = false"
-                                                    class="mt-4 text-white bg-red-500 px-4 py-2 rounded">
+                                                <button
+                                                    @click="
+                                                        showTooltipRecurrencia = false
+                                                    "
+                                                    class="mt-4 text-white bg-red-500 px-4 py-2 rounded"
+                                                >
                                                     Cerrar
                                                 </button>
                                             </div>
                                         </div>
-
                                     </div>
-
 
                                     <div class="mt-4 relative">
                                         <!-- Etiqueta del campo -->
-                                        <label for="Detectabilidad"
-                                            class="block text-sm font-medium text-gray-700">Detectabilidad:
-                                            <button @click="showTooltipDetectabilidad = true"
-                                                class="ml-2 text-blue-500 underline">Ver ejemplo</button>
+                                        <label
+                                            for="Detectabilidad"
+                                            class="block text-sm font-medium text-gray-700"
+                                            >Detectabilidad:
+                                            <button
+                                                @click="
+                                                    showTooltipDetectabilidad = true
+                                                "
+                                                class="ml-2 text-blue-500 underline"
+                                            >
+                                                Ver ejemplo
+                                            </button>
                                         </label>
 
                                         <!-- Campo de texto -->
-                                        <input id="detectabilidad" v-model="form.detectabilidad" type="number"
+                                        <input
+                                            id="detectabilidad"
+                                            v-model="form.detectabilidad"
+                                            type="number"
                                             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                            required autocomplete="detectabilidad" min="1" max="10" />
+                                            required
+                                            autocomplete="detectabilidad"
+                                            min="1"
+                                            max="10"
+                                        />
                                         <!-- Modal -->
-                                        <div v-if="showTooltipDetectabilidad"
-                                            class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
+                                        <div
+                                            v-if="showTooltipDetectabilidad"
+                                            class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50"
+                                        >
                                             <div
-                                                class="bg-white p-6 rounded-lg shadow-lg max-w-full max-h-full overflow-y-auto">
-                                                <h3 class="text-lg font-bold mb-4">Ejemplo de Detectabilidad</h3>
+                                                class="bg-white p-6 rounded-lg shadow-lg max-w-full max-h-full overflow-y-auto"
+                                            >
+                                                <h3
+                                                    class="text-lg font-bold mb-4"
+                                                >
+                                                    Ejemplo de Detectabilidad
+                                                </h3>
 
                                                 <!-- Contenido de la imagen con tamaño ajustado -->
-                                                <img src="../../../img/amef/deteccionAMEF.png" alt="Ejemplo de Rango"
-                                                    style="width: 600px;">
+                                                <img
+                                                    src="../../../img/amef/deteccionAMEF.png"
+                                                    alt="Ejemplo de Rango"
+                                                    style="width: 600px"
+                                                />
 
                                                 <!-- Botón de cerrar -->
-                                                <button @click="showTooltipDetectabilidad = false"
-                                                    class="mt-4 text-white bg-red-500 px-4 py-2 rounded">
+                                                <button
+                                                    @click="
+                                                        showTooltipDetectabilidad = false
+                                                    "
+                                                    class="mt-4 text-white bg-red-500 px-4 py-2 rounded"
+                                                >
                                                     Cerrar
                                                 </button>
                                             </div>
                                         </div>
-
                                     </div>
-
-
                                 </div>
-                                <div class="px-4 my-4 pt-2 flex justify-end bg-white border-t border-gray-200">
-                                    <PrimaryButton class="ms-4 pi pi-save" :class="{ 'opacity-25': form.processing, }"
-                                        :disabled="form.processing">
-
+                                <div
+                                    class="px-4 my-4 pt-2 flex justify-end bg-white border-t border-gray-200"
+                                >
+                                    <PrimaryButton
+                                        class="ms-4 pi pi-save"
+                                        :class="{
+                                            'opacity-25': form.processing,
+                                        }"
+                                        :disabled="form.processing"
+                                    >
+                                        <span
+                                            class="p-1"
+                                            :style="{
+                                                fontSize: '10px',
+                                            }"
+                                        >
+                                            Guardar</span
+                                        >
                                     </PrimaryButton>
                                 </div>
                             </form>
