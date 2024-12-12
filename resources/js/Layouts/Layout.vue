@@ -226,6 +226,12 @@ const menuItems = [
         role: ["admin", "superadmin", "user"],
         children: [
             {
+                label: "Desperdicios",
+                route: "desperdicio.index",
+                icon: "",
+                role: ["admin", "superadmin", "user"],
+            },
+            {
                 label: "Evaluaciones",
                 route: "evaluacion.index",
                 icon: "",
@@ -249,9 +255,10 @@ const menuItems = [
                 icon: "",
                 role: ["admin", "superadmin", "user"],
             },
+
             {
-                label: "Desperdicios",
-                route: "desperdicio.index",
+                label: "ScoreCard",
+                route: "scoreCard.index",
                 icon: "",
                 role: ["admin", "superadmin", "user"],
             },
@@ -283,18 +290,6 @@ const menuItems = [
             {
                 label: "Reportes",
                 route: "reporte.index",
-                icon: "",
-                role: ["admin", "superadmin", "user"],
-            },
-            {
-                label: "Mis Reportes",
-                route: "misreporte.index",
-                icon: "",
-                role: ["admin", "superadmin", "user"],
-            },
-            {
-                label: "ScoreCard",
-                route: "scoreCard.index",
                 icon: "",
                 role: ["admin", "superadmin", "user"],
             },
