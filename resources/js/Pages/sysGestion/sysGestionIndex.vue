@@ -84,196 +84,198 @@ async function getProcesos() {
 
 <template>
     <Layout :titulo="title" :subTitulo="subTitle">
-
-        <Head title="PDCA" />
-        <div class="overflow-hidden sm:rounded-lg">
-            <div class="breadcrumbsTitulo px-1">
-                <h3>Sistema de Gestion</h3>
+        <div class="p-5">
+            <!-- Sub Header -->
+            <div class="sm:rounded-lg overflow-hidden">
+                <div class="flex items-center gap-3 breadcrumbs">
+                    <Link href="#" class="active">
+                    <h3>Sistema de gestion</h3>
+                    </Link>
+                    <i class="pi-angle-right pi" style="font-size: 1rem"></i>
+                    <Link :href="route('sysgestion.index')" class="active">
+                    <b>PDCA</b>
+                    </Link>
+                </div>
             </div>
-            <div class="breadcrumbs flex">
-                <Link :href="route('dashboard')" class="px-1">
-                <h3>Home -</h3>
-                </Link>
-                <Link href="#" class="active">
-                <h3>Sistema de gestion</h3>
-                </Link>
-                <Link :href="route('sysgestion.index')" class="active">
-                <h3>PDCA</h3>
-                </Link>
-            </div>
-        </div>
 
-        <div class="py-2">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                <div>
-                    <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
-                        <div class="container mx-auto">
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                                <div class="mt-4">
-                                    <InputLabel for="area_id" value="Pilar: " />
-                                    <select ref="area_select" @change="onChange($event)"
-                                        class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                        v-model="form.area_id" required>
-                                        <option v-for="area in areas" :key="area.id" :value="area.id">
-                                            {{ area.nombre }}
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="mt-4">
-                                    <InputLabel for="departamento_id" value="Flujo de valor: " />
+            <!-- Content -->
+            <div>
+                <div class="bg-white sm:rounded-lg overflow-hidden">
+                    <div>
+                        <div class="flex justify-end border-gray-200 bg-white px-4 py-2 border-b">
+                            <div class="mx-auto container">
+                                <div class="gap-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                                    <div class="mt-4">
+                                        <InputLabel for="area_id" value="Pilar: " />
+                                        <select ref="area_select" @change="onChange($event)"
+                                            class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
+                                            v-model="form.area_id" required>
+                                            <option v-for="area in areas" :key="area.id" :value="area.id">
+                                                {{ area.nombre }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="mt-4">
+                                        <InputLabel for="departamento_id" value="Flujo de valor: " />
 
-                                    <select ref="departamento_select" @change="getProcesos()"
-                                        class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                        v-model="form.departamento_id" required>
-                                        <option value="" disabled selected>
-                                            Seleccione una opcion
-                                        </option>
-                                        <option v-for="departamento in departamentos" :key="departamento.id"
-                                            :value="departamento.id">
-                                            {{ departamento.nombre }}
-                                        </option>
-                                    </select>
+                                        <select ref="departamento_select" @change="getProcesos()"
+                                            class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
+                                            v-model="form.departamento_id" required>
+                                            <option value="" disabled selected>
+                                                Seleccione una opcion
+                                            </option>
+                                            <option v-for="departamento in departamentos" :key="departamento.id"
+                                                :value="departamento.id">
+                                                {{ departamento.nombre }}
+                                            </option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="px-4 py-2 bg-white border-b border-gray-200">
-                        <!-- <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 gap-4 hidden sm:grid">
-                            <span class="text-2xl font-bold text-center">Plan</span>
-                            <span class="text-2xl font-bold text-center">Check</span>
-                        </div> -->
-                        <KpiIndex :departamento_id="form.departamento_id" />
-                    </div>
+                        <div class="border-gray-200 bg-white px-4 py-2 border-b">
+                            <!-- <div class="gap-4 hidden grid sm:grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2">
+                                <span class="font-bold text-2xl text-center">Plan</span>
+                                <span class="font-bold text-2xl text-center">Check</span>
+                            </div> -->
+                            <KpiIndex :departamento_id="form.departamento_id" />
+                        </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
-                        <div class="m-4">
-                            <!-- Procesos -->
-                            <div class="max-h-48 overflow-y-auto">
-                                <div class="text-center">
-                                    <span class="text-2xl font-bold">Do</span>
+                        <div class="gap-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
+                            <div class="m-4">
+                                <!-- Procesos -->
+                                <div class="max-h-48 overflow-y-auto">
+                                    <div class="text-center">
+                                        <span class="font-bold text-2xl">Do</span>
+                                    </div>
+                                    <table class="border-collapse min-w-full">
+                                        <thead>
+                                            <tr>
+                                                <th class="px-4 py-2 border" colspan="2">
+                                                    Procesos
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <div v-for="proceso in procesos" class="w-full">
+                                                <tr v-for="procedimiento in proceso.procedimientos">
+                                                    <td class="px-4 py-2">
+                                                        <div v-if="procedimiento.link_herramienta">
+                                                            <a target="blank" :href="procedimiento.link_herramienta"
+                                                                class="text-blue-500 hover:underline curson-pointer">
+                                                                {{ procedimiento.nombre || '-' }}
+                                                            </a>
+                                                        </div>
+                                                        <div v-else>
+                                                            <a href="#"
+                                                                class="text-slate-400 hover:underline cursor-not-allowed">
+                                                                {{ procedimiento.nombre || '-' }}
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </div>
+                                        </tbody>
+                                    </table>
                                 </div>
-                                <table class="min-w-full border-collapse">
+                            </div>
+                            <div class="m-4">
+                                <!-- Acciones -->
+                                <div class="text-center">
+                                    <span class="font-bold text-2xl">Act</span>
+                                </div>
+                                <table class="border-collapse min-w-full">
                                     <thead>
                                         <tr>
-                                            <th class="py-2 px-4 border" colspan="2">
-                                                Procesos
+                                            <th class="px-4 py-2 border" colspan="2">
+                                                Acciones
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <div v-for="proceso in procesos" class="w-full">
-                                            <tr v-for="procedimiento in proceso.procedimientos">
-                                                <td class="py-2 px-4">
-                                                    <div v-if="procedimiento.link_herramienta">
-                                                        <a target="blank" :href="procedimiento.link_herramienta"
-                                                            class="text-blue-500 hover:underline curson-pointer">
-                                                            {{ procedimiento.nombre || '-' }}
-                                                        </a>
-                                                    </div>
-                                                    <div v-else>
-                                                        <a href="#"
-                                                            class="text-slate-400 hover:underline cursor-not-allowed">
-                                                            {{ procedimiento.nombre || '-' }}
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </div>
+                                        <tr>
+                                            <td class="px-4 py-2 border">
+                                                <div>
+                                                    <span>Correctivas</span>
+                                                    <button v-if="!showCorrectivas"
+                                                        class="float-right mx-2 pi pi-angle-down"
+                                                        @click="showCorrectivas = !showCorrectivas">
+                                                    </button>
+                                                    <button v-if="showCorrectivas"
+                                                        class="float-right mx-2 pi pi-angle-up"
+                                                        @click="showCorrectivas = !showCorrectivas">
+                                                    </button>
+                                                </div>
+                                                <div>
+                                                    <AccionIndex v-if="showCorrectivas === true" :area_id="form.area_id"
+                                                        :tipo="'correctiva'" :departamento_id="form.departamento_id" />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-4 py-2 border">
+                                                <div>
+                                                    <span>Preventivas</span>
+                                                    <button v-if="!showPreventivas"
+                                                        class="float-right mx-2 pi pi-angle-down"
+                                                        @click="showPreventivas = !showPreventivas">
+                                                    </button>
+                                                    <button v-if="showPreventivas"
+                                                        class="float-right mx-2 pi pi-angle-up"
+                                                        @click="showPreventivas = !showPreventivas">
+                                                    </button>
+                                                </div>
+                                                <div>
+                                                    <AccionIndex v-if="showPreventivas === true" :tipo="'preventiva'"
+                                                        :area_id="form.area_id"
+                                                        :departamento_id="form.departamento_id" />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-4 py-2 border">
+                                                <div>
+                                                    <span>De Mejora</span>
+                                                    <button v-if="!showMejoras"
+                                                        class="float-right mx-2 pi pi-angle-down"
+                                                        @click="showMejoras = !showMejoras">
+                                                    </button>
+                                                    <button v-if="showMejoras" class="float-right mx-2 pi pi-angle-up"
+                                                        @click="showMejoras = !showMejoras">
+                                                    </button>
+                                                </div>
+                                                <div>
+                                                    <AccionIndex v-if="showMejoras === true" :tipo="'mejora'"
+                                                        :area_id="form.area_id"
+                                                        :departamento_id="form.departamento_id" />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-4 py-2 border">
+                                                <Link
+                                                    :href="route('minutas.index', { area_id: form.area_id, departamento_id: form.departamento_id })"
+                                                    class="text-blue-500 hover:underline">
+                                                Minutas
+                                                </Link>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-4 py-2 border">
+                                                <Link
+                                                    :href="route('tareas.index', { area_id: form.area_id, departamento_id: form.departamento_id })"
+                                                    class="text-blue-500 hover:underline">
+                                                Tareas
+                                                </Link>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                        <div class="m-4">
-                            <!-- Acciones -->
-                            <div class="text-center">
-                                <span class="text-2xl font-bold">Act</span>
-                            </div>
-                            <table class="min-w-full border-collapse">
-                                <thead>
-                                    <tr>
-                                        <th class="py-2 px-4 border" colspan="2">
-                                            Acciones
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="py-2 px-4 border">
-                                            <div>
-                                                <span>Correctivas</span>
-                                                <button v-if="!showCorrectivas"
-                                                    class="pi pi-angle-down float-right mx-2"
-                                                    @click="showCorrectivas = !showCorrectivas">
-                                                </button>
-                                                <button v-if="showCorrectivas" class="pi pi-angle-up float-right mx-2"
-                                                    @click="showCorrectivas = !showCorrectivas">
-                                                </button>
-                                            </div>
-                                            <div>
-                                                <AccionIndex v-if="showCorrectivas === true" :area_id="form.area_id"
-                                                    :tipo="'correctiva'" :departamento_id="form.departamento_id" />
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="py-2 px-4 border">
-                                            <div>
-                                                <span>Preventivas</span>
-                                                <button v-if="!showPreventivas"
-                                                    class="pi pi-angle-down float-right mx-2"
-                                                    @click="showPreventivas = !showPreventivas">
-                                                </button>
-                                                <button v-if="showPreventivas" class="pi pi-angle-up float-right mx-2"
-                                                    @click="showPreventivas = !showPreventivas">
-                                                </button>
-                                            </div>
-                                            <div>
-                                                <AccionIndex v-if="showPreventivas === true" :tipo="'preventiva'"
-                                                    :area_id="form.area_id" :departamento_id="form.departamento_id" />
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="py-2 px-4 border">
-                                            <div>
-                                                <span>De Mejora</span>
-                                                <button v-if="!showMejoras" class="pi pi-angle-down float-right mx-2"
-                                                    @click="showMejoras = !showMejoras">
-                                                </button>
-                                                <button v-if="showMejoras" class="pi pi-angle-up float-right mx-2"
-                                                    @click="showMejoras = !showMejoras">
-                                                </button>
-                                            </div>
-                                            <div>
-                                                <AccionIndex v-if="showMejoras === true" :tipo="'mejora'"
-                                                    :area_id="form.area_id" :departamento_id="form.departamento_id" />
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="py-2 px-4 border">
-                                            <Link
-                                                :href="route('minutas.index', { area_id: form.area_id, departamento_id: form.departamento_id })"
-                                                class="text-blue-500 hover:underline">
-                                            Minutas
-                                            </Link>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="py-2 px-4 border">
-                                            <Link
-                                                :href="route('tareas.index', { area_id: form.area_id, departamento_id: form.departamento_id })"
-                                                class="text-blue-500 hover:underline">
-                                            Tareas
-                                            </Link>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
 
+                    </div>
                 </div>
             </div>
         </div>
