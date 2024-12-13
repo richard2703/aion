@@ -211,7 +211,6 @@ const getTrend = (promedio, objetivo, regla) => {
 
 <template>
     <Layout :titulo="'Reporte Semanal ' + reporteSemanal.numeroSemana">
-
         <div class="flex px-2">
             <div>
 
@@ -234,8 +233,23 @@ const getTrend = (promedio, objetivo, regla) => {
                 </div>
 
                 <div class="py-2">
+                    <!-- Índice de Departamentos -->
+                    <div class="flex">
+                        <div class="reporte w-full ">
+                            <h2 class="text-lg font-bold">Índice de Departamentos</h2>
+                            <ul class="list-disc pl-4">
+                                <li v-for="reporte in reportes" :key="reporte.id">
+                                    <a :href="'#departamento-' + reporte.id" class="text-purple-700 hover:underline">
+                                        {{ reporte.departamento.nombre }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
                     <div v-for="reporte in reportes" :key="reporte.id" class="reporte w-full">
-                        <div @click="collapsedReportReport(reporte.id)" class="departamento-header">
+                        <div :id="'departamento-' + reporte.id" @click="collapsedReportReport(reporte.id)"
+                            class="departamento-header">
                             <h3 class="text-xl font-bold text-purple-700">{{ reporte.departamento.nombre }}</h3>
                             <h3 class="text-s font-bold text-purple-700">{{ reporte.usuario.name }}</h3>
                             <div v-if="reporte.departamento.deleted_at">
@@ -330,7 +344,10 @@ const getTrend = (promedio, objetivo, regla) => {
                                     <h2 class="text-xl font-bold text-purple-700">Acciones PDCA</h2>
                                     <ul class=" pl-5 mt-2">
                                         <li v-for="actividad in reporte.actividades" :key="actividad.id">
+                                            <!-- {{ actividad.titulo }} -->
+                                            <Link :href=actividad.link>
                                             {{ actividad.titulo }}
+                                            </Link>
                                         </li>
                                     </ul>
                                     <div v-if="!reporte.actividades.length">

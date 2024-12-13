@@ -339,6 +339,7 @@ class reportesController extends Controller
         $reporteSemanal = $reporte;
         $reportes = reportes::where('semana_id', $reporteSemanal->id)
             ->join('departamentos', 'reportes.departamento_id', '=', 'departamentos.id')
+            ->join('areas', 'departamentos.area_id', '=', 'areas.id') // Join con la tabla de áreas
             ->with([
                 'departamento',
                 'highlights',
@@ -359,7 +360,8 @@ class reportesController extends Controller
                     $query->where('trimestre_id', $trimestreRegistrado->id);
                 }
             ])
-            ->orderByRaw("CASE WHEN departamentos.nombre = 'Dirección General' THEN 1 ELSE 2 END")
+            // ->orderByRaw("CASE WHEN departamentos.nombre = 'Dirección General' THEN 1 ELSE 2 END")
+            ->orderBy('areas.id') // Ordenar por área
             ->orderBy('departamentos.nombre') // Para el resto de los departamentos
             ->select('reportes.*') // Aseguramos seleccionar solo los campos de reportes
             ->get();
