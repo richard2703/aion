@@ -30,7 +30,7 @@ defineProps({
         :href="href"
         :disabled="disabled"
         :class="[
-            'inline-flex items-center justify-center py-3 px-4 border border-transparent rounded-md font-semibold text-white text-[0.9rem] transition duration-150 ease-in-out focus:outline-none',
+            'inline-flex items-center justify-center py-3 px-4 border rounded-md font-semibold text-white text-[0.9rem] transition duration-150 ease-in-out focus:outline-none',
             customClasses,
             { 'opacity-25 cursor-not-allowed': disabled }
         ]"

@@ -163,79 +163,77 @@ const submitModal = async () => {
     <Layout :titulo="title">
 
         <Head title="Desperdicios" />
-        <div class="overflow-hidden sm:rounded-lg">
-            <div class="breadcrumbsTitulo px-1">
-                <h3>Desperdicio</h3>
-            </div>
-            <div class="breadcrumbs flex">
-                <Link :href="route('dashboard')" class="px-1">
-                <h3>Home -</h3>
-                </Link>
-                <Link class="active">
-                <h3>mis desperdicios</h3>
-                </Link>
+        <div class="pl-5 overflow-hidden">
+            <div class="breadcrumbsTitulo">
+                <h3 class="font-semibold text-xl">Desperdicios</h3>
             </div>
         </div>
 
-        <div class="py-2">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                <div>
-                    <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
-                        <PrimaryButton @click="openEditModal()" class="m-4 pi text-sm"> Excel </PrimaryButton>
-                        <PrimaryButton :href="route('desperdicio.create')" class="m-4 pi pi-plus"></PrimaryButton>
+        <div class="p-5">
+            <div class="bg-white overflow-hidden">
+                
+                <div class="block md:flex justify-between items-end mb-8">
+                    <input v-model="globalFilter" placeholder="Buscar..." id="task-title" type="text" class="block border-gray-300 shadow-sm mt-1 py-3 focus:border-black rounded-md focus:ring-black min-w-full md:min-w-80 sm:text-sm" />
+                    <div class="flex gap-5 mt-10 md:mt-0">
+                        <PrimaryButton @click="openEditModal()"class="bg-gray-500 hover:bg-black">
+                            <i class="pi pi-file-excel" style="margin-right: 10px; font-size: 1rem"></i> Excell
+                        </PrimaryButton>
+    
+                        <PrimaryButton :href="route('desperdicio.create')"  class="bg-black hover:bg-gray-800">
+                            <i class="pi pi-plus" style="margin-right: 10px; font-size: 1rem"></i> Nuevo desperdicio
+                        </PrimaryButton>
                     </div>
-                    <div class="px-4 py-2 bg-white border-b border-gray-200">
-                        <div class="container mx-auto overflow-x-auto">
-                            <!-- <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" /> -->
+                </div>
 
-                            <DataTable :value="tipos" paginator :rows="rows" :totalRecords="totalRecords" :lazy="true"
-                                :first="first" @page="onPage" @sort="onSort" :rowsPerPageOptions="[5, 10, 20, 50]"
-                                tableStyle="min-width: 50rem" :filters="filters" :globalFilterFields="[
-                                    'id',
-                                    'nombre',
-                                    'area.nombre',
-                                    'descripcion',
-                                ]" :sortField="sortField" :sortOrder="sortOrder"
-                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
-                                <template #empty> Sin registros. </template>
-                                <!-- <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
+                <!-- Table  -->
+                <div class="mx-auto overflow-x-auto">
+                    <!-- <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" /> -->
+                    <DataTable :value="tipos" paginator :rows="rows" :totalRecords="totalRecords" :lazy="true"
+                        :first="first" @page="onPage" @sort="onSort" :rowsPerPageOptions="[5, 10, 20, 50]"
+                        tableStyle="min-width: 50rem" :filters="filters" :globalFilterFields="[
+                            'id',
+                            'nombre',
+                            'area.nombre',
+                            'descripcion',
+                        ]" :sortField="sortField" :sortOrder="sortOrder"
+                        class="p-datatable-gridlines p-datatable-sm p-datatable-striped">
+                        <template #empty> Sin registros. </template>
+                        <!-- <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
                                     sortable></Column> -->
-                                <Column field="created_at" header="Fecha" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" :body="formatDate" sortable>
-                                    <template #body="slotProps">
-                                        {{ formatearFecha(slotProps.data.created_at) }}
-                                    </template>
-                                </Column>
-                                <!-- <Column field="area.nombre" header="Pilar" headerStyle="width:4em;"
+                        <Column field="created_at" header="Fecha" headerStyle="width:4em;"
+                            bodyStyle="text-align:center;" bodyClass="text-center" :body="formatDate" sortable>
+                            <template #body="slotProps">
+                                {{ formatearFecha(slotProps.data.created_at) }}
+                            </template>
+                        </Column>
+                        <!-- <Column field="area.nombre" header="Pilar" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                 <Column field="departamento.nombre" header="Flujo de valor" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column> -->
-                                <Column field="tipo.tipo" header="Tipo" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                                <Column field="tipo.nombre" header="Nombre" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                                <Column field="monto" header="Monto" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                                <Column field="usuario.name" header="Usuario" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                                <!-- <Column field="descripcion" header="Descripcion" headerStyle="width:4em;"
+                        <Column field="tipo.tipo" header="Tipo" headerStyle="width:4em;" bodyStyle="text-align:center;"
+                            bodyClass="text-center" sortable></Column>
+                        <Column field="tipo.nombre" header="Nombre" headerStyle="width:4em;"
+                            bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+                        <Column field="monto" header="Monto" headerStyle="width:4em;" bodyStyle="text-align:center;"
+                            bodyClass="text-center" sortable></Column>
+                        <Column field="usuario.name" header="Usuario" headerStyle="width:4em;"
+                            bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+                        <!-- <Column field="descripcion" header="Descripcion" headerStyle="width:4em;"
                                     bodyClass="text-center" sortable></Column> -->
 
-                                <Column header="" headerStyle="width:4em;">
-                                    <template #body="slotProps" class="text-center">
-                                        <PrimaryButton class="me-2 pi pi-file-edit"
-                                            :href="route('desperdicio.edit', slotProps.data.id)">
-                                        </PrimaryButton>
+                        <Column header="" headerStyle="width:4em;">
+                            <template #body="slotProps" class="text-center">
+                                <PrimaryButton class="me-2 pi pi-file-edit"
+                                    :href="route('desperdicio.edit', slotProps.data.id)">
+                                </PrimaryButton>
 
-                                        <PrimaryButton class="me-2 pi pi-trash"
-                                            @click.prevent="deleteItem(slotProps.data.id)">
-                                        </PrimaryButton>
-                                    </template>
-                                </Column>
-                            </DataTable>
-                        </div>
-                    </div>
+                                <PrimaryButton class="me-2 pi pi-trash" @click.prevent="deleteItem(slotProps.data.id)">
+                                </PrimaryButton>
+                            </template>
+                        </Column>
+                    </DataTable>
                 </div>
+
             </div>
         </div>
     </Layout>
@@ -244,27 +242,27 @@ const submitModal = async () => {
     <Modal :show="isModal" maxWidth="lg">
         <template v-slot="">
             <div>
-                <div class="px-4 my-4 py-2 flex justify-center bg-white border-b border-gray-200">
-                    <p class=" text-lg font-medium text-gray-900"> Seleccionar el rango de fecha.</p>
+                <div class="flex justify-center border-gray-200 bg-white my-4 px-4 py-2 border-b">
+                    <p class="font-medium text-gray-900 text-lg"> Seleccionar el rango de fecha.</p>
                 </div>
-                <div class="px-4 py-2 bg-white border-b border-gray-200">
+                <div class="border-gray-200 bg-white px-4 py-2 border-b">
                     <p>
                         Seleccionar el rango de fecha para generar el reporte.
                     </p>
-                    <div class="container mx-auto">
+                    <div class="mx-auto container">
                         <form @submit.prevent="submitModal">
                             <div class="w-full">
-                                <div class="my-4  w-full">
+                                <div class="my-4 w-full">
                                     <InputLabel class="w-full" for="Desde" value="Desde: " />
                                     <TextInput id="objetivo" v-model="form.from" type="date" step="any"
-                                        class="mt-1 block w-full" required autocomplete="new-challenge" />
+                                        class="block mt-1 w-full" required autocomplete="new-challenge" />
                                 </div>
                             </div>
                             <div class="w-full">
-                                <div class="my-4  w-full">
+                                <div class="my-4 w-full">
                                     <InputLabel class="w-full" for="Hasta" value="Hasta: " />
                                     <TextInput id="objetivo" v-model="form.to" type="date" step="any"
-                                        class="mt-1 block w-full" required autocomplete="new-challenge" />
+                                        class="block mt-1 w-full" required autocomplete="new-challenge" />
                                 </div>
                             </div>
 
