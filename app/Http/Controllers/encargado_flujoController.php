@@ -28,32 +28,33 @@ class encargado_flujoController extends Controller
         $sortOrder = $request->get('sortOrder', 'asc');
 
         // Filter logic
-        // if ($filter) {
-        //     $query->where(function ($q) use ($filter) {
-        //         $q->where('estandares.id', 'like', '%' . $filter . '%')
-        //             ->orWhere('estandares.nombre', 'like', '%' . $filter . '%')
-        //             ->orWhere('estandares.descripcion', 'like', '%' . $filter . '%')
-        //             ->orWhere('estandares.link_externo', 'like', '%' . $filter . '%')
-        //             ->orWhereHas('procedimiento', function ($q) use ($filter) {
-        //                 $q->where('procedimientos.nombre', 'like', '%' . $filter . '%')
-        //                     ->orWhere('procedimientos.descripcion', 'like', '%' . $filter . '%');
-        //             });
-        //     });
-        // }
-
+        if ($filter) {
+            $query->where(function ($q) use ($filter) {
+                $q->where('encargado_flujos.id', 'like', '%' . $filter . '%')
+                    ->orWhereHas('usuario', function ($q) use ($filter) {
+                        $q->where('users.name', 'like', '%' . $filter . '%');
+                    })
+                    ->orWhereHas('departamento', function ($q) use ($filter) {
+                        $q->where('departamentos.nombre', 'like', '%' . $filter . '%');
+                    });
+            });
+        }
         // Sorting logic
-        // if (in_array($sortField, ['id', 'nombre', 'descripcion', 'link_externo', 'procedimiento.nombre'])) {
-        //     if (strpos($sortField, 'procedimiento.') === 0) {
-        //         $query->join('procedimientos', 'estandares.procedimiento_id', '=', 'procedimientos.id')
-        //             ->select('estandares.*', 'procedimientos.nombre as procedimiento_nombre') // Select distinct columns
-        //             ->orderBy('procedimientos.nombre', $sortOrder);
-        //     } else {
-        //         $query->orderBy('estandares.' . $sortField, $sortOrder);
-        //     }
-        // } else {
-        //     // Default sorting if the provided sortField is not allowed
-        //     $query->orderBy('id', $sortOrder);
-        // }
+        if (in_array($sortField, ['id', 'departamento.nombre', 'usuario.name'])) {
+            if (strpos($sortField, 'usuario.') === 0) {
+                $query->join('users', 'encargado_flujos.user_id', '=', 'users.id')
+                    ->select('encargado_flujos.*', 'users.name as users_nombre') // Select distinct columns
+                    ->orderBy('users.name', $sortOrder);
+            } else if (strpos($sortField, 'departamento.') === 0) {
+                $query->join('departamentos', 'encargado_flujos.departamento_id', '=', 'departamentos.id')
+                    ->select('encargado_flujos.*', 'departamentos.nombre as departamento_nombre') // Select distinct columns
+                    ->orderBy('departamentos.nombre', $sortOrder);
+            } else {
+                $query->orderBy('encargado_flujos.' . $sortField, $sortOrder);
+            }
+        } else {
+            $query->orderBy('id', $sortOrder);
+        }
 
         $encargados = $query->with('usuario', 'departamento')->paginate($pageSize, ['*'], 'page', $page);
 

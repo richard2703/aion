@@ -8,17 +8,16 @@ import { confirmDialog, showToast } from "../utils/SweetAlert.service";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import InputText from "primevue/inputtext";
-import { format } from 'date-fns';
+import { format } from "date-fns";
 import Modal from "@/Components/Modal.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
 
-
 const formatDate = (rowData) => {
     if (rowData.created_at) {
-        return format(new Date(rowData.created_at), 'dd/MM/yy');
+        return format(new Date(rowData.created_at), "dd/MM/yy");
     }
-    return '';
+    return "";
 };
 
 const props = defineProps({
@@ -77,9 +76,7 @@ const deleteItem = async (id) => {
         if (result.isConfirmed) {
             await axios.delete(route("desperdicio.destroy", id));
 
-            tipos.value = tipos.value.filter(
-                (tipos) => tipos.id !== id
-            );
+            tipos.value = tipos.value.filter((tipos) => tipos.id !== id);
             showToast("El registro ha sido eliminado", "success");
         }
     } catch (error) {
@@ -123,34 +120,32 @@ watch(globalFilter, (newValue) => {
     getdesperdicios(1, rows.value, newValue, sortField.value, sortOrder.value);
 });
 const formatearFecha = (dateString) => {
-    return format(new Date(dateString), 'dd/MM/yyyy');
+    return format(new Date(dateString), "dd/MM/yyyy");
 };
 
 //////////////////////////
 const openEditModal = async () => {
-    isModal.value = true
-}
+    isModal.value = true;
+};
 
 const closeModal = () => {
     isModal.value = false;
-}
+};
 
 // TODO: crear funcion para exportar a excel "submitModal"
 
 const submitModal = async () => {
     try {
-        window.location.href = (route('excel.desperdicios', {
+        window.location.href = route("excel.desperdicios", {
             from: form.from,
-            to: form.to
-        }));
+            to: form.to,
+        });
         form.reset();
         closeModal();
-
     } catch (error) {
-        console.log('error');
+        console.log("error");
     }
-}
-
+};
 </script>
 
 <style scoped>
@@ -161,7 +156,6 @@ const submitModal = async () => {
 
 <template>
     <Layout :titulo="title">
-
         <Head title="Desperdicios" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
@@ -169,10 +163,10 @@ const submitModal = async () => {
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
-                <h3>Home -</h3>
+                    <h3>Home -</h3>
                 </Link>
                 <Link class="active">
-                <h3>mis desperdicios</h3>
+                    <h3>mis desperdicios</h3>
                 </Link>
             </div>
         </div>
@@ -180,55 +174,143 @@ const submitModal = async () => {
         <div class="py-2">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div>
-                    <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
-                        <PrimaryButton @click="openEditModal()" class="m-4 pi text-sm"> Excel </PrimaryButton>
-                        <PrimaryButton :href="route('desperdicio.create')" class="m-4 pi pi-plus"></PrimaryButton>
+                    <div
+                        class="px-4 py-2 flex justify-end bg-white border-b border-gray-200"
+                    >
+                        <PrimaryButton
+                            @click="openEditModal()"
+                            class="m-4 pi text-sm"
+                        >
+                            Excel
+                        </PrimaryButton>
+                        <PrimaryButton
+                            :href="route('desperdicio.create')"
+                            class="m-4 pi pi-plus"
+                            ><span
+                                class="p-1"
+                                :style="{
+                                    fontSize: '10px',
+                                }"
+                            >
+                                Nuevo desperdicio</span
+                            ></PrimaryButton
+                        >
                     </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto overflow-x-auto">
                             <!-- <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" /> -->
 
-                            <DataTable :value="tipos" paginator :rows="rows" :totalRecords="totalRecords" :lazy="true"
-                                :first="first" @page="onPage" @sort="onSort" :rowsPerPageOptions="[5, 10, 20, 50]"
-                                tableStyle="min-width: 50rem" :filters="filters" :globalFilterFields="[
+                            <DataTable
+                                :value="tipos"
+                                paginator
+                                :rows="rows"
+                                :totalRecords="totalRecords"
+                                :lazy="true"
+                                :first="first"
+                                @page="onPage"
+                                @sort="onSort"
+                                :rowsPerPageOptions="[5, 10, 20, 50]"
+                                tableStyle="min-width: 50rem"
+                                :filters="filters"
+                                :globalFilterFields="[
                                     'id',
                                     'nombre',
                                     'area.nombre',
                                     'descripcion',
-                                ]" :sortField="sortField" :sortOrder="sortOrder"
-                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+                                ]"
+                                :sortField="sortField"
+                                :sortOrder="sortOrder"
+                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines"
+                            >
                                 <template #empty> Sin registros. </template>
                                 <!-- <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
                                     sortable></Column> -->
-                                <Column field="created_at" header="Fecha" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" :body="formatDate" sortable>
+                                <Column
+                                    field="created_at"
+                                    header="Fecha"
+                                    headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;"
+                                    bodyClass="text-center"
+                                    :body="formatDate"
+                                    sortable
+                                >
                                     <template #body="slotProps">
-                                        {{ formatearFecha(slotProps.data.created_at) }}
+                                        {{
+                                            formatearFecha(
+                                                slotProps.data.created_at
+                                            )
+                                        }}
                                     </template>
                                 </Column>
                                 <!-- <Column field="area.nombre" header="Pilar" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                 <Column field="departamento.nombre" header="Flujo de valor" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column> -->
-                                <Column field="tipo.tipo" header="Tipo" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                                <Column field="tipo.nombre" header="Nombre" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                                <Column field="monto" header="Monto" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                                <Column field="usuario.name" header="Usuario" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+                                <Column
+                                    field="tipo.tipo"
+                                    header="Tipo"
+                                    headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;"
+                                    bodyClass="text-center"
+                                    sortable
+                                ></Column>
+                                <Column
+                                    field="tipo.nombre"
+                                    header="Nombre"
+                                    headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;"
+                                    bodyClass="text-center"
+                                    sortable
+                                ></Column>
+                                <Column
+                                    field="monto"
+                                    header="Monto"
+                                    headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;"
+                                    bodyClass="text-center"
+                                    sortable
+                                ></Column>
+                                <Column
+                                    field="usuario.name"
+                                    header="Usuario"
+                                    headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;"
+                                    bodyClass="text-center"
+                                    sortable
+                                ></Column>
                                 <!-- <Column field="descripcion" header="Descripcion" headerStyle="width:4em;"
                                     bodyClass="text-center" sortable></Column> -->
 
                                 <Column header="" headerStyle="width:4em;">
-                                    <template #body="slotProps" class="text-center">
-                                        <PrimaryButton class="me-2 pi pi-file-edit"
-                                            :href="route('desperdicio.edit', slotProps.data.id)">
+                                    <template
+                                        #body="slotProps"
+                                        class="text-center"
+                                    >
+                                        <PrimaryButton
+                                            class="me-2 pi pi-file-edit"
+                                            :href="
+                                                route(
+                                                    'desperdicio.edit',
+                                                    slotProps.data.id
+                                                )
+                                            "
+                                        >
+                                            <span
+                                                class="p-1"
+                                                :style="{
+                                                    fontSize: '10px',
+                                                }"
+                                            >
+                                                editar</span
+                                            >
                                         </PrimaryButton>
 
-                                        <PrimaryButton class="me-2 pi pi-trash"
-                                            @click.prevent="deleteItem(slotProps.data.id)">
+                                        <PrimaryButton
+                                            class="me-2 pi pi-trash"
+                                            @click.prevent="
+                                                deleteItem(slotProps.data.id)
+                                            "
+                                        >
                                         </PrimaryButton>
                                     </template>
                                 </Column>
@@ -244,8 +326,12 @@ const submitModal = async () => {
     <Modal :show="isModal" maxWidth="lg">
         <template v-slot="">
             <div>
-                <div class="px-4 my-4 py-2 flex justify-center bg-white border-b border-gray-200">
-                    <p class=" text-lg font-medium text-gray-900"> Seleccionar el rango de fecha.</p>
+                <div
+                    class="px-4 my-4 py-2 flex justify-center bg-white border-b border-gray-200"
+                >
+                    <p class="text-lg font-medium text-gray-900">
+                        Seleccionar el rango de fecha.
+                    </p>
                 </div>
                 <div class="px-4 py-2 bg-white border-b border-gray-200">
                     <p>
@@ -254,29 +340,68 @@ const submitModal = async () => {
                     <div class="container mx-auto">
                         <form @submit.prevent="submitModal">
                             <div class="w-full">
-                                <div class="my-4  w-full">
-                                    <InputLabel class="w-full" for="Desde" value="Desde: " />
-                                    <TextInput id="objetivo" v-model="form.from" type="date" step="any"
-                                        class="mt-1 block w-full" required autocomplete="new-challenge" />
+                                <div class="my-4 w-full">
+                                    <InputLabel
+                                        class="w-full"
+                                        for="Desde"
+                                        value="Desde: "
+                                    />
+                                    <TextInput
+                                        id="objetivo"
+                                        v-model="form.from"
+                                        type="date"
+                                        step="any"
+                                        class="mt-1 block w-full"
+                                        required
+                                        autocomplete="new-challenge"
+                                    />
                                 </div>
                             </div>
                             <div class="w-full">
-                                <div class="my-4  w-full">
-                                    <InputLabel class="w-full" for="Hasta" value="Hasta: " />
-                                    <TextInput id="objetivo" v-model="form.to" type="date" step="any"
-                                        class="mt-1 block w-full" required autocomplete="new-challenge" />
+                                <div class="my-4 w-full">
+                                    <InputLabel
+                                        class="w-full"
+                                        for="Hasta"
+                                        value="Hasta: "
+                                    />
+                                    <TextInput
+                                        id="objetivo"
+                                        v-model="form.to"
+                                        type="date"
+                                        step="any"
+                                        class="mt-1 block w-full"
+                                        required
+                                        autocomplete="new-challenge"
+                                    />
                                 </div>
                             </div>
 
                             <div class="flex justify-between">
-                                <PrimaryButton @click.prevent="closeModal" class="bg-red-500 ms-4 pi pi-times" :class="{
-                                    'opacity-25': form.abort,
-                                }" :disabled="form.abort">
+                                <PrimaryButton
+                                    @click.prevent="closeModal"
+                                    class="bg-red-500 ms-4 pi pi-times"
+                                    :class="{
+                                        'opacity-25': form.abort,
+                                    }"
+                                    :disabled="form.abort"
+                                >
                                 </PrimaryButton>
 
-                                <PrimaryButton class="ms-4 pi pi-file-export" :class="{
-                                    'opacity-25': form.processing,
-                                }" :disabled="form.processing">
+                                <PrimaryButton
+                                    class="ms-4 pi pi-file-export"
+                                    :class="{
+                                        'opacity-25': form.processing,
+                                    }"
+                                    :disabled="form.processing"
+                                >
+                                    <span
+                                        class="p-1"
+                                        :style="{
+                                            fontSize: '10px',
+                                        }"
+                                    >
+                                        Exportar</span
+                                    >
                                 </PrimaryButton>
                             </div>
                         </form>

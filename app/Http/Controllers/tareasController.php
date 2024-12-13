@@ -302,6 +302,7 @@ class tareasController extends Controller
         $filters = $request->get('filter', '');
         $sortField = $request->get('sortField', 'id');
         $sortOrder = $request->get('sortOrder', 'asc');
+        $archived = $request->get('archived', false);
 
         // Apply global filter if it exists
         if (isset($filters['global']['value']) && !empty($filters['global']['value'])) {
@@ -390,7 +391,12 @@ class tareasController extends Controller
             $query->orderBy('id', $sortOrder);
         }
 
-        $tareas = $query->with('area', 'departamento', 'minuta', 'responsable', 'revisor', 'estatus')->where('minuta_id', $minuta_id)->paginate($pageSize, ['*'], 'page', $page);
+        if ($archived == 'true') {
+            $tareas = $query->with('area', 'departamento', 'minuta', 'responsable', 'revisor', 'estatus')->where('minuta_id', $minuta_id)->where('validacion', '1')->paginate($pageSize, ['*'], 'page', $page);
+        } else {
+            $tareas = $query->with('area', 'departamento', 'minuta', 'responsable', 'revisor', 'estatus')->where('minuta_id', $minuta_id)->where('validacion', null)->paginate($pageSize, ['*'], 'page', $page);
+        }
+
 
         return response()->json($tareas);
     }

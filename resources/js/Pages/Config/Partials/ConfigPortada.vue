@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useForm } from "@inertiajs/vue3";
-import axios from 'axios';
+import axios from "axios";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
@@ -42,10 +42,9 @@ const getItem = () => {
             ({ portada_path: logo_path.value[0] });
 
             console.log("item", item.value);
-
         })
         .catch((error) => {
-            console.error('Error fetching item:', error);
+            console.error("Error fetching item:", error);
         });
 };
 
@@ -55,7 +54,7 @@ const onFileChange = (key, event) => {
 };
 
 onMounted(() => {
-    getItem();  // Fetch item data
+    getItem(); // Fetch item data
 });
 
 const submit = async () => {
@@ -65,18 +64,21 @@ const submit = async () => {
     // formData.append('actuacion', form.actuacion);
     // formData.append('logo', form.logo);
     // formData.append('banner', form.banner);
-    formData.append('portada', form.portada);
+    formData.append("portada", form.portada);
     try {
         let response;
 
         // Update existing item
         // response = await axios.post(`/dashboard/${item.value[0].id}/portada`, formData, {
-        response = await axios.post(`/dashboard/${item.value[0].id}/portada`, formData, {
-
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        });
+        response = await axios.post(
+            `/dashboard/${item.value[0].id}/portada`,
+            formData,
+            {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            }
+        );
         console.log(response.data);
 
         getItem();
@@ -84,10 +86,10 @@ const submit = async () => {
         // form.reset();
     } catch (error) {
         if (error.response) {
-            console.error('Error response:', error.response.data);
+            console.error("Error response:", error.response.data);
             // Handle validation errors or other errors from backend
         } else {
-            console.error('Error submitting form:', error);
+            console.error("Error submitting form:", error);
         }
     }
 };
@@ -99,7 +101,10 @@ const submit = async () => {
             <div class="px-4 py-2 bg-white border-b border-gray-200">
                 <div class="container mx-auto">
                     <h2 class="text-center text-2xl">Portada de Reporte</h2>
-                    <form @submit.prevent="submit" enctype="multipart/form-data">
+                    <form
+                        @submit.prevent="submit"
+                        enctype="multipart/form-data"
+                    >
                         <div class="grid grid-cols-1 gap-4">
                             <!-- <div>
                                 <InputLabel for="proposito" value="Propósito: " />
@@ -133,18 +138,41 @@ const submit = async () => {
 
                             <div>
                                 <InputLabel for="Potada" value="Potada: " />
-                                <input id="portada" type="file" @change="onFileChange('portada', $event)"
-                                    class="mt-1 block w-full" autocomplete="portada" />
-                                <img class="w-40" :src="portada_path" alt="portada actual" srcset="">
+                                <input
+                                    id="portada"
+                                    type="file"
+                                    @change="onFileChange('portada', $event)"
+                                    class="mt-1 block w-full"
+                                    autocomplete="portada"
+                                />
+                                <img
+                                    class="w-40"
+                                    :src="portada_path"
+                                    alt="portada actual"
+                                    srcset=""
+                                />
                             </div>
 
-                            <div class="col-span-full flex items-center justify-end mt-4">
-                                <PrimaryButton class="ms-4 pi pi-save" :class="{
-                                    'opacity-25': form.processing,
-                                }" :disabled="form.processing">
+                            <div
+                                class="col-span-full flex items-center justify-end mt-4"
+                            >
+                                <PrimaryButton
+                                    class="ms-4 pi pi-save"
+                                    :class="{
+                                        'opacity-25': form.processing,
+                                    }"
+                                    :disabled="form.processing"
+                                >
+                                    <span
+                                        class="p-1"
+                                        :style="{
+                                            fontSize: '10px',
+                                        }"
+                                    >
+                                        Guardar</span
+                                    >
                                 </PrimaryButton>
                             </div>
-
                         </div>
                     </form>
                 </div>

@@ -186,6 +186,14 @@ const submit = async () => {
                                             }"
                                             :disabled="form.processing"
                                         >
+                                            <span
+                                                class="p-1"
+                                                :style="{
+                                                    fontSize: '10px',
+                                                }"
+                                            >
+                                                Actualizar</span
+                                            >
                                         </PrimaryButton>
                                     </div>
                                 </div>

@@ -7,7 +7,7 @@ import axios from "axios";
 
 const props = defineProps({
     assessmentAsignado: Object,
-})
+});
 
 const assessmentAsignado = ref(props.assessmentAsignado);
 const seccion = ref(assessmentAsignado.value.seccion);
@@ -68,8 +68,8 @@ const addField = (challenge, index) => {
         area_id: seccion.value.area_id,
         departamento_id: seccion.value.departamento_id,
         challenge_id: challenge.id,
-        opcion_id: '',
-        valor_opcion: '', // Required field
+        opcion_id: "",
+        valor_opcion: "", // Required field
         label: challenge.challenge,
     };
     fields.push(newField);
@@ -85,16 +85,20 @@ const submitReactiveForm = () => {
         formDataToSend.append(key, reactFormData[key]);
     }
     if (validateStep(currentStep.value)) {
-        axios.post(route('evaluacion.store'), reactFormData).then((response) => {
-            window.location.href = route('evaluacion.select', assessmentAsignado.value.assessment_id);
-        });
+        axios
+            .post(route("evaluacion.store"), reactFormData)
+            .then((response) => {
+                window.location.href = route(
+                    "evaluacion.select",
+                    assessmentAsignado.value.assessment_id
+                );
+            });
     }
 };
 </script>
 
 <template>
     <Layout :titulo="title" :subTitulo="subTitle">
-
         <Head title="Assessment" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
@@ -102,29 +106,58 @@ const submitReactiveForm = () => {
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
-                <h3>Home -</h3>
+                    <h3>Home -</h3>
                 </Link>
                 <Link href="#" class="px-1">
-                <h3>Assessment -</h3>
+                    <h3>Assessment -</h3>
                 </Link>
                 <Link :href="route('evaluacion.index')" class="active">
-                <h3>Evaluaciones</h3>
+                    <h3>Evaluaciones</h3>
                 </Link>
             </div>
         </div>
 
-        <div class="p-4 bg-white overflow-hidden shadow-xl sm:rounded-lg w-full">
-            <StepComponent v-for="(challenge, index) in challenges" :key="index" :step="index + 1"
-                :name="challenge.challenge" :challenge="challenge" :length="challenges.length"
-                :visible="currentStep === index" v-model="reactFormData[`challenge${index + 1}`]" />
+        <div
+            class="p-4 bg-white overflow-hidden shadow-xl sm:rounded-lg w-full"
+        >
+            <StepComponent
+                v-for="(challenge, index) in challenges"
+                :key="index"
+                :step="index + 1"
+                :name="challenge.challenge"
+                :challenge="challenge"
+                :length="challenges.length"
+                :visible="currentStep === index"
+                v-model="reactFormData[`challenge${index + 1}`]"
+            />
             <span v-if="errors[currentStep]" class="text-lg">{{
                 errors[currentStep]
-                }}</span>
+            }}</span>
 
-            <div class="navigation justify-evenly text-center text-gray-500 text-xl">
-                <button class="hover:text-indigo-500" @click="prevStep" :disabled="currentStep === 0">Previous</button>
-                <button class="hover:text-indigo-500" @click="nextStep" v-if="!isLastStep">Next</button>
-                <button class="hover:text-indigo-500" @click="submitReactiveForm" v-if="isLastStep">Submit</button>
+            <div
+                class="navigation justify-evenly text-center text-gray-500 text-xl"
+            >
+                <button
+                    class="hover:text-indigo-500"
+                    @click="prevStep"
+                    :disabled="currentStep === 0"
+                >
+                    Anterior
+                </button>
+                <button
+                    class="hover:text-indigo-500"
+                    @click="nextStep"
+                    v-if="!isLastStep"
+                >
+                    Siguiente
+                </button>
+                <button
+                    class="hover:text-indigo-500"
+                    @click="submitReactiveForm"
+                    v-if="isLastStep"
+                >
+                    Terminar
+                </button>
             </div>
         </div>
     </Layout>
@@ -137,7 +170,7 @@ const submitReactiveForm = () => {
     gap: 25px;
 }
 
-div>span {
+div > span {
     display: block;
     text-align: center;
     font-weight: bold;

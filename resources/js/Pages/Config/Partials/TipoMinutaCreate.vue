@@ -8,7 +8,7 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { showToast } from "@/Pages/utils/SweetAlert.service";
 
-const emit = defineEmits(['list']);
+const emit = defineEmits(["list"]);
 
 const form = useForm({
     titulo: "",
@@ -17,18 +17,16 @@ const form = useForm({
 
 const submit = async () => {
     try {
-        await axios.post(route("tipo-minuta.store"), form.data())
-            .then(() => {
-                showToast("El registro ha sido creado", "success");
-                form.reset();
-                emit('list');
-            })
+        await axios.post(route("tipo-minuta.store"), form.data()).then(() => {
+            showToast("El registro ha sido creado", "success");
+            form.reset();
+            emit("list");
+        });
     } catch (error) {
         showToast("Ocurrio un error", "error");
         console.error(error);
     }
 };
-
 </script>
 
 <template>
@@ -38,21 +36,42 @@ const submit = async () => {
                 <div class="container mx-auto p-2">
                     <h2 class="text-center text-2xl">Nueva Tipo de Minuta</h2>
                     <form @submit.prevent="submit">
-
                         <div class="mt-4">
                             <InputLabel for="nombre" value="Nombre:" />
-                            <TextInput id="nombre" v-model="form.titulo" type="text" class="mt-1 block w-full" required
-                                autocomplete="nombre" />
+                            <TextInput
+                                id="nombre"
+                                v-model="form.titulo"
+                                type="text"
+                                class="mt-1 block w-full"
+                                required
+                                autocomplete="nombre"
+                            />
                         </div>
                         <div class="mt-4">
                             <InputLabel for="definicion" value="Definicion:" />
-                            <TextInput id="definicion" v-model="form.definicion" type="text" class="mt-1 block w-full"
-                                required autocomplete="definicion" />
+                            <TextInput
+                                id="definicion"
+                                v-model="form.definicion"
+                                type="text"
+                                class="mt-1 block w-full"
+                                required
+                                autocomplete="definicion"
+                            />
                         </div>
                         <div class="m-4 py-2">
-                            <PrimaryButton class="ms-4 pi pi-save float-right"
-                                :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-
+                            <PrimaryButton
+                                class="ms-4 pi pi-save float-right"
+                                :class="{ 'opacity-25': form.processing }"
+                                :disabled="form.processing"
+                            >
+                                <span
+                                    class="p-1"
+                                    :style="{
+                                        fontSize: '10px',
+                                    }"
+                                >
+                                    Guardar</span
+                                >
                             </PrimaryButton>
                         </div>
                     </form>
