@@ -128,76 +128,66 @@ function handleClick(id) {
     <Layout :titulo="title">
 
         <Head title="semanales" />
-        <div class="overflow-hidden sm:rounded-lg">
-            <div class="breadcrumbsTitulo px-1">
-                <h3>Reportes</h3>
-            </div>
-            <div class="breadcrumbs flex">
-                <Link :href="route('dashboard')" class="px-1">
-                <h3>Home -</h3>
-                </Link>
-                <Link class="active">
-                <h3>Reportes</h3>
-                </Link>
+        <div class="pl-5 overflow-hidden">
+            <div class="breadcrumbsTitulo">
+                <h3 class="font-semibold text-xl">Tareas</h3>
             </div>
         </div>
 
-        <div class="py-2">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                <div>
-                    <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
-                        <PrimaryButton :href="route('reporte.create')" class="m-4 pi pi-plus"></PrimaryButton>
-                    </div>
-                    <div class="px-4 py-2 bg-white border-b border-gray-200">
-                        <div class="container mx-auto">
-                            <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
+        <div class="p-5 overflow-hidden">
+            <div class="flex justify-between items-end mb-5">
+                <input v-model="globalFilter" placeholder="Buscar..." id="task-title" type="text" class="block border-gray-300 shadow-sm mt-1 py-3 focus:border-black rounded-md focus:ring-black min-w-80 sm:text-sm" />
+                <button type="button" :href="route('reporte.create')"
+                    class="bg-black hover:bg-gray-800 shadow mt-8 px-3 py-3 rounded-md w-40 font-semibold text-md text-white">
+                    Nueva tarea
+                </button>
+            </div>
 
-                            <DataTable :value="reporteSemanal" paginator :rows="rows" :totalRecords="totalRecords"
-                                :lazy="true" :first="first" @page="onPage" @sort="onSort"
-                                :rowsPerPageOptions="[5, 10, 20, 50]" tableStyle="min-width: 50rem" :filters="filters"
-                                :globalFilterFields="[
-                                    'id',
-                                    'nombre',
-                                    'descripcion',
-                                ]" :sortField="sortField" :sortOrder="sortOrder"
-                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
-                                <template #empty> No data found. </template>
-                                <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
-                                    sortable></Column>
-                                <Column field="numeroSemana" header="Numero de la Semana" headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                                <Column header="Periodo" headerStyle="width:4em;">
-                                    <template #body="slotProps" class="text-center">
-                                        Del {{ slotProps.data.inicio }} <br> Al {{ slotProps.data.fin }}
-                                    </template>
-                                </Column>
-                                <!-- <Column field="reportes" header="Reportes Hechos " headerStyle="width:4em;"
+            <div class="mx-auto container">
+
+
+                <DataTable :value="reporteSemanal" paginator :rows="rows" :totalRecords="totalRecords" :lazy="true"
+                    :first="first" @page="onPage" @sort="onSort" :rowsPerPageOptions="[5, 10, 20, 50]"
+                    tableStyle="min-width: 50rem" :filters="filters" :globalFilterFields="[
+                        'id',
+                        'nombre',
+                        'descripcion',
+                    ]" :sortField="sortField" :sortOrder="sortOrder"
+                    class="p-datatable-gridlines p-datatable-sm p-datatable-striped">
+                    <template #empty> No data found. </template>
+                    <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;" sortable>
+                    </Column>
+                    <Column field="numeroSemana" header="Numero de la Semana" headerStyle="width:4em;"
+                        bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+                    <Column header="Periodo" headerStyle="width:4em;">
+                        <template #body="slotProps" class="text-center">
+                            Del {{ slotProps.data.inicio }} <br> Al {{ slotProps.data.fin }}
+                        </template>
+                    </Column>
+                    <!-- <Column field="reportes" header="Reportes Hechos " headerStyle="width:4em;"
                                     bodyClass="text-center" sortable></Column> -->
 
-                                <Column header="" headerStyle="width:4em;">
-                                    <template #body="slotProps" class="text-center">
-                                        <PrimaryButton class="pi pi-eye me-2"
-                                            :href="route('reporte.show', slotProps.data.id)">
-                                        </PrimaryButton>
-                                        <!-- <PrimaryButton class="pi pi-eye me-2" @click="handleClick(slotProps.data.id)"
+                    <Column header="" headerStyle="width:4em;">
+                        <template #body="slotProps" class="text-center">
+                            <PrimaryButton class="me-2 pi pi-eye" :href="route('reporte.show', slotProps.data.id)">
+                            </PrimaryButton>
+                            <!-- <PrimaryButton class="me-2 pi pi-eye" @click="handleClick(slotProps.data.id)"
                                             :disabled="isLoading">
                                             <span v-if="!isLoading">Ver Reporte</span>
                                             <span v-else>
-                                                <i class="pi pi-spinner pi-spin"></i> Cargando...
+                                                <i class="pi pi-spin pi-spinner"></i> Cargando...
                                             </span>
                                         </PrimaryButton> -->
 
-                                        <PrimaryButton class="pi pi-download me-2"
-                                            :href="route('reporte.pdf', slotProps.data.id)" target="_blank">
-                                        </PrimaryButton>
+                            <PrimaryButton class="me-2 pi pi-download" :href="route('reporte.pdf', slotProps.data.id)"
+                                target="_blank">
+                            </PrimaryButton>
 
-                                    </template>
-                                </Column>
-                            </DataTable>
-                        </div>
-                    </div>
-                </div>
+                        </template>
+                    </Column>
+                </DataTable>
             </div>
         </div>
+
     </Layout>
 </template>
