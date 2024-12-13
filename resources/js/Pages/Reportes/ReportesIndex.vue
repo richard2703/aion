@@ -130,17 +130,20 @@ function handleClick(id) {
         <Head title="semanales" />
         <div class="pl-5 overflow-hidden">
             <div class="breadcrumbsTitulo">
-                <h3 class="font-semibold text-xl">Tareas</h3>
+                <h3 class="font-semibold text-xl">Reportes</h3>
             </div>
         </div>
 
         <div class="p-5 overflow-hidden">
-            <div class="block md:flex justify-between items-end mb-5">
+            <div class="block md:flex justify-between items-end mb-8">
                 <input v-model="globalFilter" placeholder="Buscar..." id="task-title" type="text" class="block border-gray-300 shadow-sm mt-1 py-3 focus:border-black rounded-md focus:ring-black min-w-80 sm:text-sm" />
-                <button type="button" :href="route('reporte.create')"
+                <PrimaryButton :href="route('reporte.create')" class="bg-black hover:bg-gray-800">
+                    <i class="pi pi-check" style="margin-right: 10px; font-size: 1rem"></i> Nuevo reportes
+                </PrimaryButton>
+                <!-- <button :href="route('reporte.create')" type="button"
                     class="bg-black hover:bg-gray-800 shadow mt-8 px-3 py-3 rounded-md w-40 font-semibold text-md text-white">
                     Nueva tarea
-                </button>
+                </button> -->
             </div>
 
             <div class="mx-auto">
