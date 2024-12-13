@@ -135,7 +135,7 @@ function handleClick(id) {
         </div>
 
         <div class="p-5 overflow-hidden">
-            <div class="flex justify-between items-end mb-5">
+            <div class="block md:flex justify-between items-end mb-5">
                 <input v-model="globalFilter" placeholder="Buscar..." id="task-title" type="text" class="block border-gray-300 shadow-sm mt-1 py-3 focus:border-black rounded-md focus:ring-black min-w-80 sm:text-sm" />
                 <button type="button" :href="route('reporte.create')"
                     class="bg-black hover:bg-gray-800 shadow mt-8 px-3 py-3 rounded-md w-40 font-semibold text-md text-white">
@@ -143,9 +143,7 @@ function handleClick(id) {
                 </button>
             </div>
 
-            <div class="mx-auto container">
-
-
+            <div class="mx-auto">
                 <DataTable :value="reporteSemanal" paginator :rows="rows" :totalRecords="totalRecords" :lazy="true"
                     :first="first" @page="onPage" @sort="onSort" :rowsPerPageOptions="[5, 10, 20, 50]"
                     tableStyle="min-width: 50rem" :filters="filters" :globalFilterFields="[
