@@ -6,22 +6,15 @@ import List from "@/Components/v2/List.vue";
 import NavagationMenu from "@/Components/v2/NavigationMenu.vue";
 import Card from "@/Components/v2/Card.vue";
 import Tablapilares from "../utils/tablapilares.vue";
+import InputText from "primevue/inputtext";
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
+import InputLabel from "@/Components/InputLabel.vue";
 
 const props = defineProps({
     pilar: Object,
     pilar_id: String,
 });
-
-const columnsflujoDeValor = [
-  { header: "Flujo de valor", key: "nombre" },
-  { header: "KPI", key: "kpis", parse: (value) => value.map(v => v.titulo).join(', ') },
-];
-
-const columnProcedimientos = [
-  { header: "Procedimientos", key: "nombre" },
-  { header: "Ejecución", key: "link_herramienta" },
-  { header: "Documentación", key: "link_externo" },
-];
 
 const selectedItem = ref("flujoDeValor"); // El ítem seleccionado
 
@@ -76,7 +69,6 @@ const getDepartamentos = async (
             },
         });
         departamentos.value = response.data.data;
-        // console.log(departamentos.value);
         totalRecords.value = response.data.total;
         first.value = (response.data.current_page - 1) * rows.value;
     } catch (error) {
@@ -165,7 +157,7 @@ const getEstandares = async (
 
 ) => {
     try {
-
+        selectedItem.value = 'estandar'
         estandares.value = [];
         const response = await axios.get("/api/getEstandares", {
             params: {
@@ -212,6 +204,10 @@ const onSort = (event) => {
     );
 };
 
+const setSelectedItem = (value) => {
+    selectedItem.value = value;
+};
+
 onMounted(() => {
     getDepartamentos();
 });
@@ -251,49 +247,151 @@ watch(() => props.pilar, (newPilar) => {
 </script>
 
 <template>
-  <Layout2>
-    <Tablapilares :pilar="pilar_id"></Tablapilares>
-    <div class="grid grid-cols-3">
-      <!-- Menú de navegación -->
-      <div class="xl:col-span-1 col-span-3 p-10">
-        <div class="text-base">
-          <h4 class="font-semibold mb-1">Lista de navegación</h4>
-          <p class="text-sm text-gray-500">
-            Accede rápidamente a cada nivel de información dentro de los pilares
-          </p>
-        </div>
-        <div class="mt-5">
-          <NavagationMenu v-model="selectedItem" />
-        </div>
-      </div>
+    <Layout2>
+        <div class="grid grid-cols-3">
+            <!-- Menú de navegación -->
+            <div class="xl:col-span-1 col-span-3 p-10">
+                <div class="text-base">
+                    <h4 class="font-semibold mb-1">Lista de navegación</h4>
+                    <p class="text-sm text-gray-500">
+                        Accede rápidamente a cada nivel de información dentro de los pilares
+                    </p>
+                </div>
+                <div class="mt-5">
+                    <NavagationMenu :value="selectedItem" :onValueChange="setSelectedItem"
+                        :activeFlujo="selectedDepartamento" />
+                </div>
+            </div>
 
-      <!-- Contenido dinámico -->
-      <div class="xl:col-span-2 col-span-3 p-8">
-        <!-- Contenido para Flujo de Valor -->
-        <div v-if="selectedItem === 'flujoDeValor'" class="border border-gray-300 p-8 rounded-md">
-          <h2 class="text-lg font-medium mb-4">Flujo de valor</h2>
-          <List :columns="columnsflujoDeValor" :items="departamentos" :onClick="(item) => getProcesos(item.id, 1, rows,
-                                                newValue, sortField, sortOrder)"/>
-        </div>
+            <!-- Contenido dinámico -->
+            <div class="xl:col-span-2 col-span-3 p-8">
+                <!-- Contenido para Flujo de Valor -->
+                <div v-if="selectedItem === 'flujoDeValor'" class="border border-gray-300 p-8 rounded-md">
+                    <h2 class="text-lg font-medium mb-4">Flujo de valor</h2>
+                    <div class="container mx-auto overflow-x-auto mb-3">
+                        <div class="sm:col-span-1 lg:col-span-1">
+                            <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
+                            <DataTable :value="departamentos" paginator :rows="rows" :totalRecords="totalRecords"
+                                :lazy="true" :first="first" @page="onPage" @sort="onSort"
+                                :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters" :globalFilterFields="[
+                                    'nombre',
+                                ]" :sortField="sortField" :sortOrder="sortOrder"
+                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+                                <template #empty> Sin Registros. </template>
+                                <Column field="nombre" header="Flujo de valor" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable>
+                                    <template #body="slotProps">
+                                        <button
+                                            v-bind:class="[selectedDepartamento == slotProps.data.id ? 'selected' : '']"
+                                            @click="getProcesos(departamento.value = slotProps.data.id, 1, rows,
+                                                newValue, sortField, sortOrder)">
+                                            {{ slotProps.data.nombre }}
+                                        </button>
+                                    </template>
+                                </Column>
+                                <Column field="kpis" header="KPIs" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable>
+                                    <template #body="slotProps">
+                                        <div v-if="slotProps.data.kpis && slotProps.data.kpis.length">
+                                            <ul>
+                                                <li v-for="(kpi, index) in slotProps.data.kpis" :key="index">
+                                                    {{ kpi.titulo }}
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div v-else>
+                                            Sin KPIs
+                                        </div>
+                                    </template>
+                                </Column>
+                            </DataTable>
+                        </div>
+                    </div>
+                </div>
 
-        <!-- Contenido para Proceso -->
-        <div v-if="selectedItem === 'proceso'" class="h-[620px] overflow-scroll">
-          <h2 class="text-lg font-medium mb-4">Proceso</h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card v-for="proceso in procesos"
-            :title="proceso.nombre"
-            :link="proceso.link_externo"
-            @click="getProcedimientos(proceso.value = slotProps.data.id, 1, rows, newValue, sortField, sortOrder)"
-            />
-          </div>
-        </div>
+                <!-- Contenido para Proceso -->
+                <div v-if="selectedItem === 'proceso'" class="h-[620px] overflow-scroll">
+                    <h2 class="text-lg font-medium mb-4">Procesos</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <Card v-for="proceso in procesos" :title="proceso.nombre" :link="proceso.link_externo"
+                            @click="getProcedimientos(proceso.value = proceso.id, 1, rows, newValue, sortField, sortOrder)" />
+                    </div>
+                </div>
 
-        <!-- Contenido para Procedimientos -->
-        <div v-if="selectedItem === 'procedimiento'" class="border border-gray-300 p-8 rounded-md">
-          <h2 class="text-lg font-medium mb-4">Procedimientos</h2>
-          <List :columns="columnProcedimientos" :items="procedimientos" />
+                <!-- Contenido para Procedimientos -->
+                <div v-if="selectedItem === 'procedimiento'" class="border border-gray-300 p-8 rounded-md">
+                    <h2 class="text-lg font-medium mb-4">Procedimientos</h2>
+                    <div>
+                        <InputText v-model="globalFilterProcedimientos" placeholder="Buscar..." class="mb-3" />
+                        <DataTable :value="procedimientos" paginator :rows="rows" :totalRecords="totalRecords"
+                            :lazy="true" :first="first" @page="onPage" @sort="onSort"
+                            :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters" :globalFilterFields="[
+                                'nombre',
+                            ]" :sortField="sortField" :sortOrder="sortOrder"
+                            class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+                            <template #empty> Sin Registros. </template>
+                            <Column field="nombre" header="Procedimientos" headerStyle="width:4em;"
+                                bodyStyle="text-align:center;" bodyClass="text-center" sortable>
+                                <template #body="slotProps">
+                                    <button
+                                        v-bind:class="[selectedProcedimiento == slotProps.data.id ? 'selected' : '']"
+                                        @click="getEstandares(procedimiento.value = slotProps.data.id, 1, rows, newValue, sortField, sortOrder)">
+                                        {{ slotProps.data.nombre }}
+                                    </button>
+                                </template>
+                            </Column>
+                            <Column field="link_externo" header="Ejecución" headerStyle="width:4em;"
+                                bodyStyle="text-align:center;" bodyClass="text-center" sortable>
+                                <template #body="slotProps">
+                                    <a :href="slotProps.data.link_herramienta" target="_blank"
+                                        rel="noopener noreferrer">
+                                        {{ slotProps.data.link_herramienta }}
+                                    </a>
+                                </template>
+                            </Column>
+                            <Column field="link_externo" header="Documentación" headerStyle="width:4em;"
+                                bodyStyle="text-align:center;" bodyClass="text-center" sortable>
+                                <template #body="slotProps">
+                                    <a :href="slotProps.data.link_externo" target="_blank" rel="noopener noreferrer">
+                                        {{ slotProps.data.link_externo }}
+                                    </a>
+                                </template>
+                            </Column>
+                        </DataTable>
+                    </div>
+                </div>
+
+                <div v-if="selectedItem === 'estandar'" class="border border-gray-300 p-8 rounded-md">
+                    <h2 class="text-lg font-medium mb-4">Estandares</h2>
+                    <div>
+                        <InputText v-model="globalFilterEstandares" placeholder="Buscar..." class="mb-3" />
+                        <DataTable :value="estandares" paginator :rows="rows" :totalRecords="totalRecords" :lazy="true"
+                            :first="first" @page="onPage" @sort="onSort" :rowsPerPageOptions="[5, 10, 20, 50]"
+                            :filters="filters" :globalFilterFields="[
+                                'nombre',
+                            ]" :sortField="sortField" :sortOrder="sortOrder"
+                            class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+                            <template #empty> Sin Registros. </template>
+                            <Column field="nombre" header="Estandares" headerStyle="width:4em;"
+                                bodyStyle="text-align:center;" bodyClass="text-center" sortable>
+                                <!-- <template #body="slotProps">
+                                            <button @click="getEstandares(slotProps.data.id)">
+                                                {{ slotProps.data.nombre }}
+                                            </button>s
+                                        </template> -->
+                            </Column>
+                            <Column field="link_externo" header="Documentación" headerStyle="width:4em;"
+                                bodyStyle="text-align:center;" bodyClass="text-center" sortable>
+                                <template #body="slotProps">
+                                    <a :href="slotProps.data.link_externo" target="_blank" rel="noopener noreferrer">
+                                        {{ slotProps.data.link_externo }}
+                                    </a>
+                                </template>
+                            </Column>
+                        </DataTable>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </Layout2>
+    </Layout2>
 </template>

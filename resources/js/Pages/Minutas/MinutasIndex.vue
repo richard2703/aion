@@ -25,6 +25,7 @@ const title = "minutero";
 const areas = ref([]);
 const area_id = props.area_id ? ref(props.area_id - 1) : ref(0);
 const departamento_id = ref(props.departamento_id);
+let customFilter = ref(Boolean);
 
 onMounted(() => {
 
@@ -89,10 +90,11 @@ const getAreas = async () => {
                                     </PrimaryButton>
                                 </div>
 
-                                <PrimaryButton class="bg-black m-4 p-[100px]" :href="route('minutas.create')"
-                                    label="Nueva Minuta">
-                                    <i class="mr-2 pi pi-plus"></i>
-                                </PrimaryButton>
+                                <Link  :href="route('minutas.create')">
+                                    <PrimaryButton class="bg-black m-4 p-[100px]" label="Nueva Minuta">
+                                        <i class="mr-2 pi pi-plus"></i>
+                                    </PrimaryButton>
+                                </Link>
                             </div>
                             <!-- content table -->
                             <Tabs :value="area_id ? area_id : 0">
