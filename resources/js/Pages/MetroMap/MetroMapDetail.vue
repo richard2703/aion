@@ -10,6 +10,7 @@ import InputText from "primevue/inputtext";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import InputLabel from "@/Components/InputLabel.vue";
+import PilaresSelect from '@/Components/PilaresSelect.vue';
 
 const props = defineProps({
     pilar: Object,
@@ -18,8 +19,12 @@ const props = defineProps({
 
 const selectedItem = ref("flujoDeValor"); // El ítem seleccionado
 
-// Legacy code
+const flujoName = ref("");
+const procesoName = ref("");
+const procedimientoName = ref("");
 
+// Legacy code
+const currentPilar = ref(props.pilar_id);
 const departamentos = ref([]);
 const departamento = ref({});
 const procesos = ref([]);
@@ -50,8 +55,14 @@ const getDepartamentos = async (
     rowsPerPage = rows.value,
     filter = "",
     sortField = "id",
-    sortOrder = 1
+    sortOrder = 1,
+    pilar = currentPilar.value,
 ) => {
+    selectedItem.value = "flujoDeValor"
+    flujoName.value = ""
+    procesoName.value = ""
+    procedimientoName.value = ""
+
     try {
         procesos.value = [];
         proceso.value = {};
@@ -65,7 +76,7 @@ const getDepartamentos = async (
                 filter,
                 sortField,
                 sortOrder: sortOrder === 1 ? "asc" : "desc",
-                pilar: props.pilar,
+                pilar: pilar,
             },
         });
         departamentos.value = response.data.data;
@@ -83,11 +94,14 @@ const getProcesos = async (
     filter = "",
     sortField = "id",
     sortOrder = 1,
-
+    departamentoName,
 ) => {
+    flujoName.value = departamentoName
+    procesoName.value = ""
+    procedimientoName.value = ""
     selectedDepartamento.value = departamento;
-    // departamento.value = departamento;
     selectedItem.value = "proceso"
+
     try {
         procesos.value = [];
         proceso.value = {};
@@ -120,9 +134,13 @@ const getProcedimientos = async (
     rowsPerPage = rows.value,
     filter = "",
     sortField = "id",
-    sortOrder = 1
+    sortOrder = 1,
+    procesoNombre,
 ) => {
     selectedItem.value = "procedimiento"
+    procesoName.value = procesoNombre
+    procedimientoName.value = ""
+
     try {
         procedimientos.value = [];
         procedimiento.value = {};
@@ -153,9 +171,10 @@ const getEstandares = async (
     rowsPerPage = rows.value,
     filter = "",
     sortField = "id",
-    sortOrder = 1
-
+    sortOrder = 1,
+    procedimientoNombre,
 ) => {
+    procedimientoName.value = procedimientoNombre
     try {
         selectedItem.value = 'estandar'
         estandares.value = [];
@@ -208,6 +227,12 @@ const setSelectedItem = (value) => {
     selectedItem.value = value;
 };
 
+const onSelectedPilar = (pilarID) => {
+    // getDepartamentos(1, rows.value, "", "id", 1, pilarID)
+    currentPilar.value = pilarID;
+    getDepartamentos();
+}
+
 onMounted(() => {
     getDepartamentos();
 });
@@ -241,13 +266,16 @@ watch(globalFilterEstandares, (newValue) => {
     getEstandares(procedimiento.value, 1, rows.value, newValue, sortField.value, sortOrder.value);
 });
 
-watch(() => props.pilar, (newPilar) => {
+watch(() => currentPilar, (newPilar) => {
     getDepartamentos();
 });
 </script>
 
 <template>
     <Layout2>
+        {{ procesoName }}
+        {{ procedimientoName }}
+        <PilaresSelect :currentPilarID="currentPilar" :onSelectedPilar="onSelectedPilar"></PilaresSelect>
         <div class="grid grid-cols-3">
             <!-- Menú de navegación -->
             <div class="xl:col-span-1 col-span-3 p-10">
@@ -259,7 +287,7 @@ watch(() => props.pilar, (newPilar) => {
                 </div>
                 <div class="mt-5">
                     <NavagationMenu :value="selectedItem" :onValueChange="setSelectedItem"
-                        :activeFlujo="selectedDepartamento" />
+                        :activeFlujo="flujoName" :activeProceso="procesoName" :activeProcedimiento="procedimientoName" />
                 </div>
             </div>
 
@@ -284,7 +312,7 @@ watch(() => props.pilar, (newPilar) => {
                                         <button
                                             v-bind:class="[selectedDepartamento == slotProps.data.id ? 'selected' : '']"
                                             @click="getProcesos(departamento.value = slotProps.data.id, 1, rows,
-                                                newValue, sortField, sortOrder)">
+                                                newValue, sortField, sortOrder, slotProps.data.nombre)">
                                             {{ slotProps.data.nombre }}
                                         </button>
                                     </template>
@@ -314,7 +342,7 @@ watch(() => props.pilar, (newPilar) => {
                     <h2 class="text-lg font-medium mb-4">Procesos</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <Card v-for="proceso in procesos" :title="proceso.nombre" :link="proceso.link_externo"
-                            @click="getProcedimientos(proceso.value = proceso.id, 1, rows, newValue, sortField, sortOrder)" />
+                            @click="getProcedimientos(proceso.value = proceso.id, 1, rows, newValue, sortField, sortOrder, proceso.nombre)" />
                     </div>
                 </div>
 
@@ -335,7 +363,7 @@ watch(() => props.pilar, (newPilar) => {
                                 <template #body="slotProps">
                                     <button
                                         v-bind:class="[selectedProcedimiento == slotProps.data.id ? 'selected' : '']"
-                                        @click="getEstandares(procedimiento.value = slotProps.data.id, 1, rows, newValue, sortField, sortOrder)">
+                                        @click="getEstandares(procedimiento.value = slotProps.data.id, 1, rows, newValue, sortField, sortOrder, slotProps.data.nombre)">
                                         {{ slotProps.data.nombre }}
                                     </button>
                                 </template>

@@ -5,6 +5,8 @@ const props = defineProps({
   value: String,
   onValueChange: Function,
   activeFlujo: String,
+  activeProceso: String,
+  activeProcedimiento: String,
 });
 
 let rank = 0
@@ -52,7 +54,7 @@ const valueToRank = (value) => {
         <span class="ml-2" :class="{'font-bold': valueToRank(value) == 1}">Flujo de valor</span>
       </button>
       <div v-if="valueToRank(value) >= 2" class="ml-7 pl-4 border-l text-sm text-gray-600">
-        <p>Relaciones Laborales<br>y Nóminas</p>
+        <p>{{ activeFlujo }}</p>
       </div>
     </div>
 
@@ -76,7 +78,7 @@ const valueToRank = (value) => {
         <span class="ml-2" :class="{'font-bold': valueToRank(value) == 2}">Proceso</span>
       </button>
       <div v-if="valueToRank(value) >= 3" class="ml-7 pl-4 border-l text-gray-600 text-sm">
-        <p>Administración de Prestaciones<br>y Beneficios Adicionales a la Ley</p>
+        <p>{{ activeProceso }}</p>
       </div>
     </div>
 
@@ -100,7 +102,7 @@ const valueToRank = (value) => {
         <span class="ml-2" :class="{'font-bold': valueToRank(value) == 3}">Procedimiento</span>
       </button>
       <div v-if="valueToRank(value) >= 4" class="ml-7 pl-4 border-l text-gray-600 text-sm">
-        <p>Aquí puedes consultar los procedimientos detallados...</p>
+        <p>{{  activeProcedimiento }}</p>
       </div>
     </div>
 
