@@ -89,17 +89,19 @@ async function getProcesos() {
             <div class="sm:rounded-lg overflow-hidden">
                 <div class="flex items-center gap-3 breadcrumbs">
                     <Link href="#" class="active">
-                    <h3>Sistema de gestion</h3>
+                        <h3>Sistema de gestion</h3>
                     </Link>
                     <i class="pi-angle-right pi" style="font-size: 1rem"></i>
                     <Link :href="route('sysgestion.index')" class="active">
-                    <b>PDCA</b>
+                        <b>PDCA</b>
                     </Link>
                 </div>
             </div>
 
             <!-- Content -->
-            <div class="bg-white sm:rounded-lg overflow-hidden">
+            <div class="bg-white overflow-hidden">
+                
+
                 <!-- Select Flujo de valor -->
                 <div class="mt-4">
                     <InputLabel for="departamento_id" value="Flujo de valor: " />
@@ -126,7 +128,6 @@ async function getProcesos() {
                 </div>
 
                 <div class="gap-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
-
                     <!-- Procesos -->
                     <div class="m-4">
                         <div class="max-h-48 overflow-y-auto">
