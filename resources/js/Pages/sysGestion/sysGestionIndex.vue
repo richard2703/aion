@@ -73,7 +73,6 @@ async function getProcesos() {
     await axios.get(route("procesos.byDepartamento", form.departamento_id))
         .then((response) => {
             procesos.value = response.data.procesos;
-
             console.log({ procesos: procesos.value });
         })
         .catch((error) => {
@@ -163,7 +162,23 @@ async function getProcesos() {
                                     </thead>
                                     <tbody>
                                         <div v-for="proceso in procesos" class="w-full">
-                                            <tr v-for="procedimiento in proceso.procedimientos">
+                                            <!-- <tr v-for="procedimiento in proceso.procedimientos"> -->
+                                            <td class="py-2 px-4">
+                                                <div v-if="proceso.link_herramienta">
+                                                    <a target="blank" :href="proceso.link_herramienta"
+                                                        class="text-blue-500 hover:underline curson-pointer">
+                                                        {{ proceso.nombre || '-' }}
+                                                    </a>
+                                                </div>
+                                                <div v-else>
+                                                    <a href="#"
+                                                        class="text-slate-400 hover:underline cursor-not-allowed">
+                                                        {{ proceso.nombre || '-' }}
+                                                    </a>
+                                                </div>
+                                            </td>
+                                            <!-- </tr> -->
+                                            <!-- <tr v-for="procedimiento in proceso.procedimientos">
                                                 <td class="py-2 px-4">
                                                     <div v-if="procedimiento.link_herramienta">
                                                         <a target="blank" :href="procedimiento.link_herramienta"
@@ -178,7 +193,7 @@ async function getProcesos() {
                                                         </a>
                                                     </div>
                                                 </td>
-                                            </tr>
+                                            </tr> -->
                                         </div>
                                     </tbody>
                                 </table>
