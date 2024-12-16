@@ -7,6 +7,7 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { showToast } from "../utils/SweetAlert.service";
 import Textarea from "primevue/textarea";
+import { isUrlValid } from "../utils/linkValidator";
 
 const props = defineProps({
     areas: Array,
@@ -79,12 +80,22 @@ async function getProcesos(eventOrValue) {
 
 const submit = () => {
     try {
-        form.patch(route("procedimiento.update", procedimiento.value.id), {
-            onFinish: () => {
-                showToast("El registro ha sido creado", "success");
-                form.reset();
-            },
-        });
+        if (
+            isUrlValid(form.link_herramienta) &&
+            isUrlValid(form.link_externo)
+        ) {
+            form.patch(route("procedimiento.update", procedimiento.value.id), {
+                onFinish: () => {
+                    showToast("El registro ha sido creado", "success");
+                    form.reset();
+                },
+            });
+        } else {
+            showToast(
+                "El link a la herramienta o a la documentacion no son validos",
+                "error"
+            );
+        }
     } catch (error) {
         showToast("Ocurrio un error", "error");
         console.error(error);
@@ -216,32 +227,41 @@ const submit = () => {
                                             autocomplete="new-challenge"
                                         />
                                     </div>
-                                    <div class="my-4">
+                                </div>
+                                <div
+                                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4"
+                                >
+                                    <div class="my-4 w-full">
                                         <InputLabel
-                                            for="Link Documentacion"
-                                            value="Link Documentacion: "
+                                            for="link_externo"
+                                            value="Link externo: "
                                         />
-                                        <TextInput
-                                            id="nombre"
+                                        <Textarea
+                                            class="w-full"
                                             v-model="form.link_externo"
-                                            type="text"
-                                            class="mt-1 block w-full"
-                                            required
-                                            autocomplete="new-challenge"
+                                            rows="5"
+                                            cols="30"
+                                            :invalid="
+                                                !isUrlValid(form.link_externo)
+                                            "
                                         />
                                     </div>
-                                    <div class="my-4">
+                                    <div class="my-4 w-full">
                                         <InputLabel
                                             for="Link Herramienta"
                                             value="Link Herramienta: "
                                         />
-                                        <TextInput
-                                            id="nombre"
+                                        <Textarea
+                                            class="w-full"
                                             v-model="form.link_herramienta"
-                                            type="text"
-                                            class="mt-1 block w-full"
+                                            rows="5"
+                                            cols="30"
+                                            :invalid="
+                                                !isUrlValid(
+                                                    form.link_herramienta
+                                                )
+                                            "
                                             required
-                                            autocomplete="new-challenge"
                                         />
                                     </div>
                                 </div>
