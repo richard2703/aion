@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, watch, computed } from "vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import { usePage } from "@inertiajs/vue3";
 import axios from "axios";
@@ -19,6 +19,7 @@ import TareasDetail from "@/Pages/Minutas/Partials/Tareas/TareasDetail.vue";
 import InputText from "primevue/inputtext";
 import TextInput from "@/Components/TextInput.vue";
 import ToggleSwitch from "primevue/toggleswitch";
+
 onMounted(() => {
     getUsuarios();
     getAsistentes(minuta.value.id);
@@ -44,6 +45,11 @@ const usuarios = ref(props.usuarios);
 const asistentes = ref();
 const newAsistente = ref(true);
 const filteredUsuarios = ref();
+const tareasTotales = ref(0);
+const tareasTerminadas = ref(0);
+const tareasEnProceso = ref(0);
+const tareasIniciadas = ref(0);
+const tareasRetrasadas = ref(0);
 const tareas = ref();
 const isCreateModalVisible = ref(false);
 const isEditModalVisible = ref(false);
@@ -226,9 +232,16 @@ const getTareas = async (
             },
         })
         .then((response) => {
-            tareas.value = response.data.data;
+            tareas.value = response.data[0].data;
             totalRecords.value = response.data.total;
             first.value = (response.data.current_page - 1) * rows.value;
+            tareasTotales.value = response.data.conteo.totales;
+            tareasTerminadas.value = response.data.conteo.terminadas;
+            tareasEnProceso.value = response.data.conteo.enProceso;
+            tareasIniciadas.value = response.data.conteo.iniciadas;
+            tareasRetrasadas.value = response.data.conteo.retrasadas;
+            console.log('tareas', response.data);
+
         })
         .catch((error) => {
             console.log(error);
@@ -405,10 +418,27 @@ const sendMail = async () => {
         console.log(error);
     }
 };
+
+// const tareasTotales = computed(() => tareas.value?.length || 0);
+
+// const tareasTerminadas = computed(() => {
+//     return tareas.value?.filter((tarea) => tarea.estatus_id === 4).length || 0;
+// });
+
+// const tareasEnProceso = computed(() => {
+//     return tareas.value?.filter((tarea) => tarea.estatus_id === 3).length || 0;
+// });
+
+// const tareasIniciadas = computed(() => {
+//     return tareas.value?.filter((tarea) => tarea.estatus_id === 2).length || 0;
+// });
 </script>
+
+
 
 <template>
     <Layout :titulo="title">
+
         <Head title="Minutas" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
@@ -416,13 +446,13 @@ const sendMail = async () => {
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
-                    <h3>Home -</h3>
+                <h3>Home -</h3>
                 </Link>
                 <Link :href="route('minutas.index')" class="px-1">
-                    <h3>Minutas -</h3>
+                <h3>Minutas -</h3>
                 </Link>
                 <Link :href="route('minutas.show', minuta.id)" class="active">
-                    <h3>Show</h3>
+                <h3>Show</h3>
                 </Link>
             </div>
         </div>
@@ -431,162 +461,80 @@ const sendMail = async () => {
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div>
                     <div
-                        class="px-4 my-4 py-2 flex justify-end bg-white border-b border-gray-200 grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4"
-                    >
+                        class="px-4 my-4 py-2 flex justify-end bg-white border-b border-gray-200 grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4">
                         <div class="px-4 py-2 bg-white">
-                            <Fieldset
-                                legend="Información general"
-                                class="h-80 overflow-y-auto"
-                            >
-                                <div
-                                    class="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4"
-                                >
+                            <Fieldset legend="Información general" class="h-80 overflow-y-auto">
+                                <div class="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4">
                                     <div class="mt-4 flex">
-                                        <InputLabel
-                                            for="alias"
-                                            value="Titulo: "
-                                        />&nbsp;
-                                        <InputLabel
-                                            for="alias"
-                                            :value="minuta.alias"
-                                        />
+                                        <InputLabel for="alias" value="Titulo: " />&nbsp;
+                                        <InputLabel for="alias" :value="minuta.alias" />
                                     </div>
                                     <div class="mt-4 flex">
-                                        <InputLabel
-                                            for="pilar"
-                                            value="Pilar: "
-                                        />&nbsp;
-                                        <InputLabel
-                                            for="pilar"
-                                            :value="minuta.area.nombre"
-                                        />
+                                        <InputLabel for="pilar" value="Pilar: " />&nbsp;
+                                        <InputLabel for="pilar" :value="minuta.area.nombre" />
                                     </div>
                                     <div class="mt-4 flex">
-                                        <InputLabel
-                                            for="flujo_valor"
-                                            value="Flujo de valor: "
-                                        />&nbsp;
-                                        <InputLabel
-                                            for="flujo_valor"
-                                            :value="
-                                                minuta.departamento?.nombre ||
-                                                'Todos los flujos'
-                                            "
-                                        />
+                                        <InputLabel for="flujo_valor" value="Flujo de valor: " />&nbsp;
+                                        <InputLabel for="flujo_valor" :value="minuta.departamento?.nombre ||
+                                            'Todos los flujos'
+                                            " />
                                     </div>
                                     <div class="mt-4 flex">
-                                        <InputLabel
-                                            for="tipo"
-                                            value="Tipo: "
-                                        />&nbsp;
-                                        <InputLabel
-                                            for="tipo"
-                                            :value="minuta.tipo_minuta.titulo"
-                                        />
+                                        <InputLabel for="tipo" value="Tipo: " />&nbsp;
+                                        <InputLabel for="tipo" :value="minuta.tipo_minuta.titulo" />
                                     </div>
                                     <div class="mt-4 flex">
-                                        <InputLabel
-                                            for="fecha"
-                                            value="Fecha: "
-                                        />&nbsp;
-                                        <InputLabel
-                                            for="fecha"
-                                            :value="
-                                                formatearFecha(
-                                                    minuta.created_at
-                                                )
-                                            "
-                                        />
+                                        <InputLabel for="fecha" value="Fecha: " />&nbsp;
+                                        <InputLabel for="fecha" :value="formatearFecha(
+                                            minuta.created_at
+                                        )
+                                            " />
                                     </div>
                                     <div class="mt-4 flex">
-                                        <InputLabel
-                                            for="nota"
-                                            value="Notas: "
-                                        />&nbsp;
-                                        <InputLabel
-                                            for="nota"
-                                            :value="minuta.notas"
-                                        />
+                                        <InputLabel for="nota" value="Notas: " />&nbsp;
+                                        <InputLabel for="nota" :value="minuta.notas" />
                                     </div>
                                 </div>
                             </Fieldset>
                         </div>
                         <div>
-                            <Fieldset
-                                legend="Asistentes"
-                                class="h-80 overflow-y-auto"
-                            >
+                            <Fieldset legend="Asistentes" class="h-80 overflow-y-auto">
                                 <div class="float-right">
-                                    <PrimaryButton
-                                        class="pi pi-plus"
-                                        v-if="newAsistente"
-                                        @click="newAsistente = !newAsistente"
-                                    >
+                                    <PrimaryButton class="pi pi-plus" v-if="newAsistente"
+                                        @click="newAsistente = !newAsistente">
                                     </PrimaryButton>
-                                    <PrimaryButton
-                                        class="pi pi-minus"
-                                        v-if="!newAsistente"
-                                        @click="newAsistente = !newAsistente"
-                                    >
+                                    <PrimaryButton class="pi pi-minus" v-if="!newAsistente"
+                                        @click="newAsistente = !newAsistente">
                                     </PrimaryButton>
                                 </div>
                                 <div
-                                    class="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4 flex justify-between"
-                                >
+                                    class="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4 flex justify-between">
                                     <div class="flex gap-2">
-                                        <InputLabel
-                                            for="lider"
-                                            value="Lider: "
-                                        />&nbsp;
+                                        <InputLabel for="lider" value="Lider: " />&nbsp;
                                         <div class="flex">
-                                            <InputLabel
-                                                for="lider"
-                                                :value="minuta.lider.name"
-                                            />
+                                            <InputLabel for="lider" :value="minuta.lider.name" />
                                         </div>
                                         <div v-if="!newAsistente">
-                                            <form
-                                                @submit.prevent="submit"
-                                                class="flex gap-2"
-                                            >
-                                                <AutoComplete
-                                                    v-model="form.user_id"
-                                                    optionLabel="name"
-                                                    :suggestions="
-                                                        filteredUsuarios
-                                                    "
-                                                    forceSelection
-                                                    @complete="search"
-                                                    placeholder=""
-                                                />
-                                                <PrimaryButton
-                                                    class="float-right pi pi-save"
-                                                ></PrimaryButton>
+                                            <form @submit.prevent="submit" class="flex gap-2">
+                                                <AutoComplete v-model="form.user_id" optionLabel="name" :suggestions="filteredUsuarios
+                                                    " forceSelection @complete="search" placeholder="" />
+                                                <PrimaryButton class="float-right pi pi-save"></PrimaryButton>
                                             </form>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="mt-4">
-                                    <InputLabel
-                                        for="asistentes"
-                                        value="Asistentes: "
-                                    /><br />
+                                    <InputLabel for="asistentes" value="Asistentes: " /><br />
                                     <div class="mx-2">
-                                        <ul
-                                            v-for="asistente in asistentes"
-                                            :key="asistente.id"
-                                        >
+                                        <ul v-for="asistente in asistentes" :key="asistente.id">
                                             <li>
                                                 {{ asistente.user.name }}&nbsp;
-                                                <button
-                                                    class="float-right mx-4 pi pi-times text-red-500"
-                                                    @click="
-                                                        deleteAsistente(
-                                                            asistente.id
-                                                        )
-                                                    "
-                                                ></button>
+                                                <button class="float-right mx-4 pi pi-times text-red-500" @click="
+                                                    deleteAsistente(
+                                                        asistente.id
+                                                    )
+                                                    "></button>
                                             </li>
                                         </ul>
                                     </div>
@@ -602,71 +550,43 @@ const sendMail = async () => {
 
                             <div class="container mx-auto overflow-x-auto">
                                 <div class="flex gap-4">
-                                    <InputText
-                                        v-model="globalFilter"
-                                        placeholder="Buscar..."
-                                        class="mb-3"
-                                    />
-                                    <PrimaryButton
-                                        class="mb-4 float-right pi pi-filter"
-                                        @click="openFilter"
-                                    >
+                                    <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
+                                    <PrimaryButton class="mb-4 float-right pi pi-filter" @click="openFilter">
                                     </PrimaryButton>
-                                    <PrimaryButton
-                                        v-if="customFilter"
-                                        class="mb-4 float-right pi pi-times"
-                                        @click="clearFilter"
-                                    >
+                                    <PrimaryButton v-if="customFilter" class="mb-4 float-right pi pi-times"
+                                        @click="clearFilter">
                                     </PrimaryButton>
                                     <!-- Trigger to open modal -->
-                                    <PrimaryButton
-                                        class="mb-4 float-right pi pi-plus"
-                                        @click="openModal('create')"
-                                        >&nbsp;
-                                        <span
-                                            class="p-1"
-                                            :style="{
-                                                fontSize: '10px',
-                                            }"
-                                        >
-                                            Nueva tarea</span
-                                        >
+                                    <PrimaryButton class="mb-4 float-right pi pi-plus" @click="openModal('create')">
+                                        &nbsp;
+                                        <span class="p-1" :style="{
+                                            fontSize: '10px',
+                                        }">
+                                            Nueva tarea</span>
                                     </PrimaryButton>
                                     <!-- Spacer to push the button to the right -->
                                     <div class="flex-grow"></div>
 
-                                    <div
-                                        v-if="
-                                            $page.props.auth.user.roles.includes(
-                                                'admin'
-                                            ) ||
-                                            $page.props.auth.user.roles.includes(
-                                                'superadmin'
-                                            )
-                                        "
-                                        class="flex justify-center gap-4"
-                                    >
-                                        <label for="isTerminado"
-                                            >Tareas validadas</label
-                                        >
-                                        <ToggleSwitch
-                                            v-model="isTerminadoShow"
-                                            class="w-28 mb-4 mr-4"
-                                        >
-                                            <template
-                                                #handle="{ isTerminadoShow }"
-                                            >
-                                                <i
-                                                    :class="[
-                                                        '!text-xs pi',
-                                                        {
-                                                            'pi-check':
-                                                                isTerminadoShow,
-                                                            'pi-times':
-                                                                !isTerminadoShow,
-                                                        },
-                                                    ]"
-                                                />
+                                    <div v-if="
+                                        $page.props.auth.user.roles.includes(
+                                            'admin'
+                                        ) ||
+                                        $page.props.auth.user.roles.includes(
+                                            'superadmin'
+                                        )
+                                    " class="flex justify-center gap-4">
+                                        <label for="isTerminado">Tareas validadas</label>
+                                        <ToggleSwitch v-model="isTerminadoShow" class="w-28 mb-4 mr-4">
+                                            <template #handle="{ isTerminadoShow }">
+                                                <i :class="[
+                                                    '!text-xs pi',
+                                                    {
+                                                        'pi-check':
+                                                            isTerminadoShow,
+                                                        'pi-times':
+                                                            !isTerminadoShow,
+                                                    },
+                                                ]" />
                                             </template>
                                         </ToggleSwitch>
                                     </div>
@@ -676,56 +596,57 @@ const sendMail = async () => {
                                         class=" mb-4 pi pi-envelope float-right" @click="sendMail()">
                                     </PrimaryButton> -->
                                 </div>
+                                <div class="tareas-summary mb-4">
+                                    <div>
+                                        <span>Total de Tareas:</span>
+                                        <strong>{{ tareasTotales }}</strong>
+                                    </div>
+                                    <div class="terminadas">
+                                        <span>Tareas Terminadas:</span>
+                                        <strong>{{ tareasTerminadas }}</strong>
+                                    </div>
+                                    <div class="en-proceso">
+                                        <span>Tareas en Proceso:</span>
+                                        <strong>{{ tareasEnProceso }}</strong>
+                                    </div>
+                                    <div class="en-espera">
+                                        <span>Tareas en espera:</span>
+                                        <strong>{{ tareasIniciadas }}</strong>
+                                    </div>
+                                    <div class="en-retrasadas">
+                                        <span>Tareas retrasadas:</span>
+                                        <strong>{{ tareasRetrasadas }}</strong>
+                                    </div>
+                                </div>
 
                                 <!-- formulario de filtrado de tareas -->
                                 <div v-if="customFilter" class="">
-                                    <form
-                                        @submit.prevent="filterTable(minuta.id)"
-                                    >
-                                        <div
-                                            class="m-4 border rounded-lg border-gray-200 flex gap-2 grid grid-cols-4"
-                                        >
+                                    <form @submit.prevent="filterTable(minuta.id)">
+                                        <div class="m-4 border rounded-lg border-gray-200 flex gap-2 grid grid-cols-4">
                                             <div class="m-4">
-                                                <InputLabel
-                                                    for="area_id"
-                                                    value="Area: "
-                                                />
-                                                <select
-                                                    ref="area_select"
+                                                <InputLabel for="area_id" value="Area: " />
+                                                <select ref="area_select"
                                                     class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                                    v-model="pilar"
-                                                >
+                                                    v-model="pilar">
                                                     <option value="" selected>
                                                         Seleccione una opcion
                                                     </option>
-                                                    <option
-                                                        v-for="area in areas"
-                                                        :key="area.id"
-                                                        :value="area.id"
-                                                    >
+                                                    <option v-for="area in areas" :key="area.id" :value="area.id">
                                                         {{ area.nombre }}
                                                     </option>
                                                 </select>
                                             </div>
 
                                             <div class="m-4">
-                                                <InputLabel
-                                                    for="departamento_id"
-                                                    value="Departamento: "
-                                                />
-                                                <select
-                                                    ref="departamento_select"
+                                                <InputLabel for="departamento_id" value="Departamento: " />
+                                                <select ref="departamento_select"
                                                     class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                                    v-model="flujoValor"
-                                                >
+                                                    v-model="flujoValor">
                                                     <option value="" selected>
                                                         Seleccione una opcion
                                                     </option>
-                                                    <option
-                                                        v-for="departamento in departamentos"
-                                                        :key="departamento.id"
-                                                        :value="departamento.id"
-                                                    >
+                                                    <option v-for="departamento in departamentos" :key="departamento.id"
+                                                        :value="departamento.id">
                                                         {{
                                                             departamento.nombre
                                                         }}
@@ -734,61 +655,40 @@ const sendMail = async () => {
                                             </div>
 
                                             <div class="m-4">
-                                                <InputLabel
-                                                    for="responsable_id"
-                                                    value="Responsable: "
-                                                />
-                                                <select
-                                                    ref="responsable_select"
+                                                <InputLabel for="responsable_id" value="Responsable: " />
+                                                <select ref="responsable_select"
                                                     class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                                    v-model="responsable"
-                                                >
+                                                    v-model="responsable">
                                                     <option value="" selected>
                                                         Seleccione una opcion
                                                     </option>
-                                                    <option
-                                                        v-for="usuario in usuarios"
-                                                        :key="usuario.id"
-                                                        :value="usuario.id"
-                                                    >
+                                                    <option v-for="usuario in usuarios" :key="usuario.id"
+                                                        :value="usuario.id">
                                                         {{ usuario.name }}
                                                     </option>
                                                 </select>
                                             </div>
 
                                             <div class="m-4">
-                                                <InputLabel
-                                                    for="cliente_id"
-                                                    value="Cliente de tarea: "
-                                                />
-                                                <select
-                                                    ref="cliente_select"
+                                                <InputLabel for="cliente_id" value="Cliente de tarea: " />
+                                                <select ref="cliente_select"
                                                     class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                                    v-model="revisor"
-                                                >
+                                                    v-model="revisor">
                                                     <option value="" selected>
                                                         Seleccione una opcion
                                                     </option>
-                                                    <option
-                                                        v-for="usuario in usuarios"
-                                                        :key="usuario.id"
-                                                        :value="usuario.id"
-                                                    >
+                                                    <option v-for="usuario in usuarios" :key="usuario.id"
+                                                        :value="usuario.id">
                                                         {{ usuario.name }}
                                                     </option>
                                                 </select>
                                             </div>
 
                                             <div class="m-4">
-                                                <InputLabel
-                                                    for="estatus_id"
-                                                    value="Estatus: "
-                                                />
-                                                <select
-                                                    ref="estatus_select"
+                                                <InputLabel for="estatus_id" value="Estatus: " />
+                                                <select ref="estatus_select"
                                                     class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                                    v-model="estatus"
-                                                >
+                                                    v-model="estatus">
                                                     <option value="" selected>
                                                         Seleccione una opcion
                                                     </option>
@@ -808,57 +708,29 @@ const sendMail = async () => {
                                             </div>
 
                                             <div class="m-4">
-                                                <InputLabel
-                                                    for="fecha"
-                                                    value="Fecha de entrega de: "
-                                                />
-                                                <TextInput
-                                                    id="fecha"
-                                                    v-model="desde"
-                                                    type="date"
-                                                    class="mt-1 block w-full"
-                                                    autocomplete="fecha"
-                                                />
+                                                <InputLabel for="fecha" value="Fecha de entrega de: " />
+                                                <TextInput id="fecha" v-model="desde" type="date"
+                                                    class="mt-1 block w-full" autocomplete="fecha" />
                                             </div>
 
                                             <div class="m-4">
-                                                <InputLabel
-                                                    for="created_at"
-                                                    value="Fecha de entrega hasta: "
-                                                />
-                                                <TextInput
-                                                    id="fecha"
-                                                    v-model="hasta"
-                                                    type="date"
-                                                    class="mt-1 block w-full"
-                                                    autocomplete="fecha"
-                                                />
+                                                <InputLabel for="created_at" value="Fecha de entrega hasta: " />
+                                                <TextInput id="fecha" v-model="hasta" type="date"
+                                                    class="mt-1 block w-full" autocomplete="fecha" />
                                             </div>
 
                                             <div class="m-4">
-                                                <PrimaryButton
-                                                    class="m-4 float-right pi pi-search"
-                                                    type="submit"
-                                                >
+                                                <PrimaryButton class="m-4 float-right pi pi-search" type="submit">
                                                 </PrimaryButton>
                                             </div>
                                         </div>
                                     </form>
                                 </div>
 
-                                <DataTable
-                                    :value="tareas"
-                                    paginator
-                                    :rows="rows"
-                                    :totalRecords="totalRecords"
-                                    :lazy="true"
-                                    :first="first"
-                                    @page="onPage"
-                                    @sort="onSort"
-                                    :rowsPerPageOptions="[5, 10, 20, 50]"
-                                    tableStyle="min-width: 50rem"
-                                    :filters="filters"
-                                    :globalFilterFields="[
+                                <DataTable :value="tareas" paginator :rows="rows" :totalRecords="totalRecords"
+                                    :lazy="true" :first="first" @page="onPage" @sort="onSort"
+                                    :rowsPerPageOptions="[5, 10, 20, 50]" tableStyle="min-width: 50rem"
+                                    :filters="filters" :globalFilterFields="[
                                         'id',
                                         'tarea',
                                         'area.nombre',
@@ -866,44 +738,22 @@ const sendMail = async () => {
                                         'responsable.name',
                                         'fecha_entrega',
                                         'estatus.titulo',
-                                    ]"
-                                    :sortField="sortField"
-                                    :sortOrder="sortOrder"
-                                    class="p-datatable-sm p-datatable-striped p-datatable-gridlines"
-                                >
+                                    ]" :sortField="sortField" :sortOrder="sortOrder"
+                                    class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
                                     <template #empty> No data found. </template>
-                                    <Column
-                                        field="id"
-                                        header="ID"
-                                        headerStyle="width:4em;"
-                                        bodyStyle="text-align:center;"
-                                        sortable
-                                    ></Column>
-                                    <Column
-                                        field="tarea"
-                                        header="Titulo"
-                                        headerStyle="width:4em;"
-                                        bodyClass="text-center"
-                                        sortable
-                                    ></Column>
+                                    <Column field="id" header="ID" headerStyle="width:4em;"
+                                        bodyStyle="text-align:center;" sortable></Column>
+                                    <Column field="tarea" header="Titulo" headerStyle="width:4em;"
+                                        bodyClass="text-center" sortable></Column>
 
-                                    <Column
-                                        field="estatus.titulo"
-                                        header="Estatus"
-                                        headerStyle="width:4em;"
-                                        bodyStyle="text-align:center;"
-                                        bodyClass="text-center"
-                                        sortable
-                                    >
+                                    <Column field="estatus.titulo" header="Estatus" headerStyle="width:4em;"
+                                        bodyStyle="text-align:center;" bodyClass="text-center" sortable>
                                         <template #body="slotProps">
-                                            <span
-                                                :class="
-                                                    getStatusClass(
-                                                        slotProps.data.estatus
-                                                            .titulo
-                                                    )
-                                                "
-                                            >
+                                            <span :class="getStatusClass(
+                                                slotProps.data.estatus
+                                                    .titulo
+                                            )
+                                                ">
                                                 {{
                                                     slotProps.data.estatus
                                                         .titulo
@@ -911,48 +761,26 @@ const sendMail = async () => {
                                             </span>
                                         </template>
                                     </Column>
-                                    <Column
-                                        field="departamento.nombre"
-                                        header="Fujo de valor"
-                                        headerStyle="width:4em;"
-                                        bodyStyle="text-align:center;"
-                                        bodyClass="text-center"
-                                        sortable
-                                    ></Column>
-                                    <Column
-                                        field="responsable.name"
-                                        header="Responsable"
-                                        headerStyle="width:4em;"
-                                        bodyClass="text-center"
-                                        sortable
-                                    >
+                                    <Column field="departamento.nombre" header="Fujo de valor" headerStyle="width:4em;"
+                                        bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+                                    <Column field="responsable.name" header="Responsable" headerStyle="width:4em;"
+                                        bodyClass="text-center" sortable>
                                         <template #body="slotProps">
-                                            <div
-                                                v-if="
-                                                    slotProps.data.responsable
-                                                "
-                                            >
+                                            <div v-if="
+                                                slotProps.data.responsable
+                                            ">
                                                 {{
                                                     slotProps.data.responsable
                                                         .name
                                                 }}
                                             </div>
-                                            <div
-                                                v-else
-                                                class="text-center text-red-500"
-                                            >
+                                            <div v-else class="text-center text-red-500">
                                                 Sin responsable
                                             </div>
                                         </template>
                                     </Column>
-                                    <Column
-                                        field="fecha"
-                                        header="Fecha de entrega"
-                                        headerStyle="width:4em;"
-                                        bodyStyle="text-align:center;"
-                                        bodyClass="text-center"
-                                        sortable
-                                    >
+                                    <Column field="fecha" header="Fecha de entrega" headerStyle="width:4em;"
+                                        bodyStyle="text-align:center;" bodyClass="text-center" sortable>
                                         <template #body="slotProps">
                                             {{
                                                 formatearFecha(
@@ -961,13 +789,8 @@ const sendMail = async () => {
                                             }}
                                         </template>
                                     </Column>
-                                    <Column
-                                        field="revisor.name"
-                                        header="Cliente de la tarea"
-                                        headerStyle="width:4em;"
-                                        bodyClass="text-center"
-                                        sortable
-                                    >
+                                    <Column field="revisor.name" header="Cliente de la tarea" headerStyle="width:4em;"
+                                        bodyClass="text-center" sortable>
                                         <template #body="slotProps">
                                             <div v-if="slotProps.data.revisor">
                                                 {{
@@ -977,78 +800,52 @@ const sendMail = async () => {
                                             <div v-else>Sin cliente</div>
                                         </template>
                                     </Column>
-                                    <Column
-                                        header="Validacion"
-                                        headerStyle="width:4em;"
-                                        bodyClass="justify-center"
-                                    >
+                                    <Column header="Validacion" headerStyle="width:4em;" bodyClass="justify-center">
                                         <template #body="slotProps">
-                                            <input
-                                                type="checkbox"
-                                                @change="
-                                                    validateTarea(
-                                                        slotProps.data,
-                                                        $event
-                                                    )
-                                                "
-                                                :disabled="
-                                                    slotProps.data.validacion
+                                            <input type="checkbox" @change="
+                                                validateTarea(
+                                                    slotProps.data,
+                                                    $event
+                                                )
+                                                " :disabled="slotProps.data.validacion
+                                                    ? true
+                                                    : false
+                                                    " :checked="slotProps.data.validacion
                                                         ? true
                                                         : false
-                                                "
-                                                :checked="
-                                                    slotProps.data.validacion
-                                                        ? true
-                                                        : false
-                                                "
-                                            />
+                                                        " />
                                             Validar
                                         </template>
                                     </Column>
                                     <Column header="" headerStyle="width:4em;">
-                                        <template
-                                            #body="slotProps"
-                                            class="text-center"
-                                        >
+                                        <template #body="slotProps" class="text-center">
                                             <div class="flex justify-center">
-                                                <PrimaryButton
-                                                    v-if="
-                                                        slotProps.data
-                                                            .validacion !== 1
-                                                    "
-                                                    class="m-2 pi pi-file-edit"
-                                                    @click="
-                                                        openModal(
-                                                            'edit',
-                                                            slotProps.data.id
-                                                        )
-                                                    "
-                                                >
-                                                    <span
-                                                        class="p-1"
-                                                        :style="{
-                                                            fontSize: '10px',
-                                                        }"
-                                                        >editar</span
-                                                    >
+                                                <PrimaryButton v-if="
+                                                    slotProps.data
+                                                        .validacion !== 1
+                                                " class="m-2 pi pi-file-edit" @click="
+                                                    openModal(
+                                                        'edit',
+                                                        slotProps.data.id
+                                                    )
+                                                    ">
+                                                    <span class="p-1" :style="{
+                                                        fontSize: '10px',
+                                                    }">editar</span>
                                                 </PrimaryButton>
 
                                                 <!-- <PrimaryButton class="m-2 pi pi-file-check"
                                                     @click="openModal('detail', slotProps.data.id)">
                                                 </PrimaryButton> -->
 
-                                                <PrimaryButton
-                                                    v-if="
-                                                        slotProps.data
-                                                            .validacion !== 1
-                                                    "
-                                                    class="m-2 pi pi-trash"
-                                                    @click.prevent="
-                                                        deleteTarea(
-                                                            slotProps.data.id
-                                                        )
-                                                    "
-                                                >
+                                                <PrimaryButton v-if="
+                                                    slotProps.data
+                                                        .validacion !== 1
+                                                " class="m-2 pi pi-trash" @click.prevent="
+                                                    deleteTarea(
+                                                        slotProps.data.id
+                                                    )
+                                                    ">
                                                 </PrimaryButton>
                                             </div>
                                         </template>
@@ -1064,55 +861,67 @@ const sendMail = async () => {
         <div>
             <!-- Modal component -->
 
-            <Modal
-                :show="isCreateModalVisible"
-                :modalData="minuta"
-                maxWidth="lg"
-                @close="isCreateModalVisible = false"
-            >
+            <Modal :show="isCreateModalVisible" :modalData="minuta" maxWidth="lg" @close="isCreateModalVisible = false">
                 <template v-slot="{ modalData }">
-                    <TareasCreate
-                        class="z-50"
-                        :minuta="modalData"
-                        @close="isCreateModalVisible = false"
-                        @tareaGuardada="actualizarTareas"
-                    />
+                    <TareasCreate class="z-50" :minuta="modalData" @close="isCreateModalVisible = false"
+                        @tareaGuardada="actualizarTareas" />
                 </template>
             </Modal>
 
-            <Modal
-                :show="isEditModalVisible"
-                :modalData="{ tarea, minuta }"
-                maxWidth="lg"
-                @close="isEditModalVisible = false"
-            >
+            <Modal :show="isEditModalVisible" :modalData="{ tarea, minuta }" maxWidth="lg"
+                @close="isEditModalVisible = false">
                 <template v-slot="{ modalData }">
-                    <TareasEdit
-                        class="z-50"
-                        :minuta="modalData.minuta"
-                        :task="modalData.tarea"
-                        @close="isEditModalVisible = false"
-                        @tareaGuardada="actualizarTareas"
-                    />
+                    <TareasEdit class="z-50" :minuta="modalData.minuta" :task="modalData.tarea"
+                        @close="isEditModalVisible = false" @tareaGuardada="actualizarTareas" />
                 </template>
             </Modal>
 
-            <Modal
-                :show="isDetailModalVisible"
-                :modalData="{ tarea, minuta }"
-                maxWidth="lg"
-                @close="isDetailModalVisible = false"
-            >
+            <Modal :show="isDetailModalVisible" :modalData="{ tarea, minuta }" maxWidth="lg"
+                @close="isDetailModalVisible = false">
                 <template v-slot="{ modalData }">
-                    <TareasDetail
-                        class="z-50"
-                        :minuta="modalData.minuta"
-                        :task="modalData.tarea"
-                        @close="isDetailModalVisible = false"
-                        @tareaGuardada="actualizarTareas"
-                    />
+                    <TareasDetail class="z-50" :minuta="modalData.minuta" :task="modalData.tarea"
+                        @close="isDetailModalVisible = false" @tareaGuardada="actualizarTareas" />
                 </template>
             </Modal>
         </div>
     </Layout>
 </template>
+
+<style>
+.tareas-summary {
+    display: flex;
+    gap: 1rem;
+    font-size: 1rem;
+}
+
+.tareas-summary div {
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    /* color: #fff; */
+    /* Texto blanco para contraste */
+    text-align: center;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tareas-summary .terminadas {
+    background-color: #28a745;
+    /* Verde para tareas terminadas */
+}
+
+.tareas-summary .en-proceso {
+    background-color: #ffc107;
+    /* Amarillo para tareas en proceso */
+    /* color: #333; */
+    /* Texto oscuro para mejor contraste */
+}
+
+.tareas-summary .en-espera {
+    background-color: #6c757d;
+    /* Gris para tareas en espera */
+}
+
+.tareas-summary .en-retrasadas {
+    background-color: #f51111;
+    /* Gris para tareas en espera */
+}
+</style>
