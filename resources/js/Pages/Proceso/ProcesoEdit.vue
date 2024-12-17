@@ -7,6 +7,7 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { showToast } from "../utils/SweetAlert.service";
 import Textarea from "primevue/textarea";
+import { isUrlValid } from "../utils/linkValidator";
 
 const props = defineProps({
     proceso: Object,
@@ -62,12 +63,16 @@ const onChange = async (event) => {
 
 const submit = () => {
     try {
-        form.patch(route("proceso.update", proceso.value.id), {
-            onFinish: () => {
-                showToast("El registro ha sido actualizado", "success");
-                form.reset();
-            },
-        });
+        if (isUrlValid(form.link_herramienta)) {
+            form.patch(route("proceso.update", proceso.value.id), {
+                onFinish: () => {
+                    showToast("El registro ha sido actualizado", "success");
+                    form.reset();
+                },
+            });
+        } else {
+            showToast("El link a la herramienta no es valido", "error");
+        }
     } catch (error) {
         showToast("Ocurrio un error", "error");
         console.error(error);
@@ -105,7 +110,7 @@ const submit = () => {
                         <div class="container mx-auto">
                             <form @submit.prevent="submit">
                                 <div
-                                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4"
+                                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
                                 >
                                     <div class="mt-4">
                                         <InputLabel
@@ -170,7 +175,48 @@ const submit = () => {
                                             autocomplete="new-challenge"
                                         />
                                     </div>
-                                    <div class="my-4">
+                                </div>
+                                <div
+                                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4"
+                                >
+                                    <div class="my-4 w-full">
+                                        <InputLabel
+                                            for="link_externo"
+                                            value="Link externo: "
+                                        />
+                                        <Textarea
+                                            class="w-full"
+                                            v-model="form.link_externo"
+                                            rows="5"
+                                            cols="30"
+                                            :invalid="
+                                                !isUrlValid(form.link_externo)
+                                            "
+                                        />
+                                    </div>
+                                    <div class="my-4 w-full">
+                                        <InputLabel
+                                            for="Link Herramienta"
+                                            value="Link Herramienta: "
+                                        />
+                                        <Textarea
+                                            class="w-full"
+                                            v-model="form.link_herramienta"
+                                            rows="5"
+                                            cols="30"
+                                            :invalid="
+                                                !isUrlValid(
+                                                    form.link_herramienta
+                                                )
+                                            "
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                                <div
+                                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4"
+                                >
+                                    <div class="my-4 w-full">
                                         <InputLabel
                                             for="descripcion"
                                             value="Descripcion: "
@@ -183,35 +229,7 @@ const submit = () => {
                                         />
                                     </div>
                                 </div>
-                                <div
-                                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4"
-                                >
-                                    <div class="my-4">
-                                        <InputLabel
-                                            for="link_externo"
-                                            value="Link externo: "
-                                        />
-                                        <Textarea
-                                            class="w-full"
-                                            v-model="form.link_externo"
-                                            rows="5"
-                                            cols="30"
-                                        />
-                                    </div>
-                                    <div class="my-4">
-                                        <InputLabel
-                                            for="Link Herramienta"
-                                            value="Link Herramienta: "
-                                        />
-                                        <Textarea
-                                            class="w-full"
-                                            v-model="form.link_herramienta"
-                                            rows="5"
-                                            cols="30"
-                                            required
-                                        />
-                                    </div>
-                                </div>
+
                                 <hr />
                                 <div class="flex items-center justify-end mt-4">
                                     <PrimaryButton
