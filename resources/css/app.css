@@ -91,3 +91,7 @@
 }
 
 
+
+.p-paginator-content .p-select{
+    border: 0px solid !important;
+}
