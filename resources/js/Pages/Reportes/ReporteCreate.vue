@@ -89,7 +89,7 @@ const removeItem = (cardIndex, itemIndex) => {
                                     <b>{{ card.title }}:</b>
 
                                     <div class="flex items-center gap-8 my-5">
-                                        <input placeholder="Buscar..." type="text"
+                                        <input placeholder="Añadir nombre" type="text"
                                             class="block border-gray-300 shadow-sm mt-1 py-3 focus:border-black rounded-md focus:ring-black w-full text-black sm:text-sm" />
                                         <PrimaryButton @click="addItem(cardIndex)" class="bg-black hover:bg-gray-800">
                                             <i class="pi pi-plus" style="font-size: 1rem"></i>

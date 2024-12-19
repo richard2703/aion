@@ -93,34 +93,38 @@ async function getProcesos() {
 <template>
     <Layout :titulo="title" :subTitulo="subTitle">
         <div class="p-5">
-            <!-- Sub Header -->
-            <div class="sm:rounded-lg overflow-hidden">
-                <div class="flex items-center gap-3 breadcrumbs">
-                    <Link href="#" class="active">
-                    <h3>Sistema de gestion</h3>
-                    </Link>
 
-                    <i class="pi-angle-right pi" style="font-size: 1rem"></i>
-                    <Link :href="route('sysgestion.index')" class="active">
-                    <b>PDCA</b>
-                    </Link>
+            <div class="block md:flex justify-between items-center content-center">
+                <!-- Sub Header -->
+                <div class="sm:rounded-lg overflow-hidden">
+                    <div class="flex items-center gap-3 breadcrumbs">
+                        <Link href="#" class="active">
+                        <h3>Sistema de gestion</h3>
+                        </Link>
+
+                        <i class="pi-angle-right pi" style="font-size: 1rem"></i>
+                        <Link :href="route('sysgestion.index')" class="active">
+                        <b>PDCA</b>
+                        </Link>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Select Flujo de valor -->
-            <div class="my-4">
-                <InputLabel for="departamento_id" value="Flujo de valor: " />
 
-                <select ref="departamento_select" @change="getProcesos()"
-                    class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
-                    v-model="form.departamento_id" required>
-                    <option value="" disabled selected>
-                        Seleccione una opcion
-                    </option>
-                    <option v-for="departamento in departamentos" :key="departamento.id" :value="departamento.id">
-                        {{ departamento.nombre }}
-                    </option>
-                </select>
+                <!-- Select Flujo de valor -->
+                <div class="my-10 md:mt-0">
+                    <InputLabel for="departamento_id" value="Flujo de valor: " />
+
+                    <select ref="departamento_select" @change="getProcesos()"
+                        class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
+                        v-model="form.departamento_id" required>
+                        <option value="" disabled selected>
+                            Seleccione una opcion
+                        </option>
+                        <option v-for="departamento in departamentos" :key="departamento.id" :value="departamento.id">
+                            {{ departamento.nombre }}
+                        </option>
+                    </select>
+                </div>
             </div>
 
             <!-- Content -->
@@ -194,7 +198,7 @@ async function getProcesos() {
                                         </table>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Acciones -->
                                 <div class="m-4">
                                     <div class="text-center">

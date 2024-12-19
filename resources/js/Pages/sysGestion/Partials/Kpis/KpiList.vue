@@ -227,9 +227,9 @@ const formatearFecha = (dateString) => {
 
 <template>
     <div v-bind="$attrs">
-        <div>
-            <div class="gap-4 grid sm:grid-cols-2 lg:grid-cols-2">
-                <div class="my-4">
+   
+            <div class="gap-4 grid sm:grid-cols-2 lg:grid-cols-2 my-5">
+                <div class="border-gray-200 p-5 border rounded-md">
                     <div class="flex justify-between">
                         <span class="font-bold text-2xl">Plan</span>
                         <div>
@@ -256,19 +256,16 @@ const formatearFecha = (dateString) => {
                             </p>
                         </div>
                     </div>
-
-
                 </div>
 
-                <div class="overflow-x-auto card">
+                <div class="border-gray-200 p-5 border rounded-md overflow-x-auto card">
                     <div class="text-center">
                         <span class="font-bold text-2xl">Check</span>
                     </div>
                     <Chart class="w-full h-full" type="bar" :data="chartData" :options="chartOptions" />
                 </div>
-
             </div>
-        </div>
+
     </div>
 
     <!-- MODAL to add value -->
@@ -279,7 +276,7 @@ const formatearFecha = (dateString) => {
                     <p class="font-medium text-gray-900 text-lg">{{ titulo }}</p>
                 </div>
                 <div class="border-gray-200 bg-white px-4 py-2 border-b">
-                    <div class="mx-auto container">
+                    <div class="mx-auto">
                         <form @submit.prevent="submitCreateModal">
                             <div class="gap-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
                                 <div class="my-4">

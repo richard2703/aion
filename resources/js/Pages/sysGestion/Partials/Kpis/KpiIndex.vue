@@ -114,7 +114,7 @@ async function getOneKpi(id) {
 
 <template>
     <div class="w-full">
-        <KpiList class="my-4 border-b" :kpi="kpi" :updateFlag="updateFlag" @updateKpi="getKpis" />
+        <KpiList :kpi="kpi" :updateFlag="updateFlag" @updateKpi="getKpis" />
         <hr>
         <div class="card">
             <Tabs :value="activeTab">
