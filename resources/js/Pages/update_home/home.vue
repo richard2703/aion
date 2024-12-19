@@ -15,12 +15,12 @@ import Tabv2 from "@/Components/compv2/tabv2.vue";
                 <Tabv2>
                     <!-- Tab pillars -->
                     <template #metroMap>
-                        <div class="mt-8 rounded-md p-10 border-solid border-[1px] border-gray-200">                
-                            <h1 class="text-xl text-center mb-7 font-bold">Metro Map</h1>
-                            <div class="p-[100px] bg-[url('/branch_background.svg')] bg-cover bg-no-repeat bg-center"  style="background-position: -70px 0px;">
-                                <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                        <div class="border-[1px] border-gray-200 mt-8 p-10 border-solid rounded-md">                
+                            <h1 class="mb-7 font-bold text-center text-xl">Metro Map</h1>
+                            <div class="bg-[url('/branch_background.svg')] bg-cover bg-no-repeat bg-center p-[100px]"  style="background-position: -70px 0px;">
+                                <div class="gap-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                                     <!-- Gente y cultura -->
-                                    <div class="shadow-md flex items-center justify-center p-7 w-24 h-24  transition ease-in-out delay-0 hover:-translate-y-1 hover:scale-110 bg-white border hover:bg-orange-400 cursor-pointer border-gray-200 rounded-full">
+                                    <div class="flex justify-center items-center border-gray-200 bg-white hover:bg-orange-400 shadow-md p-7 border rounded-full w-24 h-24 transition hover:-translate-y-1 delay-0 cursor-pointer ease-in-out hover:scale-110">
                                         <svg id="Group_132" data-name="Group 132" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="52.799" height="80.091" viewBox="0 0 52.799 80.091">
                                             <defs>
                                                 <clipPath id="clip-path">
@@ -35,7 +35,7 @@ import Tabv2 from "@/Components/compv2/tabv2.vue";
                                         </svg>      
                                     </div>
                                     <!-- T.I -->
-                                    <div class="shadow-md flex items-center justify-center p-7 w-24 h-24 transition ease-in-out delay-0 hover:-translate-y-1 hover:scale-110 bg-white border hover:bg-blue-400 cursor-pointer border-gray-200 rounded-full">
+                                    <div class="flex justify-center items-center border-gray-200 bg-white hover:bg-blue-400 shadow-md p-7 border rounded-full w-24 h-24 transition hover:-translate-y-1 delay-0 cursor-pointer ease-in-out hover:scale-110">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="57.477" height="43.107" viewBox="0 0 57.477 43.107">
                                             <g id="wifi-svgrepo-com" transform="translate(0 -3)">
                                                 <path id="Path_607" data-name="Path 607" d="M0,17.369l4.209-4.209a34.69,34.69,0,0,1,49.059,0l4.209,4.209-5.08,5.08-4.209-4.209a27.506,27.506,0,0,0-38.9,0L5.08,22.449Z" fill="#494a4b"/>
@@ -45,7 +45,7 @@ import Tabv2 from "@/Components/compv2/tabv2.vue";
                                         </svg>
                                     </div>
                                     <!-- Ventas -->
-                                    <div class="shadow-md flex items-center justify-center p-7 w-24 h-24 transition ease-in-out delay-0 hover:-translate-y-1 hover:scale-110 bg-white border hover:bg-red-400 cursor-pointer border-gray-200 rounded-full">
+                                    <div class="flex justify-center items-center border-gray-200 bg-white hover:bg-red-400 shadow-md p-7 border rounded-full w-24 h-24 transition hover:-translate-y-1 delay-0 cursor-pointer ease-in-out hover:scale-110">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="60.501" height="51.911" viewBox="0 0 60.501 51.911">
                                             <g id="sales-amount-svgrepo-com" transform="translate(-0.001 -71.68)">
                                                 <path id="Path_610" data-name="Path 610" d="M8.09,152.756a.6.6,0,0,0,.6-.6V135.344a.6.6,0,0,0-.6-.6H3.251a.6.6,0,0,0-.6.6v16.813a.6.6,0,0,0,.6.6Zm0,2.393H3.251a3.008,3.008,0,0,1-3.024-2.991V135.344a3.008,3.008,0,0,1,3.024-2.991H8.09a3.008,3.008,0,0,1,3.024,2.991v16.814A3.008,3.008,0,0,1,8.09,155.148Zm16.444-2.393a.6.6,0,0,0,.6-.6V131.872a.6.6,0,0,0-.6-.6H19.7a.6.6,0,0,0-.6.6v20.285a.6.6,0,0,0,.6.6Zm0,2.393H19.7a3.008,3.008,0,0,1-3.024-2.991V131.872a3.008,3.008,0,0,1,3.024-2.991h4.839a3.008,3.008,0,0,1,3.024,2.991v20.286A3.008,3.008,0,0,1,24.534,155.148Zm16.444-2.357a.6.6,0,0,0,.6-.6V128.435a.6.6,0,0,0-.6-.6H36.14a.6.6,0,0,0-.6.6v23.758a.6.6,0,0,0,.6.6Zm0,2.393H36.14a3.008,3.008,0,0,1-3.024-2.991V128.435a3.008,3.008,0,0,1,3.024-2.991h4.839A3.008,3.008,0,0,1,44,128.435v23.758A3.008,3.008,0,0,1,40.979,155.184Zm16.444-2.393a.6.6,0,0,0,.6-.6V125.445a.6.6,0,0,0-.6-.6H52.585a.6.6,0,0,0-.6.6v26.749a.6.6,0,0,0,.6.6Zm0,2.393H52.585a3.008,3.008,0,0,1-3.024-2.991V125.445a3.008,3.008,0,0,1,3.024-2.991h4.839a3.008,3.008,0,0,1,3.024,2.991v26.749A3.008,3.008,0,0,1,57.423,155.185ZM57.057,106a130.679,130.679,0,0,1-55.919,16.29,1.2,1.2,0,1,0,.146,2.388,133.119,133.119,0,0,0,56.96-16.593,1.189,1.189,0,0,0,.46-1.63A1.217,1.217,0,0,0,57.057,106Z" transform="translate(0 -31.594)" fill="#494a4b"/>
@@ -56,7 +56,7 @@ import Tabv2 from "@/Components/compv2/tabv2.vue";
                 
                                     </div>
                                     <!-- Operaciones -->
-                                    <div class="shadow-md flex items-center justify-center p-7 w-24 h-24 transition ease-in-out delay-0 hover:-translate-y-1 hover:scale-110 bg-white border hover:bg-green-400 cursor-pointer border-gray-200 rounded-full">
+                                    <div class="flex justify-center items-center border-gray-200 bg-white hover:bg-green-400 shadow-md p-7 border rounded-full w-24 h-24 transition hover:-translate-y-1 delay-0 cursor-pointer ease-in-out hover:scale-110">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60">
                                             <g id="operations-record-svgrepo-com" transform="translate(0.123 0.123)">
                                                 <rect id="Rectangle_65" data-name="Rectangle 65" width="19" height="4" transform="translate(36.877 36.877)" fill="#49494a"/>
@@ -70,7 +70,7 @@ import Tabv2 from "@/Components/compv2/tabv2.vue";
                 
                                     </div>
                                     <!-- Administración -->
-                                    <div class="shadow-md flex items-center justify-center p-7 w-24 h-24 transition ease-in-out delay-0 hover:-translate-y-1 hover:scale-110 bg-white border hover:bg-gray-400 cursor-pointer border-gray-200 rounded-full">
+                                    <div class="flex justify-center items-center border-gray-200 bg-white hover:bg-gray-400 shadow-md p-7 border rounded-full w-24 h-24 transition hover:-translate-y-1 delay-0 cursor-pointer ease-in-out hover:scale-110">
                                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="61.156" height="71.286" viewBox="0 0 61.156 71.286">
                                             <defs>
                                                 <clipPath id="clip-path">
