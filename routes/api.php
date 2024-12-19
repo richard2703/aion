@@ -33,6 +33,7 @@ Route::get('/minutas', [App\Http\Controllers\minutasController::class, 'findAll'
 Route::get('/minutas/{area_id}/area', [App\Http\Controllers\minutasController::class, 'byArea'])->name('minutas.byArea');
 Route::get('/procesos', [App\Http\Controllers\procesoController::class, 'findAll'])->name('procesos.findAll');
 Route::get('/procesosTodo', [App\Http\Controllers\procesoController::class, 'findAllSP'])->name('procesos.findAllSP');
+Route::get('/procesos/{area_id}/area', [App\Http\Controllers\procesoController::class, 'byArea'])->name('procesos.byArea');
 Route::get('/procedimientos', [App\Http\Controllers\procedimientoController::class, 'findAll'])->name('procedimientos.findAll');
 Route::get('/estandares', [App\Http\Controllers\EstandarController::class, 'findAll'])->name('estandares.findAll');
 Route::get('/kpis', [App\Http\Controllers\kpiController::class, 'findAll'])->name('kpis.findAll');
@@ -137,3 +138,4 @@ Route::post('/comentarios', [App\Http\Controllers\comentarioController::class, '
 Route::get('/comentarios/{comentario}/edit', [App\Http\Controllers\comentarioController::class, 'edit'])->name('comentario.edit');
 Route::patch('/comentarios/{comentario}/update', [App\Http\Controllers\comentarioController::class, 'update'])->name('comentario.update');
 Route::delete('/comentarios/{comentario}/destroy', [App\Http\Controllers\comentarioController::class, 'destroy'])->name('comentario.destroy');
+Route::get('/proveedores/{area_id}', [App\Http\Controllers\proveedorController::class, 'findAll'])->name('proveedores.findAll');

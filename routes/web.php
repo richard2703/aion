@@ -240,4 +240,12 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::post('evento/store', [App\Http\Controllers\eventoController::class, 'store'])->name('eventos.store');
     Route::patch('evento/{evento}/update', [App\Http\Controllers\eventoController::class, 'update'])->name('eventos.update');
     Route::delete('evento/{evento}/destroy', [App\Http\Controllers\eventoController::class, 'destroy'])->name('eventos.destroy');
+
+    // Proveedores
+    Route::get('proveedores', [App\Http\Controllers\proveedorController::class, 'index'])->name('proveedores.index');
+    Route::get('proveedores/nuevo', [App\Http\Controllers\proveedorController::class, 'create'])->name('proveedores.create');
+    Route::post('proveedores/store', [App\Http\Controllers\proveedorController::class, 'store'])->name('proveedores.store');
+    Route::get('proveedores/{proveedor}/edit', [App\Http\Controllers\proveedorController::class, 'edit'])->name('proveedores.edit');
+    Route::patch('proveedores/{proveedor}/update', [App\Http\Controllers\proveedorController::class, 'update'])->name('proveedores.update');
+    Route::delete('proveedores/{proveedor}/destroy', [App\Http\Controllers\proveedorController::class, 'destroy'])->name('proveedores.destroy');
 });

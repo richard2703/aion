@@ -143,4 +143,10 @@ class procesoController extends Controller
         $proceso->delete();
         return response()->json(['success' => true]);
     }
+
+    function byArea($area_id)
+    {
+        $procesos = Proceso::where('area_id', $area_id)->get();
+        return response()->json($procesos);
+    }
 }

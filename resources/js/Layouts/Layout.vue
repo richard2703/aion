@@ -306,6 +306,12 @@ const menuItems = [
                 icon: "",
                 role: ["admin", "user", "superadmin", "lider_pilar"],
             },
+            {
+                label: "Directorio de proveedores",
+                route: "proveedores.index",
+                icon: "",
+                role: ["admin", "user", "superadmin", "lider_pilar"],
+            },
         ],
     },
     {
