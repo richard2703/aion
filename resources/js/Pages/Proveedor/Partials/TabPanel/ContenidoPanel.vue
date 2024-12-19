@@ -1,14 +1,7 @@
 <script setup>
 import { onMounted, ref, watch } from "vue";
-import DataTable from "primevue/datatable";
-import Column from "primevue/column";
-import InputText from "primevue/inputtext";
 import InputLabel from "@/Components/InputLabel.vue";
-import TextInput from "@/Components/TextInput.vue";
-import { format } from "date-fns";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { confirmDialog, showToast } from "@/Pages/utils/SweetAlert.service";
-import { useForm } from "@inertiajs/vue3";
 
 const props = defineProps({
     area: Object,
