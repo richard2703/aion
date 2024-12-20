@@ -146,7 +146,7 @@ const submit = async () => {
                 </div>
             </div>
             <div class="m-4 py-2">
-                <PrimaryButton class="float-right ms-4 pi pi-save" :class="{ 'opacity-25': form.processing }"
+                <PrimaryButton class="float-right bg-black ms-4 pi pi-save" :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing">
 
                 </PrimaryButton>
