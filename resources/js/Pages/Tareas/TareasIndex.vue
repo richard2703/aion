@@ -693,7 +693,8 @@ const closeModalTask = () => {
                     @click="openModal(true, slotProps.data.id)">
                   </PrimaryButton>
 
-                  <PrimaryButton class="bg-black m-2 pi pi-file-check" :href="route('tareas.detail', slotProps.data.id)">
+                  <PrimaryButton class="bg-black m-2 pi pi-file-check"
+                    :href="route('tareas.detail', slotProps.data.id)">
                   </PrimaryButton>
 
                   <PrimaryButton v-if="slotProps.data.validacion !== 1" class="bg-black m-2 pi pi-trash" @click.prevent="
@@ -710,152 +711,158 @@ const closeModalTask = () => {
 
     <!-- Modal New Task -->
     <Modalv2 :isOpen="isModalOpen" :title="isEditing ? 'Editar Tarea' : 'Nueva Tarea'" @close="closeModal">
-      <form @submit.prevent="submit">
-        <!-- tittle -->
-        <div class="mb-5">
-          <label for="task-title" class="block font-medium text-gray-700 text-sm">Título de la tarea</label>
-          <TextInput id="task-title" type="text"
-            class="block border-gray-300 shadow-sm mt-1 py-3 focus:border-black rounded-md focus:ring-black w-full sm:text-sm"
-            v-model="form.tarea" />
-        </div>
+    
+      <!-- Content modal -->
+      <div class="h-[500px] overflow-scroll">
+        <form @submit.prevent="submit">
+          <!-- tittle -->
+          <div class="mb-5">
+            <label for="task-title" class="block font-medium text-gray-700 text-sm">Título de la tarea</label>
+            <TextInput id="task-title" type="text"
+              class="block border-gray-300 shadow-sm mt-1 py-3 focus:border-black rounded-md focus:ring-black w-full sm:text-sm"
+              v-model="form.tarea" />
+          </div>
 
-        <!-- tipo de reunion -->
-        <div class="mb-5">
-          <label for="task-status" class="block font-medium text-gray-700 text-sm">Reunión</label>
-          <select ref="departamento_select"
-            class="block border-gray-300 shadow-sm mt-1 py-3 focus:border-black rounded-md focus:ring-black w-full sm:text-sm"
-            v-model="form.minuta_id" required>
-            <option value="" disabled selected>
-              Seleccione una opcion
-            </option>
-            <option v-for="minuta in minutas" :key="minuta.id" :value="minuta.id">
-              {{ minuta.alias }}
-            </option>
-          </select>
-        </div>
+          <!-- tipo de reunion -->
+          <div class="mb-5">
+            <label for="task-status" class="block font-medium text-gray-700 text-sm">Reunión</label>
+            <select ref="departamento_select"
+              class="block border-gray-300 shadow-sm mt-1 py-3 focus:border-black rounded-md focus:ring-black w-full sm:text-sm"
+              v-model="form.minuta_id" required>
+              <option value="" disabled selected>
+                Seleccione una opcion
+              </option>
+              <option v-for="minuta in minutas" :key="minuta.id" :value="minuta.id">
+                {{ minuta.alias }}
+              </option>
+            </select>
+          </div>
 
-        <!-- Pilar -->
-        <div class="mb-5">
-          <label for="task-status" class="block font-medium text-gray-700 text-sm">Pilar</label>
-          <select ref="departamento_select"
-            class="block border-gray-300 shadow-sm mt-1 py-3 focus:border-black rounded-md focus:ring-black w-full sm:text-sm"
-            v-model="form.area_id" @change="onChange($event)" required>
-            <option value="" disabled selected>
-              Seleccione una opcion
-            </option>
-            <option v-for="area in areas" :key="area.id" :value="area.id">
-              {{ area.nombre }}
-            </option>
-          </select>
-        </div>
+          <!-- Pilar -->
+          <div class="mb-5">
+            <label for="task-status" class="block font-medium text-gray-700 text-sm">Pilar</label>
+            <select ref="departamento_select"
+              class="block border-gray-300 shadow-sm mt-1 py-3 focus:border-black rounded-md focus:ring-black w-full sm:text-sm"
+              v-model="form.area_id" @change="onChange($event)" required>
+              <option value="" disabled selected>
+                Seleccione una opcion
+              </option>
+              <option v-for="area in areas" :key="area.id" :value="area.id">
+                {{ area.nombre }}
+              </option>
+            </select>
+          </div>
 
-        <!-- flujo de valor -->
-        <div class="mb-5">
-          <label for="task-status" class="block font-medium text-gray-700 text-sm">Flujo de valor</label>
-          <select ref="departamento_select"
-            class="block border-gray-300 shadow-sm mt-1 py-3 focus:border-black rounded-md focus:ring-black w-full sm:text-sm"
-            v-model="form.departamento_id" required>
-            <option value="" disabled selected>
-              Seleccione una opcion
-            </option>
-            <option v-for="departamento in departamentos" :key="departamento.id" :value="departamento.id">
-              {{ departamento.nombre }}
-            </option>
-          </select>
-        </div>
+          <!-- flujo de valor -->
+          <div class="mb-5">
+            <label for="task-status" class="block font-medium text-gray-700 text-sm">Flujo de valor</label>
+            <select ref="departamento_select"
+              class="block border-gray-300 shadow-sm mt-1 py-3 focus:border-black rounded-md focus:ring-black w-full sm:text-sm"
+              v-model="form.departamento_id" required>
+              <option value="" disabled selected>
+                Seleccione una opcion
+              </option>
+              <option v-for="departamento in departamentos" :key="departamento.id" :value="departamento.id">
+                {{ departamento.nombre }}
+              </option>
+            </select>
+          </div>
 
-        <!-- responsable y cliente de tarea -->
-        <div class="mb-5">
-          <div class="gap-4 grid grid-cols-1 md:grid-cols-2">
-            <div class="mb-4">
-              <label for="task-title" class="block font-medium text-gray-700 text-sm">Responsable</label>
-              <AutoComplete v-model="form.responsable_id" optionLabel="name" :suggestions="filteredUsuarios"
-                forceSelection @complete="search" placeholder="" />
-            </div>
+          <!-- responsable y cliente de tarea -->
+          <div class="mb-5">
+            <div class="gap-4 grid grid-cols-1 md:grid-cols-2">
+              <div class="mb-4">
+                <label for="task-title" class="block font-medium text-gray-700 text-sm">Responsable</label>
+                <AutoComplete v-model="form.responsable_id" optionLabel="name" :suggestions="filteredUsuarios"
+                  forceSelection @complete="search" placeholder="" />
+              </div>
 
-            <div>
-              <label for="task-status" class="block font-medium text-gray-700 text-sm">Cliente de tarea</label>
-              <AutoComplete v-model="form.revisor_id" optionLabel="name" :suggestions="filteredUsuarios" forceSelection
-                @complete="search" placeholder="" />
+              <div>
+                <label for="task-status" class="block font-medium text-gray-700 text-sm">Cliente de tarea</label>
+                <AutoComplete v-model="form.revisor_id" optionLabel="name" :suggestions="filteredUsuarios"
+                  forceSelection @complete="search" placeholder="" />
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- Estado y fecha entrega -->
-        <div class="mb-5">
-          <div class="gap-4 grid grid-cols-1 md:grid-cols-2">
-            <div class="mb-4">
-              <label for="task-title" class="block font-medium text-gray-700 text-sm">Estatus</label>
-              <select id="task-status" v-model="form.estatus_id" required
-                class="block border-gray-300 shadow-sm mt-1 py-3 focus:border-black rounded-md focus:ring-black w-full sm:text-sm">
-                <option value="" selected disabled>
-                  Seleccione una opcion </option>
-                <option value=1>
-                  Retrasado </option>
-                <option value=2>
-                  Iniciado </option>
-                <option value=3>
-                  En proceso </option>
-                <option value=4>
-                  Terminado </option>
-              </select>
-            </div>
+          <!-- Estado y fecha entrega -->
+          <div class="mb-5">
+            <div class="gap-4 grid grid-cols-1 md:grid-cols-2">
+              <div class="mb-4">
+                <label for="task-title" class="block font-medium text-gray-700 text-sm">Estatus</label>
+                <select id="task-status" v-model="form.estatus_id" required
+                  class="block border-gray-300 shadow-sm mt-1 py-3 focus:border-black rounded-md focus:ring-black w-full sm:text-sm">
+                  <option value="" selected disabled>
+                    Seleccione una opcion </option>
+                  <option value=1>
+                    Retrasado </option>
+                  <option value=2>
+                    Iniciado </option>
+                  <option value=3>
+                    En proceso </option>
+                  <option value=4>
+                    Terminado </option>
+                </select>
+              </div>
 
-            <div class="mb-5">
-              <label for="task-date" class="block font-medium text-gray-700 text-sm">Fecha</label>
-              <TextInput id="fecha" v-model="form.fecha" type="date"
-                class="block border-gray-300 shadow-sm mt-1 py-3 focus:border-black rounded-md focus:ring-black w-full sm:text-sm"
-                required autocomplete="fecha" />
-            </div>
-
-          </div>
-        </div>
-
-        <div class="mb-5">
-          <label for="task-title" class="block font-medium text-gray-700 text-sm">Notas</label>
-          <Textarea
-            class="block border-gray-300 shadow-sm mt-1 py-3 focus:border-black rounded-md focus:ring-black w-full sm:text-sm"
-            v-model="form.nota" rows="3" cols="30" />
-        </div>
-
-
-        <div class="flex justify-end">
-          <button type="button" @click="closeModal"
-            class="bg-gray-300 hover:bg-gray-400 mr-2 px-4 py-2 rounded-md text-gray-700">Cancelar</button>
-          <button type="submit" class="bg-black hover:bg-gray-800 px-4 py-2 rounded-md text-white"
-            :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Guardar</button>
-        </div>
-      </form>
-      <div v-if="isEditing == true">
-        <hr class="my-4">
-        <form @submit.prevent="uploadFile" enctype="multipart/form-data">
-          <div class="gap-4 grid grid-cols-1 mt-5 mb-2">
-            <div>
-              <label for="task-title" class="block font-medium text-gray-700 text-sm">Muestra del trabajo
-                realizado</label>
-              <input id="img_ref" type="file" @change="onFileChange('img_ref', $event)" class="block mt-1 w-full"
-                autocomplete="img_ref" />
-            </div>
-
-            <div class="flex justify-end items-center col-span-full mt-4">
-              <button type="submit" class="ms-4 pi pi-upload" :class="{
-                'opacity-25': evidenciaForm.processing || form.processing,
-              }" :disabled="evidenciaForm.processing || form.processing">
-              </button>
-            </div>
-            <div
-              class="gap-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4">
-              <div v-for="evidencia in evidencias" class="bg-slate-100 w-60 text-center card">
-                <Image :src="evidencia.img_ref" alt="Image" width="250" preview />
-                <!-- <img :src="evidencia" alt="" srcset=""> -->
-                <a class="text-2xl text-red-500 hover:text-red-700 cursor-pointer pi pi-trash"
-                  @click="deleteEvidencia(evidencia.id)"></a>
+              <div class="mb-5">
+                <label for="task-date" class="block font-medium text-gray-700 text-sm">Fecha</label>
+                <TextInput id="fecha" v-model="form.fecha" type="date"
+                  class="block border-gray-300 shadow-sm mt-1 py-3 focus:border-black rounded-md focus:ring-black w-full sm:text-sm"
+                  required autocomplete="fecha" />
               </div>
 
             </div>
+          </div>
 
+          <div class="mb-5">
+            <label for="task-title" class="block font-medium text-gray-700 text-sm">Notas</label>
+            <Textarea
+              class="block border-gray-300 shadow-sm mt-1 py-3 focus:border-black rounded-md focus:ring-black w-full sm:text-sm"
+              v-model="form.nota" rows="3" cols="30" />
           </div>
         </form>
+        <div v-if="isEditing == true">
+          <hr class="my-4">
+          <form @submit.prevent="uploadFile" enctype="multipart/form-data">
+            <div class="gap-4 grid grid-cols-1 mt-5 mb-2">
+              <div>
+                <label for="task-title" class="block font-medium text-gray-700 text-sm">Muestra del trabajo
+                  realizado</label>
+                <input id="img_ref" type="file" @change="onFileChange('img_ref', $event)" class="block mt-1 w-full"
+                  autocomplete="img_ref" />
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div>
+        <div class="flex justify-between items-center col-span-full mt-4">
+          <button type="submit" class="ms-4 pi pi-upload" :class="{
+            'opacity-25': evidenciaForm.processing || form.processing,
+          }" :disabled="evidenciaForm.processing || form.processing">
+          </button>
+
+          <div class="flex justify-end">
+            <button type="button" @click="closeModal"
+              class="bg-gray-300 hover:bg-gray-400 mr-2 px-4 py-2 rounded-md text-gray-700">Cancelar</button>
+            <button type="submit" class="bg-black hover:bg-gray-800 px-4 py-2 rounded-md text-white"
+              :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Guardar</button>
+          </div>
+          
+        </div>
+
+        <div class="gap-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4">
+          <div v-for="evidencia in evidencias" class="bg-slate-100 w-60 text-center card">
+            <Image :src="evidencia.img_ref" alt="Image" width="250" preview />
+            <!-- <img :src="evidencia" alt="" srcset=""> -->
+            <a class="text-2xl text-red-500 hover:text-red-700 cursor-pointer pi pi-trash"
+              @click="deleteEvidencia(evidencia.id)"></a>
+          </div>
+
+        </div>
       </div>
     </Modalv2>
 
