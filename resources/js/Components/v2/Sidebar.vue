@@ -421,7 +421,7 @@ export default {
                             KPI's
                             </Link>
                         </li>
-                        <li>
+                        <li v-if="$page.props.auth.user.roles.includes('admin') || $page.props.auth.user.roles.includes('superadmin')">
                             <a href="#"
                                 class="group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold"
                                 :class="getActiveClasses('rolesypermisos')"
