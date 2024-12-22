@@ -94,38 +94,37 @@ const onSort = (event) => {
     <Layout :titulo="title" :subTitulo="subTitle">
 
         <Head title="Assessment" />
-        <div class="overflow-hidden sm:rounded-lg">
-            <div class="breadcrumbsTitulo px-1">
-                <h3>Evaluaciones</h3>
+        <div class="sm:rounded-lg overflow-hidden">
+            <div class="px-3 breadcrumbsTitulo">
+                <h3 class="font-semibold text-xl">Evaluaciones</h3>
             </div>
-            <div class="breadcrumbs flex">
-                <Link :href="route('dashboard')" class="px-1">
-                <h3>Home -</h3>
-                </Link>
-                <Link href="#" class="px-1">
-                <h3>Assessment -</h3>
-                </Link>
-                <Link :href="route('evaluacion.index')" class="active">
-                <h3>Evaluaciones</h3>
+            <div class="flex items-center mt-2 breadcrumbs">
+                <Link href="#" class="px-3">
+                <h3>Assessment</h3>
                 </Link>
             </div>
         </div>
 
         <div class="py-2">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+            <div class="bg-white overflow-hidden">
                 <div>
                     <div v-if="$page.props.flash.error"
-                        class="py-1 px-2 alert bg-red-200 alert-dismissible w-full text-center font-semibold">
+                        class="bg-red-200 w-full font-semibold text-center alert alert-dismissible">
                         {{ $page.props.flash.error }}
-                        <button type="button" class="close float-right gap-2" @click="$page.props.flash.error = null">
+                        <button type="button" class="float-right gap-2 close" @click="$page.props.flash.error = null">
                             <span aria-hidden="true"><i class="pi pi-times"></i></span>
                         </button>
                     </div>
-                    <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
-                        <PrimaryButton :href="route('evaluacion.create')" class="m-4 pi pi-plus"></PrimaryButton>
+
+
+
+                    <div class="flex justify-end bg-white">
+                        <PrimaryButton :href="route('evaluacion.create')" class="bg-black hover:bg-gray-800">
+                            <i class="pi pi-plus" style="margin-right: 10px; font-size: 1rem"></i> Nueva evaluacion
+                        </PrimaryButton>
                     </div>
-                    <div class="px-4 py-2 bg-white border-b border-gray-200">
-                        <div class="container mx-auto overflow-x-auto">
+                    <div class="border-gray-200 bg-white mt-7">
+                        <div class="mx-auto overflow-x-auto">
                             <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
                             <DataTable :value="evaluaciones" paginator :rows="rows" :totalRecords="totalRecords"
                                 :lazy="true" :first="first" @page="onPage" @sort="onSort"
@@ -133,7 +132,7 @@ const onSort = (event) => {
                                 :globalFilterFields="[
                                     'id'
                                 ]" :sortField="sortField" :sortOrder="sortOrder"
-                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+                                class="p-datatable-gridlines p-datatable-sm p-datatable-striped">
                                 <template #empty> No data found. </template>
                                 <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
                                     sortable></Column>
@@ -154,13 +153,13 @@ const onSort = (event) => {
                                     <template #body="slotProps" class="justify-center">
                                         <PrimaryButton
                                             v-if="slotProps.data.seccion_completa !== slotProps.data.seccion_total"
-                                            class="m-2 pi pi-file-edit" :href="route(
+                                            class="bg-black m-2 pi pi-file-edit" :href="route(
                                                 'evaluacion.select',
                                                 slotProps.data.id
                                             )">
                                         </PrimaryButton>
 
-                                        <PrimaryButton class="m-2 pi pi-chart-scatter" :href="route(
+                                        <PrimaryButton class="bg-black m-2 pi pi-chart-scatter" :href="route(
                                             'evaluacion.details',
                                             slotProps.data.id
                                         )">

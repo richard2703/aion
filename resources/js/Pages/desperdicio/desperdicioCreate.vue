@@ -103,11 +103,11 @@ const showTooltipDetectabilidad = ref(false);
 
             <div class="flex items-center gap-2 breadcrumbs">
                 <Link :href="route('desperdicio.index')" class="px-1">
-                <h3>Desperdicios</h3>
+                    <h3>Desperdicios</h3>
                 </Link>
                 <i class="pi-angle-right pi" style="font-size: 1rem"></i>
                 <Link class="active">
-                <h3>Nuevo</h3>
+                 <h3>Nuevo</h3>
                 </Link>
             </div>
         </div>

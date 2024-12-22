@@ -52,27 +52,22 @@ function setClass(nota) {
         <Head title="Assessment" />
         <div class="sm:rounded-lg overflow-hidden">
             <div class="px-1 breadcrumbsTitulo">
-                <h3>RESULTADOS DE AUTOEVALUACIÓN</h3>
+                <h3 class="font-semibold text-xl">RESULTADOS DE AUTOEVALUACIÓN</h3>
             </div>
-            <div class="flex breadcrumbs">
-                <Link :href="route('dashboard')" class="px-1">
-                <h3>Home -</h3>
-                </Link>
-                <Link href="#" class="px-1">
-                <h3>Assessment -</h3>
-                </Link>
+            <div class="flex items-center mt-1 mb-5 breadcrumbs">
                 <Link :href="route('evaluacion.index')" class="px-1">
-                <h3>Evaluaciones -</h3>
+                   <h3>Evaluaciones</h3>
                 </Link>
+                <i class="pi-angle-right mx-2 pi" style="font-size: 1rem"></i>
                 <Link href="#" class="active">
-                <h3>Benchmark</h3>
+                    <h3>Benchmark</h3>
                 </Link>
             </div>
         </div>
 
         <div class="py-2">
-            <div class="bg-white shadow-xl sm:rounded-lg overflow-hidden">
-                <div class="border-gray-200 bg-white p-6 border-b">
+            <div class="bg-white sm:rounded-lg overflow-hidden">
+                <div class="border-gray-200 bg-white">
 
                     <!-- R1 -->
                     <div class="gap-2 grid grid-cols-3 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
