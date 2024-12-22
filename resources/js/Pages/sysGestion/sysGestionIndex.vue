@@ -1,11 +1,12 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import axios from "axios";
 import Layout from "@/Layouts/Layout2.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import AccionIndex from "@/Pages/sysGestion/Partials/Accion/AccionIndex.vue";
 import KpiIndex from "@/Pages/sysGestion/Partials/Kpis/KpiIndex.vue";
+import PilaresSelect from "@/Components/v2/PilaresSelect.vue";
 
 const props = defineProps({
     user: Object,
@@ -25,6 +26,7 @@ const setActiveTab = (tab) => {
 const title = "sysGestion";
 const subTitle = "pdca";
 const usuario = ref(props.user);
+const selectedPilar = ref(usuario.value.area_id);
 const areas = ref(props.areas);
 const departamentos = ref([]);
 const showCorrectivas = ref(false);
@@ -41,8 +43,18 @@ const form = useForm({
 
 onMounted(() => {
     getAreas();
-    getDepartamentos(usuario.value.area_id);
-    getProcesos()
+    getDepartamentos(usuario.value.area_id).then(() => {
+        getProcesos();
+    });
+});
+
+
+watch(() => selectedPilar.value, (newVal, oldVal) => {
+    getAreas();
+    form.area_id = newVal;
+    getDepartamentos(newVal).then(() => {
+        getProcesos();
+    });
 });
 
 async function getAreas() {
@@ -59,6 +71,10 @@ async function getDepartamentos(userArea) {
         .get(route("departamentos.byArea", userArea))
         .then((response) => {
             departamentos.value = response.data.departamentos
+            let departamentoIncluded = departamentos.value.find(dep => dep.id == usuario.departamento_id)
+            if (!departamentoIncluded) {
+                form.departamento_id = departamentos.value[0].id
+            }
         })
         .catch((error) => {
             console.log(error);
@@ -88,12 +104,17 @@ async function getProcesos() {
             console.log(error);
         });
 }
+
+const onSelectedPilar = (pilarID) => {
+    selectedPilar.value = pilarID;
+};
 </script>
 
 <template>
     <Layout :titulo="title" :subTitulo="subTitle">
-        <div class="p-5">
+        <PilaresSelect :currentPilarID="selectedPilar" :onSelectedPilar="onSelectedPilar"></PilaresSelect>
 
+        <div class="p-5">
             <div class="block md:flex justify-between items-center content-center">
                 <!-- Sub Header -->
                 <div class="sm:rounded-lg overflow-hidden">
@@ -108,7 +129,6 @@ async function getProcesos() {
                         </Link>
                     </div>
                 </div>
-
 
                 <!-- Select Flujo de valor -->
                 <div class="my-10 md:mt-0">

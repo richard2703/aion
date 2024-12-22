@@ -2,7 +2,7 @@
 import { Head, useForm, Link } from "@inertiajs/vue3";
 import Layout from "@/Layouts/Layout2.vue";
 import Modalv2 from "@/Components/v2/modal-v2.vue";
-import PilaresSelect from "@/Components/PilaresSelect.vue";
+import PilaresSelect from "@/Components/v2/PilaresSelect.vue";
 import { onMounted, ref } from "vue";
 import axios from "axios";
 import PrimaryButton from "@/Components/PrimaryButton.vue";

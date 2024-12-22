@@ -11,7 +11,7 @@ import Tab from 'primevue/tab';
 import TabPanels from 'primevue/tabpanels';
 import TabPanel from 'primevue/tabpanel';
 import ContenidoPanel from "./Partials/TabPanel/ContenidoPanel.vue";
-import PilaresSelect from "@/Components/PilaresSelect.vue";
+import PilaresSelect from "@/Components/v2/PilaresSelect.vue";
 
 
 const openFilter = () => {

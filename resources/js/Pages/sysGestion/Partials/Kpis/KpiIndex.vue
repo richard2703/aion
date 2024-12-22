@@ -59,7 +59,8 @@ const getKpis = async () => {
                     getOneKpi(activeTab.value);
                 }
             } else {
-                activeTab.value = '1';
+                activeTab.value = 1;
+                getOneKpi(activeTab.value);
             }
         })
         .catch((error) => {

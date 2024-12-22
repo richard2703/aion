@@ -220,17 +220,6 @@ export default {
                 </div>
                 <main>
                     <div>
-                        <div class="border-gray-200 p-4 pl-10 border-b-[1px]">
-                            <div class="w-auto overflow-x-scroll">
-                                <div class="flex gap-5">
-                                    <TabItem text="Gente y cultura" icon="pi pi-users" iconColor="orange" />
-                                    <TabItem text="T.I" icon="pi pi-wifi" iconColor="orange" />
-                                    <TabItem text="Ventas" icon="pi pi-chart-line" iconColor="orange" />
-                                    <TabItem text="Operaciones" icon="pi pi-cog" iconColor="orange" />
-                                    <TabItem text="Administracion" icon="pi pi-dollar" iconColor="orange" />
-                                </div>
-                            </div>
-                        </div>
                         <!-- Your content -->
                         <div class="p-6">
                             <slot></slot>

@@ -80,6 +80,7 @@ watch(
 watch(() => props.area, (newVal, oldVal) => {
     area.value = newVal;
     getMinutas();
+    getDepartamentos();
 });
 
 async function getMinutas(page = 1, rowsPerPage = rows.value, filter = "", sortField = "id", sortOrder = -1) {
@@ -113,8 +114,10 @@ const getAreas = async () => {
 
 const getDepartamentos = async () => {
     try {
+        console.log('Departamentos area', area.value.id);
         const response = await axios.get(route("departamentos.byArea", area.value.id));
         departamentos.value = response.data.departamentos;
+        console.log('Departamentos', response.data.departamentos);
 
     } catch (error) {
         console.error(error);

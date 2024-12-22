@@ -10,7 +10,7 @@ import InputText from "primevue/inputtext";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import InputLabel from "@/Components/InputLabel.vue";
-import PilaresSelect from '@/Components/PilaresSelect.vue';
+import PilaresSelect from '@/Components/v2/PilaresSelect.vue';
 
 const props = defineProps({
     pilar: Object,
