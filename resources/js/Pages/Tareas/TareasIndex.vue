@@ -263,14 +263,15 @@ const closeModalTaks = () => {
   <Layout :titulo="title">
 
     <Head title="Tareas" />
+    
+    <PilaresSelect :currentPilarID="selectedPilar" :onSelectedPilar="onSelectedPilar"></PilaresSelect>
 
     <div class="pl-5 sm:rounded-lg overflow-hidden">
+
       <!-- Título -->
       <div class="breadcrumbsTitulo">
         <h3 class="font-semibold text-xl">Tareas</h3>
       </div>
-
-      <PilaresSelect :currentPilarID="selectedPilar" :onSelectedPilar="onSelectedPilar"></PilaresSelect>
 
 
       <!-- Componente de Calendario y Lista de Reuniones -->
@@ -463,26 +464,26 @@ const closeModalTaks = () => {
       <div v-if="isEditing == true">
         <hr class="my-4">
         <form @submit.prevent="uploadFile" enctype="multipart/form-data">
-          <div class="grid grid-cols-1 gap-4 mt-5 mb-2">
+          <div class="gap-4 grid grid-cols-1 mt-5 mb-2">
             <div>
               <label for="task-title" class="block font-medium text-gray-700 text-sm">Muestra del trabajo
                 realizado</label>
-              <input id="img_ref" type="file" @change="onFileChange('img_ref', $event)" class="mt-1 block w-full"
+              <input id="img_ref" type="file" @change="onFileChange('img_ref', $event)" class="block mt-1 w-full"
                 autocomplete="img_ref" />
             </div>
 
-            <div class="col-span-full flex items-center justify-end mt-4">
+            <div class="flex justify-end items-center col-span-full mt-4">
               <button type="submit" class="ms-4 pi pi-upload" :class="{
                 'opacity-25': evidenciaForm.processing || form.processing,
               }" :disabled="evidenciaForm.processing || form.processing">
               </button>
             </div>
             <div
-              class="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
-              <div v-for="evidencia in evidencias" class="card w-60 bg-slate-100 text-center">
+              class="gap-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4">
+              <div v-for="evidencia in evidencias" class="bg-slate-100 w-60 text-center card">
                 <Image :src="evidencia.img_ref" alt="Image" width="250" preview />
                 <!-- <img :src="evidencia" alt="" srcset=""> -->
-                <a class="pi pi-trash text-red-500 cursor-pointer hover:text-red-700 text-2xl"
+                <a class="text-2xl text-red-500 hover:text-red-700 cursor-pointer pi pi-trash"
                   @click="deleteEvidencia(evidencia.id)"></a>
               </div>
 

@@ -23,7 +23,7 @@ export default {
 </script>
 
 <template>
-    <div class="border-gray-200 pb-5 border-b-[1px]">
+    <div class="border-gray-200 pb-4 border-b-[1px]">
         <div class="w-auto overflow-x-scroll">
             <div class="flex gap-5">
                 <TabItem :isActive="currentPilarID == 1" :onClick="onClick(1)" text="Gente y cultura" icon="pi pi-users"  iconColor="orange" />

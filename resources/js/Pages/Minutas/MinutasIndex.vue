@@ -91,13 +91,13 @@ const onSelectedPilar = (pilarID) => {
         <div class="py-2">
             <div class="bg-white overflow-hidden">
                 <div class="border-gray-200 bg-white">
-                    <h3 class="px-4 font-semibold text-xl">Minutas</h3>
                     <div class="mx-auto overflow-x-auto">
                         <div class="card">
                             <!-- Filtre input -->
-                            <div class="block md:flex justify-between items-end content-center">
+                            <div class="block md:flex justify-between items-center content-center py-7">
+                                <h3 class="mb-5 md:mb-0 font-semibold text-[1.4rem]">Minutas</h3>
                                 <Link  :href="route('minutas.create')">
-                                    <PrimaryButton class="bg-black m-4 p-[100px]" label="Nueva Minuta">
+                                    <PrimaryButton class="bg-black p-[100px]" label="Nueva Minuta">
                                         <i class="mr-2 pi pi-plus"></i>
                                     </PrimaryButton>
                                 </Link>

@@ -222,16 +222,16 @@ const getTiposMinuta = async () => {
     <div class="mt-4 overflow-x-auto">
         <div class="flex gap-4">
             <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3 px-2 py-2" />
-            <PrimaryButton class="float-right border-[#E4E4E7] border-1 hover:bg-black mb-4 border-solid text-[#9AA0A7] pi pi-filter" @click="openFilter">
+            <PrimaryButton class="float-right border-[#E4E4E7] border-1 bg-black hover:bg-black mb-4 border-solid text-[#9AA0A7] pi pi-filter" @click="openFilter">
             </PrimaryButton>
-            <PrimaryButton v-if="customFilter" class="float-right mb-4 pi pi-times" @click="clearFilter">
-            </PrimaryButton>
+            <!-- <PrimaryButton v-if="customFilter" class="float-right bg-black mb-4 pi pi-times" @click="clearFilter">
+            </PrimaryButton> -->
         </div>
 
         <!-- formulario de filtrado de tareas -->
         <div v-if="customFilter" class="">
             <form @submit.prevent="filterTable()">
-                <div class="gap-2 border-gray-200 grid grid-cols-4 m-4 border rounded-lg">
+                <div class="gap-2 border-gray-200 grid grid-cols-4 my-4 border rounded-lg">
                     <div class="m-4">
                         <InputLabel for="departamento_id" value="Flujo de valor: " />
                         <select ref="departamento_select"
