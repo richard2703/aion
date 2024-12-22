@@ -68,21 +68,21 @@ const submit = () => {
 // Funciones para añadir y eliminar campos dinámicos
 
 const addAviso = () => {
-    if (!newAviso.value || newAviso.value.trim() != "") {
+    if (newAviso.value && newAviso.value.trim().length > 0) {
         avisos.value.push({ value: newAviso.value.trim() });
         newAviso.value = ""
     }
 };
 
 const addHighlight = () => {
-    if (!newHighlight.value || newHighlight.value.trim() != "") {
+    if (newHighlight.value && newHighlight.value.trim().length > 0) {
         highlights.value.push({ value: newHighlight.value.trim() });
         newHighlight.value = "";
     }
 };
 
 const addLowlight = () => {
-    if (!newLowLight.value || newLowLight.value.trim() != "") {
+    if (newLowLight.value && newLowLight.value.trim().length > 0) {
         lowlights.value.push({ value: newLowLight.value.trim() });
         newLowLight.value = "";
     }
