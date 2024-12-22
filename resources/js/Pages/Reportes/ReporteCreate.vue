@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import Layout from "@/Layouts/Layout2.vue";
 import InputLabel from "@/Components/InputLabel.vue";
@@ -12,39 +12,83 @@ const props = defineProps({
 });
 
 const departamentos = ref(props.departamentos);
-const reportCards = ref([
-    {
-        title: "Highlight",
-        items: [
-            { id: 1, name: "Nombre de nuevo Highlight" },
-            { id: 2, name: "Nombre de nuevo Highlight" },
-            { id: 3, name: "Nombre de nuevo Highlight" },
-            { id: 4, name: "Nombre de nuevo Highlight" },
-        ],
-    },
-    {
-        title: "Avisos",
-        items: [
-            { id: 1, name: "Aviso importante 1" },
-            { id: 2, name: "Aviso importante 2" },
-        ],
-    },
-    {
-        title: "Lowlights",
-        items: [
-            { id: 1, name: "Problema 1" },
-            { id: 2, name: "Problema 2" },
-        ],
-    },
-]);
 
-const addItem = (cardIndex) => {
-    reportCards.value[cardIndex].items.push({ id: Date.now(), name: "Nuevo item" });
+// Estado para los campos dinámicos
+const newAviso = ref("");
+const newHighlight = ref("");
+const newLowLight = ref("");
+
+const avisos = ref([]);
+const highlights = ref([]);
+const lowlights = ref([]);
+const errors = ref([]);
+
+async function getDepartamentos() {
+    await axios
+        .get("/api/getFlujo")
+        .then((response) => {
+            departamentos.value = response.data;
+            // console.log({ departamentos: departamentos.value });
+
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+const form = useForm({
+    nombre: "",
+    departamento_id: "",
+    avisos: [],
+    highlights: [],
+    lowlights: [],
+});
+
+const submit = () => {
+    // Asignar los valores de highlights y lowlights al formulario antes de enviarlo
+    form.avisos = avisos.value.map(a => a.value);
+    form.highlights = highlights.value.map(h => h.value);
+    form.lowlights = lowlights.value.map(l => l.value);
+
+    form.post(route("reporte.store"), {
+        onError: (errors) => {
+            console.log(errors);
+            showToast(errors.message, "error");
+        },
+        // onFinish: () => {
+        //     if (!errors) {
+        //         showToast("El registro ha sido creado", "success");
+
+        //     }
+        // }
+        onFinish: () => form.reset(),
+    });
 };
 
-const removeItem = (cardIndex, itemIndex) => {
-    reportCards.value[cardIndex].items.splice(itemIndex, 1);
+// Funciones para añadir y eliminar campos dinámicos
+
+const addAviso = () => {
+    avisos.value.push({ value: newAviso.value });
+    newAviso.value = ""
 };
+
+const addHighlight = () => {
+    highlights.value.push({ value: newHighlight.value });
+    newHighlight.value = "";
+};
+
+const addLowlight = () => {
+    lowlights.value.push({ value: newLowLight.value });
+    newLowLight.value = "";
+}
+
+const removeHighlight = (index) => highlights.value.splice(index, 1);
+const removeAviso = (index) => avisos.value.splice(index, 1);
+const removeLowlight = (index) => lowlights.value.splice(index, 1);
+
+onMounted(() => {
+    getDepartamentos();
+});
 </script>
 
 <template>
@@ -75,33 +119,85 @@ const removeItem = (cardIndex, itemIndex) => {
                         <option value="" disabled selected>
                             Seleccione un flujo de valor
                         </option>
-                        <option>
-                            nombre de flujo de valor
+                        <option v-for="departamento in departamentos" :key="departamento.id"
+                        :value="departamento.departamento.id" >
+                        {{ departamento.departamento.nombre }}
                         </option>
                     </select>
                 </div>
                 <div>
                     <form @submit.prevent="submit">
-                        <div class="gap-8 grid grid-cols-6 grid-rows-5 mt-8">
-                            <div v-for="(card, cardIndex) in reportCards" :key="cardIndex"
-                                class="col-span-6 md:col-span-3">
+                        <div class="gap-8 grid grid-cols-6 mt-8">
+                            <div class="col-span-6 md:col-span-3">
                                 <div class="border-gray-300 p-6 border border-solid rounded-md">
-                                    <b>{{ card.title }}:</b>
+                                    <b>Highlights:</b>
 
                                     <div class="flex items-center gap-8 my-5">
-                                        <input placeholder="Añadir nombre" type="text"
+                                        <TextInput v-model="newHighlight" placeholder="Añadir nombre" type="text"
                                             class="block border-gray-300 shadow-sm mt-1 py-3 focus:border-black rounded-md focus:ring-black w-full text-black sm:text-sm" />
-                                        <PrimaryButton @click="addItem(cardIndex)" class="bg-black hover:bg-gray-800">
+                                        <PrimaryButton type="button" @click="addHighlight" class="bg-black hover:bg-gray-800">
                                             <i class="pi pi-plus" style="font-size: 1rem"></i>
                                         </PrimaryButton>
                                     </div>
 
                                     <ul>
                                         <li class="h-48 min-h-48 overflow-scroll">
-                                            <div v-for="(item, index) in card.items" :key="item.id"
+                                            <div v-for="(highlight, index) in highlights" :key="index"
                                                 class="flex justify-between items-center my-6">
-                                                <p class="text-lg">{{ item.name }}</p>
-                                                <i @click="removeItem(cardIndex, index)"
+                                                <p class="text-lg">{{ highlight.value }}</p>
+                                                <i @click="removeHighlight(index)"
+                                                    class="hover:bg-gray-200 p-3 hover:rounded-lg cursor-pointer pi pi-trash"
+                                                    style="color: red; font-size: 1.3rem"></i>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="col-span-6 md:col-span-3">
+                                <div class="border-gray-300 p-6 border border-solid rounded-md">
+                                    <b>Lowlights:</b>
+
+                                    <div class="flex items-center gap-8 my-5">
+                                        <TextInput v-model="newLowLight" placeholder="Añadir nombre" type="text"
+                                            class="block border-gray-300 shadow-sm mt-1 py-3 focus:border-black rounded-md focus:ring-black w-full text-black sm:text-sm" />
+                                        <PrimaryButton type="button" @click="addLowlight" class="bg-black hover:bg-gray-800">
+                                            <i class="pi pi-plus" style="font-size: 1rem"></i>
+                                        </PrimaryButton>
+                                    </div>
+
+                                    <ul>
+                                        <li class="h-48 min-h-48 overflow-scroll">
+                                            <div v-for="(lowlight, index) in lowlights" :key="index"
+                                                class="flex justify-between items-center my-6">
+                                                <p class="text-lg">{{ lowlight.value }}</p>
+                                                <i @click="removeLowlight(index)"
+                                                    class="hover:bg-gray-200 p-3 hover:rounded-lg cursor-pointer pi pi-trash"
+                                                    style="color: red; font-size: 1.3rem"></i>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="col-span-6 md:col-span-3">
+                                <div class="border-gray-300 p-6 border border-solid rounded-md">
+                                    <b>Avisos:</b>
+
+                                    <div class="flex items-center gap-8 my-5">
+                                        <TextInput v-model="newAviso" placeholder="Añadir nombre" type="text"
+                                            class="block border-gray-300 shadow-sm mt-1 py-3 focus:border-black rounded-md focus:ring-black w-full text-black sm:text-sm" />
+                                        <PrimaryButton type="button" @click="addAviso" class="bg-black hover:bg-gray-800">
+                                            <i class="pi pi-plus" style="font-size: 1rem"></i>
+                                        </PrimaryButton>
+                                    </div>
+
+                                    <ul>
+                                        <li class="h-48 min-h-48 overflow-scroll">
+                                            <div v-for="(aviso, index) in avisos" :key="index"
+                                                class="flex justify-between items-center my-6">
+                                                <p class="text-lg">{{ aviso.value }}</p>
+                                                <i @click="removeAviso(index)"
                                                     class="hover:bg-gray-200 p-3 hover:rounded-lg cursor-pointer pi pi-trash"
                                                     style="color: red; font-size: 1.3rem"></i>
                                             </div>
@@ -110,6 +206,10 @@ const removeItem = (cardIndex, itemIndex) => {
                                 </div>
                             </div>
                         </div>
+
+                        <PrimaryButton type="submit" @click="addLowlight" class="bg-black hover:bg-gray-800 mt-5">
+                            Guardar
+                        </PrimaryButton>
                     </form>
                 </div>
             </div>
