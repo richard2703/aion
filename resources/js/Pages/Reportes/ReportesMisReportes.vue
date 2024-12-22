@@ -66,29 +66,27 @@ watch(globalFilter, (newValue) => {
         <Head title="semanales" />
         <div class="sm:rounded-lg overflow-hidden">
             <div class="px-1 breadcrumbsTitulo">
-                <h3>Mis Reportes</h3>
+                <h3 class="mb-2 font-semibold text-xl">Mis Reportes</h3>
             </div>
-            <div class="flex breadcrumbs">
-                <Link :href="route('dashboard')" class="px-1">
-                <h3>Home -</h3>
-                </Link>
+            <div class="flex items-center breadcrumbs">
                 <Link :href="route('reporte.index')" class="px-1">
-                <h3>Reportes -</h3>
+                 <h3>Reportes</h3>
                 </Link>
+                <i class="pi-angle-right mx-2 pi" style="font-size: 1rem"></i>
                 <Link class="active">
-                <h3>Mis Reportes</h3>
+                   <b>Mis Reportes</b>
                 </Link>
             </div>
         </div>
 
-        <div class="py-2">
-            <div class="bg-white shadow-xl sm:rounded-lg overflow-hidden">
+        <div>
+            <div class="bg-white overflow-hidden">
                 <div>
-                    <div class="flex justify-end border-gray-200 bg-white px-4 py-2 border-b">
-                        <PrimaryButton :href="route('reporte.create')" class="m-4 pi pi-plus"></PrimaryButton>
+                    <div class="flex justify-end">
+                            <PrimaryButton  :href="route('reporte.create')" class="bg-black m-4 pi pi-plus"></PrimaryButton>
                     </div>
-                    <div class="border-gray-200 bg-white px-4 py-2 border-b">
-                        <div class="mx-auto container">
+                    <div>
+                        <div class="mx-auto">
                             <!-- <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" /> -->
 
                             <DataTable :value="reportes" paginator :rows="rows" :totalRecords="totalRecords"
@@ -112,7 +110,7 @@ watch(globalFilter, (newValue) => {
 
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">
-                                        <PrimaryButton class="me-2 pi pi-file-edit" :href="route(
+                                        <PrimaryButton class="bg-black me-2 pi pi-file-edit" :href="route(
                                             'misreporte.edit',
                                             slotProps.data.id
                                         )">

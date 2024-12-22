@@ -207,7 +207,7 @@ onMounted(() => {
                             </div>
                         </div>
 
-                        <PrimaryButton type="submit" @click="addLowlight" class="bg-black hover:bg-gray-800 mt-5">
+                        <PrimaryButton type="submit" @click="addLowlight" class="float-end bg-black hover:bg-gray-800 mt-5">
                             Guardar
                         </PrimaryButton>
                     </form>

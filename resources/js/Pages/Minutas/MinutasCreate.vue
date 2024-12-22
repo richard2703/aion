@@ -143,17 +143,15 @@ const search = (event) => {
                 <h3 class="font-semibold text-xl">Nueva Minuta</h3>
             </div>
 
-    
-
-            <div class="flex breadcrumbs">
+            <div class="flex items-center mt-2 breadcrumbs">
                 <Link :href="route('dashboard')">
                 </Link>
                 <Link :href="route('minutas.index')">
-                <h3>Minutas -</h3>
+                <h3>Minutas</h3>
                 </Link>
-                <i class="pi-angle-right pi" style="font-size: 1rem"></i>
+                <i class="pi-angle-right mx-2 pi" style="font-size: 1rem"></i>
                 <Link :href="route('minutas.create')">
-                <h3>Nuevo</h3>
+                <b>Nuevo</b>
                 </Link>
             </div>
         </div>
