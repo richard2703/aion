@@ -64,7 +64,7 @@ const deleteTipo = async (id) => {
 
 <template>
     <div class="py-2">
-        <div class="bg-white  sm:rounded-lg">
+        <div class="bg-white sm:rounded-lg">
             <div class="px-4">
                 <div class="py-2">
                     <div class="flex justify-end">

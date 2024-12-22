@@ -99,23 +99,23 @@ export default {
                 <div class="fixed inset-0 bg-gray-900/80" aria-hidden="true"></div>
 
                 <div class="fixed inset-0 flex">
-                    <div class="relative mr-16 flex w-full max-w-xs flex-1">
+                    <div class="relative flex flex-1 mr-16 w-full max-w-xs">
 
-                        <div class="absolute left-full top-0 flex w-16 justify-center pt-5">
+                        <div class="top-0 left-full absolute flex justify-center pt-5 w-16">
                             <button @click="toggleSidebar()" type="button" class="-m-2.5 p-2.5">
                                 <span class="sr-only">Close sidebar</span>
-                                <svg class="size-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                <svg class="text-white size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                     stroke="currentColor" aria-hidden="true" data-slot="icon">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
                                 </svg>
                             </button>
                         </div>
                         <div
-                            class="flex grow flex-col gap-y-5 overflow-y-auto bg-[#17171E] px-6 pb-4 ring-1 ring-white/10">
+                            class="flex flex-col gap-y-5 bg-[#17171E] px-6 pb-4 ring-1 ring-white/10 overflow-y-auto grow">
                             <!-- Logo AION -->
                             <Link :href="'/'">
-                            <div class="mt-5 flex h-16 shrink-0 items-center">
-                                <img class="h-14 w-auto" src="https://i.ibb.co/rs0PkpC/logoAion.png" alt="Your Company">
+                            <div class="flex items-center mt-5 h-16 shrink-0">
+                                <img class="w-auto h-14" src="https://i.ibb.co/rs0PkpC/logoAion.png" alt="Your Company">
                             </div>
                             </Link>
                             <Sidebar :title="titulo" :subTitle="subTitulo"></Sidebar>
@@ -125,12 +125,12 @@ export default {
             </div>
 
             <!-- Static sidebar for desktop -->
-            <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
+            <div class="lg:z-50 lg:fixed lg:inset-y-0 lg:flex lg:flex-col hidden lg:w-72">
                 <!-- Sidebar component, swap this element with another sidebar if you like -->
-                <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-[#17171E] px-6 pb-4">
+                <div class="flex flex-col gap-y-5 bg-[#17171E] px-6 pb-4 overflow-y-auto grow">
                     <Link :href="'/'">
-                    <div class="mt-5 flex h-16 shrink-0 items-center">
-                        <img class="h-14 w-auto" src="https://i.ibb.co/rs0PkpC/logoAion.png" alt="Your Company">
+                    <div class="flex items-center mt-5 h-16 shrink-0">
+                        <img class="w-auto h-14" src="https://i.ibb.co/rs0PkpC/logoAion.png" alt="Your Company">
                     </div>
                     </Link>
                     <Sidebar :title="titulo" :subTitle="subTitulo"></Sidebar>
@@ -140,8 +140,8 @@ export default {
             <!-- Header  -->
             <div class="lg:pl-72">
                 <div
-                    class="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
-                    <button @click="toggleSidebar()" type="button" class="-m-2.5 p-2.5 text-gray-700 lg:hidden">
+                    class="top-0 z-40 sticky flex items-center gap-x-4 sm:gap-x-6 border-gray-200 bg-white shadow-sm px-4 sm:px-6 lg:px-8 border-b h-16 shrink-0">
+                    <button @click="toggleSidebar()" type="button" class="lg:hidden -m-2.5 p-2.5 text-gray-700">
                         <span class="sr-only">Open sidebar</span>
                         <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                             aria-hidden="true" data-slot="icon">
@@ -151,8 +151,8 @@ export default {
                     </button>
 
                     <!-- Separator -->
-                    <div class="h-6 w-px bg-gray-900/10 lg:hidden" aria-hidden="true"></div>
-                    <div class="flex justify-between flex-1 gap-x-4 self-stretch lg:gap-x-6">
+                    <div class="lg:hidden bg-gray-900/10 w-px h-6" aria-hidden="true"></div>
+                    <div class="flex flex-1 justify-between gap-x-4 lg:gap-x-6 self-stretch">
 
                         <button id="user-notifications-button" aria-expanded="false" aria-haspopup="true"
                             @click="toggleNotifications()" type="button"
@@ -165,17 +165,16 @@ export default {
                             </svg>
                         </button>
 
-                        <div id="user-notifications"
-                            class="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 hidden"
+                        <div id="user-notifications" class="top-[45px] left-[33px] z-10 absolute hidden bg-white shadow-lg mt-2.5 py-2 rounded-md ring-1 ring-gray-900/5 w-auto md:w-[180px] origin-top-right"
                             role="menu" aria-orientation="vertical" aria-labelledby="user-notifications-button">
-                            <div class="block flex justify-end">
-                                <Link @click="markAsRead" class="block px-3 py-2 text-sm text-gray-900" role="menuitem">
+                            <div class="grid">
+                                <Link @click="markAsRead" class="px-3 py-2 text-gray-900 text-sm" role="menuitem">
                                 Marcar como leido</Link>
-                                <Link @click="deleteReaded" class="block px-3 py-2 text-sm text-gray-900"
+                                <Link @click="deleteReaded" class="px-3 py-2 text-gray-900 text-sm"
                                     role="menuitem">Borrar leidos</Link>
                             </div>
                             <div v-for="notification in userNotifications">
-                                <Link :href="notification.link" class="block px-3 py-2 text-sm text-gray-900"
+                                <Link :href="notification.link" class="px-3 py-2 text-gray-900 text-sm"
                                     role="menuitem">{{ notification.titulo }}
                                 <div v-if="notification.readed == 1">&nbsp;&nbsp;&nbsp; ✅</div>
                                 </Link>
@@ -184,18 +183,18 @@ export default {
 
                         <div class="flex items-center gap-x-4 lg:gap-x-6">
                             <!-- Separator -->
-                            <div class="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-900/10" aria-hidden="true"></div>
+                            <div class="lg:block hidden lg:bg-gray-900/10 lg:w-px lg:h-6" aria-hidden="true"></div>
                             <!-- Dropdown component-->
                             <div class="relative">
-                                <button @click="toggleMenu()" type="button" class="-m-1.5 flex items-center p-1.5"
+                                <button @click="toggleMenu()" type="button" class="flex items-center -m-1.5 p-1.5"
                                     id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                     <span class="sr-only">Open user menu</span>
-                                    <img class="w-8 h-8 rounded-full bg-gray-50"
+                                    <img class="bg-gray-50 rounded-full w-8 h-8"
                                         src="https://avatar.iran.liara.run/public" alt="">
-                                    <span class="hidden lg:flex lg:items-center">
-                                        <span class="ml-4 text-sm font-semibold text-gray-900">{{
+                                    <span class="lg:flex lg:items-center hidden">
+                                        <span class="ml-4 font-semibold text-gray-900 text-sm">{{
                                             $page.props.auth.user.user.name }}</span>
-                                        <svg class="ml-2 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor"
+                                        <svg class="ml-2 w-5 h-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor"
                                             aria-hidden="true">
                                             <path fill-rule="evenodd"
                                                 d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
@@ -205,14 +204,14 @@ export default {
                                 </button>
 
                                 <div id="user-menu"
-                                    class="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 hidden"
+                                    class="right-0 z-10 absolute hidden bg-white shadow-lg mt-2.5 py-2 rounded-md ring-1 ring-gray-900/5 w-32 origin-top-right"
                                     role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button">
-                                    <Link href="/user/profile" class="block px-3 py-2 text-sm text-gray-900"
+                                    <Link href="/user/profile" class="block px-3 py-2 text-gray-900 text-sm"
                                         role="menuitem">Perfil</Link>
-                                    <Link href="/tareas/mis-tareas" class="block px-3 py-2 text-sm text-gray-900"
+                                    <Link href="/tareas/mis-tareas" class="block px-3 py-2 text-gray-900 text-sm"
                                         role="menuitem">Mis tareas</Link>
                                     <Link href="/logout" method="post" as="button"
-                                        class="block px-3 py-2 text-sm text-gray-900" role="menuitem">Cerrar sesión
+                                        class="block px-3 py-2 text-gray-900 text-sm" role="menuitem">Cerrar sesión
                                     </Link>
                                 </div>
                             </div>
@@ -221,6 +220,17 @@ export default {
                 </div>
                 <main>
                     <div>
+                        <div class="border-gray-200 p-4 pl-10 border-b-[1px]">
+                            <div class="w-auto overflow-x-scroll">
+                                <div class="flex gap-5">
+                                    <TabItem text="Gente y cultura" icon="pi pi-users" iconColor="orange" />
+                                    <TabItem text="T.I" icon="pi pi-wifi" iconColor="orange" />
+                                    <TabItem text="Ventas" icon="pi pi-chart-line" iconColor="orange" />
+                                    <TabItem text="Operaciones" icon="pi pi-cog" iconColor="orange" />
+                                    <TabItem text="Administracion" icon="pi pi-dollar" iconColor="orange" />
+                                </div>
+                            </div>
+                        </div>
                         <!-- Your content -->
                         <div class="p-6">
                             <slot></slot>

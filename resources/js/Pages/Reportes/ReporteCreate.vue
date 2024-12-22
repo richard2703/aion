@@ -12,179 +12,105 @@ const props = defineProps({
 });
 
 const departamentos = ref(props.departamentos);
+const reportCards = ref([
+    {
+        title: "Highlight",
+        items: [
+            { id: 1, name: "Nombre de nuevo Highlight" },
+            { id: 2, name: "Nombre de nuevo Highlight" },
+            { id: 3, name: "Nombre de nuevo Highlight" },
+            { id: 4, name: "Nombre de nuevo Highlight" },
+        ],
+    },
+    {
+        title: "Avisos",
+        items: [
+            { id: 1, name: "Aviso importante 1" },
+            { id: 2, name: "Aviso importante 2" },
+        ],
+    },
+    {
+        title: "Lowlights",
+        items: [
+            { id: 1, name: "Problema 1" },
+            { id: 2, name: "Problema 2" },
+        ],
+    },
+]);
 
-// Estado para los campos dinámicos
-const avisos = ref([{ value: "" }]);
-const highlights = ref([{ value: "" }]);
-const lowlights = ref([{ value: "" }]);
-const errors = ref([{ value: "" }]);
-
-async function getDepartamentos() {
-    await axios
-        .get("/api/getFlujo")
-        .then((response) => {
-            departamentos.value = response.data;
-            // console.log({ departamentos: departamentos.value });
-
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-}
-
-const form = useForm({
-    nombre: "",
-    departamento_id: "",
-    avisos: [],
-    highlights: [],
-    lowlights: [],
-});
-
-const submit = () => {
-    // Asignar los valores de highlights y lowlights al formulario antes de enviarlo
-    form.avisos = avisos.value.map(a => a.value);
-    form.highlights = highlights.value.map(h => h.value);
-    form.lowlights = lowlights.value.map(l => l.value);
-
-    form.post(route("reporte.store"), {
-        onError: (errors) => {
-            console.log(errors);
-            showToast(errors.message, "error");
-        },
-        // onFinish: () => {
-        //     if (!errors) {
-        //         showToast("El registro ha sido creado", "success");
-
-        //     }
-        // }
-        onFinish: () => form.reset(),
-    });
+const addItem = (cardIndex) => {
+    reportCards.value[cardIndex].items.push({ id: Date.now(), name: "Nuevo item" });
 };
 
-// Funciones para añadir y eliminar campos dinámicos
-
-const addAviso = () => avisos.value.push({ value: "" });
-const removeAviso = (index) => avisos.value.splice(index, 1);
-
-const addHighlight = () => highlights.value.push({ value: "" });
-const removeHighlight = (index) => highlights.value.splice(index, 1);
-
-const addLowlight = () => lowlights.value.push({ value: "" });
-const removeLowlight = (index) => lowlights.value.splice(index, 1);
-
-getDepartamentos();
+const removeItem = (cardIndex, itemIndex) => {
+    reportCards.value[cardIndex].items.splice(itemIndex, 1);
+};
 </script>
 
 <template>
     <Layout>
 
         <Head title="Usuarios" />
-        <div class="overflow-hidden sm:rounded-lg">
-            <div class="breadcrumbsTitulo px-1">
-                <h3>Nuevo Reporte</h3>
+        <div class="pl-5 overflow-hidden">
+            <div class="breadcrumbsTitulo">
+                <h3 class="font-semibold text-xl">Reportes</h3>
             </div>
-            <div class="breadcrumbs flex">
-                <Link :href="route('dashboard')" class="px-1">
-                <h3>Home -</h3>
-                </Link>
+
+            <div class="flex items-center gap-2 breadcrumbs">
                 <Link :href="route('reporte.index')" class="px-1">
-                <h3>Reportes -</h3>
+                <h3>Lista de reportes</h3>
                 </Link>
+                <i class="pi-angle-right pi" style="font-size: 1rem"></i>
                 <Link class="active">
-                <h3>Nuevo</h3>
+                <b>Nuevo</b>
                 </Link>
             </div>
         </div>
 
-        <div class="py-2">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+        <div class="p-5">
+            <div class="overflow-hidden">
+                <div class="mt-5">
+                    <InputLabel for="departamento_id" value="Flujo de valor: " />
+                    <select class="border-gray-300 focus:border-black rounded-md focus:ring-black w-80 cursor-pointer" required >
+                        <option value="" disabled selected>
+                            Seleccione un flujo de valor
+                        </option>
+                        <option>
+                            nombre de flujo de valor
+                        </option>
+                    </select>
+                </div>
                 <div>
-                    <div class="px-4 my-4 py-2 flex justify-end bg-white border-b border-gray-200"></div>
-                    <div class="px-4 py-2 bg-white border-b border-gray-200">
-                        <div class="container mx-auto">
-                            <form @submit.prevent="submit">
-                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
-                                    <div>
-                                        <InputLabel for="area_id" value="Flujo de valor: " />
-                                        <select ref="select"
-                                            class="mt-1 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                            v-model="form.departamento_id" required>
-                                            <option value="" disabled selected>
-                                                Seleccione una opción
-                                            </option>
-                                            <option v-for="departamento in departamentos" :key="departamento.id"
-                                                :value="departamento.departamento.id">
-                                                {{ departamento.departamento.nombre }}
-                                            </option>
-                                            <!-- <option v-for="departamento in departamentos" :key="departamento.id"
-                                                :value="departamento.id">
-                                                {{ departamento.nombre }}
-                                            </option> -->
-                                        </select>
-                                    </div>
+                    <form @submit.prevent="submit">
+                        <div class="gap-8 grid grid-cols-6 grid-rows-5 mt-8">
+                            <div v-for="(card, cardIndex) in reportCards" :key="cardIndex"
+                                class="col-span-6 md:col-span-3">
+                                <div class="border-gray-300 p-6 border border-solid rounded-md">
+                                    <b>{{ card.title }}:</b>
 
-                                    <!-- <div>
-                                        <InputLabel for="Avisos" value="Avisos:" />
-                                        <TextInput id="aviso" v-model="form.aviso" type="text" class="mt-1 block w-full"
-                                            autocomplete="aviso" />
-                                    </div> -->
-
-
-
-                                    <!-- Campos dinámicos para Highlight -->
-                                    <div class="col-span-full flex items-center mt-4">
-                                        <InputLabel for="Highlight" value="Highlight:" />
-                                    </div>
-                                    <div v-for="(highlight, index) in highlights" :key="index"
-                                        class="col-span-full flex items-center justify-between">
-                                        <TextInput v-model="highlight.value" type="text" class="mt-1 block w-full"
-                                            autocomplete="Highlight" maxlength="250" />
-                                        <button type="button" @click="removeHighlight(index)"
-                                            class="ml-2 text-red-500">Eliminar</button>
-                                    </div>
-                                    <button type="button" @click="addHighlight" class="mt-2 text-blue-500">Añadir
-                                        Highlight</button>
-
-                                    <!-- Campos dinámicos para Lowlight -->
-                                    <div class="col-span-full flex items-center mt-4">
-                                        <InputLabel for="Lowlight" value="Lowlight:" />
-                                    </div>
-                                    <div v-for="(lowlight, index) in lowlights" :key="index"
-                                        class="col-span-full flex items-center justify-between">
-                                        <TextInput v-model="lowlight.value" type="text" class="mt-1 block w-full"
-                                            autocomplete="Lowlight" maxlength="250" />
-                                        <button type="button" @click="removeLowlight(index)"
-                                            class="ml-2 text-red-500">Eliminar</button>
-                                    </div>
-                                    <button type="button" @click="addLowlight" class="mt-2 text-blue-500">Añadir
-                                        Lowlight</button>
-
-                                    <!-- Campos dinámicos para Avisos -->
-                                    <div class="col-span-full flex items-center mt-4">
-                                        <InputLabel for="Avisos" value="Avisos:" />
-                                    </div>
-                                    <div v-for="(aviso, index) in avisos" :key="index"
-                                        class="col-span-full flex items-center justify-between">
-                                        <TextInput v-model="aviso.value" type="text" class="mt-1 block w-full"
-                                            autocomplete="Aviso" />
-                                        <button type="button" @click="removeAviso(index)"
-                                            class="ml-2 text-red-500">Eliminar</button>
-                                    </div>
-                                    <button type="button" @click="addAviso" class="mt-2 text-blue-500">Añadir
-                                        Aviso</button>
-
-
-                                    <div class="col-span-full flex items-center justify-end mt-4">
-                                        <PrimaryButton class="ms-4 pi pi-save" :class="{
-                                            'opacity-25': form.processing,
-                                        }" :disabled="form.processing">
-
+                                    <div class="flex items-center gap-8 my-5">
+                                        <input placeholder="Añadir nombre" type="text"
+                                            class="block border-gray-300 shadow-sm mt-1 py-3 focus:border-black rounded-md focus:ring-black w-full text-black sm:text-sm" />
+                                        <PrimaryButton @click="addItem(cardIndex)" class="bg-black hover:bg-gray-800">
+                                            <i class="pi pi-plus" style="font-size: 1rem"></i>
                                         </PrimaryButton>
                                     </div>
+
+                                    <ul>
+                                        <li class="h-48 min-h-48 overflow-scroll">
+                                            <div v-for="(item, index) in card.items" :key="item.id"
+                                                class="flex justify-between items-center my-6">
+                                                <p class="text-lg">{{ item.name }}</p>
+                                                <i @click="removeItem(cardIndex, index)"
+                                                    class="hover:bg-gray-200 p-3 hover:rounded-lg cursor-pointer pi pi-trash"
+                                                    style="color: red; font-size: 1.3rem"></i>
+                                            </div>
+                                        </li>
+                                    </ul>
                                 </div>
-                            </form>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>

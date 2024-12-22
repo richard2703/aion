@@ -114,7 +114,7 @@ async function getOneKpi(id) {
 
 <template>
     <div class="w-full">
-        <KpiList class="border-b my-4" :kpi="kpi" :updateFlag="updateFlag" @updateKpi="getKpis" />
+        <KpiList :kpi="kpi" :updateFlag="updateFlag" @updateKpi="getKpis" />
         <hr>
         <div class="card">
             <Tabs :value="activeTab">
@@ -125,10 +125,10 @@ async function getOneKpi(id) {
                 </TabList>
                 <TabPanels>
                     <TabPanel v-for="kpi in kpis" :key="kpi.titulo" :value="kpi.id">
-                        <table class="min-w-full border-collapse mb-4">
+                        <table class="border-collapse mb-4 min-w-full">
                             <thead>
                                 <tr>
-                                    <th class="py-2 px-4 border hover:bg-slate-100 cursor-pointer" colspan="2"
+                                    <th class="hover:bg-slate-100 px-4 py-2 border cursor-pointer" colspan="2"
                                         @click="isHistoricosVisible = !isHistoricosVisible">
                                         Historico
                                     </th>
@@ -136,13 +136,13 @@ async function getOneKpi(id) {
                             </thead>
                             <tbody v-if="isHistoricosVisible === true">
                                 <tr>
-                                    <td class="py-2 px-4 border">Valor</td>
-                                    <td class="py-2 px-4 border">Fecha</td>
+                                    <td class="px-4 py-2 border">Valor</td>
+                                    <td class="px-4 py-2 border">Fecha</td>
                                 </tr>
                                 <tr v-for="registro in kpi.registros" :key="registro.id"
                                     class="hover:bg-slate-50 cursor-pointer" @click="openEditModal(registro.id)">
-                                    <td class="py-2 px-4 border">{{ registro.actual }}</td>
-                                    <td class="py-2 px-4 border">{{ formatearFecha(registro.created_at) }}</td>
+                                    <td class="px-4 py-2 border">{{ registro.actual }}</td>
+                                    <td class="px-4 py-2 border">{{ formatearFecha(registro.created_at) }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -157,17 +157,17 @@ async function getOneKpi(id) {
     <Modal :show="isEditModalVidible" maxWidth="lg">
         <template v-slot="">
             <div>
-                <div class="px-4 my-4 py-2 flex justify-center bg-white border-b border-gray-200">
-                    <p class=" text-lg font-medium text-gray-900">{{ formTitle }}</p>
+                <div class="flex justify-center border-gray-200 bg-white my-4 px-4 py-2 border-b">
+                    <p class="font-medium text-gray-900 text-lg">{{ formTitle }}</p>
                 </div>
-                <div class="px-4 py-2 bg-white border-b border-gray-200">
-                    <div class="container mx-auto">
+                <div class="border-gray-200 bg-white px-4 py-2 border-b">
+                    <div class="mx-auto container">
                         <form @submit.prevent="submitEditModal">
-                            <div class=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+                            <div class="gap-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
                                 <div class="my-4">
                                     <InputLabel for="Nuevo Valor" value="Nuevo Valor " />
                                     <TextInput id="objetivo" v-model="formEditModal.actual" type="number" step="any"
-                                        class="mt-1 block w-full" required autocomplete="new-challenge" />
+                                        class="block mt-1 w-full" required autocomplete="new-challenge" />
                                 </div>
                             </div>
 

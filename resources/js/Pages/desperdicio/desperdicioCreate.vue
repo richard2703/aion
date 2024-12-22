@@ -96,210 +96,222 @@ const showTooltipDetectabilidad = ref(false);
     <Layout :titulo="title">
 
         <Head title="Desperdicios" />
-        <div class="overflow-hidden sm:rounded-lg">
-            <div class="breadcrumbsTitulo px-1">
-                <h3>Nuevo desperdicio</h3>
+        <div class="pl-5 overflow-hidden">
+            <div class="mb-3 px-1 breadcrumbsTitulo">
+                <h3 class="font-semibold text-xl">Nuevo Desperdicios</h3>
             </div>
-            <div class="breadcrumbs flex">
-                <Link :href="route('dashboard')" class="px-1">
-                <h3>Home -</h3>
-                </Link>
+
+            <div class="flex items-center gap-2 breadcrumbs">
                 <Link :href="route('desperdicio.index')" class="px-1">
-                <h3>Desperdicios -</h3>
+                <h3>Desperdicios</h3>
                 </Link>
+                <i class="pi-angle-right pi" style="font-size: 1rem"></i>
                 <Link class="active">
                 <h3>Nuevo</h3>
                 </Link>
             </div>
         </div>
 
-        <div class="py-2">
-            <div class="bg-white  shadow-xl sm:rounded-lg">
+        <div class="mt-3 p-5">
+            <div class="bg-white">
                 <div>
-                    <div class="px-4 my-4 py-2 flex justify-end bg-white border-b border-gray-200"></div>
-                    <div class="px-4 py-2 bg-white border-b border-gray-200">
-                        <div class="container mx-auto">
+                    <div class="flex justify-end"></div>
+                    <div class="border-gray-200 bg-white">
+                        <div class="mx-auto">
                             <form @submit.prevent="submit">
 
-                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                                    <div class="mt-4">
-                                        <InputLabel for="area_id" value="Pilar: " />
-                                        <select ref="area_select" @change="onChange($event)"
-                                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                            v-model="form.area_id" required>
-                                            <option value="" disabled selected>
-                                                Seleccione una opcion
-                                            </option>
-                                            <option v-for="area in areas" :key="area.id" :value="area.id">
-                                                {{ area.nombre }}
-                                            </option>
-                                        </select>
+
+                                <!-- Primer formulario en 2 columnas en pantallas pequeñas, 12 en pantallas más grandes -->
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12">
+
+                                    <div className="col-span-1 sm:col-span-1 lg:col-span-1">
+
                                     </div>
+                                    <div className="col-span-1 sm:col-span-1 lg:col-span-6">
 
-                                    <!--   <div class="mt-4">
-                                        <InputLabel for="departamento_id" value="Flujo de valor: " />
-
-                                        <select ref="departamento_select" @change="getTipos($event)"
-                                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                            v-model="form.departamento_id" required>
-                                            <option value="" disabled selected>
-                                                Seleccione una opcion
-                                            </option>
-                                            <option v-for="departamento in departamentos" :key="departamento.id"
-                                                :value="departamento.id">
-                                                {{ departamento.nombre }}
-                                            </option>
-                                        </select>
-                                    </div> -->
-
-                                    <div class="mt-4">
-                                        <InputLabel for="departamento_id" value="Tipo desperdicio: " />
-
-                                        <select ref="departamento_select"
-                                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                            v-model="form.tipoDesperdicio_id" required>
-                                            <option value="" disabled selected>
-                                                Seleccione una opcion
-                                            </option>
-                                            <option v-for="tipo in tipos" :key="tipo.id" :value="tipo.id">
-                                                {{ tipo.tipo }} - {{ tipo.nombre }}
-                                            </option>
-                                        </select>
                                     </div>
+                                </div>
 
-                                    <div class="mt-4">
-                                        <InputLabel for="monto" value="Monto $ : " />
-                                        <TextInput id="tarea" v-model="form.monto" type="number" step="any"
-                                            class="mt-1 block w-full" required autocomplete="tarea" />
-                                    </div>
-                                    <div class="mt-4">
-                                        <InputLabel for="Descripcion" value="Descripcion: " />
-                                        <TextInput id="descripcion" v-model="form.descripcion" type="text"
-                                            class="mt-1 block w-full" required autocomplete="descripcion"
-                                            maxlength="250" />
-                                    </div>
-                                    <!-- <div class="mt-4">
-                                        <InputLabel for="Rango" value="Rango: " />
-                                        <TextInput id="rango" v-model="form.rango" type="number"
-                                            class="mt-1 block w-full" required autocomplete="rango" min="1" max="10" />
-                                    </div> -->
-                                    <div class="mt-4 relative">
-                                        <!-- Etiqueta del campo -->
-                                        <label for="Rango" class="block text-sm font-medium text-gray-700">Rango:
-                                            <!-- Ícono para el tooltip -->
-                                            <!-- <span class="ml-2 text-blue-500 cursor-pointer"
-                                                @mouseenter="showTooltipRango = true"
-                                                @mouseleave="showTooltipRango = false">
-                                                <i class="pi pi-save"></i>
-                                            </span> -->
-                                            <button @click="showTooltipRango = true"
-                                                class="ml-2 text-blue-500 underline">Ver ejemplo</button>
 
-                                        </label>
+                                <!-- colum style input form -->
+                                <div class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-12">
 
-                                        <!-- Campo de texto -->
-                                        <input id="rango" v-model="form.rango" type="number"
-                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                            required autocomplete="rango" min="1" max="10" />
+                                    <!-- Style edit column -->
+                                    <div class="col-span-1 sm:col-span-1 lg:col-span-7">
+                                        <div class="gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
+                                            <!--   <div class="mt-4">
+                                                <InputLabel for="departamento_id" value="Flujo de valor: " />
+    
+                                                <select ref="departamento_select" @change="getTipos($event)"
+                                                    class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
+                                                    v-model="form.departamento_id" required>
+                                                    <option value="" disabled selected>
+                                                        Seleccione una opcion
+                                                    </option>
+                                                    <option v-for="departamento in departamentos" :key="departamento.id"
+                                                        :value="departamento.id">
+                                                        {{ departamento.nombre }}
+                                                    </option>
+                                                </select>
+                                            </div> -->
 
-                                        <!-- Modal -->
-                                        <div v-if="showTooltipRango"
-                                            class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
-                                            <div
-                                                class="bg-white p-6 rounded-lg shadow-lg max-w-full max-h-full overflow-y-auto">
-                                                <h3 class="text-lg font-bold mb-4">Ejemplo de Rango</h3>
+                                            <div class="mt-4">
+                                                <InputLabel for="departamento_id" value="Tipo desperdicio: " />
 
-                                                <!-- Contenido de la imagen con tamaño ajustado -->
-                                                <img src="../../../img/amef/rangoAMEF.png" alt="Ejemplo de Rango"
-                                                    style="width: 600px;">
-
-                                                <!-- Botón de cerrar -->
-                                                <button @click="showTooltipRango = false"
-                                                    class="mt-4 text-white bg-red-500 px-4 py-2 rounded">
-                                                    Cerrar
-                                                </button>
+                                                <select ref="departamento_select"
+                                                    class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
+                                                    v-model="form.tipoDesperdicio_id" required>
+                                                    <option value="" disabled selected>
+                                                        Seleccione una opcion
+                                                    </option>
+                                                    <option v-for="tipo in tipos" :key="tipo.id" :value="tipo.id">
+                                                        {{ tipo.tipo }} - {{ tipo.nombre }}
+                                                    </option>
+                                                </select>
                                             </div>
-                                        </div>
-                                    </div>
 
-                                    <div class="mt-4 relative">
-                                        <!-- Etiqueta del campo -->
-                                        <label for="Recurrencia"
-                                            class="block text-sm font-medium text-gray-700">Recurrencia:
-                                            <!-- Ícono para el tooltip -->
-                                            <button @click="showTooltipRecurrencia = true"
-                                                class="ml-2 text-blue-500 underline">Ver ejemplo</button>
-                                        </label>
-
-                                        <!-- Campo de texto -->
-                                        <input id="recurrencia" v-model="form.recurrencia" type="number"
-                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                            required autocomplete="recurrencia" min="1" max="10" />
-
-                                        <!-- Modal -->
-
-                                        <div v-if="showTooltipRecurrencia"
-                                            class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
-                                            <div
-                                                class="bg-white p-6 rounded-lg shadow-lg max-w-full max-h-full overflow-y-auto">
-                                                <h3 class="text-lg font-bold mb-4">Ejemplo de Recurrencia</h3>
-
-                                                <!-- Contenido de la imagen con tamaño ajustado -->
-                                                <img src="../../../img/amef/ocurrenciaAMEF.png" alt="Ejemplo de Rango"
-                                                    style="width: 600px;">
-
-                                                <!-- Botón de cerrar -->
-                                                <button @click="showTooltipRecurrencia = false"
-                                                    class="mt-4 text-white bg-red-500 px-4 py-2 rounded">
-                                                    Cerrar
-                                                </button>
+                                            <div class="mt-4">
+                                                <InputLabel for="monto" value="Monto $ : " />
+                                                <TextInput id="tarea" v-model="form.monto" type="number" step="any"
+                                                    class="block mt-1 w-full" required autocomplete="tarea" />
                                             </div>
-                                        </div>
-
-                                    </div>
-
-
-                                    <div class="mt-4 relative">
-                                        <!-- Etiqueta del campo -->
-                                        <label for="Detectabilidad"
-                                            class="block text-sm font-medium text-gray-700">Detectabilidad:
-                                            <button @click="showTooltipDetectabilidad = true"
-                                                class="ml-2 text-blue-500 underline">Ver ejemplo</button>
-                                        </label>
-
-                                        <!-- Campo de texto -->
-                                        <input id="detectabilidad" v-model="form.detectabilidad" type="number"
-                                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                            required autocomplete="detectabilidad" min="1" max="10" />
-                                        <!-- Modal -->
-                                        <div v-if="showTooltipDetectabilidad"
-                                            class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
-                                            <div
-                                                class="bg-white p-6 rounded-lg shadow-lg max-w-full max-h-full overflow-y-auto">
-                                                <h3 class="text-lg font-bold mb-4">Ejemplo de Detectabilidad</h3>
-
-                                                <!-- Contenido de la imagen con tamaño ajustado -->
-                                                <img src="../../../img/amef/deteccionAMEF.png" alt="Ejemplo de Rango"
-                                                    style="width: 600px;">
-
-                                                <!-- Botón de cerrar -->
-                                                <button @click="showTooltipDetectabilidad = false"
-                                                    class="mt-4 text-white bg-red-500 px-4 py-2 rounded">
-                                                    Cerrar
-                                                </button>
+                                            <div class="mt-4">
+                                                <InputLabel for="Descripcion" value="Descripcion: " />
+                                                <TextInput id="descripcion" v-model="form.descripcion" type="text"
+                                                    class="block mt-1 w-full" required autocomplete="descripcion"
+                                                    maxlength="250" />
                                             </div>
+                                            <!-- <div class="mt-4">
+                                                <InputLabel for="Rango" value="Rango: " />
+                                                <TextInput id="rango" v-model="form.rango" type="number"
+                                                    class="block mt-1 w-full" required autocomplete="rango" min="1" max="10" />
+                                            </div> -->
+                                            <div class="relative mt-4">
+                                                <!-- Etiqueta del campo -->
+                                                <label for="Rango"
+                                                    class="block font-medium text-gray-700 text-sm">Rango:
+                                                    <!-- Ícono para el tooltip -->
+                                                    <!-- <span class="ml-2 text-blue-500 cursor-pointer"
+                                                        @mouseenter="showTooltipRango = true"
+                                                        @mouseleave="showTooltipRango = false">
+                                                        <i class="pi pi-save"></i>
+                                                    </span> -->
+                                                    <button @click="showTooltipRango = true"
+                                                        class="ml-2 text-blue-500 underline">Ver ejemplo</button>
+
+                                                </label>
+
+                                                <!-- Campo de texto -->
+                                                <input id="rango" v-model="form.rango" type="number"
+                                                    class="block border-gray-300 focus:border-indigo-500 shadow-sm mt-1 rounded-md focus:ring-indigo-500 w-full sm:text-sm"
+                                                    required autocomplete="rango" min="1" max="10" />
+
+                                                <!-- Modal -->
+                                                <div v-if="showTooltipRango"
+                                                    class="z-50 fixed inset-0 flex justify-center items-center bg-gray-500 bg-opacity-75">
+                                                    <div
+                                                        class="bg-white shadow-lg p-6 rounded-lg max-w-full max-h-full overflow-y-auto">
+                                                        <h3 class="mb-4 font-bold text-lg">Ejemplo de Rango</h3>
+
+                                                        <!-- Contenido de la imagen con tamaño ajustado -->
+                                                        <img src="../../../img/amef/rangoAMEF.png"
+                                                            alt="Ejemplo de Rango" style="width: 600px;">
+
+                                                        <!-- Botón de cerrar -->
+                                                        <button @click="showTooltipRango = false"
+                                                            class="bg-red-500 mt-4 px-4 py-2 rounded text-white">
+                                                            Cerrar
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="relative mt-4">
+                                                <!-- Etiqueta del campo -->
+                                                <label for="Recurrencia"
+                                                    class="block font-medium text-gray-700 text-sm">Recurrencia:
+                                                    <!-- Ícono para el tooltip -->
+                                                    <button @click="showTooltipRecurrencia = true"
+                                                        class="ml-2 text-blue-500 underline">Ver ejemplo</button>
+                                                </label>
+
+                                                <!-- Campo de texto -->
+                                                <input id="recurrencia" v-model="form.recurrencia" type="number"
+                                                    class="block border-gray-300 focus:border-indigo-500 shadow-sm mt-1 rounded-md focus:ring-indigo-500 w-full sm:text-sm"
+                                                    required autocomplete="recurrencia" min="1" max="10" />
+
+                                                <!-- Modal -->
+
+                                                <div v-if="showTooltipRecurrencia"
+                                                    class="z-50 fixed inset-0 flex justify-center items-center bg-gray-500 bg-opacity-75">
+                                                    <div
+                                                        class="bg-white shadow-lg p-6 rounded-lg max-w-full max-h-full overflow-y-auto">
+                                                        <h3 class="mb-4 font-bold text-lg">Ejemplo de Recurrencia</h3>
+
+                                                        <!-- Contenido de la imagen con tamaño ajustado -->
+                                                        <img src="../../../img/amef/ocurrenciaAMEF.png"
+                                                            alt="Ejemplo de Rango" style="width: 600px;">
+
+                                                        <!-- Botón de cerrar -->
+                                                        <button @click="showTooltipRecurrencia = false"
+                                                            class="bg-red-500 mt-4 px-4 py-2 rounded text-white">
+                                                            Cerrar
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+
+                                            <div class="relative mt-4">
+                                                <!-- Etiqueta del campo -->
+                                                <label for="Detectabilidad"
+                                                    class="block font-medium text-gray-700 text-sm">Detectabilidad:
+                                                    <button @click="showTooltipDetectabilidad = true"
+                                                        class="ml-2 text-blue-500 underline">Ver ejemplo</button>
+                                                </label>
+
+                                                <!-- Campo de texto -->
+                                                <input id="detectabilidad" v-model="form.detectabilidad" type="number"
+                                                    class="block border-gray-300 focus:border-indigo-500 shadow-sm mt-1 rounded-md focus:ring-indigo-500 w-full sm:text-sm"
+                                                    required autocomplete="detectabilidad" min="1" max="10" />
+                                                <!-- Modal -->
+                                                <div v-if="showTooltipDetectabilidad"
+                                                    class="z-50 fixed inset-0 flex justify-center items-center bg-gray-500 bg-opacity-75">
+                                                    <div
+                                                        class="bg-white shadow-lg p-6 rounded-lg max-w-full max-h-full overflow-y-auto">
+                                                        <h3 class="mb-4 font-bold text-lg">Ejemplo de Detectabilidad
+                                                        </h3>
+
+                                                        <!-- Contenido de la imagen con tamaño ajustado -->
+                                                        <img src="../../../img/amef/deteccionAMEF.png"
+                                                            alt="Ejemplo de Rango" style="width: 600px;">
+
+                                                        <!-- Botón de cerrar -->
+                                                        <button @click="showTooltipDetectabilidad = false"
+                                                            class="bg-red-500 mt-4 px-4 py-2 rounded text-white">
+                                                            Cerrar
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+
+                                        </div>
+
+                                        <div class="flex justify-end border-gray-200 bg-white my-7 pt-4 border-t">
+                                            <PrimaryButton :href="route('desperdicio.create')"
+                                                class="bg-black hover:bg-gray-800 px-10">
+                                               Guardar
+                                            </PrimaryButton>
                                         </div>
 
                                     </div>
-
 
                                 </div>
-                                <div class="px-4 my-4 pt-2 flex justify-end bg-white border-t border-gray-200">
-                                    <PrimaryButton class="ms-4 pi pi-save" :class="{ 'opacity-25': form.processing, }"
-                                        :disabled="form.processing">
 
-                                    </PrimaryButton>
-                                </div>
+
                             </form>
                         </div>
                     </div>

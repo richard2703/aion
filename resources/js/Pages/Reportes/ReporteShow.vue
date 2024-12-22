@@ -204,11 +204,11 @@ const getTrend = (promedio, objetivo, regla) => {
     <Layout :titulo="'Reporte Semanal ' + reporteSemanal.numeroSemana">
 
         <Head title="Reporte Semanal" />
-        <div class="overflow-hidden sm:rounded-lg">
-            <div class="breadcrumbsTitulo px-1">
+        <div class="sm:rounded-lg overflow-hidden">
+            <div class="px-1 breadcrumbsTitulo">
                 <h3>Reporte Semanal: Semana {{ reporteSemanal.numeroSemana }}</h3>
             </div>
-            <div class="breadcrumbs flex">
+            <div class="flex breadcrumbs">
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
@@ -224,24 +224,24 @@ const getTrend = (promedio, objetivo, regla) => {
         <div class="py-2">
             <div v-for="reporte in reportes" :key="reporte.id" class="reporte">
                 <div @click="collapsedReportReport(reporte.id)" class="departamento-header">
-                    <h3 class="text-xl font-bold text-purple-700">{{ reporte.departamento.nombre }}</h3>
+                    <h3 class="font-bold text-purple-700 text-xl">{{ reporte.departamento.nombre }}</h3>
                     <div v-if="reporte.departamento.deleted_at">
                         <p class="text-red-500">Este Flujo ha sido eliminado.</p>
                     </div>
                 </div>
                 <div v-if="!iscollapsedReport(reporte.id)" class="departamento-content">
-                    <div class="grid grid-cols-3 gap-4">
+                    <div class="gap-4 grid grid-cols-3">
                         <!-- Highlights Section -->
                         <div>
-                            <h2 class="text-xl font-bold text-purple-700">Plan a 30 Dias</h2>
-                            <ul class=" pl-5 mt-2 pl-5">
+                            <h2 class="font-bold text-purple-700 text-xl">Plan a 30 Dias</h2>
+                            <ul class="mt-2 pl-5">
                                 <!-- <li v-for="treinta in reporte.treintas" :key="treinta.id"
                                     :class="getTerminada(treinta.status)">
                                     {{ treinta.meta }}
                                 </li> -->
                                 <li v-for="treinta in reporte.treintas" :key="treinta.id"
                                     :class="getTerminada(treinta.status)">
-                                    <span v-if="treinta.status === 1" class="pi pi-check ml-2"></span>
+                                    <span v-if="treinta.status === 1" class="ml-2 pi pi-check"></span>
                                     {{ treinta.meta }}
                                 </li>
                             </ul>
@@ -252,11 +252,11 @@ const getTrend = (promedio, objetivo, regla) => {
 
                         <!-- Low Lights Section -->
                         <div>
-                            <h2 class="text-xl font-bold text-purple-700">Plan a 60 Dias</h2>
-                            <ul class=" pl-5 mt-2">
+                            <h2 class="font-bold text-purple-700 text-xl">Plan a 60 Dias</h2>
+                            <ul class="mt-2 pl-5">
                                 <li v-for="sesenta in reporte.sesentas" :key="sesenta.id"
                                     :class="getTerminada(sesenta.status)">
-                                    <span v-if="sesenta.status === 1" class="pi pi-check ml-2"></span>
+                                    <span v-if="sesenta.status === 1" class="ml-2 pi pi-check"></span>
                                     {{ sesenta.meta }}
                                 </li>
                             </ul>
@@ -266,11 +266,11 @@ const getTrend = (promedio, objetivo, regla) => {
                         </div>
 
                         <div>
-                            <h2 class="text-xl font-bold text-purple-700">Plan a 90 Dias</h2>
-                            <ul class=" pl-5 mt-2">
+                            <h2 class="font-bold text-purple-700 text-xl">Plan a 90 Dias</h2>
+                            <ul class="mt-2 pl-5">
                                 <li v-for="noventa in reporte.noventas" :key="noventa.id"
                                     :class="getTerminada(noventa.status)">
-                                    <span v-if="noventa.status === 1" class="pi pi-check ml-2"></span>
+                                    <span v-if="noventa.status === 1" class="ml-2 pi pi-check"></span>
                                     {{ noventa.meta }}
                                 </li>
                             </ul>
@@ -279,11 +279,11 @@ const getTrend = (promedio, objetivo, regla) => {
                             </div>
                         </div>
                     </div>
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="gap-4 grid grid-cols-2">
                         <!-- Highlights Section -->
                         <div>
-                            <h2 class="text-xl font-bold text-purple-700">Destacados</h2>
-                            <ul class=" pl-5 mt-2 pl-5">
+                            <h2 class="font-bold text-purple-700 text-xl">Destacados</h2>
+                            <ul class="mt-2 pl-5">
                                 <li v-for="highlight in reporte.highlights" :key="highlight.id">
                                     {{ highlight.light }}
                                 </li>
@@ -295,8 +295,8 @@ const getTrend = (promedio, objetivo, regla) => {
 
                         <!-- Low Lights Section -->
                         <div>
-                            <h2 class="text-xl font-bold text-purple-700">Negativos</h2>
-                            <ul class=" pl-5 mt-2">
+                            <h2 class="font-bold text-purple-700 text-xl">Negativos</h2>
+                            <ul class="mt-2 pl-5">
                                 <li v-for="lowlight in reporte.lowlights" :key="lowlight.id">
                                     {{ lowlight.light }}
                                 </li>
@@ -311,11 +311,11 @@ const getTrend = (promedio, objetivo, regla) => {
                     </div> -->
 
                     <!-- KPIs Section -->
-                    <div class="grid grid-cols-2 gap-4 mt-8">
+                    <div class="gap-4 grid grid-cols-2 mt-8">
 
                         <div>
-                            <h2 class="text-xl font-bold text-purple-700">Acciones PDCA</h2>
-                            <ul class=" pl-5 mt-2">
+                            <h2 class="font-bold text-purple-700 text-xl">Acciones PDCA</h2>
+                            <ul class="mt-2 pl-5">
                                 <li v-for="actividad in reporte.actividades" :key="actividad.id">
                                     {{ actividad.titulo }}
                                 </li>
@@ -325,8 +325,8 @@ const getTrend = (promedio, objetivo, regla) => {
                             </div>
                         </div>
                         <div>
-                            <h2 class="text-xl font-bold text-purple-700">Avisos y Acciones de mejora</h2>
-                            <ul class=" pl-5 mt-2">
+                            <h2 class="font-bold text-purple-700 text-xl">Avisos y Acciones de mejora</h2>
+                            <ul class="mt-2 pl-5">
                                 <li v-for="aviso in reporte.avisos" :key="aviso.id">
                                     {{ aviso.aviso }}
                                 </li>
@@ -338,38 +338,38 @@ const getTrend = (promedio, objetivo, regla) => {
                     </div>
 
                     <!-- Seccion de CAPAIA y ScoreCard -->
-                    <div class="grid grid-cols-1 gap-4 mt-8">
+                    <div class="gap-4 grid grid-cols-1 mt-8">
                         <div>
-                            <h2 class="text-xl font-bold text-purple-700">Comprobacion de KPI's</h2>
-                            <table v-for="kpis in reporte.kpis" :key="kpis.id" class="min-w-full border-collapse mb-4">
+                            <h2 class="font-bold text-purple-700 text-xl">Comprobacion de KPI's</h2>
+                            <table v-for="kpis in reporte.kpis" :key="kpis.id" class="border-collapse mb-4 min-w-full">
                                 <thead>
                                     <tr>
-                                        <th class="py-2 px-4 border" colspan="4" style="border-color: black;">
+                                        <th class="px-4 py-2 border" colspan="4" style="border-color: black;">
                                             {{ kpis?.titulo }}
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td class="py-2 px-4 border" style="border-color: black;">Plan</td>
-                                        <td class="py-2 px-4 border" style="border-color: black;">Hoy</td>
-                                        <td class="py-2 px-4 border" style="border-color: black;">Promedio</td>
-                                        <td class="py-2 px-4 border" style="border-color: black;">Tendencia</td>
+                                        <td class="px-4 py-2 border" style="border-color: black;">Plan</td>
+                                        <td class="px-4 py-2 border" style="border-color: black;">Hoy</td>
+                                        <td class="px-4 py-2 border" style="border-color: black;">Promedio</td>
+                                        <td class="px-4 py-2 border" style="border-color: black;">Tendencia</td>
                                     </tr>
                                     <tr>
-                                        <td class="py-2 px-4 border " style="border-color: black;">
+                                        <td class="px-4 py-2 border" style="border-color: black;">
                                             {{ kpis?.objetivo }}
                                         </td>
-                                        <td :class="getClass(kpis)" class="py-2 px-4 border "
+                                        <td :class="getClass(kpis)" class="px-4 py-2 border"
                                             style="text-align-last: justify; border-color: black;">
                                             {{ formatNumber(kpis?.actual) }}
                                         </td>
-                                        <td :class="getClass(kpis)" class="py-2 px-4 border "
+                                        <td :class="getClass(kpis)" class="px-4 py-2 border"
                                             style="text-align-last: justify; border-color: black;">
                                             {{ formatNumber(kpis?.promedio) }}
                                         </td>
 
-                                        <td class="py-2 px-4 border "
+                                        <td class="px-4 py-2 border"
                                             style="text-align-last: justify; border-color: black;">
                                             <p :class="getTrend(kpis.promedio, kpis.objetivo, kpis.regla)"></p>
                                         </td>

@@ -70,13 +70,13 @@ const getClass = (kpi) => {
     }
 };
 
-const getClassPromedio = (kpi) => {
-    if (kpi.regla === 1) {
-        return kpi.promedio >= kpi.objetivo ? 'bg-green-100' : 'bg-red-100';
-    } else {
-        return kpi.promedio <= kpi.objetivo ? 'bg-green-100' : 'bg-red-100';
-    }
-};
+// const getClassPromedio = (kpi) => {
+//     if (kpi.regla === 1) {
+//         return kpi.promedio >= kpi.objetivo ? 'bg-green-100' : 'bg-gray-100';
+//     } else {
+//         return kpi.promedio <= kpi.objetivo ? 'bg-green-100' : 'bg-gray-100';
+//     }
+// };
 
 /** chart */
 const formatDataSet = async () => {
@@ -226,85 +226,68 @@ const formatearFecha = (dateString) => {
 </script>
 
 <template>
-    <div v-bind="$attrs" class="m-4 p-4">
-        <div>
-            <div class="grid sm:grid-cols-2 lg:grid-cols-2 gap-4">
-                <div class="my-4">
-                    <div class="text-center">
-                        <span class="text-2xl font-bold">Plan</span>
+    <div v-bind="$attrs">
+   
+            <div class="gap-4 grid sm:grid-cols-2 lg:grid-cols-2 my-5">
+                <div class="border-gray-200 p-5 border rounded-md">
+                    <div class="flex justify-between">
+                        <span class="font-bold text-2xl">Plan</span>
+                        <div>
+                            {{ formatNumber(kpi.promedio) || '' }}
+                            <PrimaryButton class="bg-black pi pi-plus"
+                                @click="openCreateModal(kpi.id, kpi.actual, kpi.titulo)">
+                            </PrimaryButton>
+                        </div>
                     </div>
-                    <div class="rotation-table">
-                        <!-- Tabla de Kpis to move-->
-                        <table class="min-w-full border-collapse mb-4">
-                            <thead>
-                                <tr>
-                                    <th class="py-2 px-4 border" colspan="3">
-                                        {{ kpi.titulo }}
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="py-2 px-4 border">Plan</td>
-                                    <td class="py-2 px-4 border">Hoy</td>
-                                    <td class="py-2 px-4 border">Promedio</td>
-                                </tr>
-                                <tr>
 
-                                    <td class="py-2 px-4 border">{{ kpi.objetivo || '-' }}</td>
-                                    <td :class="getClass(kpi)" class="py-2 px-4 border "
-                                        style="text-align-last: justify;">{{ kpi.actual || '-' }}</td>
-                                    <!-- <td :class="getClass(kpi)" class="py-2 px-4 border "
-                                        style="text-align-last: justify;">
-                                        {{ formatNumber(kpi.promedio) || '-' }}
-                                        <PrimaryButton class="pi pi-plus"
-                                            @click="openCreateModal(kpi.id, kpi.actual, kpi.titulo)">
-                                        </PrimaryButton>
-                                    </td> -->
-                                    <td class="py-2 px-4 border" :class="getClassPromedio(kpi)"
-                                        style="text-align-last: justify;">
-                                        {{ formatNumber(kpi.promedio) || '-' }}
-                                        <PrimaryButton class="pi pi-plus"
-                                            @click="openCreateModal(kpi.id, kpi.actual, kpi.titulo)">
-                                        </PrimaryButton>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <h2 class="px-4 py-2" colspan="3">
+                        {{ kpi.titulo }}
+                    </h2>
+
+                    <div class="flex gap-20">
+                        <div class="py-2">
+                            <p>Hoy</p>
+                            <p class="py-2">{{ kpi.objetivo || '-' }}</p>
+                        </div>
+                        <div class="py-2">
+                            <p>Promedio</p>
+                            <p :class="getClass(kpi)" class="px-4 py-2" style="text-align-last: justify;">{{
+                                kpi.actual || '-' }}
+                            </p>
+                        </div>
                     </div>
                 </div>
 
-                <div class="card overflow-x-auto">
+                <div class="border-gray-200 p-5 border rounded-md overflow-x-auto card">
                     <div class="text-center">
-                        <span class="text-2xl font-bold">Check</span>
+                        <span class="font-bold text-2xl">Check</span>
                     </div>
                     <Chart class="w-full h-full" type="bar" :data="chartData" :options="chartOptions" />
                 </div>
-
             </div>
-        </div>
+
     </div>
 
     <!-- MODAL to add value -->
     <Modal :show="isCreateModalVidible" maxWidth="lg">
         <template v-slot="">
             <div>
-                <div class="px-4 my-4 py-2 flex justify-center bg-white border-b border-gray-200">
-                    <p class=" text-lg font-medium text-gray-900">{{ titulo }}</p>
+                <div class="flex justify-center border-gray-200 bg-white my-4 px-4 py-2 border-b">
+                    <p class="font-medium text-gray-900 text-lg">{{ titulo }}</p>
                 </div>
-                <div class="px-4 py-2 bg-white border-b border-gray-200">
-                    <div class="container mx-auto">
+                <div class="border-gray-200 bg-white px-4 py-2 border-b">
+                    <div class="mx-auto">
                         <form @submit.prevent="submitCreateModal">
-                            <div class=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+                            <div class="gap-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
                                 <div class="my-4">
                                     <InputLabel for="Valor Actual" value="Valor Actual: " />
-                                    <TextInput id="viejo" v-model="viejo" type="text" class="mt-1 block w-full"
+                                    <TextInput id="viejo" v-model="viejo" type="text" class="block mt-1 w-full"
                                         disabled />
                                 </div>
                                 <div class="my-4">
                                     <InputLabel for="Nuevo Valor" value="Nuevo Valor " />
                                     <TextInput id="objetivo" v-model="formCreateModal.actual" type="number" step="any"
-                                        class="mt-1 block w-full" required autocomplete="new-challenge" />
+                                        class="block mt-1 w-full" required autocomplete="new-challenge" />
                                 </div>
                             </div>
 

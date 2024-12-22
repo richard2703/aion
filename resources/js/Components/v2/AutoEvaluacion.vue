@@ -51,12 +51,12 @@ const getLastAssessment = async () => {
 </script>
 
 <template>
-  <div class="grid grid-cols-4 bg-white gap-[100px]">
-      <div class="xl:col-span-2 col-span-3 mt-3">
+  <div class="gap-[100px] grid grid-cols-4 bg-white">
+      <div class="col-span-3 xl:col-span-2 mt-3">
           <!-- Chart -->
-          <div class="relative aspect-square max-w-xl md:max-w-3xl mx-auto">
+          <div class="relative mx-auto max-w-xl md:max-w-3xl aspect-square">
             <div>
-                <h2 class="text-2xl mb-3 font-semibold text-gray-800">Autoevaluación</h2>
+                <h2 class="mb-3 font-semibold text-2xl text-gray-800">Autoevaluación</h2>
                 <div v-if="!loading && lastAssessment">
                     <Radar :evaluacion="lastAssessment" />
                 </div>
@@ -67,11 +67,12 @@ const getLastAssessment = async () => {
           </div>
       </div>
 
-      <div class="xl:col-span-2 col-span-3 mt-3">
-          <h2 class="text-2xl mb-3 font-semibold text-gray-800">Objetivos</h2>
+      <div class="col-span-3 xl:col-span-2 mt-3">
+          <h2 class="mb-3 font-semibold text-2xl text-gray-800">Objetivos</h2>
           <div class="text-sm leading-10">
               <ul>
                 <li v-for="objetivo in objetivos">- {{ objetivo.objetivo }}</li>
+           
               </ul>
           </div>
       </div>

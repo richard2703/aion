@@ -50,11 +50,11 @@ function setClass(nota) {
     <Layout :titulo="title" :subTitulo="subTitle">
 
         <Head title="Assessment" />
-        <div class="overflow-hidden sm:rounded-lg">
-            <div class="breadcrumbsTitulo px-1">
+        <div class="sm:rounded-lg overflow-hidden">
+            <div class="px-1 breadcrumbsTitulo">
                 <h3>RESULTADOS DE AUTOEVALUACIÓN</h3>
             </div>
-            <div class="breadcrumbs flex">
+            <div class="flex breadcrumbs">
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
@@ -71,16 +71,16 @@ function setClass(nota) {
         </div>
 
         <div class="py-2">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
+            <div class="bg-white shadow-xl sm:rounded-lg overflow-hidden">
+                <div class="border-gray-200 bg-white p-6 border-b">
 
                     <!-- R1 -->
-                    <div class="grid grid-cols-3 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-2">
-                        <div class="bg-slate-500 text-white p-1 rounded content-center">
+                    <div class="gap-2 grid grid-cols-3 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                        <div class="content-center bg-slate-500 p-1 rounded text-white">
                             Fecha: {{ formatearFecha(evaluacion.created_at) }}
                         </div>
-                        <div class="bg-white p-1 rounded flex justify-between border">
-                            <div class="px-1 bg-slate-500 text-white font-bold rounded content-center"> Score:</div>
+                        <div class="flex justify-between bg-white p-1 border rounded">
+                            <div class="content-center bg-slate-500 px-1 rounded font-bold text-white"> Score:</div>
                             <div :class="setClass(evaluacion.global)">{{ formatNumber(evaluacion.global) }} %</div>
                             <div v-if="evaluacion.global >= 0 && evaluacion.global < 21"
                                 :class="setClass(evaluacion.global)">
@@ -102,8 +102,8 @@ function setClass(nota) {
                         </div>
                         <div class="bg-white p-1 rounded">
                             <!-- SubGrid -->
-                            <div class="grid grid-cols-3 gap-1 border">
-                                <div class="bg-slate-500 text-white content-center">People</div>
+                            <div class="gap-1 grid grid-cols-3 border">
+                                <div class="content-center bg-slate-500 text-white">People</div>
                                 <div v-if="evaluacion.gente >= 0 && evaluacion.gente < 21"
                                     :class="setClass(evaluacion.gente)">
                                     INICIAL
@@ -123,8 +123,8 @@ function setClass(nota) {
                                 <div v-if="evaluacion.gente >= 81" :class="setClass(evaluacion.gente)">LÍDER</div>
                                 <div :class="setClass(evaluacion.gente)">{{ formatNumber(evaluacion.gente) }}%</div>
                             </div>
-                            <div class="grid grid-cols-3 gap-1 border">
-                                <div class="bg-slate-500 text-white content-center">Process & Systems</div>
+                            <div class="gap-1 grid grid-cols-3 border">
+                                <div class="content-center bg-slate-500 text-white">Process & Systems</div>
                                 <div v-if="evaluacion.proceso >= 0 && evaluacion.proceso < 21"
                                     :class="setClass(evaluacion.proceso)">
                                     INICIAL
@@ -149,43 +149,43 @@ function setClass(nota) {
                     <br>
                     <!-- R2 -->
                     <button v-if="!showInfo"
-                        class="w-full text-center text-indigo-500 hover:bg-slate-300 hover:text-white"
+                        class="hover:bg-slate-300 w-full text-center text-indigo-500 hover:text-white"
                         @click="showInfo = !showInfo">Mostrar
                         información</button>
                     <button v-if="showInfo"
-                        class="w-full text-center text-indigo-500 hover:bg-slate-300 hover:text-white"
+                        class="hover:bg-slate-300 w-full text-center text-indigo-500 hover:text-white"
                         @click="showInfo = !showInfo">Mostrar
                         menos</button>
                     <br>
-                    <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-2">
-                        <div class="border p-1 rounded">
-                            <div class="bg-slate-500 text-white my-2 text-center rounded "> A GRAN NIVEL</div>
+                    <div class="gap-2 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                        <div class="p-1 border rounded">
+                            <div class="bg-slate-500 my-2 rounded text-center text-white"> A GRAN NIVEL</div>
                             <Radar :evaluacion="evaluacion" />
                             <br>
-                            <div v-if="showInfo" class="border p-1 rounded grid-cols-2 flex">
+                            <div v-if="showInfo" class="flex grid-cols-2 p-1 border rounded">
                                 <div class="w-1/2">
-                                    <p class="text-xs p-1 text-justify bg-red-800 text-white">
+                                    <p class="bg-red-800 p-1 text-justify text-white text-xs">
                                         INICAL.- La oportunidad es grande para mejorar, todo lo que hagas con un sistema
                                         de
                                         excelencia operacional dará un gran beneficio en tu organización.
                                     </p>
-                                    <p class="text-xs p-1 text-justify bg-red-500 text-white">
+                                    <p class="bg-red-500 p-1 text-justify text-white text-xs">
                                         BASICO:Haz establecido los primeros pasos en el trabajo con mejora contina,
                                         estableciendo procesos y midiendo resultados, Ajustar tu sistema de gestión te
                                         vendría bien en este punto
                                     </p>
-                                    <p class="text-xs p-1 text-justify bg-yellow-500 text-white">
+                                    <p class="bg-yellow-500 p-1 text-justify text-white text-xs">
                                         INTERMEDIO : Un nivel ideal para obtener buenos resultados de un sistema de
                                         gestión operado con herramientas de mejora continua como Lean o Six Sigma.
                                     </p>
-                                    <p class="text-xs p-1 text-justify bg-green-500 text-white">
+                                    <p class="bg-green-500 p-1 text-justify text-white text-xs">
                                         AVANZADO :Momento de dar un brinco a la tecnología, si tus procesos ya son
                                         estables
                                         será el momento idóneo para comenzar a evaluar el fase 2 de un sistema de
                                         exclencia
                                         operacional
                                     </p>
-                                    <p class="text-xs p-1 text-justify bg-blue-500 text-white">
+                                    <p class="bg-blue-500 p-1 text-justify text-white text-xs">
                                         LÍDER : Eres un líder en tu ramo, usando todo tu potencial y listo para
                                         enfrentar
                                         los retos, evaluate en fase 2 de excelencia operacional, mejora de forma
@@ -194,7 +194,7 @@ function setClass(nota) {
 
                                 </div>
                                 <div class="w-1/2">
-                                    <p class="text-xs p-1 text-justify">
+                                    <p class="p-1 text-justify text-xs">
                                         Nuestros niveles de calificación máxima representan las prácticas de
                                         excelencia
                                         adoptadas por miles de empresas en todo el mundo durante la Fase 1 de Excelencia
@@ -207,13 +207,13 @@ function setClass(nota) {
                                 </div>
                             </div>
                         </div>
-                        <div class="border p-1 rounded">
-                            <div class="bg-slate-500 text-white my-2 text-center rounded ">LO QUE TE DUELE</div>
+                        <div class="p-1 border rounded">
+                            <div class="bg-slate-500 my-2 rounded text-center text-white">LO QUE TE DUELE</div>
                             <Bar :evaluacion="evaluacion" />
                             <br>
                             <br>
-                            <div v-if="showInfo" class="border p-1 rounded">
-                                <p class="text-xs p-1 text-justify">
+                            <div v-if="showInfo" class="p-1 border rounded">
+                                <p class="p-1 text-justify text-xs">
                                     Primero se presentan los resultados de la evaluación del sistema de gestión, ya que
                                     este
                                     es un componente crítico para la excelencia operacional. De hecho, gran parte de tu
@@ -225,7 +225,7 @@ function setClass(nota) {
                                     base:
                                     el desarrollo y el aprendizaje.
                                 </p>
-                                <p class="text-xs p-1 text-justify">
+                                <p class="p-1 text-justify text-xs">
                                     Si tus resultados se encuentran debajo del 40% es un nivel esperado en la mayor
                                     parte de
                                     empresas, si estás entre 40%-75% felicidades seguramente ya comenzaste con un
@@ -235,7 +235,7 @@ function setClass(nota) {
                                     conceptos
                                     para el nivel 2 de iPMS® o de cualquier modelo de excelencia operacional.
                                 </p>
-                                <p class="text-xs p-1 text-justify">
+                                <p class="p-1 text-justify text-xs">
                                     Como notarás, todos los elementos evaluados son esenciales; todas las empresas y
                                     todos
                                     los equipos, independientemente de su tipo, los requieren. Este es el fundamento
@@ -243,7 +243,7 @@ function setClass(nota) {
                                     el que se edifican las empresas. Como gerentes o líderes de organizaciones, nuestra
                                     responsabilidad es fomentar estos elementos para asegurar nuestro desarrollo.
                                 </p>
-                                <p class="text-xs p-1 text-justify">
+                                <p class="p-1 text-justify text-xs">
                                     Nuestras recomendaciones generales son:
                                 <ol class="list-decimal list-inside">
                                     <li>Establece un sistema de gestión realmente integrado.</li>
@@ -253,7 +253,7 @@ function setClass(nota) {
                                     </li>
                                 </ol>
                                 </p>
-                                <p class="text-xs p-1 text-justify">
+                                <p class="p-1 text-justify text-xs">
                                     Te invitamos a contactar a Productivity Center® e invertir 20 minutos de tu tiempo
                                     para
                                     que te expliquemos de manera detallada el informe completo de tu autoevaluación el
@@ -264,17 +264,17 @@ function setClass(nota) {
                                 </p>
                             </div>
                         </div>
-                        <div class="border p-1 rounded">
-                            <div class="bg-slate-500 text-white my-2 text-center rounded ">EN DONDE ESTÁS</div>
+                        <div class="p-1 border rounded">
+                            <div class="bg-slate-500 my-2 rounded text-center text-white">EN DONDE ESTÁS</div>
                             <Scatter :evaluacion="evaluacion" />
                             <br>
-                            <div v-if="showInfo" class="border p-1 rounded">
-                                <p class="text-xs p-1 text-justify">
+                            <div v-if="showInfo" class="p-1 border rounded">
+                                <p class="p-1 text-justify text-xs">
                                     Este mapa te permite conocer tu nivel de madurez en prácticas de excelencia
                                     operacional
                                     respecto a otras empresas que han desarrollado el ejercicio.
                                 </p>
-                                <p class="text-xs p-1 text-justify">
+                                <p class="p-1 text-justify text-xs">
                                     Los colores te demuestran el nivel general:
                                 <ul>
                                     <li class="text-red-900">INICIAL.- Los procesos son inconsistentes y reactivos.</li>
@@ -290,7 +290,7 @@ function setClass(nota) {
                                         industria.</li>
                                 </ul>
                                 </p>
-                                <p class="text-xs p-1 text-justify">
+                                <p class="p-1 text-justify text-xs">
                                     Las zonas te advierten 3 posibles comportamientos:
                                 <ul>
                                     <li><strong>Zona A.-</strong> Procesos sólidos, los resultados se logran mediante
@@ -312,7 +312,7 @@ function setClass(nota) {
                                     </li>
                                 </ul>
                                 </p>
-                                <p class="text-xs p-1 text-justify">
+                                <p class="p-1 text-justify text-xs">
                                     La mejora basada en la autoevaluación que recién has realizado se convierte en un
                                     instrumento esencial para el crecimiento y desarrollo de tu organización. Cada
                                     resultado
