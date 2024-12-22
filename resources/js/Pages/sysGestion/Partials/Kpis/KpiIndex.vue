@@ -22,6 +22,7 @@ import { showToast } from "@/Pages/utils/SweetAlert.service";
 const props = defineProps({
     departamento_id: Number,
     kpis: Array,
+    kpi: Object,
 })
 
 const departamento_id = ref(props.departamento_id);
@@ -31,7 +32,7 @@ const isHistoricosVisible = ref(false);
 const activeTab = ref();
 const editedRegistro = ref();
 const formTitle = ref();
-const kpi = ref({});
+const kpi = ref(props.kpi);
 const updateFlag = ref(false);
 
 const formEditModal = useForm({
@@ -39,12 +40,16 @@ const formEditModal = useForm({
 });
 
 onMounted(() => {
-    getKpis();
+    // getKpis();
 })
 
 watch(() => props.departamento_id, (newDepartamento_id) => {
     departamento_id.value = newDepartamento_id;
-    getKpis();
+    // getKpis();
+});
+
+watch(() => props.kpi, (newKpi) => {
+    kpi.value = newKpi;
 });
 
 const getKpis = async () => {
@@ -118,38 +123,27 @@ async function getOneKpi(id) {
         <KpiList :kpi="kpi" :updateFlag="updateFlag" @updateKpi="getKpis" />
         <hr>
         <div class="card">
-            <Tabs :value="activeTab">
-                <TabList>
-                    <Tab v-for="kpi in kpis" :key="kpi.titulo" :value="kpi.id" @click="getOneKpi(kpi.id)">
-                        {{ kpi.titulo }}
-                    </Tab>
-                </TabList>
-                <TabPanels>
-                    <TabPanel v-for="kpi in kpis" :key="kpi.titulo" :value="kpi.id">
-                        <table class="border-collapse mb-4 min-w-full">
-                            <thead>
-                                <tr>
-                                    <th class="hover:bg-slate-100 px-4 py-2 border cursor-pointer" colspan="2"
-                                        @click="isHistoricosVisible = !isHistoricosVisible">
-                                        Historico
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody v-if="isHistoricosVisible === true">
-                                <tr>
-                                    <td class="px-4 py-2 border">Valor</td>
-                                    <td class="px-4 py-2 border">Fecha</td>
-                                </tr>
-                                <tr v-for="registro in kpi.registros" :key="registro.id"
-                                    class="hover:bg-slate-50 cursor-pointer" @click="openEditModal(registro.id)">
-                                    <td class="px-4 py-2 border">{{ registro.actual }}</td>
-                                    <td class="px-4 py-2 border">{{ formatearFecha(registro.created_at) }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </TabPanel>
-                </TabPanels>
-            </Tabs>
+            <table class="border-collapse mb-4 min-w-full">
+                <thead>
+                    <tr>
+                        <th class="hover:bg-slate-100 px-4 py-2 border cursor-pointer" colspan="2"
+                            @click="isHistoricosVisible = !isHistoricosVisible">
+                            Historico
+                        </th>
+                    </tr>
+                </thead>
+                <tbody v-if="isHistoricosVisible === true">
+                    <tr>
+                        <td class="px-4 py-2 border">Valor</td>
+                        <td class="px-4 py-2 border">Fecha</td>
+                    </tr>
+                    <tr v-for="registro in kpi.registros" :key="registro.id" class="hover:bg-slate-50 cursor-pointer"
+                        @click="openEditModal(registro.id)">
+                        <td class="px-4 py-2 border">{{ registro.actual }}</td>
+                        <td class="px-4 py-2 border">{{ formatearFecha(registro.created_at) }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
     </div>

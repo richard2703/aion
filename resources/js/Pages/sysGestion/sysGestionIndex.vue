@@ -16,12 +16,7 @@ const props = defineProps({
 });
 
 // tabs scrip
-const activeTab = ref('tab1');
-
-// Función para cambiar el tab activo
-const setActiveTab = (tab) => {
-    activeTab.value = tab;
-};
+const activeTab = ref();
 
 const title = "sysGestion";
 const subTitle = "pdca";
@@ -32,6 +27,8 @@ const departamentos = ref([]);
 const showCorrectivas = ref(false);
 const showPreventivas = ref(false);
 const showMejoras = ref(false);
+const kpis = ref([]);
+const kpi = ref({});
 
 const procesos = ref([]);
 
@@ -45,6 +42,7 @@ onMounted(() => {
     getAreas();
     getDepartamentos(usuario.value.area_id).then(() => {
         getProcesos();
+        getKpis();
     });
 });
 
@@ -54,8 +52,16 @@ watch(() => selectedPilar.value, (newVal, oldVal) => {
     form.area_id = newVal;
     getDepartamentos(newVal).then(() => {
         getProcesos();
+        getKpis();
     });
 });
+
+// Función para cambiar el tab activo
+const setActiveTab = (tab) => {
+    activeTab.value = tab;
+    getOneKpi(tab);
+};
+
 
 async function getAreas() {
     await axios
@@ -75,6 +81,8 @@ async function getDepartamentos(userArea) {
             if (!departamentoIncluded) {
                 form.departamento_id = departamentos.value[0].id
             }
+
+            activeTab.value = kpi.value[0].id
         })
         .catch((error) => {
             console.log(error);
@@ -103,6 +111,38 @@ async function getProcesos() {
         .catch((error) => {
             console.log(error);
         });
+}
+
+const getKpis = async () => {
+    await axios
+        .get(route("kpis.byDepartamento", form.departamento_id))
+        .then((response) => {
+            kpis.value = response.data;
+
+            if (kpis.value.length > 0) {
+                activeTab.value = kpis.value[0].id;
+                getOneKpi(activeTab.value);
+            } else {
+                kpi.value = {};
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+};
+
+async function getOneKpi(id) {
+    await axios.get(route("kpis.byId", id)).then((response) => {
+        axios.get(route("registros_kpi.registros", id))
+        .then((registros) => {
+            const record = {
+                ...response.data,
+                registros: registros.data,
+            };
+
+            kpi.value = record;
+        });
+    })
 }
 
 const onSelectedPilar = (pilarID) => {
@@ -152,24 +192,17 @@ const onSelectedPilar = (pilarID) => {
                 <div class="mx-auto mt-5 w-full">
                     <!-- Tabs Header -->
                     <div class="flex border-gray-200 border-b">
-                        <button @click="setActiveTab('tab1')" :class="[
+                        <button v-for="kpi in kpis" @click="setActiveTab(kpi.id)" :class="[
                             'px-4 py-2 text-sm font-medium',
-                            activeTab === 'tab1' ? 'border-b-2 border-blue-500 text-blue-500' : 'text-gray-500'
+                            activeTab === kpi.id ? 'border-b-2 border-blue-500 text-blue-500' : 'text-gray-500'
                         ]">
-                            5 Contrataciones mensuales
-                        </button>
-                        <button @click="setActiveTab('tab2')" :class="[
-                            'px-4 py-2 text-sm font-medium',
-                            activeTab === 'tab2' ? 'border-b-2 border-blue-500 text-blue-500' : 'text-gray-500'
-                        ]">
-                            Posición de rotación
+                            {{ kpi.titulo }}
                         </button>
                     </div>
 
                     <!-- Tabs Content -->
                     <div>
-                        <!-- Tab 1 Content -->
-                        <div v-if="activeTab === 'tab1'">
+                        <div>
 
                             <!-- Plan and  check  -->
                             <div>
@@ -177,7 +210,7 @@ const onSelectedPilar = (pilarID) => {
                                 <span class="font-bold text-2xl text-center">Plan</span>
                                 <span class="font-bold text-2xl text-center">Check</span>
                             </div> -->
-                                <KpiIndex :departamento_id="form.departamento_id" />
+                                <KpiIndex :departamento_id="form.departamento_id" :kpi="kpi" />
                             </div>
 
                             <div class="gap-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
@@ -314,17 +347,6 @@ const onSelectedPilar = (pilarID) => {
                                         </tbody>
                                     </table>
                                 </div>
-                            </div>
-                        </div>
-
-                        <!-- Tab 2 Content -->
-                        <div v-else-if="activeTab === 'tab2'">
-                            <div class="mt-10">
-                                <h2 class="mb-2 font-semibold text-xl">Este es el Contenido 2</h2>
-                                <p class="text-gray-700">
-                                    Aquí puedes agregar el contenido correspondiente a la segunda
-                                    pestaña.
-                                </p>
                             </div>
                         </div>
                     </div>
