@@ -68,19 +68,25 @@ const submit = () => {
 // Funciones para añadir y eliminar campos dinámicos
 
 const addAviso = () => {
-    avisos.value.push({ value: newAviso.value });
-    newAviso.value = ""
+    if (newAviso.value && newAviso.value.trim().length > 0) {
+        avisos.value.push({ value: newAviso.value.trim() });
+        newAviso.value = ""
+    }
 };
 
 const addHighlight = () => {
-    highlights.value.push({ value: newHighlight.value });
-    newHighlight.value = "";
+    if (newHighlight.value && newHighlight.value.trim().length > 0) {
+        highlights.value.push({ value: newHighlight.value.trim() });
+        newHighlight.value = "";
+    }
 };
 
 const addLowlight = () => {
-    lowlights.value.push({ value: newLowLight.value });
-    newLowLight.value = "";
-}
+    if (newLowLight.value && newLowLight.value.trim().length > 0) {
+        lowlights.value.push({ value: newLowLight.value.trim() });
+        newLowLight.value = "";
+    }
+};
 
 const removeHighlight = (index) => highlights.value.splice(index, 1);
 const removeAviso = (index) => avisos.value.splice(index, 1);
