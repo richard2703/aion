@@ -22,6 +22,7 @@ const departamentos = ref({});
 const usuarios = ref([]);
 const filteredUsuarios = ref();
 const evidencias = ref({});
+const tareaDetail = ref({});
 
 const onSelectedPilar = (pilarID) => {
   selectedPilar.value = pilarID;
@@ -214,6 +215,7 @@ const days = [
 const isModalOpen = ref(false);
 
 const openModal = (edit = false, tareaId = null) => {
+  isModalOpenTask.value = false
   isEditing.value = edit
 
   console.log(edit);
@@ -240,21 +242,26 @@ const openModal = (edit = false, tareaId = null) => {
   } else {
     form.reset();
     isModalOpen.value = true;
+    editingTarea.value = {};
   }
 };
 
 const closeModal = () => {
   isModalOpen.value = false;
+  editingTarea.value = {};
 };
 
-const isModalOpenTaks = ref(false);
+const isModalOpenTask = ref(false);
 
-const openModalTaks = () => {
-  isModalOpenTaks.value = true;
+const openModalTask = (tarea) => {
+  tareaDetail.value = tarea
+  console.log('Tarea', tareaDetail.value);
+  isModalOpenTask.value = true;
 };
 
-const closeModalTaks = () => {
-  isModalOpenTaks.value = false;
+const closeModalTask = () => {
+  isModalOpenTask.value = false;
+  tareaDetail.value = {};
 };
 
 </script>
@@ -321,7 +328,7 @@ const closeModalTaks = () => {
         <!-- Lista de Reuniones -->
         <ol class="lg:col-span-7 xl:col-span-8 mt-3 divide-y divide-gray-100 text-md">
           <div class="border-[#E1E2E5] p-4 border border-solid rounded-md h-[640px] cursor-pointer overflow-scroll">
-            <li v-for="meeting in meetings" :key="meeting.id" @click="openModalTaks" class="flex gap-x-6 py-5">
+            <li v-for="meeting in meetings" :key="meeting.id" @click="openModalTask(meeting)" class="flex gap-x-6 py-5">
               <div class="flex-auto">
                 <h3 class="mb-2 pr-10 font-semibold text-gray-900">{{ meeting.titleTaks }}</h3>
                 <dl class="flex xl:flex-row flex-col mt-2 text-gray-500">
@@ -342,7 +349,7 @@ const closeModalTaks = () => {
       </div>
     </div>
 
-    <!-- Modal New Taks -->
+    <!-- Modal New Task -->
     <Modalv2 :isOpen="isModalOpen" :title="isEditing ? 'Editar Tarea' : 'Nueva Tarea'" @close="closeModal">
       <form @submit.prevent="submit">
         <!-- tittle -->
@@ -493,14 +500,14 @@ const closeModalTaks = () => {
       </div>
     </Modalv2>
 
-    <!-- modal vew taks -->
-    <Modalv2 :isOpen="isModalOpenTaks" @close="closeModal">
+    <!-- modal vew Task -->
+    <Modalv2 :isOpen="isModalOpenTask" @close="closeModalTask">
       <form>
         <!-- icons group -->
         <div class="flex justify-end gap-3 mb-8">
 
           <i class="hover:bg-gray-100 pi-pen-to-square p-3 hover:rounded-md cursor-pointer pi"
-            style="color: black; font-size: 1.3rem"></i>
+            style="color: black; font-size: 1.3rem" @click="openModal(true, tareaDetail.id)"></i>
           <i class="hover:bg-red-100 p-3 hover:rounded-md cursor-pointer pi pi-trash"
             style="color: red; font-size: 1.3rem"></i>
         </div>
