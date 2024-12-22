@@ -493,8 +493,8 @@ const closeModalTask = () => {
     <div class="pl-5 sm:rounded-lg overflow-hidden">
 
       <!-- Título -->
-      <div class="breadcrumbsTitulo">
-        <h3 class="font-semibold text-xl">Tareas</h3>
+      <div class="mt-5 breadcrumbsTitulo">
+        <h3 class="font-semibold text-[1.4rem]">Tareas</h3>
       </div>
 
 
@@ -548,20 +548,20 @@ const closeModalTask = () => {
           <div class="col-span-12">
             <div class="flex gap-4">
               <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
-              <PrimaryButton class=" mb-4 float-right pi pi-filter" @click="openFilter">
+              <PrimaryButton class="float-right bg-black mb-4 pi pi-filter" @click="openFilter">
               </PrimaryButton>
-              <PrimaryButton v-if="customFilter" class=" mb-4 float-right pi pi-times" @click="clearFilter">
-              </PrimaryButton>
+              <!-- <PrimaryButton v-if="customFilter" class="float-right bg-black mb-4 pi pi-times" @click="clearFilter">
+              </PrimaryButton> -->
             </div>
 
 
             <div v-if="customFilter" class="">
               <form @submit.prevent="filterTable()">
-                <div class="m-4 border rounded-lg border-gray-200 flex gap-2 grid grid-cols-3">
+                <div class="gap-2 border-gray-200 grid grid-cols-3 my-5 border rounded-lg">
                   <div class="m-4">
                     <InputLabel for="departamento_id" value="Flujo de valor: " />
                     <select ref="departamento_select"
-                      class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                      class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                       v-model="flujoValor">
                       <option value="" selected>
                         Seleccione una opcion
@@ -575,7 +575,7 @@ const closeModalTask = () => {
                   <div class="m-4">
                     <InputLabel for="responsable_id" value="Responsable: " />
                     <select ref="responsable_select"
-                      class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                      class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                       v-model="responsable">
                       <option value="" selected>
                         Seleccione una opcion
@@ -588,7 +588,7 @@ const closeModalTask = () => {
                   <div class="m-4">
                     <InputLabel for="cliente_id" value="Cliente de tarea: " />
                     <select ref="cliente_select"
-                      class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                      class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                       v-model="revisor">
                       <option value="" selected>
                         Seleccione una opcion
@@ -601,7 +601,7 @@ const closeModalTask = () => {
                   <div class="m-4">
                     <InputLabel for="estatus_id" value="Estatus: " />
                     <select ref="estatus_select"
-                      class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                      class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                       v-model="estatus">
                       <option value="" selected>
                         Seleccione una opcion </option>
@@ -618,12 +618,12 @@ const closeModalTask = () => {
 
                   <div class="m-4">
                     <InputLabel for="fecha" value="Fecha de entrega de: " />
-                    <TextInput id="fecha" v-model="desde" type="date" class="mt-1 block w-full" autocomplete="fecha" />
+                    <TextInput id="fecha" v-model="desde" type="date" class="block mt-1 w-full" autocomplete="fecha" />
                   </div>
 
                   <div class="m-4">
                     <InputLabel for="created_at" value="Fecha de entrega hasta: " />
-                    <TextInput id="fecha" v-model="hasta" type="date" class="mt-1 block w-full" autocomplete="fecha" />
+                    <TextInput id="fecha" v-model="hasta" type="date" class="block mt-1 w-full" autocomplete="fecha" />
                   </div>
                 </div>
               </form>
@@ -640,10 +640,10 @@ const closeModalTask = () => {
               'fecha_entrega',
               'estatus.titulo',
             ]" :sortField="sortField" :sortOrder="sortOrder"
-            class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+            class="p-datatable-gridlines p-datatable-sm p-datatable-striped">
             <template #empty> No data found. </template>
             <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;" sortable></Column>
-            <Column field="tarea" header="Titulo" headerStyle="width:4em;" bodyClass="text-center" sortable></Column>
+            <!-- <Column field="tarea" header="Titulo" headerStyle="width:4em;" bodyClass="text-center" sortable></Column> -->
             <Column field="estatus.titulo" header="Estatus" headerStyle="width:4em;" bodyStyle="text-align:center;"
               bodyClass="text-center" sortable></Column>
             <Column field="departamento.nombre" header="Fujo de valor" headerStyle="width:4em;"
@@ -668,7 +668,7 @@ const closeModalTask = () => {
             <!-- <Column field="nota" header="Notas" headerStyle="width:4em;" bodyClass="text-center"
                                     sortable>
                                 </Column> -->
-            <Column field="revisor.name" header="Cliente de la tarea" headerStyle="width:4em;" bodyClass="text-center"
+            <!-- <Column field="revisor.name" header="Cliente de la tarea" headerStyle="width:4em;" bodyClass="text-center"
               sortable>
               <template #body="slotProps">
                 <div v-if="slotProps.data.revisor">
@@ -678,25 +678,25 @@ const closeModalTask = () => {
                   Sin cliente
                 </div>
               </template>
-            </Column>
-            <Column header="Validacion" headerStyle="width:4em;" bodyClass="justify-center">
+            </Column> -->
+            <!-- <Column header="Validacion" headerStyle="width:4em;" bodyClass="justify-center">
               <template #body="slotProps">
                 <input type="checkbox" @change="validateTarea(slotProps.data, $event)"
                   :disabled="slotProps.data.validacion ? true : false"
                   :checked="slotProps.data.validacion ? true : false" /> Validar
               </template>
-            </Column>
+            </Column> -->
             <Column header="" headerStyle="width:4em;">
               <template #body="slotProps" class="text-center">
                 <div class="flex justify-center">
-                  <PrimaryButton v-if="slotProps.data.validacion !== 1" class="m-2 pi pi-pen-to-square"
+                  <PrimaryButton v-if="slotProps.data.validacion !== 1" class="pi-pen-to-square m-2 pi"
                     @click="openModal(true, slotProps.data.id)">
                   </PrimaryButton>
 
-                  <PrimaryButton class="pi pi-file-check m-2" :href="route('tareas.detail', slotProps.data.id)">
+                  <PrimaryButton class="bg-black m-2 pi pi-file-check" :href="route('tareas.detail', slotProps.data.id)">
                   </PrimaryButton>
 
-                  <PrimaryButton v-if="slotProps.data.validacion !== 1" class="m-2 pi pi-trash" @click.prevent="
+                  <PrimaryButton v-if="slotProps.data.validacion !== 1" class="bg-black m-2 pi pi-trash" @click.prevent="
                     deleteTarea(slotProps.data.id)
                     ">
                   </PrimaryButton>

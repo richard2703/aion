@@ -4,12 +4,12 @@
             <!-- Dashboard Menu Item -->
             <li>
                 <div class="mb-4">
-                    <Link class="group flex items-center py-3" href="/">
+                    <Link class="flex items-center py-3 group" href="/">
                     <div :class="title === 'dashboard'
                         ? 'activo flex'
                         : 'inactivo flex'
                         ">
-                        <i class="pi pi-home mr-2 w-4 h-4"></i>
+                        <i class="mr-2 w-4 h-4 pi pi-home"></i>
                         Home
                     </div>
                     </Link>
@@ -18,12 +18,12 @@
 
             <li>
                 <div class="mb-4">
-                    <Link class="group flex items-center py-3" :href="route('minutas.index')">
+                    <Link class="flex items-center py-3 group" :href="route('minutas.index')">
                     <div :class="title === 'minutero'
                         ? 'activo flex'
                         : 'inactivo flex'
                         ">
-                        <i class="pi pi-briefcase mr-2 w-4 h-4"></i>
+                        <i class="mr-2 w-4 h-4 pi pi-briefcase"></i>
                         Minutero
                     </div>
                     </Link>
@@ -32,12 +32,12 @@
 
             <li>
                 <div class="mb-4">
-                    <Link class="group flex items-center py-3" :href="route('tareas.index')">
+                    <Link class="flex items-center py-3 group" :href="route('tareas.index')">
                     <div :class="title === 'tareas'
                         ? 'activo flex'
                         : 'inactivo flex'
                         ">
-                        <i class="pi pi-list mr-2 w-4 h-4"></i>
+                        <i class="mr-2 w-4 h-4 pi pi-list"></i>
                         Tareas
                     </div>
                     </Link>
@@ -45,9 +45,9 @@
             </li>
 
             <li>
-                <a class="group flex items-center py-3 cursor-pointer" @click="toggleMenu('sysGestion')">
+                <a class="flex items-center py-3 cursor-pointer group" @click="toggleMenu('sysGestion')">
 
-                    <i class="pi pi-building mr-2 w-4 h-4" :class="title === 'sysGestion' ? 'activo flex'
+                    <i class="mr-2 w-4 h-4 pi pi-building" :class="title === 'sysGestion' ? 'activo flex'
                         : 'inactivo flex'"></i>
                     <div :class="title === 'sysGestion' ? 'activo flex'
                         : 'inactivo flex'">
@@ -56,16 +56,16 @@
                     <icon name="cheveron-down" class="ml-auto w-4 h-4" :class="isOpen('sysGestion') ? 'rotate-180' : '', title === 'sysGestion' ? 'activo flex'
                         : 'inactivo flex'" />
                 </a>
-                <ul v-show="isOpen('sysGestion')" class="pl-6 space-y-2">
+                <ul v-show="isOpen('sysGestion')" class="space-y-2 pl-6">
                     <li>
-                        <Link class="group flex items-center py-2" :href="route('sysgestion.dashboard')" :class="subTitle === 'dashboard' ? 'activo flex'
+                        <Link class="flex items-center py-2 group" :href="route('sysgestion.dashboard')" :class="subTitle === 'dashboard' ? 'activo flex'
                             : 'inactivo flex'">
                         <icon name="circle" class="mr-2 w-3 h-3" />
                         <div>Dashboard</div>
                         </Link>
                     </li>
                     <li>
-                        <Link class="group flex items-center py-2" :href="route('sysgestion.index')" :class="subTitle === 'pdca' ? 'activo flex'
+                        <Link class="flex items-center py-2 group" :href="route('sysgestion.index')" :class="subTitle === 'pdca' ? 'activo flex'
                             : 'inactivo flex'">
                         <icon name="circle" class="mr-2 w-3 h-3" />
                         <div>PDCA</div>
@@ -75,9 +75,9 @@
             </li>
             <!-- //reportes -->
             <li>
-                <a class="group flex items-center py-3 cursor-pointer" @click="toggleMenu('reportes')">
+                <a class="flex items-center py-3 cursor-pointer group" @click="toggleMenu('reportes')">
 
-                    <i class="pi pi-building mr-2 w-4 h-4" :class="title === 'reportes' ? 'activo flex'
+                    <i class="mr-2 w-4 h-4 pi pi-building" :class="title === 'reportes' ? 'activo flex'
                         : 'inactivo flex'"></i>
                     <div :class="title === 'reportes' ? 'activo flex'
                         : 'inactivo flex'">
@@ -86,30 +86,30 @@
                     <icon name="cheveron-down" class="ml-auto w-4 h-4" :class="isOpen('reportes') ? 'rotate-180' : '', title === 'reportes' ? 'activo flex'
                         : 'inactivo flex'" />
                 </a>
-                <ul v-show="isOpen('reportes')" class="pl-6 space-y-2">
+                <ul v-show="isOpen('reportes')" class="space-y-2 pl-6">
                     <li>
-                        <Link class="group flex items-center py-2" :href="route('reporte.index')" :class="subTitle === 'semanales' ? 'activo flex'
+                        <Link class="flex items-center py-2 group" :href="route('reporte.index')" :class="subTitle === 'semanales' ? 'activo flex'
                             : 'inactivo flex'">
                         <icon name="circle" class="mr-2 w-3 h-3" />
                         <div>Reportes</div>
                         </Link>
                     </li>
                     <li>
-                        <Link class="group flex items-center py-2" :href="route('misreporte.index')" :class="subTitle === 'pdca' ? 'activo flex'
+                        <Link class="flex items-center py-2 group" :href="route('misreporte.index')" :class="subTitle === 'pdca' ? 'activo flex'
                             : 'inactivo flex'">
                         <icon name="circle" class="mr-2 w-3 h-3" />
                         <div>Mis Reportes</div>
                         </Link>
                     </li>
                     <li>
-                        <Link class="group flex items-center py-2" :href="route('metas.index')" :class="subTitle === 'pdca' ? 'activo flex'
+                        <Link class="flex items-center py-2 group" :href="route('metas.index')" :class="subTitle === 'pdca' ? 'activo flex'
                             : 'inactivo flex'">
                         <icon name="circle" class="mr-2 w-3 h-3" />
                         <div>Metas (30 60 90)</div>
                         </Link>
                     </li>
                     <li>
-                        <Link class="group flex items-center py-2" :href="route('Mismetas.index')" :class="subTitle === 'pdca' ? 'activo flex'
+                        <Link class="flex items-center py-2 group" :href="route('Mismetas.index')" :class="subTitle === 'pdca' ? 'activo flex'
                             : 'inactivo flex'">
                         <icon name="circle" class="mr-2 w-3 h-3" />
                         <div>Mis Metas (30 60 90)</div>
@@ -120,9 +120,9 @@
 
             <!-- //reportes -->
             <li>
-                <a class="group flex items-center py-3 cursor-pointer" @click="toggleMenu('assessment')">
+                <a class="flex items-center py-3 cursor-pointer group" @click="toggleMenu('assessment')">
 
-                    <i class="pi pi-file-check mr-2 w-4 h-4" :class="title === 'assessment' ? 'activo flex'
+                    <i class="mr-2 w-4 h-4 pi pi-file-check" :class="title === 'assessment' ? 'activo flex'
                         : 'inactivo flex'"></i>
                     <div :class="title === 'assessment' ? 'activo flex'
                         : 'inactivo flex'">
@@ -131,9 +131,9 @@
                     <icon name="cheveron-down" class="ml-auto w-4 h-4" :class="isOpen('assessment') ? 'rotate-180' : '', title === 'assessment' ? 'activo flex'
                         : 'inactivo flex'" />
                 </a>
-                <ul v-show="isOpen('assessment')" class="pl-6 space-y-2">
+                <ul v-show="isOpen('assessment')" class="space-y-2 pl-6">
                     <li>
-                        <Link class="group flex items-center py-2" :href="route('evaluacion.index')" :class="subTitle === 'evaluaciones' ? 'activo flex'
+                        <Link class="flex items-center py-2 group" :href="route('evaluacion.index')" :class="subTitle === 'evaluaciones' ? 'activo flex'
                             : 'inactivo flex'">
                         <icon name="circle" class="mr-2 w-3 h-3" />
                         <div>Evaluaciones</div>
@@ -145,12 +145,12 @@
             <!-- //Desperdicios -->
             <li>
                 <div class="mb-4">
-                    <Link class="group flex items-center py-3" :href="route('desperdicio.index')">
+                    <Link class="flex items-center py-3 group" :href="route('desperdicio.index')">
                     <div :class="title === 'Desperdicios'
                         ? 'activo flex'
                         : 'inactivo flex'
                         ">
-                        <i class="pi pi-list mr-2 w-4 h-4"></i>
+                        <i class="mr-2 w-4 h-4 pi pi-list"></i>
                         Desperdicios
                     </div>
                     </Link>
@@ -159,12 +159,12 @@
             <!-- Scorecard -->
             <li>
                 <div class="mb-4">
-                    <Link class="group flex items-center py-3" :href="route('scoreCard.index')">
+                    <Link class="flex items-center py-3 group" :href="route('scoreCard.index')">
                     <div :class="title === 'ScoreCard'
                         ? 'activo flex'
                         : 'inactivo flex'
                         ">
-                        <i class="pi pi-chart-bar mr-2 w-4 h-4"></i>
+                        <i class="mr-2 w-4 h-4 pi pi-chart-bar"></i>
                         ScoreCard
                     </div>
                     </Link>
@@ -172,7 +172,7 @@
             </li>
             <!-- Usuarios Menu Item with Submenus -->
             <!-- <li>
-                <a class="group flex items-center py-3 cursor-pointer" @click="toggleMenu('usuarios')">
+                <a class="flex items-center py-3 cursor-pointer group" @click="toggleMenu('usuarios')">
                     <icon name="users" class="mr-2 w-4 h-4"
                         :class="title === 'usuarios' ? 'fill-white' : 'fill-indigo-400 group-hover:fill-white'" />
                     <div :class="title === 'usuarios' ? 'text-white' : 'text-indigo-300 group-hover:text-white'">
@@ -181,16 +181,16 @@
                     <icon name="cheveron-down" class="ml-auto w-4 h-4"
                         :class="isOpen('usuarios') ? 'rotate-180' : '', title === 'usuarios' ? 'fill-white' : 'fill-indigo-400 group-hover:fill-white'" />
                 </a>
-                <ul v-show="isOpen('usuarios')" class="pl-6 space-y-2">
+                <ul v-show="isOpen('usuarios')" class="space-y-2 pl-6">
                     <li>
-                        <Link class="group flex items-center py-2" href="/users"
+                        <Link class="flex items-center py-2 group" href="/users"
                             :class="subTitle === 'index' ? 'text-white' : 'text-indigo-300 group-hover:text-white'">
                         <icon name="circle" class="mr-2 w-3 h-3" />
                         <div>Index</div>
                         </Link>
                     </li>
                     <li>
-                        <Link class="group flex items-center py-2" href="/users/create"
+                        <Link class="flex items-center py-2 group" href="/users/create"
                             :class="subTitle === 'create' ? 'text-white' : 'text-indigo-300 group-hover:text-white'">
                         <icon name="circle" class="mr-2 w-3 h-3" />
                         <div>Crear</div>
@@ -209,12 +209,12 @@
                 </li>
                 <li>
                     <div class="mb-4">
-                        <Link class="group flex items-center py-3" href="/areas">
+                        <Link class="flex items-center py-3 group" href="/areas">
                         <div :class="title === 'Pilares'
                             ? 'activo flex'
                             : 'inactivo flex'
                             ">
-                            <i class="pi pi-building-columns mr-2 w-4 h-4"></i>
+                            <i class="mr-2 w-4 h-4 pi pi-building-columns"></i>
                             Pilares
                         </div>
                         </Link>
@@ -222,12 +222,12 @@
                 </li>
                 <li>
                     <div class="mb-4">
-                        <Link class="group flex items-center py-3" href="/departamentos">
+                        <Link class="flex items-center py-3 group" href="/departamentos">
                         <div :class="title === 'Flujos de valor'
                             ? 'activo flex'
                             : 'inactivo flex'
                             ">
-                            <i class="pi pi-building mr-2 w-4 h-4"></i>
+                            <i class="mr-2 w-4 h-4 pi pi-building"></i>
                             Flujos de valor
                         </div>
                         </Link>
@@ -235,12 +235,12 @@
                 </li>
                 <li>
                     <div class="mb-4">
-                        <Link class="group flex items-center py-3" :href="route('user.index')">
+                        <Link class="flex items-center py-3 group" :href="route('user.index')">
                         <div :class="title === 'usuarios'
                             ? 'activo flex'
                             : 'inactivo flex'
                             ">
-                            <i class="pi pi-users mr-2 w-4 h-4"></i>
+                            <i class="mr-2 w-4 h-4 pi pi-users"></i>
                             Usuarios
                         </div>
                         </Link>
@@ -248,12 +248,12 @@
                 </li>
                 <li>
                     <div class="mb-4">
-                        <Link class="group flex items-center py-3" :href="route('encargadoFlujo.index')">
+                        <Link class="flex items-center py-3 group" :href="route('encargadoFlujo.index')">
                         <div :class="title === 'Lideres_flujo'
                             ? 'activo flex'
                             : 'inactivo flex'
                             ">
-                            <i class="pi pi-users mr-2 w-4 h-4"></i>
+                            <i class="mr-2 w-4 h-4 pi pi-users"></i>
                             Líderes de flujo
                         </div>
                         </Link>
@@ -262,12 +262,12 @@
                 <!-- //Tipos de Desperdicios -->
                 <li>
                     <div class="mb-4">
-                        <Link class="group flex items-center py-3" :href="route('tiposDesperdicios.index')">
+                        <Link class="flex items-center py-3 group" :href="route('tiposDesperdicios.index')">
                         <div :class="title === 'tiposDesperdicios'
                             ? 'activo flex'
                             : 'inactivo flex'
                             ">
-                            <i class="pi pi-trash mr-2 w-4 h-4"></i>
+                            <i class="mr-2 w-4 h-4 pi pi-trash"></i>
                             Tipos de Desperdicios
                         </div>
                         </Link>
@@ -277,12 +277,12 @@
 
                     <li>
                         <div class="mb-4">
-                            <Link class="group flex items-center py-3" :href="route('seccion.index')">
+                            <Link class="flex items-center py-3 group" :href="route('seccion.index')">
                             <div :class="title === 'Secciones'
                                 ? 'activo flex'
                                 : 'inactivo flex'
                                 ">
-                                <i class="pi pi-list mr-2 w-4 h-4"></i>
+                                <i class="mr-2 w-4 h-4 pi pi-list"></i>
                                 Secciones
                             </div>
                             </Link>
@@ -291,12 +291,12 @@
 
                     <li>
                         <div class="mb-4">
-                            <Link class="group flex items-center py-3" :href="route('challenge.index')">
+                            <Link class="flex items-center py-3 group" :href="route('challenge.index')">
                             <div :class="title === 'Challenges'
                                 ? 'activo flex'
                                 : 'inactivo flex'
                                 ">
-                                <i class="pi pi-verified mr-2 w-4 h-4"></i>
+                                <i class="mr-2 w-4 h-4 pi pi-verified"></i>
                                 Challenges
                             </div>
                             </Link>
@@ -305,12 +305,12 @@
 
                     <li>
                         <div class="mb-4">
-                            <Link class="group flex items-center py-3" :href="route('opcion.index')">
+                            <Link class="flex items-center py-3 group" :href="route('opcion.index')">
                             <div :class="title === 'Opciones'
                                 ? 'activo flex'
                                 : 'inactivo flex'
                                 ">
-                                <i class="pi pi-question mr-2 w-4 h-4"></i>
+                                <i class="mr-2 w-4 h-4 pi pi-question"></i>
                                 Opciones
                             </div>
                             </Link>
@@ -319,12 +319,12 @@
                 </div>
                 <li>
                     <div class="mb-4">
-                        <Link class="group flex items-center py-3" :href="route('config.index')">
+                        <Link class="flex items-center py-3 group" :href="route('config.index')">
                         <div :class="title === 'Configuraciones'
                             ? 'activo flex'
                             : 'inactivo flex'
                             ">
-                            <i class="pi pi-wrench mr-2 w-4 h-4"></i>
+                            <i class="mr-2 w-4 h-4 pi pi-wrench"></i>
                             Configuraciones
                         </div>
                         </Link>
@@ -332,9 +332,9 @@
                 </li>
                 <li>
                     <div class="mb-4">
-                        <Link class="group flex items-center py-3" :href="route('objetivo.index')">
+                        <Link class="flex items-center py-3 group" :href="route('objetivo.index')">
                         <div :class="title === 'Objetivos' ? 'activo flex' : 'inactivo flex'">
-                            <i class="pi pi-flag mr-2 w-4 h-4"></i>
+                            <i class="mr-2 w-4 h-4 pi pi-flag"></i>
                             Objetivo
                         </div>
                         </Link>
@@ -343,9 +343,9 @@
 
                 <li>
                     <div class="mb-4">
-                        <Link class="group flex items-center py-3" :href="route('proceso.index')">
+                        <Link class="flex items-center py-3 group" :href="route('proceso.index')">
                         <div :class="title === 'Procesos' ? 'activo flex' : 'inactivo flex'">
-                            <i class="pi pi-list-check mr-2 w-4 h-4"></i>
+                            <i class="mr-2 w-4 h-4 pi-list-check pi"></i>
                             Procesos
                         </div>
                         </Link>
@@ -355,9 +355,9 @@
 
                 <li>
                     <div class="mb-4">
-                        <Link class="group flex items-center py-3" :href="route('procedimiento.index')">
+                        <Link class="flex items-center py-3 group" :href="route('procedimiento.index')">
                         <div :class="title === 'Procedimientos' ? 'activo flex' : 'inactivo flex'">
-                            <i class="pi pi-check-square mr-2 w-4 h-4"></i>
+                            <i class="mr-2 w-4 h-4 pi pi-check-square"></i>
                             Procedimientos
                         </div>
                         </Link>
@@ -366,9 +366,9 @@
 
                 <li>
                     <div class="mb-4">
-                        <Link class="group flex items-center py-3" :href="route('estandar.index')">
+                        <Link class="flex items-center py-3 group" :href="route('estandar.index')">
                         <div :class="title === 'Estandares' ? 'activo flex' : 'inactivo flex'">
-                            <i class="pi pi-file mr-2 w-4 h-4"></i>
+                            <i class="mr-2 w-4 h-4 pi pi-file"></i>
                             Estandares
                         </div>
                         </Link>
@@ -377,9 +377,9 @@
 
                 <li>
                     <div class="mb-4">
-                        <Link class="group flex items-center py-3" :href="route('kpi.index')">
+                        <Link class="flex items-center py-3 group" :href="route('kpi.index')">
                         <div :class="title === 'KPI' ? 'activo flex' : 'inactivo flex'">
-                            <i class="pi pi-chart-line mr-2 w-4 h-4"></i>
+                            <i class="mr-2 w-4 h-4 pi pi-chart-line"></i>
                             KPI's
                         </div>
                         </Link>
@@ -387,9 +387,9 @@
                 </li>
                 <li
                     v-if="$page.props.auth.user.roles.includes('admin') || $page.props.auth.user.roles.includes('superadmin')">
-                    <a class="group flex items-center py-3 cursor-pointer" @click="toggleMenu('rolesypermisos')">
+                    <a class="flex items-center py-3 cursor-pointer group" @click="toggleMenu('rolesypermisos')">
 
-                        <i class="pi pi-lock mr-2 w-4 h-4" :class="title === 'rolesypermisos' ? 'activo flex'
+                        <i class="mr-2 w-4 h-4 pi pi-lock" :class="title === 'rolesypermisos' ? 'activo flex'
                             : 'inactivo flex'"></i>
                         <div :class="title === 'rolesypermisos' ? 'activo flex'
                             : 'inactivo flex'">
@@ -398,16 +398,16 @@
                         <icon name="cheveron-down" class="ml-auto w-4 h-4" :class="isOpen('rolesypermisos') ? 'rotate-180' : '', title === 'rolesypermisos' ? 'activo flex'
                             : 'inactivo flex'" />
                     </a>
-                    <ul v-show="isOpen('rolesypermisos')" class="pl-6 space-y-2">
+                    <ul v-show="isOpen('rolesypermisos')" class="space-y-2 pl-6">
                         <li>
-                            <Link class="group flex items-center py-2" :href="route('roles.index')" :class="subTitle === 'roles' ? 'activo flex'
+                            <Link class="flex items-center py-2 group" :href="route('roles.index')" :class="subTitle === 'roles' ? 'activo flex'
                                 : 'inactivo flex'">
                             <icon name="circle" class="mr-2 w-3 h-3" />
                             <div>Roles</div>
                             </Link>
                         </li>
                         <li>
-                            <Link class="group flex items-center py-2" :href="route('permisos.index')" :class="subTitle === 'permisos' ? 'activo flex'
+                            <Link class="flex items-center py-2 group" :href="route('permisos.index')" :class="subTitle === 'permisos' ? 'activo flex'
                                 : 'inactivo flex'">
                             <icon name="circle" class="mr-2 w-3 h-3" />
                             <div>Permisoscalis</div>
