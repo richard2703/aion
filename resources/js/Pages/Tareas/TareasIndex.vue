@@ -515,7 +515,8 @@ const closeModalTask = () => {
 
             <div v-if="customFilter" class="">
               <form @submit.prevent="filterTable()">
-                <div class="m-4 border ro                  <div class="m-4">
+                <div class="gap-2 border-gray-200 grid grid-cols-2 m-4 border rounded-lg">
+                  <div class="m-4">
                     <InputLabel for="departamento_id" value="Flujo de valor: " />
                     <select ref="departamento_select"
                       class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
