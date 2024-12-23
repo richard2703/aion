@@ -234,9 +234,9 @@ const formatearFecha = (dateString) => {
                         <span class="font-bold text-2xl">Plan</span>
                         <div>
                             {{ formatNumber(kpi.promedio) || '' }}
-                            <PrimaryButton class="bg-black pi pi-plus"
-                                @click="openCreateModal(kpi.id, kpi.actual, kpi.titulo)">
-                            </PrimaryButton>
+                            <PrimaryButton  @click="openCreateModal(kpi.id, kpi.actual, kpi.titulo)" class="bg-black hover:bg-gray-800">
+                                <i class="pi pi-plus" style="margin-right: 10px;"></i> Agregar nuevo
+                              </PrimaryButton>
                         </div>
                     </div>
 
