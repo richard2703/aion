@@ -24,6 +24,11 @@ const props = defineProps({
   departamento_id: Number,
 });
 
+const dateRange = ref({
+  start: null,
+  end: null,
+});
+
 const isEditing = ref(false);
 const editingTarea = ref({});
 const selectedPilar = ref(1);
@@ -55,8 +60,6 @@ const flujoValor = ref(departamento_id.value || "");
 const responsable = ref("");
 const revisor = ref("");
 const estatus = ref("");
-const desde = ref("");
-const hasta = ref("");
 
 const formValidate = useForm({
   validacion: "",
@@ -171,8 +174,8 @@ onMounted(() => {
 });
 
 watch(
-  [globalFilter, pilar, flujoValor, responsable, revisor, estatus, desde, hasta],
-  ([newGlobalFilter, newPilar, newFlujoValor, newResponsable, newRevisor, newEstatus, newDesde, newHasta]) => {
+  [globalFilter, pilar, flujoValor, responsable, revisor, estatus, dateRange],
+  ([newGlobalFilter, newPilar, newFlujoValor, newResponsable, newRevisor, newEstatus, newDateRange]) => {
     filters.value = {
       global: { value: newGlobalFilter, matchMode: "contains" },
       area_id: { value: newPilar, matchMode: "contains" },
@@ -180,8 +183,8 @@ watch(
       responsable_id: { value: newResponsable, matchMode: "contains" },
       revisor_id: { value: newRevisor, matchMode: "contains" },
       estatus_id: { value: newEstatus, matchMode: "contains" },
-      desde: { value: newDesde, matchMode: "contains" },
-      hasta: { value: newHasta, matchMode: "contains" },
+      desde: { value: newDateRange.start, matchMode: "contains" },
+      hasta: { value: newDateRange.end, matchMode: "contains" },
     };
     getTareas(1, rows.value, filters.value, sortField.value, sortOrder.value);
   }
@@ -350,13 +353,15 @@ const openFilter = () => {
 
 };
 const clearFilter = () => {
-  pilar.value = '';
   flujoValor.value = '';
   responsable.value = '';
   revisor.value = '';
   estatus.value = '';
-  desde.value = '';
-  hasta.value = '';
+  dateRange.value = {
+    start: null,
+    end: null,
+  };
+
   // customFilter.value = !customFilter.value
   getTareas();
 };
@@ -414,20 +419,6 @@ const sendMail = async () => {
     console.log(error);
   }
 };
-
-/////
-
-const days = [
-  { date: '2021-12-27' },
-  { date: '2021-12-28' },
-  { date: '2021-12-29' },
-  { date: '2021-12-30' },
-  { date: '2021-12-31' },
-  { date: '2022-01-01', isCurrentMonth: true },
-  { date: '2022-01-02', isCurrentMonth: true },
-  { date: '2022-01-12', isCurrentMonth: true, isToday: true },
-  { date: '2022-01-22', isCurrentMonth: true, isSelected: true },
-];
 
 const isModalOpen = ref(false);
 
@@ -502,40 +493,7 @@ const closeModalTask = () => {
       <div class="lg:gap-x-16 lg:grid lg:grid-cols-12 mt-6">
         <!-- Sección del Calendario -->
         <div class="lg:col-start-8 xl:col-start-9 lg:col-end-13 lg:row-start-1 mt-10 lg:mt-9 text-center">
-          <!-- Navegación del mes -->
-          <div class="flex items-center text-gray-900">
-            <button type="button" class="-m-1.5 p-1.5 text-gray-400 hover:text-gray-500">
-              <i class="pi-chevron-left pi" style="font-size: 1rem"></i>
-            </button>
-            <div class="flex-auto font-semibold text-sm">January</div>
-            <button type="button" class="-m-1.5 p-1.5 text-gray-400 hover:text-gray-500">
-              <i class="pi-chevron-right pi" style="font-size: 1rem"></i>
-            </button>
-          </div>
-
-          <!-- Días de la semana -->
-          <div class="grid grid-cols-7 mt-6 text-gray-500 text-xs">
-            <div>M</div>
-            <div>T</div>
-            <div>W</div>
-            <div>T</div>
-            <div>F</div>
-            <div>S</div>
-            <div>S</div>
-          </div>
-
-          <!-- Días del mes -->
-          <div class="gap-px grid grid-cols-7 bg-gray-200 shadow mt-2 rounded-lg ring-1 ring-gray-200 text-sm">
-            <button v-for="(day, dayIdx) in days" :key="day.date" class="focus:z-10 hover:bg-gray-100 py-1.5" :class="[
-              day.isCurrentMonth ? 'bg-white' : 'bg-gray-50',
-              (day.isSelected || day.isToday) && 'font-semibold',
-              day.isSelected ? 'text-white' : 'text-gray-900'
-            ]">
-              <time :datetime="day.date" class="flex justify-center items-center mx-auto rounded-full w-7 h-7">
-                {{ day.date.split('-').pop() }}
-              </time>
-            </button>
-          </div>
+          <VDatePicker  v-model.range="dateRange" />
 
           <button type="button" @click="openModal(false)"
             class="bg-black hover:bg-gray-800 shadow mt-8 px-3 py-3 rounded-md w-full font-semibold text-md text-white">
@@ -557,7 +515,11 @@ const closeModalTask = () => {
 
             <div v-if="customFilter" class="">
               <form @submit.prevent="filterTable()">
+<<<<<<< HEAD
                 <div class="gap-2 border-gray-200 grid grid-cols-3 my-5 border rounded-lg">
+=======
+                <div class="m-4 border rounded-lg border-gray-200 flex gap-2 grid grid-cols-2">
+>>>>>>> 434eb0493acb6f2a6ac65f7b7431411c9bd2e932
                   <div class="m-4">
                     <InputLabel for="departamento_id" value="Flujo de valor: " />
                     <select ref="departamento_select"
@@ -615,6 +577,7 @@ const closeModalTask = () => {
                         Terminado </option>
                     </select>
                   </div>
+<<<<<<< HEAD
 
                   <div class="m-4">
                     <InputLabel for="fecha" value="Fecha de entrega de: " />
@@ -625,6 +588,8 @@ const closeModalTask = () => {
                     <InputLabel for="created_at" value="Fecha de entrega hasta: " />
                     <TextInput id="fecha" v-model="hasta" type="date" class="block mt-1 w-full" autocomplete="fecha" />
                   </div>
+=======
+>>>>>>> 434eb0493acb6f2a6ac65f7b7431411c9bd2e932
                 </div>
               </form>
             </div>

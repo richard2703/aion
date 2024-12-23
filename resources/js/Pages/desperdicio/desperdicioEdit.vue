@@ -6,6 +6,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { showToast } from "../utils/SweetAlert.service";
+import PilaresSelect from "@/Components/v2/PilaresSelect.vue";
 
 const props = defineProps({
     areas: Array,
@@ -19,6 +20,7 @@ const departamentos = ref(props.departamentos);
 const tipos = ref(props.tipos);
 const filteredUsuarios = ref();
 const desperdicio = ref(props.desperdicio);
+const selectedPilar = ref(desperdicio.value.area_id || 1);
 
 const title = "Desperdicios";
 
@@ -32,6 +34,11 @@ const form = useForm({
     recurrencia: desperdicio.value.recurrencia,
     detectabilidad: desperdicio.value.detectabilidad,
 });
+
+const onSelectedPilar = (pilarID) => {
+  selectedPilar.value = pilarID;
+  form.area_id = pilarID;
+};
 
 async function getAreas() {
     await axios
@@ -110,6 +117,8 @@ onMounted(() => {
 
 <template>
     <Layout :titulo="title">
+        <PilaresSelect :currentPilarID="selectedPilar" :onSelectedPilar="onSelectedPilar"></PilaresSelect>
+
 
         <Head title="Desperdicios" />
         <div class="overflow-hidden sm:rounded-lg">
@@ -138,20 +147,6 @@ onMounted(() => {
                             <form @submit.prevent="submit">
 
                                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
-                                    <div class="mt-4">
-                                        <InputLabel for="area_id" value="Pilar: " />
-                                        <select ref="area_select" @change="onChange($event)"
-                                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                            v-model="form.area_id" required>
-                                            <option value="" disabled selected>
-                                                Seleccione una opcion
-                                            </option>
-                                            <option v-for="area in areas" :key="area.id" :value="area.id">
-                                                {{ area.nombre }}
-                                            </option>
-                                        </select>
-                                    </div>
-
                                     <!-- <div class="mt-4">
                                         <InputLabel for="departamento_id" value="Flujo de valor: " />
 

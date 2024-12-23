@@ -173,7 +173,6 @@ const submitModal = async () => {
             <div class="bg-white overflow-hidden">
                 
                 <div class="block md:flex justify-between items-end mb-8">
-                    <input v-model="globalFilter" placeholder="Buscar..." id="task-title" type="text" class="block border-gray-300 shadow-sm mt-1 py-3 focus:border-black rounded-md focus:ring-black min-w-full md:min-w-80 sm:text-sm" />
                     <div class="flex gap-5 mt-10 md:mt-0">
                         <PrimaryButton @click="openEditModal()"class="bg-gray-500 hover:bg-black">
                             <i class="pi pi-file-excel" style="margin-right: 10px; font-size: 1rem"></i> Excell
