@@ -138,7 +138,7 @@ function handleClick(id) {
             <div class="block md:flex justify-between items-end mb-8">
                 <input v-model="globalFilter" placeholder="Buscar..." id="task-title" type="text" class="block border-gray-300 shadow-sm mt-1 py-3 focus:border-black rounded-md focus:ring-black min-w-80 sm:text-sm" />
                 <PrimaryButton :href="route('reporte.create')" class="bg-black hover:bg-gray-800">
-                    <i class="pi pi-check" style="margin-right: 10px; font-size: 1rem"></i> Nuevo reporte
+                    <i class="pi pi-plus" style="margin-right: 10px; font-size: 1rem"></i> Nuevo reporte
                 </PrimaryButton>
                 <!-- <button :href="route('reporte.create')" type="button"
                     class="bg-black hover:bg-gray-800 shadow mt-8 px-3 py-3 rounded-md w-40 font-semibold text-md text-white">

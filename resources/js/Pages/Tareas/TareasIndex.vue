@@ -493,7 +493,7 @@ const closeModalTask = () => {
       <div class="lg:gap-x-16 lg:grid lg:grid-cols-12 mt-6">
         <!-- Sección del Calendario -->
         <div class="lg:col-start-8 xl:col-start-9 lg:col-end-13 lg:row-start-1 mt-10 lg:mt-9 text-center">
-          <VDatePicker  class="w-[100%]"  v-model.range="dateRange" />
+          <VDatePicker  v-model.range="dateRange" />
 
           <button type="button" @click="openModal(false)"
             class="bg-black hover:bg-gray-800 shadow mt-8 px-3 py-3 rounded-md w-full font-semibold text-md text-white">
@@ -515,7 +515,7 @@ const closeModalTask = () => {
 
             <div v-if="customFilter" class="">
               <form @submit.prevent="filterTable()">
-                <div class="gap-2 border-gray-200 grid grid-cols-2 m-4 border rounded-lg">
+                <div class="gap-2 border-gray-200 grid grid-cols-2 my-5 border rounded-lg">
                   <div class="m-4">
                     <InputLabel for="departamento_id" value="Flujo de valor: " />
                     <select ref="departamento_select"

@@ -273,8 +273,6 @@ watch(() => currentPilar, (newPilar) => {
 
 <template>
     <Layout2>
-        {{ procesoName }}
-        {{ procedimientoName }}
         <PilaresSelect :currentPilarID="currentPilar" :onSelectedPilar="onSelectedPilar"></PilaresSelect>
         <div class="grid grid-cols-3">
             <!-- Menú de navegación -->
