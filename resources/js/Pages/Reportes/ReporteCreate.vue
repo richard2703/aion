@@ -38,7 +38,7 @@ async function getDepartamentos() {
 
 const form = useForm({
     nombre: "",
-    departamento_id: "",
+    departamento_id: "1",
     avisos: [],
     highlights: [],
     lowlights: [],
