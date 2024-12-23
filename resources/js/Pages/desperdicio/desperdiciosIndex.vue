@@ -172,7 +172,7 @@ const submitModal = async () => {
         <div class="p-5">
             <div class="bg-white overflow-hidden">
                 
-                <div class="block md:flex justify-between items-end mb-8">
+                <div class="block md:flex justify-end items-end mb-8">
                     <div class="flex gap-5 mt-10 md:mt-0">
                         <PrimaryButton @click="openEditModal()"class="bg-gray-500 hover:bg-black">
                             <i class="pi pi-file-excel" style="margin-right: 10px; font-size: 1rem"></i> Excell

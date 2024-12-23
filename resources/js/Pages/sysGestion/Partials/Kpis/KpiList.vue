@@ -240,7 +240,7 @@ const formatearFecha = (dateString) => {
                         </div>
                     </div>
 
-                    <h2 class="px-4 py-2" colspan="3">
+                    <h2 class="py-2" colspan="3">
                         {{ kpi.titulo }}
                     </h2>
 
