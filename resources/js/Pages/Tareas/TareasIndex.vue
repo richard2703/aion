@@ -515,12 +515,7 @@ const closeModalTask = () => {
 
             <div v-if="customFilter" class="">
               <form @submit.prevent="filterTable()">
-<<<<<<< HEAD
-                <div class="gap-2 border-gray-200 grid grid-cols-3 my-5 border rounded-lg">
-=======
-                <div class="m-4 border rounded-lg border-gray-200 flex gap-2 grid grid-cols-2">
->>>>>>> 434eb0493acb6f2a6ac65f7b7431411c9bd2e932
-                  <div class="m-4">
+                <div class="m-4 border ro                  <div class="m-4">
                     <InputLabel for="departamento_id" value="Flujo de valor: " />
                     <select ref="departamento_select"
                       class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
@@ -577,7 +572,6 @@ const closeModalTask = () => {
                         Terminado </option>
                     </select>
                   </div>
-<<<<<<< HEAD
 
                   <div class="m-4">
                     <InputLabel for="fecha" value="Fecha de entrega de: " />
@@ -588,8 +582,6 @@ const closeModalTask = () => {
                     <InputLabel for="created_at" value="Fecha de entrega hasta: " />
                     <TextInput id="fecha" v-model="hasta" type="date" class="block mt-1 w-full" autocomplete="fecha" />
                   </div>
-=======
->>>>>>> 434eb0493acb6f2a6ac65f7b7431411c9bd2e932
                 </div>
               </form>
             </div>
