@@ -171,6 +171,7 @@ onMounted(() => {
   getAreas();
   getDepartamentos(selectedPilar.value);
   getUsuarios();
+  getMinutas();
 });
 
 watch(
@@ -493,7 +494,7 @@ const closeModalTask = () => {
       <div class="lg:gap-x-16 lg:grid lg:grid-cols-12 mt-6">
         <!-- Sección del Calendario -->
         <div class="lg:col-start-8 xl:col-start-9 lg:col-end-13 lg:row-start-1 mt-10 lg:mt-9 text-center">
-          <VDatePicker  class="w-[100%]"  v-model.range="dateRange" />
+          <VDatePicker class="w-[100%]" v-model.range="dateRange" />
 
           <button type="button" @click="openModal(false)"
             class="bg-black hover:bg-gray-800 shadow mt-8 px-3 py-3 rounded-md w-full font-semibold text-md text-white">
@@ -669,7 +670,7 @@ const closeModalTask = () => {
 
     <!-- Modal New Task -->
     <Modalv2 :isOpen="isModalOpen" :title="isEditing ? 'Editar Tarea' : 'Nueva Tarea'" @close="closeModal">
-    
+
       <!-- Content modal -->
       <div class="h-[500px] overflow-scroll">
         <form @submit.prevent="submit">
@@ -779,6 +780,13 @@ const closeModalTask = () => {
               class="block border-gray-300 shadow-sm mt-1 py-3 focus:border-black rounded-md focus:ring-black w-full sm:text-sm"
               v-model="form.nota" rows="3" cols="30" />
           </div>
+
+          <div class="flex justify-end">
+            <button type="button" @click="closeModal"
+              class="bg-gray-300 hover:bg-gray-400 mr-2 px-4 py-2 rounded-md text-gray-700">Cancelar</button>
+            <button type="submit" class="bg-black hover:bg-gray-800 px-4 py-2 rounded-md text-white"
+              :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Guardar</button>
+          </div>
         </form>
         <div v-if="isEditing == true">
           <hr class="my-4">
@@ -791,35 +799,27 @@ const closeModalTask = () => {
                   autocomplete="img_ref" />
               </div>
             </div>
+
+            <div>
+              <div class="flex justify-between items-center col-span-full mt-4">
+                <button type="submit" class="ms-4 pi pi-upload" :class="{
+                  'opacity-25': evidenciaForm.processing || form.processing,
+                }" :disabled="evidenciaForm.processing || form.processing">
+                </button>
+              </div>
+
+              <div
+                class="gap-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4">
+                <div v-for="evidencia in evidencias" class="bg-slate-100 w-60 text-center card">
+                  <Image :src="evidencia.img_ref" alt="Image" width="250" preview />
+                  <!-- <img :src="evidencia" alt="" srcset=""> -->
+                  <a class="text-2xl text-red-500 hover:text-red-700 cursor-pointer pi pi-trash"
+                    @click="deleteEvidencia(evidencia.id)"></a>
+                </div>
+
+              </div>
+            </div>
           </form>
-        </div>
-      </div>
-
-      <!-- Footer -->
-      <div>
-        <div class="flex justify-between items-center col-span-full mt-4">
-          <button type="submit" class="ms-4 pi pi-upload" :class="{
-            'opacity-25': evidenciaForm.processing || form.processing,
-          }" :disabled="evidenciaForm.processing || form.processing">
-          </button>
-
-          <div class="flex justify-end">
-            <button type="button" @click="closeModal"
-              class="bg-gray-300 hover:bg-gray-400 mr-2 px-4 py-2 rounded-md text-gray-700">Cancelar</button>
-            <button type="submit" class="bg-black hover:bg-gray-800 px-4 py-2 rounded-md text-white"
-              :class="{ 'opacity-25': form.processing }" :disabled="form.processing">Guardar</button>
-          </div>
-          
-        </div>
-
-        <div class="gap-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4">
-          <div v-for="evidencia in evidencias" class="bg-slate-100 w-60 text-center card">
-            <Image :src="evidencia.img_ref" alt="Image" width="250" preview />
-            <!-- <img :src="evidencia" alt="" srcset=""> -->
-            <a class="text-2xl text-red-500 hover:text-red-700 cursor-pointer pi pi-trash"
-              @click="deleteEvidencia(evidencia.id)"></a>
-          </div>
-
         </div>
       </div>
     </Modalv2>
