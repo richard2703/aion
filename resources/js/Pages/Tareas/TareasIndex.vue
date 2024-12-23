@@ -257,6 +257,7 @@ const submit = async () => {
           showToast("El registro ha sido actualizado", "success");
           closeModal();
           selectedPilar.value = selectedPilar.value;
+          getTareas('', '', filters.value, '', "");
         },
       });
     } else {
@@ -265,6 +266,7 @@ const submit = async () => {
           showToast("El registro ha sido creado", "success");
           closeModal();
           selectedPilar.value = selectedPilar.value;
+          getTareas('', '', filters.value, '', "");
           // window.location.href = route('tareas.index');
         },
       });
@@ -656,7 +658,7 @@ const closeModalTask = () => {
                     :href="route('tareas.detail', slotProps.data.id)">
                   </PrimaryButton>
 
-                  <PrimaryButton v-if="slotProps.data.validacion !== 1" class="bg-black m-2 pi pi-trash" @click.prevent="
+                  <PrimaryButton v-if="slotProps.data.validacion !== 1" class="bg-red-500 m-2 pi pi-trash" @click.prevent="
                     deleteTarea(slotProps.data.id)
                     ">
                   </PrimaryButton>

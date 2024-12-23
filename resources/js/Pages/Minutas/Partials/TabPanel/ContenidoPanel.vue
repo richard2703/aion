@@ -353,7 +353,7 @@ const getTiposMinuta = async () => {
                         </PrimaryButton>
                         <PrimaryButton class="m-2 pi pi-file-check" :href="route('minutas.show', slotProps.data.id)">
                         </PrimaryButton>
-                        <PrimaryButton class="m-2 pi pi-trash" @click.prevent="deleteMinuta(slotProps.data.id)">
+                        <PrimaryButton class="bg-red-500 m-2 pi pi-trash" @click.prevent="deleteMinuta(slotProps.data.id)">
                         </PrimaryButton>
                     </div>
                 </template>

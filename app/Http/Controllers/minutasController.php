@@ -109,11 +109,11 @@ class minutasController extends Controller
         }
 
         $user = auth()->user();
-        if ($user->hasRole('lider_pilar')) {
+        // if ($user->hasRole('lider_pilar')) {
             // dd('Admin'); // Devuelve una colección de nombres de roles
-        } else {
-            $query->where('privada', 0);
-        }
+        // } else {
+            // $query->where('privada', 0);
+        // }
         // $result = $query->with('challenge')->paginate($pageSize, ['*'], 'page', $page);
         $result = $query->with('area', 'departamento', 'lider', 'proceso', 'tipoMinuta')->paginate($pageSize, ['*'], 'page', $page);
         return response()->json($result);
@@ -141,7 +141,7 @@ class minutasController extends Controller
         $minuta->tipo = $request->tipo;
         $minuta->notas = $request->notas;
         $minuta->estatus = $request->estatus;
-        $minuta->privada = $request->privada;
+        // $minuta->privada = $request->privada; // TODO: Enable back
         $minuta->save();
 
         return redirect()->route('minutas.show', $minuta->id);
@@ -191,7 +191,7 @@ class minutasController extends Controller
         $minuta->tipo = $request->tipo;
         $minuta->notas = $request->notas;
         $minuta->estatus = $request->estatus;
-        $minuta->privada = $request->privada;
+        // $minuta->privada = $request->privada; TODO: Enable back
         $minuta->oculto = $request->oculto;
 
 
@@ -300,16 +300,16 @@ class minutasController extends Controller
         }
 
         $user = auth()->user();
-        if ($user->hasRole('lider_pilar')) {
+        // if ($user->hasRole('lider_pilar')) {
             // dd('Admin'); // Devuelve una colección de nombres de roles
-        } else {
-            $query->where('privada', 0);
-        }
+        // } else {
+            // $query->where('privada', 0);
+        // }
 
         // Filtrar las minutas ocultas
-        if (!$user->hasRole('admin') && !$user->hasRole('lider_pilar')) {
-            $query->where('oculto', 0);
-        }
+        // if (!$user->hasRole('admin') && !$user->hasRole('lider_pilar')) {
+            // $query->where('oculto', 0);
+        // }
 
         $query->withCount('tarea as tareas_total');
 
