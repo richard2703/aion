@@ -278,10 +278,10 @@ watch(() => currentPilar, (newPilar) => {
         <PilaresSelect :currentPilarID="currentPilar" :onSelectedPilar="onSelectedPilar"></PilaresSelect>
         <div class="grid grid-cols-3">
             <!-- Menú de navegación -->
-            <div class="xl:col-span-1 col-span-3 p-10">
+            <div class="col-span-3 xl:col-span-1 p-10">
                 <div class="text-base">
-                    <h4 class="font-semibold mb-1">Lista de navegación</h4>
-                    <p class="text-sm text-gray-500">
+                    <h4 class="mb-1 font-semibold">Lista de navegación</h4>
+                    <p class="text-gray-500 text-sm">
                         Accede rápidamente a cada nivel de información dentro de los pilares
                     </p>
                 </div>
@@ -292,11 +292,11 @@ watch(() => currentPilar, (newPilar) => {
             </div>
 
             <!-- Contenido dinámico -->
-            <div class="xl:col-span-2 col-span-3 p-8">
+            <div class="col-span-3 xl:col-span-2 p-8">
                 <!-- Contenido para Flujo de Valor -->
-                <div v-if="selectedItem === 'flujoDeValor'" class="border border-gray-300 p-8 rounded-md">
-                    <h2 class="text-lg font-medium mb-4">Flujo de valor</h2>
-                    <div class="container mx-auto overflow-x-auto mb-3">
+                <div v-if="selectedItem === 'flujoDeValor'" class="border-gray-300 p-8 border rounded-md">
+                    <h2 class="mb-4 font-medium text-lg">Flujo de valor</h2>
+                    <div class="mx-auto mb-3 overflow-x-auto container">
                         <div class="sm:col-span-1 lg:col-span-1">
                             <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
                             <DataTable :value="departamentos" paginator :rows="rows" :totalRecords="totalRecords"
@@ -304,7 +304,7 @@ watch(() => currentPilar, (newPilar) => {
                                 :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters" :globalFilterFields="[
                                     'nombre',
                                 ]" :sortField="sortField" :sortOrder="sortOrder"
-                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+                                class="p-datatable-gridlines p-datatable-sm p-datatable-striped">
                                 <template #empty> Sin Registros. </template>
                                 <Column field="nombre" header="Flujo de valor" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable>
@@ -320,9 +320,9 @@ watch(() => currentPilar, (newPilar) => {
                                 <Column field="kpis" header="KPIs" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable>
                                     <template #body="slotProps">
-                                        <div v-if="slotProps.data.kpis && slotProps.data.kpis.length">
+                                        <div  v-if="slotProps.data.kpis && slotProps.data.kpis.length">
                                             <ul>
-                                                <li v-for="(kpi, index) in slotProps.data.kpis" :key="index">
+                                                <li  v-for="(kpi, index) in slotProps.data.kpis" :key="index">
                                                     {{ kpi.titulo }}
                                                 </li>
                                             </ul>
@@ -339,16 +339,16 @@ watch(() => currentPilar, (newPilar) => {
 
                 <!-- Contenido para Proceso -->
                 <div v-if="selectedItem === 'proceso'" class="h-[620px] overflow-scroll">
-                    <h2 class="text-lg font-medium mb-4">Procesos</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <h2 class="mb-4 font-medium text-lg">Procesos</h2>
+                    <div class="gap-6 grid grid-cols-1 md:grid-cols-2">
                         <Card v-for="proceso in procesos" :title="proceso.nombre" :link="proceso.link_externo"
                             @click="getProcedimientos(proceso.value = proceso.id, 1, rows, newValue, sortField, sortOrder, proceso.nombre)" />
                     </div>
                 </div>
 
                 <!-- Contenido para Procedimientos -->
-                <div v-if="selectedItem === 'procedimiento'" class="border border-gray-300 p-8 rounded-md">
-                    <h2 class="text-lg font-medium mb-4">Procedimientos</h2>
+                <div v-if="selectedItem === 'procedimiento'" class="border-gray-300 p-8 border rounded-md">
+                    <h2 class="mb-4 font-medium text-lg">Procedimientos</h2>
                     <div>
                         <InputText v-model="globalFilterProcedimientos" placeholder="Buscar..." class="mb-3" />
                         <DataTable :value="procedimientos" paginator :rows="rows" :totalRecords="totalRecords"
@@ -356,7 +356,7 @@ watch(() => currentPilar, (newPilar) => {
                             :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters" :globalFilterFields="[
                                 'nombre',
                             ]" :sortField="sortField" :sortOrder="sortOrder"
-                            class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+                            class="p-datatable-gridlines p-datatable-sm p-datatable-striped">
                             <template #empty> Sin Registros. </template>
                             <Column field="nombre" header="Procedimientos" headerStyle="width:4em;"
                                 bodyStyle="text-align:center;" bodyClass="text-center" sortable>
@@ -389,8 +389,8 @@ watch(() => currentPilar, (newPilar) => {
                     </div>
                 </div>
 
-                <div v-if="selectedItem === 'estandar'" class="border border-gray-300 p-8 rounded-md">
-                    <h2 class="text-lg font-medium mb-4">Estandares</h2>
+                <div v-if="selectedItem === 'estandar'" class="border-gray-300 p-8 border rounded-md">
+                    <h2 class="mb-4 font-medium text-lg">Estandares</h2>
                     <div>
                         <InputText v-model="globalFilterEstandares" placeholder="Buscar..." class="mb-3" />
                         <DataTable :value="estandares" paginator :rows="rows" :totalRecords="totalRecords" :lazy="true"
@@ -398,7 +398,7 @@ watch(() => currentPilar, (newPilar) => {
                             :filters="filters" :globalFilterFields="[
                                 'nombre',
                             ]" :sortField="sortField" :sortOrder="sortOrder"
-                            class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+                            class="p-datatable-gridlines p-datatable-sm p-datatable-striped">
                             <template #empty> Sin Registros. </template>
                             <Column field="nombre" header="Estandares" headerStyle="width:4em;"
                                 bodyStyle="text-align:center;" bodyClass="text-center" sortable>

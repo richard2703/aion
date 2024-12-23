@@ -16,10 +16,10 @@ export default defineComponent({
 <template>
   <div class="w-full">
     <!-- Tab Buttons -->
-    <div class="flex border-b border-gray-300">
+    <div class="flex border-gray-300 border-b">
    
       <button
-        class="py-2 px-4 text-sm font-medium"
+        class="px-4 py-2 font-medium text-sm"
         :class="activeTab === 'metroMap' ? 'text-blue-500 border-b-2 border-blue-500' : 'text-gray-500'"
         @click="activeTab = 'metroMap'"
       >
@@ -27,7 +27,7 @@ export default defineComponent({
       </button>
 
       <button
-        class="py-2 px-4 text-sm font-medium"
+        class="px-4 py-2 font-medium text-sm"
         :class="activeTab === 'autoEval' ? 'text-blue-500 border-b-2 border-blue-500' : 'text-gray-500'"
         @click="activeTab = 'autoEval'"
       >
