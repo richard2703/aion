@@ -30,8 +30,8 @@ defineProps({
         :href="href"
         :disabled="disabled"
         :class="[
-            'inline-flex items-center justify-center py-3 px-4 border rounded-md font-semibold text-white text-[0.9rem] transition duration-150 ease-in-out focus:outline-none',
-            customClasses,
+            'inline-flex items-center justify-center py-3 px-4 border rounded-md font-semibold text-white text-[0.9rem] transition duration-150 ease-in-out focus:outline-none bg-black', // Establece el fondo por defecto a #000 (negro)
+            customClasses, // Permite cambiar el fondo con una clase personalizada
             { 'opacity-25 cursor-not-allowed': disabled }
         ]"
     >

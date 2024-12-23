@@ -95,3 +95,10 @@
 .p-paginator-content .p-select{
     border: 0px solid !important;
 }
+
+
+
+/* Style calendar */
+.vc-bordered{
+    width: 100% !important;
+}

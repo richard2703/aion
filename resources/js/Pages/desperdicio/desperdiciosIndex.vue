@@ -226,7 +226,7 @@ const submitModal = async () => {
                                     :href="route('desperdicio.edit', slotProps.data.id)">
                                 </PrimaryButton>
 
-                                <PrimaryButton class="me-2 pi pi-trash" @click.prevent="deleteItem(slotProps.data.id)">
+                                <PrimaryButton class="bg-red-500 me-2 pi pi-trash" @click.prevent="deleteItem(slotProps.data.id)">
                                 </PrimaryButton>
                             </template>
                         </Column>
