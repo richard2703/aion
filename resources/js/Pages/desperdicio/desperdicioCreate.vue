@@ -6,6 +6,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { showToast } from "../utils/SweetAlert.service";
+import PilaresSelect from "@/Components/v2/PilaresSelect.vue";
 
 const props = defineProps({
     areas: Array,
@@ -19,8 +20,10 @@ const tipos = ref(props.tipos);
 
 const title = "Desperdicios";
 
+const selectedPilar = ref(1);
+
 const form = useForm({
-    area_id: "",
+    area_id: selectedPilar.value,
     departamento_id: "",
     tipoDesperdicio_id: "",
     descripcion: "",
@@ -29,6 +32,11 @@ const form = useForm({
     recurrencia: '',
     detectabilidad: '',
 });
+
+const onSelectedPilar = (pilarID) => {
+  selectedPilar.value = pilarID;
+  form.area_id = pilarID;
+};
 
 async function getAreas() {
     await axios
@@ -88,12 +96,12 @@ const showTooltipRango = ref(false);
 const showTooltipRecurrencia = ref(false);
 const showTooltipDetectabilidad = ref(false);
 
-
-
 </script>
 
 <template>
     <Layout :titulo="title">
+        <PilaresSelect :currentPilarID="selectedPilar" :onSelectedPilar="onSelectedPilar"></PilaresSelect>
+
 
         <Head title="Desperdicios" />
         <div class="pl-5 overflow-hidden">
@@ -301,7 +309,7 @@ const showTooltipDetectabilidad = ref(false);
                                         </div>
 
                                         <div class="flex justify-end border-gray-200 bg-white my-7 pt-4 border-t">
-                                            <PrimaryButton :href="route('desperdicio.create')"
+                                            <PrimaryButton
                                                 class="bg-black hover:bg-gray-800 px-10">
                                                Guardar
                                             </PrimaryButton>
