@@ -20,7 +20,7 @@ const tipos = ref(props.tipos);
 
 const title = "Desperdicios";
 
-const selectedPilar = ref(1);
+const selectedPilar = ref(localStorage.getItem("PILAR_ID") || 1);
 
 const form = useForm({
     area_id: selectedPilar.value,

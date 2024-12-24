@@ -31,7 +31,7 @@ const dateRange = ref({
 
 const isEditing = ref(false);
 const editingTarea = ref({});
-const selectedPilar = ref(1);
+const selectedPilar = ref(localStorage.getItem("PILAR_ID") || 1);
 const areas = ref({});
 const minutas = ref({});
 const departamentos = ref({});
@@ -42,7 +42,7 @@ const tareaDetail = ref({});
 
 const tareas = ref();
 const authUser = ref(props.authUser);
-const area_id = ref(props.area_id);
+const area_id = ref(props.area_id || selectedPilar.value);
 const departamento_id = ref(props.departamento_id);
 
 //filtro global y paginado
@@ -146,7 +146,7 @@ const onSelectedPilar = (pilarID) => {
 };
 
 let form = useForm({
-  area_id: "",
+  area_id: selectedPilar.value || "",
   departamento_id: "",
   minuta_id: "",
   responsable_id: "",
@@ -257,7 +257,7 @@ const submit = async () => {
           showToast("El registro ha sido actualizado", "success");
           closeModal();
           selectedPilar.value = selectedPilar.value;
-          getTareas('', '', filters.value, '', "");
+          getTareas('', '', filters.value, '', '');
         },
       });
     } else {
@@ -266,8 +266,7 @@ const submit = async () => {
           showToast("El registro ha sido creado", "success");
           closeModal();
           selectedPilar.value = selectedPilar.value;
-          getTareas('', '', filters.value, '', "");
-          // window.location.href = route('tareas.index');
+          getTareas('', '', filters.value, '', '');
         },
       });
     }
@@ -429,7 +428,6 @@ const openModal = (edit = false, tareaId = null) => {
   isModalOpenTask.value = false
   isEditing.value = edit
 
-  console.log(edit);
   if (edit) {
     getTarea(tareaId).then(() => {
       form.reset();
@@ -452,6 +450,7 @@ const openModal = (edit = false, tareaId = null) => {
     });
   } else {
     form.reset();
+    form.area_id = selectedPilar.value || "";
     isModalOpen.value = true;
     editingTarea.value = {};
   }

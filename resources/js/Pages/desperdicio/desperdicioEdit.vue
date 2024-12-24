@@ -20,7 +20,7 @@ const departamentos = ref(props.departamentos);
 const tipos = ref(props.tipos);
 const filteredUsuarios = ref();
 const desperdicio = ref(props.desperdicio);
-const selectedPilar = ref(desperdicio.value.area_id || 1);
+const selectedPilar = ref(desperdicio.value.area_id || localStorage.getItem("PILAR_ID") || 1);
 
 const title = "Desperdicios";
 

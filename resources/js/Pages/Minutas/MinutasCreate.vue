@@ -9,6 +9,7 @@ import { showToast } from "../utils/SweetAlert.service";
 import Textarea from 'primevue/textarea';
 import AutoComplete from 'primevue/autocomplete';
 import Select from 'primevue/select';
+import PilaresSelect from "@/Components/v2/PilaresSelect.vue";
 
 
 const props = defineProps({
@@ -18,6 +19,7 @@ const props = defineProps({
     usuarios: Array,
 });
 
+const selectedPilar = ref(localStorage.getItem("PILAR_ID") || 1);
 const areas = ref(props.areas);
 const departamentos = ref(props.departamentos);
 const procesos = ref(props.procesos);
@@ -27,6 +29,12 @@ const responsable_id = ref();
 const tiposMinutas = ref([]);
 
 const title = "minutero";
+
+const onSelectedPilar = (pilarID) => {
+  selectedPilar.value = pilarID;
+  form.area_id = pilarID;
+  onChange({ target: { value: pilarID } });
+};
 
 
 async function getAreas() {
@@ -73,7 +81,7 @@ const getTiposMinuta = async () => {
 };
 
 const form = useForm({
-    area_id: "",
+    area_id: selectedPilar.value,
     departamento_id: "",
     proceso_id: "",
     lider_id: "",
@@ -115,6 +123,7 @@ onMounted(() => {
     getUsuarios();
     getProcesos();
     getTiposMinuta();
+    onChange({ target: { value: selectedPilar.value } });
 })
 console.log({ procesos: procesos });
 const search = (event) => {
@@ -135,6 +144,7 @@ const search = (event) => {
 
 <template>
     <Layout2 :titulo="title">
+        <PilaresSelect :currentPilarID="selectedPilar" :onSelectedPilar="onSelectedPilar"></PilaresSelect>
 
         <Head title="Minutas" />
 
@@ -161,21 +171,6 @@ const search = (event) => {
                 <div class="mx-auto container">
                     <form @submit.prevent="submit">
                         <div class="gap-7 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 2xl:grid-cols-4">
-                            <div class="mt-4">
-                                <InputLabel for="area_id" value="Pilar: " />
-                                <select ref="area_select" @change="onChange($event)"
-                                    class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
-                                    v-model="form.area_id" required>
-                                    <option value="" disabled selected>
-                                        Seleccione una opcion
-                                    </option>
-                                    <option v-for="area in areas" :key="area.id" :value="area.id">
-                                        {{ area.nombre }}
-                                    </option>
-                                </select>
-                            </div>
-
-
                             <div class="mt-4">
                                 <InputLabel for="departamento_id" value="Flujo de valor: " />
 

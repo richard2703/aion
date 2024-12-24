@@ -21,7 +21,7 @@ const activeTab = ref();
 const title = "sysGestion";
 const subTitle = "pdca";
 const usuario = ref(props.user);
-const selectedPilar = ref(usuario.value.area_id);
+const selectedPilar = ref(localStorage.getItem("PILAR_ID") || usuario.value.area_id);
 const areas = ref(props.areas);
 const departamentos = ref([]);
 const showCorrectivas = ref(false);
@@ -34,13 +34,13 @@ const procesos = ref([]);
 
 
 const form = useForm({
-    area_id: usuario.value.area_id,
+    area_id: selectedPilar.value,
     departamento_id: usuario.value.departamento_id,
 });
 
 onMounted(() => {
     getAreas();
-    getDepartamentos(usuario.value.area_id).then(() => {
+    getDepartamentos(selectedPilar.value).then(() => {
         getProcesos();
         getKpis();
     });

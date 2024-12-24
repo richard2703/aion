@@ -24,7 +24,11 @@ const procesoName = ref("");
 const procedimientoName = ref("");
 
 // Legacy code
-const currentPilar = ref(props.pilar_id);
+if (props.pilar_id !== localStorage.getItem("PILAR_ID")) {
+    localStorage.setItem("PILAR_ID", props.pilar_id);
+}
+
+const currentPilar = ref(props.pilar_id || localStorage.getItem("PILAR_ID") || 1);
 const departamentos = ref([]);
 const departamento = ref({});
 const procesos = ref([]);

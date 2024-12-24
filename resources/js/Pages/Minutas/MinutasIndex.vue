@@ -24,7 +24,7 @@ const props = defineProps({
 });
 const title = "minutero";
 const areas = ref([]);
-const selectedPilar = ref(1);
+const selectedPilar = ref(localStorage.getItem("PILAR_ID") || 1);
 const selectedArea = ref({});
 const area_id = props.area_id ? ref(props.area_id - 1) : ref(0);
 const departamento_id = ref(props.departamento_id);

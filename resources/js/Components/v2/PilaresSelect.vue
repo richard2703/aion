@@ -15,6 +15,7 @@ export default {
         onClick(pilarID) {
             const parent = this;
             return function () {
+                localStorage.setItem("PILAR_ID", pilarID);
                 parent.onSelectedPilar(pilarID);
             }
         }
