@@ -125,26 +125,26 @@ const getEvidencias = async () => {
 
 <template>
     <div class="py-2">
-        <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-            <div class="px-4 py-2 bg-white border-b border-gray-200">
-                <div class="container mx-auto">
-                    <h2 class="text-center text-2xl">Detalles de Tarea</h2>
+        <div class="bg-white overflow-hidden">
+            <div class="border-gray-200 bg-white px-4 py-2 border-b">
+                <div class="mx-auto container">
+                    <h2 class="text-2xl text-center">Detalles de Tarea</h2>
                     <form @submit.prevent="submit">
                         <div class="mt-4">
                             <InputLabel for="minuta_id" value="Reunión:" />
-                            <TextInput id="minuta_id" type="text" :value="task.minuta.alias" class="mt-1 block w-full"
+                            <TextInput id="minuta_id" type="text" :value="task.minuta.alias" class="block mt-1 w-full"
                                 disabled />
                         </div>
 
                         <div class="mt-4">
                             <InputLabel for="area_id" value="Pilar: " />
-                            <TextInput id="pilar" type="text" :value="task.area.nombre" class="mt-1 block w-full"
+                            <TextInput id="pilar" type="text" :value="task.area.nombre" class="block mt-1 w-full"
                                 disabled />
                         </div>
 
                         <div class="mt-4">
                             <InputLabel for="departamento_id" value="Flujo de valor: " />
-                            <TextInput id="flujo_valor" type="text" :value="task.area.nombre" class="mt-1 block w-full"
+                            <TextInput id="flujo_valor" type="text" :value="task.area.nombre" class="block mt-1 w-full"
                                 disabled />
                         </div>
 
@@ -152,23 +152,23 @@ const getEvidencias = async () => {
 
                         <div class="mt-4">
                             <InputLabel for="tarea" value="Titulo:" />
-                            <TextInput id="tarea" type="text" :value="task.tarea" class="mt-1 block w-full" disabled />
+                            <TextInput id="tarea" type="text" :value="task.tarea" class="block mt-1 w-full" disabled />
                         </div>
-                        <div class="mt-4 z-30">
+                        <div class="z-30 mt-4">
                             <InputLabel for="responsable_id" value="Responsable:" />
                             <div v-if="task.responsable">
                                 <TextInput id="responsable" v-model="task.responsable.name" type="text"
-                                    class="mt-1 block w-full" disabled />
+                                    class="block mt-1 w-full" disabled />
                             </div>
                             <div v-else>
                                 <InputLabel class="text-red-500" value="Sin responsable" />
                             </div>
                         </div>
-                        <div class="mt-4 z-30">
+                        <div class="z-30 mt-4">
                             <InputLabel for="revisor_id" value="Cliente de la tarea:" />
                             <div v-if="task.revisor">
                                 <TextInput id="rivisor" v-model="task.revisor.name" type="text"
-                                    class="mt-1 block w-full" disabled />
+                                    class="block mt-1 w-full" disabled />
                             </div>
                             <div v-else>
                                 <InputLabel class="text-red-500" value="Sin revisor" />
@@ -176,20 +176,20 @@ const getEvidencias = async () => {
                         </div>
                         <div class="mt-4">
                             <InputLabel for="estatus" value="Estatus: " />
-                            <TextInput id="estatus" type="text" :value="task.estatus.titulo" class="mt-1 block w-full"
+                            <TextInput id="estatus" type="text" :value="task.estatus.titulo" class="block mt-1 w-full"
                                 disabled />
                         </div>
 
                         <div class="mt-4">
                             <InputLabel for="fecha" value="Fecha de entrega:" />
-                            <TextInput id="fecha" type="text" :value="task.fecha" class="mt-1 block w-full" disabled />
+                            <TextInput id="fecha" type="text" :value="task.fecha" class="block mt-1 w-full" disabled />
                         </div>
                         <div class="mt-4">
                             <InputLabel for="nota" value="Notas: " />
-                            <Textarea class="mt-1 block w-full" v-model="form.nota" rows="5" cols="30" disabled />
+                            <Textarea class="block mt-1 w-full" v-model="form.nota" rows="5" cols="30" disabled />
                         </div>
 
-                        <div class="flex items-center justify-end mt-4">
+                        <div class="flex justify-end items-center mt-4">
                             <PrimaryButton @click="emit('close')" class="ms-4"
                                 :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                                 cerrar
@@ -197,11 +197,11 @@ const getEvidencias = async () => {
                         </div>
                     </form>
                 </div>
-                <div class="contaier mx-auto">
-                    <div class="grid grid-cols-1 gap-4">
+                <div class="mx-auto contaier">
+                    <div class="gap-4 grid grid-cols-1">
                         <InputLabel for="img_ref" value="Muestra del trabajo realizado: " />
-                        <div class="grid  grid-cols-1">
-                            <div v-for="evidencia in evidencias" class="card w-60 bg-slate-100">
+                        <div class="grid grid-cols-1">
+                            <div v-for="evidencia in evidencias" class="bg-slate-100 w-60 card">
                                 <Image :src="evidencia.img_ref" alt="Image" width="250" preview />
                                 <!-- <img :src="evidencia" alt="" srcset=""> -->
                             </div>

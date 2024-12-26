@@ -128,11 +128,11 @@ function handleClick(id) {
     <Layout :titulo="title">
 
         <Head title="semanales" />
-        <div class="overflow-hidden sm:rounded-lg">
-            <div class="breadcrumbsTitulo px-1">
+        <div class="sm:rounded-lg overflow-hidden">
+            <div class="px-1 breadcrumbsTitulo">
                 <h3>Metas (30 60 90)</h3>
             </div>
-            <div class="breadcrumbs flex">
+            <div class="flex breadcrumbs">
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
@@ -143,13 +143,13 @@ function handleClick(id) {
         </div>
 
         <div class="py-2">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+            <div class="bg-white overflow-hidden">
                 <div>
-                    <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
+                    <div class="flex justify-end border-gray-200 bg-white px-4 py-2 border-b">
                         <PrimaryButton :href="route('metas.create')" class="m-4 pi pi-plus"></PrimaryButton>
                     </div>
-                    <div class="px-4 py-2 bg-white border-b border-gray-200">
-                        <div class="container mx-auto">
+                    <div class="border-gray-200 bg-white px-4 py-2 border-b">
+                        <div class="mx-auto container">
                             <!-- <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" /> -->
 
                             <DataTable :value="tabla" paginator :rows="rows" :totalRecords="totalRecords" :lazy="true"
@@ -159,7 +159,7 @@ function handleClick(id) {
                                     'nombre',
                                     'descripcion',
                                 ]" :sortField="sortField" :sortOrder="sortOrder"
-                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+                                class="p-datatable-gridlines p-datatable-sm p-datatable-striped">
                                 <template #empty> No data found. </template>
                                 <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
                                     sortable></Column>
@@ -170,18 +170,18 @@ function handleClick(id) {
 
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">
-                                        <PrimaryButton class="pi pi-eye me-2"
+                                        <PrimaryButton class="me-2 pi pi-eye"
                                             :href="route('metas.trimestre', slotProps.data.id)">
                                         </PrimaryButton>
-                                        <!-- <PrimaryButton class="pi pi-eye me-2" @click="handleClick(slotProps.data.id)"
+                                        <!-- <PrimaryButton class="me-2 pi pi-eye" @click="handleClick(slotProps.data.id)"
                                             :disabled="isLoading">
                                             <span v-if="!isLoading">Ver Reporte</span>
                                             <span v-else>
-                                                <i class="pi pi-spinner pi-spin"></i> Cargando...
+                                                <i class="pi pi-spin pi-spinner"></i> Cargando...
                                             </span>
                                         </PrimaryButton> -->
 
-                                        <!-- <PrimaryButton class="pi pi-download me-2"
+                                        <!-- <PrimaryButton class="me-2 pi pi-download"
                                             :href="route('reporte.pdf', slotProps.data.id)">
                                         </PrimaryButton> -->
 

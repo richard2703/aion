@@ -112,11 +112,11 @@ const onSort = (event) => {
     <Layout :titulo="title">
 
         <Head title="Procedimientos" />
-        <div class="overflow-hidden sm:rounded-lg">
-            <div class="breadcrumbsTitulo px-1">
+        <div class="sm:rounded-lg overflow-hidden">
+            <div class="px-1 breadcrumbsTitulo">
                 <h3>Procedimientos</h3>
             </div>
-            <div class="breadcrumbs flex">
+            <div class="flex breadcrumbs">
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
@@ -127,13 +127,13 @@ const onSort = (event) => {
         </div>
 
         <div class="py-2">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+            <div class="bg-white overflow-hidden">
                 <div>
-                    <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
+                    <div class="flex justify-end border-gray-200 bg-white px-4 py-2 border-b">
                         <PrimaryButton :href="route('procedimiento.create')" class="m-4 pi pi-plus"></PrimaryButton>
                     </div>
-                    <div class="px-4 py-2 bg-white border-b border-gray-200">
-                        <div class="container mx-auto overflow-x-auto">
+                    <div class="border-gray-200 bg-white px-4 py-2 border-b">
+                        <div class="mx-auto overflow-x-auto container">
                             <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
                             <DataTable :value="procedimientos" paginator :rows="rows" :totalRecords="totalRecords"
                                 :lazy="true" :first="first" @page="onPage" @sort="onSort"
@@ -144,7 +144,7 @@ const onSort = (event) => {
                                     'descripcion',
                                     'link_externo',
                                 ]" :sortField="sortField" :sortOrder="sortOrder"
-                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+                                class="p-datatable-gridlines p-datatable-sm p-datatable-striped">
                                 <template #empty> No data found. </template>
                                 <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
                                     sortable></Column>

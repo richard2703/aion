@@ -95,50 +95,50 @@ const submit = async () => {
 
 <template>
     <div class="py-2">
-        <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-            <div class="px-4 py-2 bg-white border-b border-gray-200">
-                <div class="container mx-auto">
-                    <h2 class="text-center text-2xl">Portada de Reporte</h2>
+        <div class="bg-white overflow-hidden">
+            <div class="border-gray-200 bg-white px-4 py-2 border-b">
+                <div class="mx-auto container">
+                    <h2 class="text-2xl text-center">Portada de Reporte</h2>
                     <form @submit.prevent="submit" enctype="multipart/form-data">
-                        <div class="grid grid-cols-1 gap-4">
+                        <div class="gap-4 grid grid-cols-1">
                             <!-- <div>
                                 <InputLabel for="proposito" value="Propósito: " />
-                                <TextInput id="proposito" v-model="form.proposito" type="text" class="mt-1 block w-full"
+                                <TextInput id="proposito" v-model="form.proposito" type="text" class="block mt-1 w-full"
                                     required autofocus autocomplete="proposito" />
                             </div>
                             <div>
                                 <InputLabel for="slogan" value="Slogan: " />
-                                <TextInput id="slogan" v-model="form.slogan" type="text" class="mt-1 block w-full"
+                                <TextInput id="slogan" v-model="form.slogan" type="text" class="block mt-1 w-full"
                                     required autofocus autocomplete="slogan" />
                             </div>
                             <div>
                                 <InputLabel for="actuacion" value="Principios de actuacion: " />
-                                <TextInput id="actuacion" v-model="form.actuacion" type="text" class="mt-1 block w-full"
+                                <TextInput id="actuacion" v-model="form.actuacion" type="text" class="block mt-1 w-full"
                                     required autofocus autocomplete="actuacion" />
                             </div> -->
 
                             <!-- <div>
                                 <InputLabel for="logo" value="Logo: " />
                                 <input id="logo" type="file" @change="onFileChange('logo', $event)"
-                                    class="mt-1 block w-full" autocomplete="logo" />
+                                    class="block mt-1 w-full" autocomplete="logo" />
                                 <img class="w-40" :src="logo_path" alt="Logo actual" srcset="">
                             </div> -->
 
                             <!-- <div>
                                 <InputLabel for="banner" value="Banner: " />
                                 <input id="banner" type="file" @change="onFileChange('banner', $event)"
-                                    class="mt-1 block w-full" autocomplete="banner" />
+                                    class="block mt-1 w-full" autocomplete="banner" />
                                 <img class="w-40" :src="banner_path" alt="Banner actual" srcset="">
                             </div> -->
 
                             <div>
                                 <InputLabel for="Potada" value="Potada: " />
                                 <input id="portada" type="file" @change="onFileChange('portada', $event)"
-                                    class="mt-1 block w-full" autocomplete="portada" />
+                                    class="block mt-1 w-full" autocomplete="portada" />
                                 <img class="w-40" :src="portada_path" alt="portada actual" srcset="">
                             </div>
 
-                            <div class="col-span-full flex items-center justify-end mt-4">
+                            <div class="flex justify-end items-center col-span-full mt-4">
                                 <PrimaryButton class="ms-4 pi pi-save" :class="{
                                     'opacity-25': form.processing,
                                 }" :disabled="form.processing">

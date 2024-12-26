@@ -58,19 +58,19 @@ const deleteTipo = async (id) => {
 
 <template>
     <div class="py-2">
-        <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-            <div class="px-4 py-2 bg-white border-b border-gray-200">
-                <div class="container mx-auto">
+        <div class="bg-white overflow-hidden">
+            <div class="border-gray-200 bg-white px-4 py-2 border-b">
+                <div class="mx-auto container">
 
                     <div class="mt-5 py-2">
 
                         <ul class="m-4">
-                            <li class="border-b my-2" v-for="tipoMinuta in tiposMinutas">
+                            <li class="my-2 border-b" v-for="tipoMinuta in tiposMinutas">
                                 {{ tipoMinuta.titulo }}
                                 <div class="float-right">
-                                    <button class="pi pi-pencil text-red-500 mx-2"
+                                    <button class="mx-2 text-red-500 pi pi-pencil"
                                         @click="editTipo(tipoMinuta.id)"></button>
-                                    <button class="pi pi-times text-red-500 mx-2"
+                                    <button class="mx-2 text-red-500 pi pi-times"
                                         @click="deleteTipo(tipoMinuta.id)"></button>
                                 </div>
                             </li>

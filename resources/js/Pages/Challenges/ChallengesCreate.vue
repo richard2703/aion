@@ -71,11 +71,11 @@ onMounted(() => {
 
         <Head title="Challenges" />
 
-        <div class="overflow-hidden sm:rounded-lg">
-            <div class="breadcrumbsTitulo px-1">
+        <div class="sm:rounded-lg overflow-hidden">
+            <div class="px-1 breadcrumbsTitulo">
                 <h3>Challenges</h3>
             </div>
-            <div class="breadcrumbs flex">
+            <div class="flex breadcrumbs">
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
@@ -89,18 +89,18 @@ onMounted(() => {
         </div>
 
         <div class="py-2">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+            <div class="bg-white overflow-hidden">
                 <div>
-                    <div class="px-4 my-4 py-2 flex justify-end bg-white border-b border-gray-200"></div>
-                    <div class="px-4 py-2 bg-white border-b border-gray-200">
-                        <div class="container mx-auto">
+                    <div class="flex justify-end border-gray-200 bg-white my-4 px-4 py-2 border-b"></div>
+                    <div class="border-gray-200 bg-white px-4 py-2 border-b">
+                        <div class="mx-auto container">
                             <form @submit.prevent="submit">
 
 
                                 <div class="mt-4">
                                     <InputLabel for="area_id" value="Pilar: " />
                                     <select ref="area_select" @change="onAreaChange($event)"
-                                        class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                        class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                                         v-model="form.area_id" required>
                                         <option value="" disabled selected>
                                             Seleccione una opcion
@@ -114,7 +114,7 @@ onMounted(() => {
                                     <InputLabel for="seccion_select" value="Seccion: " />
 
                                     <select ref="seccion_select"
-                                        class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                        class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                                         v-model="form.seccion_id" required>
                                         <option value="" disabled selected>
                                             Seleccione una opcion
@@ -129,10 +129,10 @@ onMounted(() => {
                                 <div class="mt-4">
                                     <InputLabel for="challenge" value="Challenge: " />
                                     <TextInput id="challenge" v-model="form.challenge" type="text"
-                                        class="mt-1 block w-full" required autocomplete="new-challenge" />
+                                        class="block mt-1 w-full" required autocomplete="new-challenge" />
                                 </div>
 
-                                <div class="flex items-center justify-end mt-4">
+                                <div class="flex justify-end items-center mt-4">
                                     <PrimaryButton class="ms-4 pi pi-save" :class="{
                                         'opacity-25': form.processing,
                                     }" :disabled="form.processing">

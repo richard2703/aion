@@ -70,11 +70,11 @@ onMounted(() => {
     <Layout>
 
         <Head title="Usuario" />
-        <div class="overflow-hidden sm:rounded-lg">
-            <div class="breadcrumbsTitulo px-1">
+        <div class="sm:rounded-lg overflow-hidden">
+            <div class="px-1 breadcrumbsTitulo">
                 <h3>Usuarios</h3>
             </div>
-            <div class="breadcrumbs flex">
+            <div class="flex breadcrumbs">
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
@@ -88,22 +88,22 @@ onMounted(() => {
         </div>
 
         <div class="py-2">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+            <div class="bg-white overflow-hidden">
                 <div>
-                    <div class="px-4 my-4 py-2 flex justify-end bg-white border-b border-gray-200"></div>
-                    <div class="px-4 py-2 bg-white border-b border-gray-200">
-                        <div class="container mx-auto">
+                    <div class="flex justify-end border-gray-200 bg-white my-4 px-4 py-2 border-b"></div>
+                    <div class="border-gray-200 bg-white px-4 py-2 border-b">
+                        <div class="mx-auto container">
                             <form @submit.prevent="submit">
                                 <div>
                                     <InputLabel for="name" value="Nombre" />
-                                    <TextInput id="name" v-model="form.name" type="text" class="mt-1 block w-full"
+                                    <TextInput id="name" v-model="form.name" type="text" class="block mt-1 w-full"
                                         required autofocus autocomplete="name" />
                                     <InputError class="mt-2" :message="form.errors.name" />
                                 </div>
 
                                 <div class="mt-4">
                                     <InputLabel for="email" value="Correo electronico" />
-                                    <TextInput id="email" v-model="form.email" type="email" class="mt-1 block w-full"
+                                    <TextInput id="email" v-model="form.email" type="email" class="block mt-1 w-full"
                                         required autocomplete="username" />
                                     <InputError class="mt-2" :message="form.errors.email" />
                                 </div>
@@ -111,7 +111,7 @@ onMounted(() => {
                                 <div class="mt-4">
                                     <InputLabel for="area_id" value="Pilar: " />
                                     <select ref="area_select" @change="onChange($event)"
-                                        class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                        class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                                         v-model="form.area_id" required>
                                         <option value="" disabled selected>
                                             Seleccione una opcion
@@ -125,7 +125,7 @@ onMounted(() => {
                                 <div class="mt-4">
                                     <InputLabel for="departamento_id" value="Flujo de valor: " />
                                     <select ref="departamento_select"
-                                        class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                        class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                                         v-model="form.departamento_id" required>
                                         <option value="" disabled selected>
                                             Seleccione una opcion
@@ -169,19 +169,19 @@ onMounted(() => {
                                 <div class="mt-4">
                                     <InputLabel for="password" value="Password" />
                                     <TextInput id="password" v-model="form.password" type="password"
-                                        class="mt-1 block w-full" required autocomplete="new-password" />
+                                        class="block mt-1 w-full" required autocomplete="new-password" />
                                     <InputError class="mt-2" :message="form.errors.password" />
                                 </div>
 
                                 <div class="mt-4">
                                     <InputLabel for="password_confirmation" value="Confirm Password" />
                                     <TextInput id="password_confirmation" v-model="form.password_confirmation"
-                                        type="password" class="mt-1 block w-full" required
+                                        type="password" class="block mt-1 w-full" required
                                         autocomplete="new-password" />
                                     <InputError class="mt-2" :message="form.errors.password_confirmation" />
                                 </div>
 
-                                <div class="flex items-center justify-end mt-4">
+                                <div class="flex justify-end items-center mt-4">
                                     <PrimaryButton class="ms-4 pi pi-save" :class="{ 'opacity-25': form.processing }"
                                         :disabled="form.processing">
 

@@ -171,11 +171,11 @@ const isHidden = computed({
 
         <Head title="Minutas" />
 
-        <div class="overflow-hidden sm:rounded-lg">
-            <div class="breadcrumbsTitulo px-1">
+        <div class="sm:rounded-lg overflow-hidden">
+            <div class="px-1 breadcrumbsTitulo">
                 <h3>Editar Minuta</h3>
             </div>
-            <div class="breadcrumbs flex">
+            <div class="flex breadcrumbs">
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
@@ -189,18 +189,18 @@ const isHidden = computed({
         </div>
 
         <div class="py-2">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+            <div class="bg-white overflow-hidden">
                 <div>
-                    <div class="px-4 my-4 py-2 flex justify-end bg-white border-b border-gray-200"></div>
-                    <div class="px-4 py-2 bg-white border-b border-gray-200">
-                        <div class="container mx-auto">
+                    <div class="flex justify-end border-gray-200 bg-white my-4 px-4 py-2 border-b"></div>
+                    <div class="border-gray-200 bg-white px-4 py-2 border-b">
+                        <div class="mx-auto container">
                             <form @submit.prevent="submit">
 
-                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+                                <div class="gap-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
                                     <div class="mt-4">
                                         <InputLabel for="area_id" value="Pilar: " />
                                         <select ref="area_select" @change="onChange($event)"
-                                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                            class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                                             v-model="form.area_id" required>
                                             <option value="" disabled selected>
                                                 Seleccione una opcion
@@ -214,7 +214,7 @@ const isHidden = computed({
                                         <InputLabel for="departamento_id" value="Flujo de valor: " />
 
                                         <select ref="departamento_select"
-                                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                            class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                                             v-model="form.departamento_id" required>
                                             <option value="" disabled selected>
                                                 Seleccione una opcion
@@ -229,7 +229,7 @@ const isHidden = computed({
                                         <InputLabel for="tipo" value="Tipo: " />
 
                                         <select ref="tipo_select"
-                                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                            class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                                             v-model="form.tipo" required>
                                             <option value="" disabled selected>
                                                 Seleccione una opcion
@@ -259,7 +259,7 @@ const isHidden = computed({
 
                                 <div class="mt-4">
                                     <InputLabel for="alias" value="Alias: " />
-                                    <TextInput id="alias" v-model="form.alias" type="text" class="mt-1 block w-full"
+                                    <TextInput id="alias" v-model="form.alias" type="text" class="block mt-1 w-full"
                                         required autocomplete="new-challenge" />
                                 </div>
 
@@ -267,7 +267,7 @@ const isHidden = computed({
                                         <InputLabel for="estatus" value="Estatus: " />
 
                                         <select ref="departamento_select"
-                                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                            class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                                             v-model="form.estatus" required>
                                             <option value="0" selected>
                                                 Retrasado </option>
@@ -280,12 +280,12 @@ const isHidden = computed({
                                         </select>
                                     </div> -->
 
-                                <div class=" mt-4">
+                                <div class="mt-4">
                                     <InputLabel for="notas" value="Notas: " />
                                     <Textarea v-model="form.notas" rows="3" style="width: 100%; " />
                                 </div>
-                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
-                                    <div class=" mt-4">
+                                <div class="gap-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
+                                    <div class="mt-4">
                                         <InputLabel for="Privada" value="¿Exclusivo para lideres de pilar? " />
                                         <!-- <input type="checkbox" @change="validateTarea(slotProps.data, $event)"
                                                 :disabled="slotProps.data.validacion ? true : false"
@@ -294,7 +294,7 @@ const isHidden = computed({
                                         Exclusivo
                                     </div>
 
-                                    <div class=" mt-4">
+                                    <div class="mt-4">
                                         <InputLabel for="oculto" value="¿Ocultar la minuta?" />
                                         <!-- <input type="checkbox" @change="validateTarea(slotProps.data, $event)"
                                                 :disabled="slotProps.data.validacion ? true : false"
@@ -304,7 +304,7 @@ const isHidden = computed({
                                     </div>
                                 </div>
 
-                                <div class="px-4 my-4 pt-2 flex justify-end bg-white border-t border-gray-200">
+                                <div class="flex justify-end border-gray-200 bg-white my-4 px-4 pt-2 border-t">
                                     <PrimaryButton class="ms-4 pi pi-save" :class="{ 'opacity-25': form.processing, }"
                                         :disabled="form.processing">
 

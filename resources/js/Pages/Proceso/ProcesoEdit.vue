@@ -81,11 +81,11 @@ const submit = () => {
     <Layout>
 
         <Head title="Procesos" />
-        <div class="overflow-hidden sm:rounded-lg">
-            <div class="breadcrumbsTitulo px-1">
+        <div class="sm:rounded-lg overflow-hidden">
+            <div class="px-1 breadcrumbsTitulo">
                 <h3>Procesos</h3>
             </div>
-            <div class="breadcrumbs flex">
+            <div class="flex breadcrumbs">
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
@@ -99,18 +99,18 @@ const submit = () => {
         </div>
 
         <div class="py-2">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+            <div class="bg-white overflow-hidden">
                 <div>
-                    <div class="px-4 my-4 py-2 flex justify-end bg-white border-b border-gray-200"></div>
-                    <div class="px-4 py-2 bg-white border-b border-gray-200">
-                        <div class="container mx-auto">
+                    <div class="flex justify-end border-gray-200 bg-white my-4 px-4 py-2 border-b"></div>
+                    <div class="border-gray-200 bg-white px-4 py-2 border-b">
+                        <div class="mx-auto container">
                             <form @submit.prevent="submit">
 
-                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+                                <div class="gap-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
                                     <div class="mt-4">
                                         <InputLabel for="area_id" value="Pilar: " />
                                         <select ref="area_select" @change="onChange($event)"
-                                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                            class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                                             v-model="form.area_id" required>
                                             <option value="" disabled selected>
                                                 Seleccione una opcion
@@ -124,7 +124,7 @@ const submit = () => {
                                         <InputLabel for="departamento_id" value="Flujo de valor: " />
 
                                         <select ref="departamento_select"
-                                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                            class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                                             v-model="form.departamento_id" required>
                                             <option value="" disabled selected>
                                                 Seleccione una opcion
@@ -139,14 +139,14 @@ const submit = () => {
                                     <div class="my-4">
                                         <InputLabel for="nombre" value="Proceso: " />
                                         <TextInput id="nombre" v-model="form.nombre" type="text"
-                                            class="mt-1 block w-full" required autocomplete="new-challenge" />
+                                            class="block mt-1 w-full" required autocomplete="new-challenge" />
                                     </div>
                                     <div class="my-4">
                                         <InputLabel for="descripcion" value="Descripcion: " />
                                         <Textarea class="w-full" v-model="form.descripcion" rows="5" cols="30" />
                                     </div>
                                 </div>
-                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+                                <div class="gap-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
                                     <div class="my-4">
                                         <InputLabel for="link_externo" value="Link externo: " />
                                         <Textarea class="w-full" v-model="form.link_externo" rows="5" cols="30" />
@@ -158,7 +158,7 @@ const submit = () => {
                                     </div>
                                 </div>
                                 <hr>
-                                <div class="flex items-center justify-end mt-4">
+                                <div class="flex justify-end items-center mt-4">
                                     <PrimaryButton class="ms-4 pi pi-save" :class="{
                                         'opacity-25': form.processing,
                                     }" :disabled="form.processing">

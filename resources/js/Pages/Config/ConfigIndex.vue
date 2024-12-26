@@ -18,11 +18,11 @@ const template = ref('dashboard');
     <Layout title="Configuraciones">
 
         <Head title="Configuraciones" />
-        <div class="overflow-hidden sm:rounded-lg">
-            <div class="breadcrumbsTitulo px-1">
+        <div class="sm:rounded-lg overflow-hidden">
+            <div class="px-1 breadcrumbsTitulo">
                 <h3>Configuraciones</h3>
             </div>
-            <div class="breadcrumbs flex">
+            <div class="flex breadcrumbs">
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
@@ -33,30 +33,30 @@ const template = ref('dashboard');
         </div>
 
         <div>
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+            <div class="bg-white overflow-hidden">
                 <div>
-                    <div class="px-4 my-4 py-2 flex justify-end bg-white border-b border-gray-200"></div>
-                    <div class="px-4 py-2 bg-white border-b border-gray-200">
-                        <div class="container mx-auto">
+                    <div class="flex justify-end border-gray-200 bg-white my-4 px-4 py-2 border-b"></div>
+                    <div class="border-gray-200 bg-white px-4 py-2 border-b">
+                        <div class="mx-auto container">
                             <div class="grid sm:grid-cols-1 md:grid-cols-2 bg-slate-50">
                                 <div class="bg-white p-4">
 
                                     <h2 class="text-2xl">Menu de Configuraciones</h2>
 
                                     <ul class="space-y-2">
-                                        <li class="text-blue-300 hover:text-blue-800 font-bold text-xl">
+                                        <li class="font-bold text-blue-300 text-xl hover:text-blue-800">
                                             <button @click="template = 'dashboard'">
                                                 Dashboard
                                             </button>
                                         </li>
                                         <!-- TODO: eliminar si no se usa -->
-                                        <li class="text-blue-300 hover:text-blue-800 font-bold text-xl">
+                                        <li class="font-bold text-blue-300 text-xl hover:text-blue-800">
                                             <button @click="template = 'tipoMinuta'">
                                                 Tipos de minuta
                                             </button>
                                         </li>
 
-                                        <li class="text-blue-300 hover:text-blue-800 font-bold text-xl">
+                                        <li class="font-bold text-blue-300 text-xl hover:text-blue-800">
                                             <button @click="template = 'Portada'">
                                                 Portada de Reporte
                                             </button>
