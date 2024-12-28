@@ -102,3 +102,8 @@
 .vc-bordered{
     width: 100% !important;
 }
+
+
+.contentEvaluation .modalEvaluation{
+    background-color: #17171ea6;
+}

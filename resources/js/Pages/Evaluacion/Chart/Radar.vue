@@ -42,11 +42,11 @@ const setChartData = () => {
         datasets: [
             {
                 label: 'Resultados por Pilar',
-                borderColor: documentStyle.getPropertyValue('--p-gray-400'),
-                pointBackgroundColor: documentStyle.getPropertyValue('--p-gray-400'),
-                pointBorderColor: documentStyle.getPropertyValue('--p-gray-400'),
+                borderColor: documentStyle.getPropertyValue('--p-blue-400'),
+                pointBackgroundColor: documentStyle.getPropertyValue('--p-blue-400'),
+                pointBorderColor: documentStyle.getPropertyValue('--p-green-400'),
                 pointHoverBackgroundColor: textColor,
-                pointHoverBorderColor: documentStyle.getPropertyValue('--p-gray-400'),
+                pointHoverBorderColor: documentStyle.getPropertyValue('--p-green-400'),
                 data: chartValues
             },
             {
@@ -110,11 +110,11 @@ function getResultLabel(score) {
 
 function getBackgroundColor(score) {
     if (score < 21) {
-        return 'bg-red-800';
+        return 'bg-[#4ADE80]';
     } else if (score < 41) {
-        return 'bg-red-500';
+        return 'bg-[#9CA3AF]';
     } else if (score < 61) {
-        return 'bg-yellow-500';
+        return 'bg-[#60A5FA]';
     } else if (score < 81) {
         return 'bg-green-500';
     } else {
@@ -126,13 +126,15 @@ function getBackgroundColor(score) {
 
 <template>
     <div class="card">
-        <Chart type="radar" :data="chartData" :options="chartOptions" class="radar w-full flex justify-center" />
+        <div>
+            <Chart type="radar" :data="chartData" :options="chartOptions" class="flex h-[380px] radar" />
+        </div>
 
-        <div class="flex">
-            <h2 class="text-2xl mb-3 font-semibold text-gray-800">Comparativo entre Evaluaciones</h2>
+        <div class="mb-3">
+            <h2 class="mb-3 font-semibold text-gray-800 text-xl">Comparativo entre Evaluaciones</h2>
             <div class="space-y-3">
                 <div v-for="result in results" class="flex items-center gap-3">
-                    <div class="w-6 h-[2px]" :class="getBackgroundColor(result.score)"></div>
+                    <div class="my-2 rounded-full w-7 h-7" :class="getBackgroundColor(result.score)"></div>
                     <span class="text-gray-700">{{ result.area.nombre }} ({{ result.score }}%) - {{ getResultLabel(result.score) }}</span>
                 </div>
             </div>
