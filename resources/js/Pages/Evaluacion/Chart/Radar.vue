@@ -110,15 +110,15 @@ function getResultLabel(score) {
 
 function getBackgroundColor(score) {
     if (score < 21) {
-        return 'bg-[#4ADE80]';
+        return 'bg-black';
     } else if (score < 41) {
-        return 'bg-[#9CA3AF]';
+        return 'bg-gray-500';
     } else if (score < 61) {
-        return 'bg-[#60A5FA]';
+        return 'bg-blue-500';
     } else if (score < 81) {
         return 'bg-green-500';
     } else {
-        return 'bg-blue-500';
+        return 'bg-green-500';
     }
 }
 

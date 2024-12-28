@@ -49,13 +49,13 @@ function formatNumber(value) {
 
 function setClass(nota) {
     if (nota >= 0 && nota < 21) {
-        return evaluacionClass.value = ' content-center';
+        return evaluacionClass.value = 'content-center';
     } else if (nota >= 21 && nota < 41) {
-        return evaluacionClass.value = ' content-center';
+        return evaluacionClass.value = ' text-gray-500 content-center';
     } else if (nota >= 41 && nota < 61) {
-        return evaluacionClass.value = ' content-center';
+        return evaluacionClass.value = ' text-blue-500 content-center';
     } else if (nota >= 61 && nota < 81) {
-        return evaluacionClass.value = ' content-center';
+        return evaluacionClass.value = ' text-green-500 content-center';
     } else if (nota >= 81) {
         return evaluacionClass.value = ' content-center';
     }
@@ -110,9 +110,9 @@ function setClass(nota) {
                     <div class="gap-4 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-8">
                         <!-- Card score -->
                         <div class="bg-white p-3 pl-5 border rounded">
-                            <div class="text-gray-800">
+                            <div :class="setClass(evaluacion.global)">
                                 Score:
-                                <div class="font-extrabold text-3xl" :class="setClass(evaluacion.global)">{{
+                                <div class="font-extrabold text-3xl">{{
                                     formatNumber(evaluacion.global) }}
                                     %
                                 </div>
@@ -138,53 +138,57 @@ function setClass(nota) {
                         </div>
 
                         <!-- Card people -->
-                        <div class="bg-white p-3 pl-5 border rounded text-[#64758B]">
-                            <div class="text-[#64758B]">People</div>
-                            <div class="font-extrabold text-[#64758B] text-3xl" :class="setClass(evaluacion.gente)">{{
-                                formatNumber(evaluacion.gente) }}
-                                %
-                            </div>
-                            <div v-if="evaluacion.gente >= 0 && evaluacion.gente < 21"
-                                :class="setClass(evaluacion.gente)">
-                                INICIAL
-                            </div>
-                            <div v-if="evaluacion.gente >= 21 && evaluacion.gente < 41"
-                                :class="setClass(evaluacion.gente)">
-                                BÁSICO
-                            </div>
-                            <div v-if="evaluacion.gente >= 41 && evaluacion.gente < 61"
-                                :class="setClass(evaluacion.gente)">
-                                INTERMEDIO
-                            </div>
-                            <div v-if="evaluacion.gente >= 61 && evaluacion.gente < 81"
-                                :class="setClass(evaluacion.gente)">
-                                AVANZADO
-                            </div>
-                            <div v-if="evaluacion.gente >= 81" :class="setClass(evaluacion.gente)">LÍDER</div>
+                        <div class="bg-white p-3 pl-5 border rounded">
+                            <di :class="setClass(evaluacion.gente)">
+                                People
+                                <div class="font-extrabold text-3xl">{{
+                                    formatNumber(evaluacion.gente) }}
+                                    %
+                                </div>
+                                <div v-if="evaluacion.gente >= 0 && evaluacion.gente < 21"
+                                    :class="setClass(evaluacion.gente)">
+                                    INICIAL
+                                </div>
+                                <div v-if="evaluacion.gente >= 21 && evaluacion.gente < 41"
+                                    :class="setClass(evaluacion.gente)">
+                                    BÁSICO
+                                </div>
+                                <div v-if="evaluacion.gente >= 41 && evaluacion.gente < 61"
+                                    :class="setClass(evaluacion.gente)">
+                                    INTERMEDIO
+                                </div>
+                                <div v-if="evaluacion.gente >= 61 && evaluacion.gente < 81"
+                                    :class="setClass(evaluacion.gente)">
+                                    AVANZADO
+                                </div>
+                                <div v-if="evaluacion.gente >= 81" :class="setClass(evaluacion.gente)">LÍDER</div>
+                            </di>
                         </div>
 
                         <!-- Card process -->
-                        <div class="bg-white p-3 pl-5 border rounded text-[#3C82F6]">
-                            <div class="text-[#3C82F6]">Process & Systems</div>
-                            <div class="font-extrabold text-[#3C82F6] text-3xl" :class="setClass(evaluacion.proceso)">{{
-                                formatNumber(evaluacion.proceso) }}%</div>
-                            <div v-if="evaluacion.proceso >= 0 && evaluacion.proceso < 21"
-                                :class="setClass(evaluacion.proceso)">
-                                INICIAL
+                        <div class="bg-white p-3 pl-5 border rounded">
+                            <div :class="setClass(evaluacion.proceso)">
+                                Process & Systems
+                                <div class="font-extrabold text-3xl">{{
+                                    formatNumber(evaluacion.proceso) }}%</div>
+                                <div v-if="evaluacion.proceso >= 0 && evaluacion.proceso < 21"
+                                    :class="setClass(evaluacion.proceso)">
+                                    INICIAL
+                                </div>
+                                <div v-if="evaluacion.proceso >= 21 && evaluacion.proceso < 41"
+                                    :class="setClass(evaluacion.proceso)">
+                                    BÁSICO
+                                </div>
+                                <div v-if="evaluacion.proceso >= 41 && evaluacion.proceso < 61"
+                                    :class="setClass(evaluacion.proceso)">
+                                    INTERMEDIO
+                                </div>
+                                <div v-if="evaluacion.proceso >= 61 && evaluacion.proceso < 81"
+                                    :class="setClass(evaluacion.proceso)">
+                                    AVANZADO
+                                </div>
+                                <div v-if="evaluacion.proceso >= 81" :class="setClass(evaluacion.proceso)">LÍDER</div>
                             </div>
-                            <div v-if="evaluacion.proceso >= 21 && evaluacion.proceso < 41"
-                                :class="setClass(evaluacion.proceso)">
-                                BÁSICO
-                            </div>
-                            <div v-if="evaluacion.proceso >= 41 && evaluacion.proceso < 61"
-                                :class="setClass(evaluacion.proceso)">
-                                INTERMEDIO
-                            </div>
-                            <div v-if="evaluacion.proceso >= 61 && evaluacion.proceso < 81"
-                                :class="setClass(evaluacion.proceso)">
-                                AVANZADO
-                            </div>
-                            <div v-if="evaluacion.proceso >= 81" :class="setClass(evaluacion.proceso)">LÍDER</div>
                         </div>
                     </div>
                     <!-- colums charts -->
