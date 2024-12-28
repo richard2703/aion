@@ -49,15 +49,15 @@ function formatNumber(value) {
 
 function setClass(nota) {
     if (nota >= 0 && nota < 21) {
-        return evaluacionClass.value = 'px-1 content-center';
+        return evaluacionClass.value = ' content-center';
     } else if (nota >= 21 && nota < 41) {
-        return evaluacionClass.value = 'px-1 content-center';
+        return evaluacionClass.value = ' content-center';
     } else if (nota >= 41 && nota < 61) {
-        return evaluacionClass.value = 'px-1 content-center';
+        return evaluacionClass.value = ' content-center';
     } else if (nota >= 61 && nota < 81) {
-        return evaluacionClass.value = 'px-1 content-center';
+        return evaluacionClass.value = ' content-center';
     } else if (nota >= 81) {
-        return evaluacionClass.value = 'px-1 content-center';
+        return evaluacionClass.value = ' content-center';
     }
 }
 </script>
@@ -105,9 +105,11 @@ function setClass(nota) {
                     <div class="my-4 font-semibold text-gray-600">
                         Fecha: {{ formatearFecha(evaluacion.created_at) }}
                     </div>
+
+                    <!-- colums cards -->
                     <div class="gap-4 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-8">
                         <!-- Card score -->
-                        <div class="bg-white p-3 border rounded">
+                        <div class="bg-white p-3 pl-5 border rounded">
                             <div class="text-gray-800">
                                 Score:
                                 <div class="font-extrabold text-3xl" :class="setClass(evaluacion.global)">{{
@@ -136,7 +138,7 @@ function setClass(nota) {
                         </div>
 
                         <!-- Card people -->
-                        <div class="bg-white p-3 border rounded text-[#64758B]">
+                        <div class="bg-white p-3 pl-5 border rounded text-[#64758B]">
                             <div class="text-[#64758B]">People</div>
                             <div class="font-extrabold text-[#64758B] text-3xl" :class="setClass(evaluacion.gente)">{{
                                 formatNumber(evaluacion.gente) }}
@@ -162,7 +164,7 @@ function setClass(nota) {
                         </div>
 
                         <!-- Card process -->
-                        <div class="bg-white p-3 border rounded text-[#3C82F6]">
+                        <div class="bg-white p-3 pl-5 border rounded text-[#3C82F6]">
                             <div class="text-[#3C82F6]">Process & Systems</div>
                             <div class="font-extrabold text-[#3C82F6] text-3xl" :class="setClass(evaluacion.proceso)">{{
                                 formatNumber(evaluacion.proceso) }}%</div>
