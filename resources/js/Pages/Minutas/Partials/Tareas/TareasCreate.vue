@@ -121,7 +121,7 @@ onMounted(() => {
                             <TextInput id="minuta_id" type="text" :value="minuta.alias" class="block mt-1 w-full"
                                 disabled />
                             <TextInput id="minuta_id" v-model="form.minuta_id" type="text"
-                                class="block hidden mt-1 w-full" required disabled autocomplete="minuta_id" />
+                                class="block mt-1 w-full" required disabled autocomplete="minuta_id" />
                         </div>
 
                         <div class="mt-4">
@@ -220,7 +220,6 @@ onMounted(() => {
                             </PrimaryButton>
                             <PrimaryButton @click="emit('close')" class="ms-4 pi pi-times"
                                 :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-
                             </PrimaryButton>
                         </div>
                     </form>

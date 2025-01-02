@@ -280,7 +280,7 @@ watch(() => currentPilar, (newPilar) => {
         <PilaresSelect :currentPilarID="currentPilar" :onSelectedPilar="onSelectedPilar"></PilaresSelect>
         <div class="grid grid-cols-3">
             <!-- Menú de navegación -->
-            <div class="col-span-3 xl:col-span-1 p-10">
+            <div class="col-span-3 xl:col-span-1 py-10">
                 <div class="text-base">
                     <h4 class="mb-1 font-semibold">Lista de navegación</h4>
                     <p class="text-gray-500 text-sm">

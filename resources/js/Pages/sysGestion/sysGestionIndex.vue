@@ -134,14 +134,14 @@ const getKpis = async () => {
 async function getOneKpi(id) {
     await axios.get(route("kpis.byId", id)).then((response) => {
         axios.get(route("registros_kpi.registros", id))
-        .then((registros) => {
-            const record = {
-                ...response.data,
-                registros: registros.data,
-            };
+            .then((registros) => {
+                const record = {
+                    ...response.data,
+                    registros: registros.data,
+                };
 
-            kpi.value = record;
-        });
+                kpi.value = record;
+            });
     })
 }
 
@@ -154,7 +154,7 @@ const onSelectedPilar = (pilarID) => {
     <Layout :titulo="title" :subTitulo="subTitle">
         <PilaresSelect :currentPilarID="selectedPilar" :onSelectedPilar="onSelectedPilar"></PilaresSelect>
 
-        <div class="p-5">
+        <div class="py-5">
             <div class="block md:flex justify-between items-center content-center">
                 <!-- Sub Header -->
                 <div class="sm:rounded-lg overflow-hidden">
@@ -169,9 +169,8 @@ const onSelectedPilar = (pilarID) => {
                         </Link>
                     </div>
                 </div>
-
                 <!-- Select Flujo de valor -->
-                <div class="my-10 md:mt-0">
+                <div>
                     <InputLabel for="departamento_id" value="Flujo de valor: " />
 
                     <select ref="departamento_select" @change="getProcesos()"

@@ -227,44 +227,45 @@ const formatearFecha = (dateString) => {
 
 <template>
     <div v-bind="$attrs">
-   
-            <div class="gap-4 grid sm:grid-cols-2 lg:grid-cols-2 my-5">
-                <div class="border-gray-200 p-5 border rounded-md">
-                    <div class="flex justify-between">
-                        <span class="font-bold text-2xl">Plan</span>
-                        <div>
-                            {{ formatNumber(kpi.promedio) || '' }}
-                            <PrimaryButton  @click="openCreateModal(kpi.id, kpi.actual, kpi.titulo)" class="bg-black hover:bg-gray-800">
-                                <i class="pi pi-plus" style="margin-right: 10px;"></i> Agregar nuevo
-                              </PrimaryButton>
-                        </div>
-                    </div>
 
-                    <h2 class="py-2" colspan="3">
-                        {{ kpi.titulo }}
-                    </h2>
-
-                    <div class="flex gap-20">
-                        <div class="py-2">
-                            <p>Hoy</p>
-                            <p class="py-2">{{ kpi.objetivo || '-' }}</p>
-                        </div>
-                        <div class="py-2">
-                            <p>Promedio</p>
-                            <p :class="getClass(kpi)" class="px-4 py-2" style="text-align-last: justify;">{{
-                                kpi.actual || '-' }}
-                            </p>
-                        </div>
+        <div class="gap-4 grid sm:grid-cols-2 lg:grid-cols-2 my-5">
+            <div class="border-gray-200 p-5 border rounded-md">
+                <div class="flex justify-between">
+                    <span class="font-bold text-2xl">Plan</span>
+                    <div>
+                        {{ formatNumber(kpi.promedio) || '' }}
+                        <PrimaryButton @click="openCreateModal(kpi.id, kpi.actual, kpi.titulo)"
+                            class="bg-black hover:bg-gray-800">
+                            <i class="pi pi-plus" style="margin-right: 10px;"></i> Agregar nuevo
+                        </PrimaryButton>
                     </div>
                 </div>
 
-                <div class="border-gray-200 p-5 border rounded-md overflow-x-auto card">
-                    <div class="text-center">
-                        <span class="font-bold text-2xl">Check</span>
+                <h2 class="py-2" colspan="3">
+                    {{ kpi.titulo }}
+                </h2>
+
+                <div class="flex gap-20">
+                    <div class="py-2">
+                        <p>Hoy</p>
+                        <p class="py-2">{{ kpi.objetivo || '-' }}</p>
                     </div>
-                    <Chart class="w-full h-full" type="bar" :data="chartData" :options="chartOptions" />
+                    <div class="py-2">
+                        <p>Promedio</p>
+                        <p :class="getClass(kpi)" class="px-4 py-2" style="text-align-last: justify;">{{
+                            kpi.actual || '-' }}
+                        </p>
+                    </div>
                 </div>
             </div>
+
+            <div class="border-gray-200 p-5 border rounded-md overflow-x-auto card">
+                <div class="text-center">
+                    <span class="font-bold text-2xl">Check</span>
+                </div>
+                <Chart class="w-full h-full" type="bar" :data="chartData" :options="chartOptions" />
+            </div>
+        </div>
 
     </div>
 
@@ -272,8 +273,13 @@ const formatearFecha = (dateString) => {
     <Modal :show="isCreateModalVidible" maxWidth="lg">
         <template v-slot="">
             <div>
-                <div class="flex justify-center border-gray-200 bg-white my-4 px-4 py-2 border-b">
+                <div class="flex justify-between items-center border-gray-200 bg-white my-4 px-4 py-2 border-b">
                     <p class="font-medium text-gray-900 text-lg">{{ titulo }}</p>
+                    <div @click.prevent="closeModal"
+                        class="hover:bg-slate-100 p-3 rounded-md text-gray-800 cursor-pointer pi pi-times" :class="{
+                            'opacity-25': formCreateModal.abort,
+                        }" :disabled="formCreateModal.abort">
+                    </div>
                 </div>
                 <div class="border-gray-200 bg-white px-4 py-2 border-b">
                     <div class="mx-auto">
@@ -291,12 +297,7 @@ const formatearFecha = (dateString) => {
                                 </div>
                             </div>
 
-                            <div class="flex justify-between">
-                                <PrimaryButton @click.prevent="closeModal" class="bg-red-500 ms-4 pi pi-times" :class="{
-                                    'opacity-25': formCreateModal.abort,
-                                }" :disabled="formCreateModal.abort">
-                                </PrimaryButton>
-
+                            <div class="flex justify-end gap-2 mt-5">
                                 <PrimaryButton class="ms-4 pi pi-save" :class="{
                                     'opacity-25': formCreateModal.processing,
                                 }" :disabled="formCreateModal.processing">

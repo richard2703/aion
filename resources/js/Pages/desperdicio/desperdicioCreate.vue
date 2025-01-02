@@ -104,8 +104,8 @@ const showTooltipDetectabilidad = ref(false);
 
 
         <Head title="Desperdicios" />
-        <div class="pl-5 overflow-hidden">
-            <div class="mb-3 px-1 breadcrumbsTitulo">
+        <div class="mt-5 overflow-hidden">
+            <div class="mb-1 px-1 breadcrumbsTitulo">
                 <h3 class="font-semibold text-xl">Nuevo Desperdicios</h3>
             </div>
 
@@ -120,7 +120,7 @@ const showTooltipDetectabilidad = ref(false);
             </div>
         </div>
 
-        <div class="mt-3 p-5">
+        <div class="mt-8">
             <div class="bg-white">
                 <div>
                     <div class="flex justify-end"></div>

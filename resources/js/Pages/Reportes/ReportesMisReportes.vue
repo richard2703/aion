@@ -70,11 +70,11 @@ watch(globalFilter, (newValue) => {
             </div>
             <div class="flex items-center breadcrumbs">
                 <Link :href="route('reporte.index')" class="px-1">
-                 <h3>Reportes</h3>
+                <h3>Reportes</h3>
                 </Link>
                 <i class="pi-angle-right mx-2 pi" style="font-size: 1rem"></i>
                 <Link class="active">
-                   <b>Mis Reportes</b>
+                <b>Mis Reportes</b>
                 </Link>
             </div>
         </div>
@@ -82,8 +82,10 @@ watch(globalFilter, (newValue) => {
         <div>
             <div class="bg-white overflow-hidden">
                 <div>
-                    <div class="flex justify-end">
-                            <PrimaryButton  :href="route('reporte.create')" class="bg-black m-4 pi pi-plus"></PrimaryButton>
+                    <div class="flex justify-end mb-5">
+                        <PrimaryButton :href="route('reporte.create')" class="bg-black hover:bg-gray-800">
+                            <i class="pi pi-plus" style="margin-right: 10px; font-size: 1rem"></i> Nuevo reporte
+                        </PrimaryButton>
                     </div>
                     <div>
                         <div class="mx-auto">

@@ -148,12 +148,12 @@ const search = (event) => {
 
         <Head title="Minutas" />
 
-        <div class="px-5 overflow-hidden">
+        <div class="mt-5 overflow-hidden">
             <div class="breadcrumbsTitulo">
                 <h3 class="font-semibold text-xl">Nueva Minuta</h3>
             </div>
 
-            <div class="flex items-center mt-2 breadcrumbs">
+            <div class="flex items-center breadcrumbs">
                 <Link :href="route('dashboard')">
                 </Link>
                 <Link :href="route('minutas.index')">
@@ -166,7 +166,7 @@ const search = (event) => {
             </div>
         </div>
 
-        <div class="bg-white p-5 overflow-hidden">
+        <div class="bg-white py-5 overflow-hidden">
             <div class="bg-white">
                 <div class="mx-auto container">
                     <form @submit.prevent="submit">
