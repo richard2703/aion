@@ -17,7 +17,7 @@ import HomeTab from "@/Components/v2/HomeTab.vue";
                         <div class="border-[1px] border-gray-200 mt-8 p-10 border-solid rounded-md">                
                             <h1 class="mb-7 font-bold text-center text-xl">Metro Map</h1>
                             <div class="bg-[url('/branch_background.svg')] bg-cover bg-no-repeat bg-center p-[100px]"  style="background-position: -70px 0px;">
-                                <div class="gap-4 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                                <div class="gap-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                                     
                                     <!-- Gente y cultura -->
                                     <Link :href="route('metromap', 1)">

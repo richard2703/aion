@@ -1,6 +1,7 @@
 <script>
 import { ref, onMounted } from "vue";
 import axios from "axios";
+import ChatBot from '@/Components/ChatBot.vue';
 import TabItem from '@/Components/v2/TabItem.vue';
 import Sidebar from '@/Components/v2/Sidebar.vue';
 import { Link } from "@inertiajs/vue3";
@@ -10,6 +11,7 @@ export default {
         TabItem,
         Link,
         Sidebar,
+        ChatBot,
     },
     props: {
         titulo: String,
@@ -93,6 +95,7 @@ export default {
 
 <template>
     <div>
+        <ChatBot/>
         <div>
             <!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. -->
             <div class="relative z-50" :class="isSidebarOpen() ? '' : 'hidden'" role="dialog" aria-modal="true">
@@ -139,6 +142,9 @@ export default {
 
             <!-- Header  -->
             <div class="lg:pl-72">
+    
+               
+         
                 <div
                     class="top-0 z-40 sticky flex items-center gap-x-4 sm:gap-x-6 border-gray-200 bg-white shadow-sm px-4 sm:px-6 lg:px-8 border-b h-16 shrink-0">
                     <button @click="toggleSidebar()" type="button" class="lg:hidden -m-2.5 p-2.5 text-gray-700">
@@ -152,10 +158,6 @@ export default {
 
                     <!-- Separator -->
                     <div class="lg:hidden bg-gray-900/10 w-px h-6" aria-hidden="true"></div>
-            
-                    <div class="right-[40px] bottom-[4rem] fixed bg-gray-200 p-3 rounded-full text-sm">
-                        <p>OPEN</p>
-                    </div>
                     <div class="flex flex-1 justify-between gap-x-4 lg:gap-x-6 self-stretch">
                         <button id="user-notifications-button" aria-expanded="false" aria-haspopup="true"
                             @click="toggleNotifications()" type="button"
@@ -168,17 +170,18 @@ export default {
                             </svg>
                         </button>
 
-                        <div id="user-notifications" class="top-[45px] left-[33px] z-10 absolute hidden bg-white shadow-lg mt-2.5 py-2 rounded-md ring-1 ring-gray-900/5 w-auto md:w-[180px] origin-top-right"
+                        <div id="user-notifications"
+                            class="top-[45px] left-[33px] z-10 absolute hidden bg-white shadow-lg mt-2.5 py-2 rounded-md ring-1 ring-gray-900/5 w-auto md:w-[180px] origin-top-right"
                             role="menu" aria-orientation="vertical" aria-labelledby="user-notifications-button">
                             <div class="grid">
                                 <Link @click="markAsRead" class="px-3 py-2 text-gray-900 text-sm" role="menuitem">
                                 Marcar como leido</Link>
-                                <Link @click="deleteReaded" class="px-3 py-2 text-gray-900 text-sm"
-                                    role="menuitem">Borrar leidos</Link>
+                                <Link @click="deleteReaded" class="px-3 py-2 text-gray-900 text-sm" role="menuitem">
+                                Borrar leidos</Link>
                             </div>
                             <div v-for="notification in userNotifications">
-                                <Link :href="notification.link" class="px-3 py-2 text-gray-900 text-sm"
-                                    role="menuitem">{{ notification.titulo }}
+                                <Link :href="notification.link" class="px-3 py-2 text-gray-900 text-sm" role="menuitem">
+                                {{ notification.titulo }}
                                 <div v-if="notification.readed == 1">&nbsp;&nbsp;&nbsp; ✅</div>
                                 </Link>
                             </div>
