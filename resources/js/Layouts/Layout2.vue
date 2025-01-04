@@ -95,6 +95,7 @@ export default {
 
 <template>
     <div>
+        <!-- Component chat Bot -->
         <ChatBot/>
         <div>
             <!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. -->
