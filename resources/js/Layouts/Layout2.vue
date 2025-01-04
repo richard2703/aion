@@ -152,8 +152,11 @@ export default {
 
                     <!-- Separator -->
                     <div class="lg:hidden bg-gray-900/10 w-px h-6" aria-hidden="true"></div>
+            
+                    <div class="right-[40px] bottom-[4rem] fixed bg-gray-200 p-3 rounded-full text-sm">
+                        <p>OPEN</p>
+                    </div>
                     <div class="flex flex-1 justify-between gap-x-4 lg:gap-x-6 self-stretch">
-
                         <button id="user-notifications-button" aria-expanded="false" aria-haspopup="true"
                             @click="toggleNotifications()" type="button"
                             class="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500">
