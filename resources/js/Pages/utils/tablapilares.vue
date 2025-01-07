@@ -243,11 +243,11 @@ watch(() => props.pilar, (newPilar) => {
 
 <template>
     <div class="py-2">
-        <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+        <div class="bg-white overflow-hidden">
             <div>
-                <div class="px-4 py-2 bg-white border-b border-gray-200">
+                <div class="border-gray-200 bg-white px-4 py-2 border-b">
                     <div
-                        class="container mx-auto overflow-x-auto grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-4 mb-3">
+                        class="gap-4 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 mx-auto mb-3 overflow-x-auto container">
                         <div class="sm:col-span-1 lg:col-span-1">
                             <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
                             <DataTable :value="departamentos" paginator :rows="rows" :totalRecords="totalRecords"
@@ -255,7 +255,7 @@ watch(() => props.pilar, (newPilar) => {
                                 :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters" :globalFilterFields="[
                                     'nombre',
                                 ]" :sortField="sortField" :sortOrder="sortOrder"
-                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+                                class="p-datatable-gridlines p-datatable-sm p-datatable-striped">
                                 <template #empty> Sin Registros. </template>
                                 <Column field="nombre" header="Flujo de valor" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable>
@@ -274,7 +274,7 @@ watch(() => props.pilar, (newPilar) => {
                                 </Column>
                                 <!-- <tr v-for="(procesoItem, index) in departamento.departamento.procesos"
                                                 :key="index">
-                                                <td class="py-2 px-4 border">
+                                                <td class="px-4 py-2 border">
                                                     <Link :href="route('proceso.edit', procesoItem.id)"
                                                         class="text-blue-500 hover:underline">
                                                     {{ procesoItem.nombre }}
@@ -305,7 +305,7 @@ watch(() => props.pilar, (newPilar) => {
                                 :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters" :globalFilterFields="[
                                     'nombre',
                                 ]" :sortField="sortField" :sortOrder="sortOrder"
-                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+                                class="p-datatable-gridlines p-datatable-sm p-datatable-striped">
                                 <template #empty> Sin Registros. </template>
                                 <Column field="nombre" header="Procesos" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable>
@@ -328,7 +328,7 @@ watch(() => props.pilar, (newPilar) => {
                             </DataTable>
                         </div>
                     </div>
-                    <div class="container mx-auto overflow-x-auto grid  grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 mx-auto overflow-x-auto container">
                         <div>
                             <InputText v-model="globalFilterProcedimientos" placeholder="Buscar..." class="mb-3" />
                             <DataTable :value="procedimientos" paginator :rows="rows" :totalRecords="totalRecords"
@@ -336,7 +336,7 @@ watch(() => props.pilar, (newPilar) => {
                                 :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters" :globalFilterFields="[
                                     'nombre',
                                 ]" :sortField="sortField" :sortOrder="sortOrder"
-                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+                                class="p-datatable-gridlines p-datatable-sm p-datatable-striped">
                                 <template #empty> Sin Registros. </template>
                                 <Column field="nombre" header="Procedmientos" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable>
@@ -375,7 +375,7 @@ watch(() => props.pilar, (newPilar) => {
                                 :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters" :globalFilterFields="[
                                     'nombre',
                                 ]" :sortField="sortField" :sortOrder="sortOrder"
-                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+                                class="p-datatable-gridlines p-datatable-sm p-datatable-striped">
                                 <template #empty> Sin Registros. </template>
                                 <Column field="nombre" header="Estandares" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable>

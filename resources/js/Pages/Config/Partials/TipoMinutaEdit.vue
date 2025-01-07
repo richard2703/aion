@@ -37,24 +37,24 @@ const submit = async () => {
 
 <template>
     <div class="py-2">
-        <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-            <div class="px-4 py-2 bg-white border-b border-gray-200">
-                <div class="container mx-auto p-2">
-                    <h2 class="text-center text-2xl">Editar Tipo de Minuta</h2>
+        <div class="bg-white overflow-hidden">
+            <div class="border-gray-200 bg-white px-4 py-2 border-b">
+                <div class="mx-auto p-2 container">
+                    <h2 class="text-2xl text-center">Editar Tipo de Minuta</h2>
                     <form @submit.prevent="submit">
 
                         <div class="mt-4">
                             <InputLabel for="nombre" value="Nombre:" />
-                            <TextInput id="nombre" v-model="form.titulo" type="text" class="mt-1 block w-full" required
+                            <TextInput id="nombre" v-model="form.titulo" type="text" class="block mt-1 w-full" required
                                 autocomplete="nombre" />
                         </div>
                         <div class="mt-4">
                             <InputLabel for="definicion" value="Definicion:" />
-                            <TextInput id="definicion" v-model="form.definicion" type="text" class="mt-1 block w-full"
+                            <TextInput id="definicion" v-model="form.definicion" type="text" class="block mt-1 w-full"
                                 required autocomplete="definicion" />
                         </div>
                         <div class="m-4 py-2">
-                            <PrimaryButton class="ms-4 pi pi-save float-right"
+                            <PrimaryButton class="float-right ms-4 pi pi-save"
                                 :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
 
                             </PrimaryButton>

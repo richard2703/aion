@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, ref } from "vue";
-import Layout from "@/Layouts/Layout.vue";
+import Layout from "@/Layouts/Layout2.vue";
 import { Head, useForm, Link } from "@inertiajs/vue3";
 import axios from "axios";
 import InputLabel from "@/Components/InputLabel.vue";
@@ -113,11 +113,11 @@ const search = (event) => {
 
         <Head title="Tareas" />
 
-        <div class="overflow-hidden sm:rounded-lg">
-            <div class="breadcrumbsTitulo px-1">
+        <div class="sm:rounded-lg overflow-hidden">
+            <div class="px-1 breadcrumbsTitulo">
                 <h3>Tareas</h3>
             </div>
-            <div class="breadcrumbs flex">
+            <div class="flex breadcrumbs">
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
@@ -131,16 +131,16 @@ const search = (event) => {
         </div>
 
         <div class="py-2">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+            <div class="bg-white overflow-hidden">
                 <div>
-                    <div class="px-4 my-4 py-2 flex justify-end bg-white border-b border-gray-200"></div>
-                    <div class="px-4 py-2 bg-white border-b border-gray-200">
-                        <div class="container mx-auto">
+                    <div class="flex justify-end border-gray-200 bg-white my-4 px-4 py-2 border-b"></div>
+                    <div class="border-gray-200 bg-white px-4 py-2 border-b">
+                        <div class="mx-auto container">
                             <form @submit.prevent="submit">
                                 <div class="mt-4">
                                     <InputLabel for="minuta_id" value="Reunión:" />
                                     <select ref="departamento_select"
-                                        class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                        class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                                         v-model="form.minuta_id" required>
                                         <option value="" disabled selected>
                                             Seleccione una opcion
@@ -154,7 +154,7 @@ const search = (event) => {
                                 <div class="mt-4">
                                     <InputLabel for="area_id" value="Pilar: " />
                                     <select ref="area_select" @change="onChange($event)"
-                                        class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                        class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                                         v-model="form.area_id" required>
                                         <option value="" disabled selected>
                                             Seleccione una opcion
@@ -168,7 +168,7 @@ const search = (event) => {
                                 <div class="mt-4">
                                     <InputLabel for="departamento_id" value="Flujo de valor: " />
                                     <select ref="departamento_select"
-                                        class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                        class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                                         v-model="form.departamento_id" required>
                                         <option value="" disabled selected>
                                             Seleccione una opcion
@@ -184,18 +184,18 @@ const search = (event) => {
 
                                 <div class="mt-4">
                                     <InputLabel for="tarea" value="Titulo:" />
-                                    <TextInput id="tarea" v-model="form.tarea" type="text" class="mt-1 block w-full"
+                                    <TextInput id="tarea" v-model="form.tarea" type="text" class="block mt-1 w-full"
                                         required autocomplete="tarea" />
                                 </div>
 
-                                <div class="mt-4 z-30">
+                                <div class="z-30 mt-4">
                                     <InputLabel for="responsable_id" value="Responsable:" />
                                     <AutoComplete v-model="form.responsable_id" optionLabel="name"
                                         :suggestions="filteredUsuarios" forceSelection @complete="search"
                                         placeholder="" />
                                 </div>
 
-                                <div class="mt-4 z-30">
+                                <div class="z-30 mt-4">
                                     <InputLabel for="revisor_id" value="Cliente de la tarea:" />
                                     <AutoComplete v-model="form.revisor_id" optionLabel="name"
                                         :suggestions="filteredUsuarios" forceSelection @complete="search"
@@ -205,7 +205,7 @@ const search = (event) => {
                                 <div class="mt-4">
                                     <InputLabel for="estatus" value="Estatus: " />
                                     <select ref="departamento_select"
-                                        class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                        class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                                         v-model="form.estatus_id" required>
                                         <option value="" selected disabled>
                                             Seleccione una opcion </option>
@@ -221,15 +221,15 @@ const search = (event) => {
                                 </div>
                                 <div class="mt-4">
                                     <InputLabel for="fecha" value="Fecha de entrega:" />
-                                    <TextInput id="fecha" v-model="form.fecha" type="date" class="mt-1 block w-full"
+                                    <TextInput id="fecha" v-model="form.fecha" type="date" class="block mt-1 w-full"
                                         required autocomplete="fecha" />
                                 </div>
                                 <div class="mt-4">
                                     <InputLabel for="nota" value="Notas: " />
-                                    <Textarea class="mt-1 block w-full" v-model="form.nota" rows="5" cols="30" />
+                                    <Textarea class="block mt-1 w-full" v-model="form.nota" rows="5" cols="30" />
                                 </div>
 
-                                <div class="flex items-center justify-end mt-4">
+                                <div class="flex justify-end items-center mt-4">
                                     <PrimaryButton class="ms-4 pi pi-save" :class="{ 'opacity-25': form.processing }"
                                         :disabled="form.processing">
 

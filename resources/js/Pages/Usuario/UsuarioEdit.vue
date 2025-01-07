@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, ref } from "vue";
-import Layout from "@/Layouts/Layout.vue";
+import Layout from "@/Layouts/Layout2.vue";
 import { Head, useForm, Link } from "@inertiajs/vue3";
 import SectionBorder from "@/Components/SectionBorder.vue";
 import InputLabel from "@/Components/InputLabel.vue";
@@ -121,11 +121,11 @@ onMounted(() => {
 
         <Head title="Perfil" />
 
-        <div class="overflow-hidden sm:rounded-lg">
-            <div class="breadcrumbsTitulo px-1">
+        <div class="sm:rounded-lg overflow-hidden">
+            <div class="px-1 breadcrumbsTitulo">
                 <h3>Usuarios</h3>
             </div>
-            <div class="breadcrumbs flex">
+            <div class="flex breadcrumbs">
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
@@ -139,17 +139,17 @@ onMounted(() => {
         </div>
 
         <div class="py-2">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+            <div class="bg-white overflow-hidden">
                 <div>
-                    <div class="px-4 my-4 py-2 flex justify-end bg-white border-b border-gray-200"></div>
-                    <div class="px-4 py-2 bg-white border-b border-gray-200">
-                        <div class="container mx-auto">
+                    <div class="flex justify-end border-gray-200 bg-white my-4 px-4 py-2 border-b"></div>
+                    <div class="border-gray-200 bg-white px-4 py-2 border-b">
+                        <div class="mx-auto container">
                             <form @submit.prevent="submitProfile">
                                 <!-- Name -->
                                 <div class="col-span-6 sm:col-span-4">
                                     <InputLabel for="name" value="Nombre:" />
                                     <TextInput id="name" v-model="profileForm.name" type="text"
-                                        class="mt-1 block w-full" required autocomplete="name" />
+                                        class="block mt-1 w-full" required autocomplete="name" />
                                     <InputError :message="profileForm.errors.name" class="mt-2" />
                                 </div>
 
@@ -157,7 +157,7 @@ onMounted(() => {
                                 <div class="col-span-6 sm:col-span-4">
                                     <InputLabel for="email" value="Correo electrónico:" />
                                     <TextInput id="email" v-model="profileForm.email" type="email"
-                                        class="mt-1 block w-full" required autocomplete="username" />
+                                        class="block mt-1 w-full" required autocomplete="username" />
                                     <InputError :message="profileForm.errors.email" class="mt-2" />
 
                                     <div v-if="
@@ -165,12 +165,12 @@ onMounted(() => {
                                             .hasEmailVerification &&
                                         user.email_verified_at === null
                                     ">
-                                        <p class="text-sm mt-2">
+                                        <p class="mt-2 text-sm">
                                             Your email address is unverified.
 
                                             <Link :href="route('verification.send')
                                                 " method="post" as="button"
-                                                class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                                class="rounded-md focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 text-gray-600 text-sm hover:text-gray-900 underline focus:outline-none"
                                                 @click.prevent="sendEmailVerification
                                                     ">
                                             Click here to re-send the
@@ -179,7 +179,7 @@ onMounted(() => {
                                         </p>
 
                                         <div v-show="verificationLinkSent"
-                                            class="mt-2 font-medium text-sm text-green-600">
+                                            class="mt-2 font-medium text-green-600 text-sm">
                                             A new verification link has been
                                             sent to your email address.
                                         </div>
@@ -190,7 +190,7 @@ onMounted(() => {
                                 <div class="mt-4">
                                     <InputLabel for="area_id" value="Pilar: " />
                                     <select ref="area_select" @change="onChange($event)"
-                                        class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                        class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                                         v-model="profileForm.area_id" required>
                                         <option value="" disabled selected>
                                             Seleccione una opcion
@@ -205,7 +205,7 @@ onMounted(() => {
                                 <div class="mt-4">
                                     <InputLabel for="departamento_id" value="Flujo de valor: " />
                                     <select ref="departamento_select"
-                                        class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                        class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                                         v-model="profileForm.departamento_id" required>
                                         <option value="" disabled selected>
                                             Seleccione una opcion
@@ -221,7 +221,7 @@ onMounted(() => {
                                 <!-- <div class="mt-4">
                                     <InputLabel for="roles" value="Roles: " />
                                     <select multiple
-                                        class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                        class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                                         v-model="profileForm.roles" required>
                                         <option v-for="role in roles" :key="role.name" :value="role.name">
                                             {{ role.name }}
@@ -273,7 +273,7 @@ onMounted(() => {
                                         </div>
                                     </div> -->
 
-                                <div class="flex items-center justify-end mt-4">
+                                <div class="flex justify-end items-center mt-4">
                                     <PrimaryButton class="ms-4 pi pi-save" :class="{
                                         'opacity-25':
                                             profileForm.processing,
@@ -285,24 +285,24 @@ onMounted(() => {
 
                             <SectionBorder />
 
-                            <h2 class="text-2xl my-4">Cambio de contraseña</h2>
+                            <h2 class="my-4 text-2xl">Cambio de contraseña</h2>
 
                             <form @submit.prevent="submitPassword">
                                 <div class="col-span-6 sm:col-span-4">
                                     <InputLabel for="password" value="Nueva contraseña" />
                                     <TextInput id="password" ref="passwordInput" v-model="passwordForm.password"
-                                        type="password" class="mt-1 block w-full" autocomplete="new-password" />
+                                        type="password" class="block mt-1 w-full" autocomplete="new-password" />
                                     <InputError :message="passwordForm.errors.password" class="mt-2" />
                                 </div>
 
                                 <div class="col-span-6 sm:col-span-4">
                                     <InputLabel for="password_confirmation" value="Confirmar contraseña" />
                                     <TextInput id="password_confirmation" v-model="passwordForm.password_confirmation"
-                                        type="password" class="mt-1 block w-full" autocomplete="new-password" />
+                                        type="password" class="block mt-1 w-full" autocomplete="new-password" />
                                     <InputError :message="passwordForm.errors.password_confirmation" class="mt-2" />
                                 </div>
 
-                                <div class="flex items-center justify-end mt-4">
+                                <div class="flex justify-end items-center mt-4">
                                     <PrimaryButton class="ms-4 pi pi-save" :class="{
                                         'opacity-25':
                                             passwordForm.processing,

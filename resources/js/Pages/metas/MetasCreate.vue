@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
-import Layout from "@/Layouts/Layout.vue";
+import Layout from "@/Layouts/Layout2.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
@@ -79,11 +79,11 @@ getDepartamentos();
     <Layout>
 
         <Head title="Usuarios" />
-        <div class="overflow-hidden sm:rounded-lg">
-            <div class="breadcrumbsTitulo px-1">
+        <div class="sm:rounded-lg overflow-hidden">
+            <div class="px-1 breadcrumbsTitulo">
                 <h3>Crear Metas ( 30 60 90)</h3>
             </div>
-            <div class="breadcrumbs flex">
+            <div class="flex breadcrumbs">
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
@@ -97,17 +97,17 @@ getDepartamentos();
         </div>
 
         <div class="py-2">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+            <div class="bg-white overflow-hidden">
                 <div>
-                    <div class="px-4 my-4 py-2 flex justify-end bg-white border-b border-gray-200"></div>
-                    <div class="px-4 py-2 bg-white border-b border-gray-200">
-                        <div class="container mx-auto">
+                    <div class="flex justify-end border-gray-200 bg-white my-4 px-4 py-2 border-b"></div>
+                    <div class="border-gray-200 bg-white px-4 py-2 border-b">
+                        <div class="mx-auto container">
                             <form @submit.prevent="submit">
-                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+                                <div class="gap-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
                                     <div>
                                         <InputLabel for="area_id" value="Flujo de valor: " />
                                         <select ref="select"
-                                            class="mt-1 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                            class="border-gray-300 focus:border-indigo-500 shadow-sm mt-1 px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                                             v-model="form.departamento_id" required>
                                             <option value="" disabled selected>
                                                 Seleccione una opción
@@ -125,19 +125,19 @@ getDepartamentos();
 
                                     <!-- <div>
                                         <InputLabel for="Avisos" value="Avisos:" />
-                                        <TextInput id="aviso" v-model="form.aviso" type="text" class="mt-1 block w-full"
+                                        <TextInput id="aviso" v-model="form.aviso" type="text" class="block mt-1 w-full"
                                             autocomplete="aviso" />
                                     </div> -->
 
 
 
                                     <!-- Campos dinámicos para Highlight -->
-                                    <div class="col-span-full flex items-center mt-4">
+                                    <div class="flex items-center col-span-full mt-4">
                                         <InputLabel for="Meta a 30 Dias" value="Metas a 30 Dias:" />
                                     </div>
                                     <div v-for="(treinta, index) in treintas" :key="index"
-                                        class="col-span-full flex items-center justify-between">
-                                        <TextInput v-model="treinta.value" type="text" class="mt-1 block w-full"
+                                        class="flex justify-between items-center col-span-full">
+                                        <TextInput v-model="treinta.value" type="text" class="block mt-1 w-full"
                                             autocomplete="treita" maxlength="250" />
                                         <button type="button" @click="removetreintas(index)"
                                             class="ml-2 text-red-500">Eliminar</button>
@@ -146,12 +146,12 @@ getDepartamentos();
                                         item</button>
 
                                     <!-- Campos dinámicos para Lowlight -->
-                                    <div class="col-span-full flex items-center mt-4">
+                                    <div class="flex items-center col-span-full mt-4">
                                         <InputLabel for="60" value="Metas a 60 Dias:" />
                                     </div>
                                     <div v-for="(sesenta, index) in sesentas" :key="index"
-                                        class="col-span-full flex items-center justify-between">
-                                        <TextInput v-model="sesenta.value" type="text" class="mt-1 block w-full"
+                                        class="flex justify-between items-center col-span-full">
+                                        <TextInput v-model="sesenta.value" type="text" class="block mt-1 w-full"
                                             autocomplete="sesenta" maxlength="250" />
                                         <button type="button" @click="removesesentas(index)"
                                             class="ml-2 text-red-500">Eliminar</button>
@@ -160,12 +160,12 @@ getDepartamentos();
                                         Item</button>
 
                                     <!-- Campos dinámicos para 90 -->
-                                    <div class="col-span-full flex items-center mt-4">
+                                    <div class="flex items-center col-span-full mt-4">
                                         <InputLabel for="Meta a 90 Dias:" value="Metas a 90 Dias:" />
                                     </div>
                                     <div v-for="(noventa, index) in noventas" :key="index"
-                                        class="col-span-full flex items-center justify-between">
-                                        <TextInput v-model="noventa.value" type="text" class="mt-1 block w-full"
+                                        class="flex justify-between items-center col-span-full">
+                                        <TextInput v-model="noventa.value" type="text" class="block mt-1 w-full"
                                             autocomplete="noventas" />
                                         <button type="button" @click="removenoventas(index)"
                                             class="ml-2 text-red-500">Eliminar</button>
@@ -174,7 +174,7 @@ getDepartamentos();
                                         Item</button>
 
 
-                                    <div class="col-span-full flex items-center justify-end mt-4">
+                                    <div class="flex justify-end items-center col-span-full mt-4">
                                         <PrimaryButton class="ms-4 pi pi-save" :class="{
                                             'opacity-25': form.processing,
                                         }" :disabled="form.processing">

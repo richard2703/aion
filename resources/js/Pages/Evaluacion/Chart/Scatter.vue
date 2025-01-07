@@ -49,8 +49,8 @@ const setChartData = () => {
 
 
                 ],
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgba(255, 99, 132, 1)',
+                backgroundColor: 'rgba(0, 0, 0, 1)',
+                borderColor: 'rgba(0, 0, 0, 0.2)',
                 borderWidth: 1
             },
             {
@@ -62,8 +62,8 @@ const setChartData = () => {
                     { x: 70, y: 58 },
                     { x: 50, y: 48 }
                 ],
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: 'rgba(83, 83, 229, 0.3)',
+                borderColor: 'rgba(83, 83, 229, 1)',
                 borderWidth: 1
             }
         ]
@@ -118,6 +118,6 @@ function formatNumber(value) {
 
 <template>
     <div class="card">
-        <Chart type="scatter" :data="chartData" :options="chartOptions" class="w-full h-96 flex justify-center" />
+        <Chart type="scatter" :data="chartData" :options="chartOptions" class="flex justify-center w-full h-96" />
     </div>
 </template>

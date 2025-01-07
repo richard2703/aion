@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, ref } from "vue";
-import Layout from "@/Layouts/Layout.vue";
+import Layout2 from "@/Layouts/Layout2.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
@@ -9,6 +9,7 @@ import { showToast } from "../utils/SweetAlert.service";
 import Textarea from 'primevue/textarea';
 import AutoComplete from 'primevue/autocomplete';
 import Select from 'primevue/select';
+import PilaresSelect from "@/Components/v2/PilaresSelect.vue";
 
 
 const props = defineProps({
@@ -18,6 +19,7 @@ const props = defineProps({
     usuarios: Array,
 });
 
+const selectedPilar = ref(localStorage.getItem("PILAR_ID") || 1);
 const areas = ref(props.areas);
 const departamentos = ref(props.departamentos);
 const procesos = ref(props.procesos);
@@ -27,6 +29,12 @@ const responsable_id = ref();
 const tiposMinutas = ref([]);
 
 const title = "minutero";
+
+const onSelectedPilar = (pilarID) => {
+  selectedPilar.value = pilarID;
+  form.area_id = pilarID;
+  onChange({ target: { value: pilarID } });
+};
 
 
 async function getAreas() {
@@ -73,7 +81,7 @@ const getTiposMinuta = async () => {
 };
 
 const form = useForm({
-    area_id: "",
+    area_id: selectedPilar.value,
     departamento_id: "",
     proceso_id: "",
     lider_id: "",
@@ -115,6 +123,7 @@ onMounted(() => {
     getUsuarios();
     getProcesos();
     getTiposMinuta();
+    onChange({ target: { value: selectedPilar.value } });
 })
 console.log({ procesos: procesos });
 const search = (event) => {
@@ -134,107 +143,91 @@ const search = (event) => {
 </script>
 
 <template>
-    <Layout :titulo="title">
+    <Layout2 :titulo="title">
+        <PilaresSelect :currentPilarID="selectedPilar" :onSelectedPilar="onSelectedPilar"></PilaresSelect>
 
         <Head title="Minutas" />
 
-        <div class="overflow-hidden sm:rounded-lg">
-            <div class="breadcrumbsTitulo px-1">
-                <h3>Nueva Minuta</h3>
+        <div class="mt-5 overflow-hidden">
+            <div class="breadcrumbsTitulo">
+                <h3 class="font-semibold text-xl">Nueva Minuta</h3>
             </div>
-            <div class="breadcrumbs flex">
-                <Link :href="route('dashboard')" class="px-1">
-                <h3>Home -</h3>
+
+            <div class="flex items-center breadcrumbs">
+                <Link :href="route('dashboard')">
                 </Link>
-                <Link :href="route('minutas.index')" class="px-1">
-                <h3>Minutas -</h3>
+                <Link :href="route('minutas.index')">
+                <h3>Minutas</h3>
                 </Link>
-                <Link :href="route('minutas.create')" class="active">
-                <h3>Nuevo</h3>
+                <i class="pi-angle-right mx-2 pi" style="font-size: 1rem"></i>
+                <Link :href="route('minutas.create')">
+                <b>Nuevo</b>
                 </Link>
             </div>
         </div>
 
-        <div class="py-2">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                <div>
-                    <div class="px-4 my-4 py-2 flex justify-end bg-white border-b border-gray-200"></div>
-                    <div class="px-4 py-2 bg-white border-b border-gray-200">
-                        <div class="container mx-auto">
-                            <form @submit.prevent="submit">
+        <div class="bg-white py-5 overflow-hidden">
+            <div class="bg-white">
+                <div class="mx-auto container">
+                    <form @submit.prevent="submit">
+                        <div class="gap-7 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 2xl:grid-cols-4">
+                            <div class="mt-4">
+                                <InputLabel for="departamento_id" value="Flujo de valor: " />
 
-                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
-                                    <div class="mt-4">
-                                        <InputLabel for="area_id" value="Pilar: " />
-                                        <select ref="area_select" @change="onChange($event)"
-                                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                            v-model="form.area_id" required>
-                                            <option value="" disabled selected>
-                                                Seleccione una opcion
-                                            </option>
-                                            <option v-for="area in areas" :key="area.id" :value="area.id">
-                                                {{ area.nombre }}
-                                            </option>
-                                        </select>
-                                    </div>
-                                    <div class="mt-4">
-                                        <InputLabel for="departamento_id" value="Flujo de valor: " />
+                                <select ref="departamento_select"
+                                    class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
+                                    v-model="form.departamento_id" required>
+                                    <option value="" disabled selected>
+                                        Seleccione una opcion
+                                    </option>
+                                    <option v-for="departamento in departamentos" :key="departamento.id"
+                                        :value="departamento.id">
+                                        {{ departamento.nombre }}
+                                    </option>
+                                </select>
+                            </div>
 
-                                        <select ref="departamento_select"
-                                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                            v-model="form.departamento_id" required>
-                                            <option value="" disabled selected>
-                                                Seleccione una opcion
-                                            </option>
-                                            <option v-for="departamento in departamentos" :key="departamento.id"
-                                                :value="departamento.id">
-                                                {{ departamento.nombre }}
-                                            </option>
-                                        </select>
-                                    </div>
+                            <div class="mt-4">
+                                <InputLabel for="tipo" value="Tipo: " />
 
-                                    <div class="mt-4">
-                                        <InputLabel for="tipo" value="Tipo: " />
+                                <select ref="tipo_select"
+                                    class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
+                                    v-model="form.tipo" required>
+                                    <option value="" disabled selected>
+                                        Seleccione una opcion
+                                    </option>
+                                    <option v-for="tipoMinuta in tiposMinutas" :key="tipoMinuta.id"
+                                        :value="tipoMinuta.id">
+                                        {{ tipoMinuta.titulo }}
+                                    </option>
+                                </select>
+                            </div>
 
-                                        <select ref="tipo_select"
-                                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                            v-model="form.tipo" required>
-                                            <option value="" disabled selected>
-                                                Seleccione una opcion
-                                            </option>
-                                            <option v-for="tipoMinuta in tiposMinutas" :key="tipoMinuta.id"
-                                                :value="tipoMinuta.id">
-                                                {{ tipoMinuta.titulo }}
-                                            </option>
-                                        </select>
-                                    </div>
+                            <div class="mt-4">
+                                <InputLabel for="proceso_id" value="Proceso: " />
+                                <Select v-model="form.proceso_id" editable :virtualScrollerOptions="{ itemSize: 38 }"
+                                    :options="procesos" optionLabel="nombre" placeholder="Seleccione una opcion"
+                                    class="w-full" />
+                            </div>
 
-                                    <div class="mt-4">
-                                        <InputLabel for="proceso_id" value="Proceso: " />
-                                        <Select v-model="form.proceso_id" editable
-                                            :virtualScrollerOptions="{ itemSize: 38 }" :options="procesos"
-                                            optionLabel="nombre" placeholder="Seleccione una opcion"
-                                            class="w-full md:w-56" />
-                                    </div>
+                            <div class="mt-4">
+                                <InputLabel for="lider" value="Lider: " />
+                                <AutoComplete v-model="form.lider_id" optionLabel="name" :suggestions="filteredUsuarios"
+                                    forceSelection @complete="search" placeholder="" />
+                            </div>
 
-                                    <div class="mt-4">
-                                        <InputLabel for="lider" value="Lider: " />
-                                        <AutoComplete v-model="form.lider_id" optionLabel="name"
-                                            :suggestions="filteredUsuarios" forceSelection @complete="search"
-                                            placeholder="" />
-                                    </div>
 
-                                    <div class="mt-4">
-                                        <InputLabel for="alias" value="Alias: " />
-                                        <TextInput id="alias" v-model="form.alias" type="text" class="mt-1 block w-full"
-                                            required autocomplete="new-challenge" />
-                                    </div>
+                            <div class="mt-4">
+                                <InputLabel for="alias" value="Alias: " />
+                                <TextInput id="alias" v-model="form.alias" type="text" class="block mt-1 w-full"
+                                    required autocomplete="new-challenge" />
+                            </div>
 
-                                    <!-- <div class="mt-4">
+                            <!-- <div class="mt-4">
                                         <InputLabel for="estatus" value="Estatus: " />
 
                                         <select ref="departamento_select"
-                                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                            class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                                             v-model="form.estatus" required>
                                             <option value="0" selected>
                                                 Retrasado </option>
@@ -246,30 +239,34 @@ const search = (event) => {
                                                 Terminado </option>
                                         </select>
                                     </div> -->
-
-                                    <div class=" mt-4">
-                                        <InputLabel for="notas" value="Notas: " />
-                                        <Textarea v-model="form.notas" rows="3" style="width: 100%; " />
-                                    </div>
-                                    <div class=" mt-4">
-                                        <InputLabel for="Privada" value="Exclusivo para lideres de pilar?: " />
-                                        <!-- <input type="checkbox" @change="validateTarea(slotProps.data, $event)"
-                                                :disabled="slotProps.data.validacion ? true : false"
-                                                :checked="slotProps.data.validacion ? true : false" /> Validar -->
-                                        <input type="checkbox" v-model="form.privada" /> Exclusivo
-                                    </div>
-                                </div>
-                                <div class="px-4 my-4 pt-2 flex justify-end bg-white border-t border-gray-200">
-                                    <PrimaryButton class="ms-4 pi pi-save" :class="{ 'opacity-25': form.processing, }"
-                                        :disabled="form.processing">
-
-                                    </PrimaryButton>
-                                </div>
-                            </form>
                         </div>
-                    </div>
+
+                        <div class="mt-4">
+                            <InputLabel for="notas" value="Notas: " />
+                            <Textarea v-model="form.notas" rows="3" style="width: 100%; " />
+                        </div>
+
+                        <div class="block md:flex justify-between items-center my-10">
+                            <div class="mt-4 mb-5">
+                                <InputLabel for="Privada" value="Exclusivo para lideres de pilar?: " />
+                                <!-- <input type="checkbox" @change="validateTarea(slotProps.data, $event)"
+                                                                                :disabled="slotProps.data.validacion ? true : false"
+                                                                                :checked="slotProps.data.validacion ? true : false" /> Validar -->
+                                <input type="checkbox" v-model="form.privada" /> Exclusivo
+                            </div>
+                            
+                            <PrimaryButton 
+                                    class="bg-black hover:bg-gray-700" 
+                                    :disabled="form.processing"
+                                    >
+                                    <i class="mr-2 pi pi-check"></i> Crear nueva 
+                            </PrimaryButton>
+
+                        </div>
+
+                    </form>
                 </div>
             </div>
         </div>
-    </Layout>
+    </Layout2>
 </template>

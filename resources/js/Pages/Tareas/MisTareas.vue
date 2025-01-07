@@ -2,7 +2,7 @@
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import { ref, onMounted, watch } from "vue";
 import axios from "axios";
-import Layout from "@/Layouts/Layout.vue";
+import Layout from "@/Layouts/Layout2.vue";
 import { confirmDialog, showToast } from "../utils/SweetAlert.service";
 import { format } from 'date-fns';
 import DataTable from "primevue/datatable";
@@ -38,11 +38,11 @@ const title = "tareas";
     <Layout :titulo="title">
 
         <Head title="Tareas" />
-        <div class="overflow-hidden sm:rounded-lg">
-            <div class="breadcrumbsTitulo px-1">
+        <div class="sm:rounded-lg overflow-hidden">
+            <div class="px-1 breadcrumbsTitulo">
                 <h3>Tareas</h3>
             </div>
-            <div class="breadcrumbs flex">
+            <div class="flex breadcrumbs">
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
@@ -53,7 +53,7 @@ const title = "tareas";
         </div>
 
         <div class="py-2">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+            <div class="bg-white overflow-hidden">
                 <div>
                     <div class="card">
                         <Tabs value="0">

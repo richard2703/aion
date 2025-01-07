@@ -3,7 +3,7 @@ import { ref, onMounted, watch } from 'vue';
 import { Head, Link } from '@inertiajs/vue3';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import axios from "axios";
-import Layout from "@/Layouts/Layout.vue";
+import Layout from "@/Layouts/Layout2.vue";
 import { confirmDialog, showToast } from "../utils/SweetAlert.service";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
@@ -112,28 +112,20 @@ const onSort = (event) => {
     <Layout :titulo="title">
 
         <Head title="KPI's" />
-        <div class="overflow-hidden sm:rounded-lg">
-            <div class="breadcrumbsTitulo px-1">
-                <h3>KPI's</h3>
-            </div>
-            <div class="breadcrumbs flex">
-                <Link :href="route('dashboard')" class="px-1">
-                <h3>Home -</h3>
-                </Link>
-                <Link class="active">
-                <h3>KPI's</h3>
-                </Link>
+        <div class="sm:rounded-lg overflow-hidden">
+            <div class="px-1 breadcrumbsTitulo">
+                <h3 class="text-[1.4rem]">KPI's</h3>
             </div>
         </div>
 
         <div class="py-2">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+            <div class="bg-white overflow-hidden">
                 <div>
-                    <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
-                        <PrimaryButton :href="route('kpi.create')" class="m-4 pi pi-plus"></PrimaryButton>
+                    <div class="flex justify-end">
+                        <PrimaryButton :href="route('kpi.create')" class="bg-black m-4 pi pi-plus"></PrimaryButton>
                     </div>
-                    <div class="px-4 py-2 bg-white border-b border-gray-200">
-                        <div class="container mx-auto overflow-x-auto">
+                    <div class="bg-white">
+                        <div class="mx-auto overflow-x-auto container">
                             <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
                             <DataTable :value="kpis" paginator :rows="rows" :totalRecords="totalRecords" :lazy="true"
                                 :first="first" @page="onPage" @sort="onSort" :rowsPerPageOptions="[5, 10, 20, 50]"
@@ -144,7 +136,7 @@ const onSort = (event) => {
                                     'descripcion',
                                     'link_externo',
                                 ]" :sortField="sortField" :sortOrder="sortOrder"
-                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+                                class="p-datatable-gridlines p-datatable-sm p-datatable-striped">
                                 <template #empty> No data found. </template>
                                 <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
                                     sortable></Column>
@@ -167,13 +159,13 @@ const onSort = (event) => {
 
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">
-                                        <PrimaryButton class="m-2 pi pi-file-edit" :href="route(
+                                        <PrimaryButton class="bg-black m-2 pi pi-file-edit" :href="route(
                                             'kpi.edit',
                                             slotProps.data.id
                                         )">
                                         </PrimaryButton>
 
-                                        <PrimaryButton class="m-2 pi pi-trash" @click.prevent="
+                                        <PrimaryButton class="bg-red-500 m-2 text-white pi pi-trash" @click.prevent="
                                             deleteKpi(slotProps.data.id)
                                             ">
                                         </PrimaryButton>

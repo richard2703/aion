@@ -1,18 +1,3 @@
-<!-- <script setup>
-defineProps({
-    type: {
-        type: String,
-        default: 'submit',
-    },
-});
-</script>
-
-<template>
-    <button :type="type" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 transition ease-in-out duration-150">
-        <slot />
-    </button>
-</template> -->
-
 <script setup>
 defineProps({
     type: {
@@ -23,6 +8,18 @@ defineProps({
         type: String,
         default: null,
     },
+    label: {
+        type: String,
+        default: '', 
+    },
+    disabled: {
+        type: Boolean,
+        default: false, 
+    },
+    customClasses: {
+        type: String,
+        default: '', 
+    },
 });
 </script>
 
@@ -31,8 +28,14 @@ defineProps({
         :is="href ? 'a' : 'button'"
         :type="href ? null : type"
         :href="href"
-        class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 transition ease-in-out duration-150"
+        :disabled="disabled"
+        :class="[
+            'inline-flex items-center justify-center py-3 px-4 border rounded-md font-semibold text-white text-[0.9rem] transition duration-150 ease-in-out focus:outline-none bg-black', // Establece el fondo por defecto a #000 (negro)
+            customClasses, // Permite cambiar el fondo con una clase personalizada
+            { 'opacity-25 cursor-not-allowed': disabled }
+        ]"
     >
-        <slot />
+        <slot /> <!-- Permite pasar iconos o contenido personalizado -->
+        <span v-if="label">{{ label }}</span> <!-- Muestra la prop de texto -->
     </component>
 </template>

@@ -45,7 +45,7 @@ const setChartData = () => {
         datasets: [
             {
                 label: 'Resultados por Sección',
-                backgroundColor: documentStyle.getPropertyValue('--p-cyan-500'),
+                backgroundColor: documentStyle.getPropertyValue('--p-green-500'),
                 borderColor: documentStyle.getPropertyValue('--p-cyan-500'),
                 data: chartValues
             }
@@ -98,13 +98,13 @@ const setChartOptions = () => {
 
 <template>
     <div class="card">
-        <Chart type="bar" :data="chartData" :options="chartOptions" class="bar w-full  flex justify-center" />
+        <Chart type="bar" :data="chartData" :options="chartOptions" class="flex justify-center w-full bar" />
     </div>
 </template>
 
 <style>
 .bar {
     width: 100%;
-    height: 800px;
+    height: 1200px;
 }
 </style>

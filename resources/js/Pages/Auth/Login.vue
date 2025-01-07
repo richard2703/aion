@@ -39,7 +39,7 @@ const submit = () => {
             <AuthenticationCardLogo />
         </template>
 
-        <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
+        <div v-if="status" class="mb-4 font-medium text-green-600 text-sm">
             {{ status }}
         </div>
 
@@ -50,7 +50,7 @@ const submit = () => {
                     id="email"
                     v-model="form.email"
                     type="email"
-                    class="mt-1 block w-full"
+                    class="block mt-1 w-full"
                     required
                     autofocus
                     autocomplete="username"
@@ -64,7 +64,7 @@ const submit = () => {
                     id="password"
                     v-model="form.password"
                     type="password"
-                    class="mt-1 block w-full"
+                    class="block mt-1 w-full"
                     required
                     autocomplete="current-password"
                 />
@@ -74,16 +74,16 @@ const submit = () => {
             <div class="block mt-4">
                 <label class="flex items-center">
                     <Checkbox v-model:checked="form.remember" name="remember" />
-                    <span class="ms-2 text-sm text-gray-600">Recuerdame</span>
+                    <span class="text-gray-600 text-sm ms-2">Recuerdame</span>
                 </label>
             </div>
 
-            <div class="flex items-center justify-end mt-4">
-                <!-- <Link v-if="canResetPassword" :href="route('password.request')" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            <div class="flex justify-end items-center mt-4">
+                <!-- <Link v-if="canResetPassword" :href="route('password.request')" class="rounded-md focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 text-gray-600 text-sm hover:text-gray-900 underline focus:outline-none">
                     Forgot your password?
                 </Link> -->
 
-                <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                <PrimaryButton class="bg-black ms-4" :class="{ ' opacity-25': form.processing }" :disabled="form.processing">
                     Entrar
                 </PrimaryButton>
             </div>

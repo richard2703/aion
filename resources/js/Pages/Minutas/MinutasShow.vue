@@ -8,7 +8,7 @@ import AutoComplete from 'primevue/autocomplete';
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { format } from 'date-fns';
-import Layout from "@/Layouts/Layout.vue";
+import Layout from "@/Layouts/Layout2.vue";
 import Modal from "@/Components/Modal.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import InputLabel from "@/Components/InputLabel.vue";
@@ -385,11 +385,11 @@ const sendMail = async () => {
     <Layout :titulo="title">
 
         <Head title="Minutas" />
-        <div class="overflow-hidden sm:rounded-lg">
-            <div class="breadcrumbsTitulo px-1">
+        <div class="sm:rounded-lg overflow-hidden">
+            <div class="px-1 breadcrumbsTitulo">
                 <h3>Detalles de Minuta</h3>
             </div>
-            <div class="breadcrumbs flex">
+            <div class="flex breadcrumbs">
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
@@ -403,34 +403,34 @@ const sendMail = async () => {
         </div>
 
         <div class="py-2">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+            <div class="bg-white shadow-xl sm:rounded-lg overflow-hidden">
                 <div>
                     <div
-                        class="px-4 my-4 py-2 flex justify-end bg-white border-b border-gray-200 grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4">
-                        <div class="px-4 py-2 bg-white">
+                        class="justify-end gap-4 border-gray-200 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 bg-white my-4 px-4 py-2 border-b">
+                        <div class="bg-white px-4 py-2">
                             <Fieldset legend="Información general" class="h-80 overflow-y-auto">
-                                <div class="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4">
-                                    <div class="mt-4 flex">
+                                <div class="gap-4 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
+                                    <div class="flex mt-4">
                                         <InputLabel for="alias" value="Titulo: " />&nbsp;
                                         <InputLabel for="alias" :value="minuta.alias" />
                                     </div>
-                                    <div class="mt-4 flex">
+                                    <div class="flex mt-4">
                                         <InputLabel for="pilar" value="Pilar: " />&nbsp;
                                         <InputLabel for="pilar" :value="minuta.area.nombre" />
                                     </div>
-                                    <div class="mt-4 flex">
+                                    <div class="flex mt-4">
                                         <InputLabel for="flujo_valor" value="Flujo de valor: " />&nbsp;
                                         <InputLabel for="flujo_valor" :value="minuta.departamento.nombre" />
                                     </div>
-                                    <div class="mt-4 flex">
+                                    <div class="flex mt-4">
                                         <InputLabel for="tipo" value="Tipo: " />&nbsp;
                                         <InputLabel for="tipo" :value="minuta.tipo_minuta.titulo" />
                                     </div>
-                                    <div class="mt-4 flex">
+                                    <div class="flex mt-4">
                                         <InputLabel for="fecha" value="Fecha: " />&nbsp;
                                         <InputLabel for="fecha" :value="formatearFecha(minuta.created_at)" />
                                     </div>
-                                    <div class="mt-4 flex">
+                                    <div class="flex mt-4">
                                         <InputLabel for="nota" value="Notas: " />&nbsp;
                                         <InputLabel for="nota" :value="minuta.notas" />
                                     </div>
@@ -448,7 +448,7 @@ const sendMail = async () => {
                                     </PrimaryButton>
                                 </div>
                                 <div
-                                    class="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4 flex justify-between">
+                                    class="flex justify-between gap-4 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
                                     <div class="flex gap-2">
                                         <InputLabel for="lider" value="Lider: " />&nbsp;
                                         <div class="flex">
@@ -470,7 +470,7 @@ const sendMail = async () => {
                                     <div class="mx-2">
                                         <ul v-for="asistente in asistentes" :key="asistente.id">
                                             <li>{{ asistente.user.name }}&nbsp;
-                                                <button class="float-right mx-4 pi pi-times text-red-500"
+                                                <button class="float-right mx-4 text-red-500 pi pi-times"
                                                     @click="deleteAsistente(asistente.id)"></button>
                                             </li>
                                         </ul>
@@ -479,27 +479,27 @@ const sendMail = async () => {
                             </Fieldset>
                         </div>
                     </div>
-                    <div class="px-4 py-2 bg-white border-b border-gray-200">
-                        <div class="container mx-auto">
+                    <div class="border-gray-200 bg-white px-4 py-2 border-b">
+                        <div class="mx-auto container">
                             <div class="flex justify-between">
                                 <h2>Tareas</h2>
                             </div>
 
-                            <div class="container mx-auto overflow-x-auto">
+                            <div class="mx-auto overflow-x-auto container">
                                 <div class="flex gap-4">
                                     <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
-                                    <PrimaryButton class=" mb-4 float-right pi pi-filter" @click="openFilter">
+                                    <PrimaryButton class="float-right mb-4 pi pi-filter" @click="openFilter">
                                     </PrimaryButton>
-                                    <PrimaryButton v-if="customFilter" class=" mb-4 float-right pi pi-times"
+                                    <PrimaryButton v-if="customFilter" class="float-right mb-4 pi pi-times"
                                         @click="clearFilter">
                                     </PrimaryButton>
                                     <!-- Trigger to open modal -->
-                                    <PrimaryButton class=" mb-4 float-right pi pi-plus" @click="openModal('create')">
+                                    <PrimaryButton class="float-right mb-4 pi pi-plus" @click="openModal('create')">
                                     </PrimaryButton>
 
                                     <!-- TODO: Send mail REMOVE IS NOT USED -->
                                     <!-- <PrimaryButton v-if="$page.props.auth.user.user.name == minuta.lider.name"
-                                        class=" mb-4 pi pi-envelope float-right" @click="sendMail()">
+                                        class="float-right mb-4 pi pi-envelope" @click="sendMail()">
                                     </PrimaryButton> -->
 
                                 </div>
@@ -508,11 +508,11 @@ const sendMail = async () => {
                                 <!-- formulario de filtrado de tareas -->
                                 <div v-if="customFilter" class="">
                                     <form @submit.prevent="filterTable(minuta.id)">
-                                        <div class="m-4 border rounded-lg border-gray-200 flex gap-2 grid grid-cols-4">
+                                        <div class="flex gap-2 border-gray-200 grid grid-cols-4 m-4 border rounded-lg">
                                             <div class="m-4">
                                                 <InputLabel for="area_id" value="Area: " />
                                                 <select ref="area_select"
-                                                    class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                                    class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                                                     v-model="pilar">
                                                     <option value="" selected>
                                                         Seleccione una opcion
@@ -526,7 +526,7 @@ const sendMail = async () => {
                                             <div class="m-4">
                                                 <InputLabel for="departamento_id" value="Departamento: " />
                                                 <select ref="departamento_select"
-                                                    class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                                    class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                                                     v-model="flujoValor">
                                                     <option value="" selected>
                                                         Seleccione una opcion
@@ -541,7 +541,7 @@ const sendMail = async () => {
                                             <div class="m-4">
                                                 <InputLabel for="responsable_id" value="Responsable: " />
                                                 <select ref="responsable_select"
-                                                    class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                                    class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                                                     v-model="responsable">
                                                     <option value="" selected>
                                                         Seleccione una opcion
@@ -555,7 +555,7 @@ const sendMail = async () => {
                                             <div class="m-4">
                                                 <InputLabel for="cliente_id" value="Cliente de tarea: " />
                                                 <select ref="cliente_select"
-                                                    class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                                    class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                                                     v-model="revisor">
                                                     <option value="" selected>
                                                         Seleccione una opcion
@@ -569,7 +569,7 @@ const sendMail = async () => {
                                             <div class="m-4">
                                                 <InputLabel for="estatus_id" value="Estatus: " />
                                                 <select ref="estatus_select"
-                                                    class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                                    class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                                                     v-model="estatus">
                                                     <option value="" selected>
                                                         Seleccione una opcion </option>
@@ -587,17 +587,17 @@ const sendMail = async () => {
                                             <div class="m-4">
                                                 <InputLabel for="fecha" value="Fecha de entrega de: " />
                                                 <TextInput id="fecha" v-model="desde" type="date"
-                                                    class="mt-1 block w-full" autocomplete="fecha" />
+                                                    class="block mt-1 w-full" autocomplete="fecha" />
                                             </div>
 
                                             <div class="m-4">
                                                 <InputLabel for="created_at" value="Fecha de entrega hasta: " />
                                                 <TextInput id="fecha" v-model="hasta" type="date"
-                                                    class="mt-1 block w-full" autocomplete="fecha" />
+                                                    class="block mt-1 w-full" autocomplete="fecha" />
                                             </div>
 
                                             <div class="m-4">
-                                                <PrimaryButton class="m-4 float-right pi pi-search" type="submit">
+                                                <PrimaryButton class="float-right m-4 pi pi-search" type="submit">
                                                 </PrimaryButton>
                                             </div>
                                         </div>
@@ -617,7 +617,7 @@ const sendMail = async () => {
                                         'fecha_entrega',
                                         'estatus.titulo',
                                     ]" :sortField="sortField" :sortOrder="sortOrder"
-                                    class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+                                    class="p-datatable-gridlines p-datatable-sm p-datatable-striped">
                                     <template #empty> No data found. </template>
                                     <Column field="id" header="ID" headerStyle="width:4em;"
                                         bodyStyle="text-align:center;" sortable></Column>

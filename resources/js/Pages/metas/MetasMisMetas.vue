@@ -2,7 +2,7 @@
 import { Head, Link } from "@inertiajs/vue3";
 import { ref, onMounted, watch } from "vue";
 import axios from "axios";
-import Layout from "@/Layouts/Layout.vue";
+import Layout from "@/Layouts/Layout2.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { confirmDialog, showToast } from "../utils/SweetAlert.service";
 import DataTable from "primevue/datatable";
@@ -64,11 +64,11 @@ watch(globalFilter, (newValue) => {
     <Layout :titulo="title">
 
         <Head title="semanales" />
-        <div class="overflow-hidden sm:rounded-lg">
-            <div class="breadcrumbsTitulo px-1">
+        <div class="sm:rounded-lg overflow-hidden">
+            <div class="px-1 breadcrumbsTitulo">
                 <h3>Mis Metas</h3>
             </div>
-            <div class="breadcrumbs flex">
+            <div class="flex breadcrumbs">
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
@@ -82,13 +82,13 @@ watch(globalFilter, (newValue) => {
         </div>
 
         <div class="py-2">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+            <div class="bg-white overflow-hidden">
                 <div>
-                    <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
+                    <div class="flex justify-end border-gray-200 bg-white px-4 py-2 border-b">
                         <PrimaryButton :href="route('metas.create')" class="m-4 pi pi-plus"></PrimaryButton>
                     </div>
-                    <div class="px-4 py-2 bg-white border-b border-gray-200">
-                        <div class="container mx-auto">
+                    <div class="border-gray-200 bg-white px-4 py-2 border-b">
+                        <div class="mx-auto container">
                             <!-- <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" /> -->
 
                             <DataTable :value="metas" paginator :rows="rows" :totalRecords="totalRecords" :lazy="true"
@@ -98,7 +98,7 @@ watch(globalFilter, (newValue) => {
                                     'nombre',
                                     'descripcion',
                                 ]" :sortField="sortField" :sortOrder="sortOrder"
-                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+                                class="p-datatable-gridlines p-datatable-sm p-datatable-striped">
                                 <template #empty> No data found. </template>
                                 <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
                                     sortable></Column>
@@ -112,13 +112,13 @@ watch(globalFilter, (newValue) => {
 
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">
-                                        <PrimaryButton class="pi pi-file-edit me-2" :href="route(
+                                        <PrimaryButton class="me-2 pi pi-file-edit" :href="route(
                                             'metas.edit',
                                             slotProps.data.id
                                         )">
                                         </PrimaryButton>
 
-                                        <!-- <PrimaryButton class="pi pi-trash me-2" @click.prevent="
+                                        <!-- <PrimaryButton class="me-2 pi pi-trash" @click.prevent="
                                             deleteArea(slotProps.data.id)
                                             ">
 

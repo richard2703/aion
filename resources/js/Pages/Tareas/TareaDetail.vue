@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, ref } from "vue";
-import Layout from "@/Layouts/Layout.vue";
+import Layout from "@/Layouts/Layout2.vue";
 import { Head, useForm, Link } from "@inertiajs/vue3";
 import axios from "axios";
 import InputLabel from "@/Components/InputLabel.vue";
@@ -125,11 +125,11 @@ const getEvidencias = async () => {
 
         <Head title="Tareas" />
 
-        <div class="overflow-hidden sm:rounded-lg">
-            <div class="breadcrumbsTitulo px-1">
+        <div class="sm:rounded-lg overflow-hidden">
+            <div class="px-1 breadcrumbsTitulo">
                 <h3>Tareas</h3>
             </div>
-            <div class="breadcrumbs flex">
+            <div class="flex breadcrumbs">
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
@@ -143,55 +143,55 @@ const getEvidencias = async () => {
         </div>
 
         <div class="py-2">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+            <div class="bg-white overflow-hidden">
                 <div>
-                    <div class="px-4 my-4 py-2 flex justify-end bg-white border-b border-gray-200"></div>
-                    <div class="px-4 py-2 bg-white border-b border-gray-200">
-                        <div class="container mx-auto">
+                    <div class="flex justify-end border-gray-200 bg-white my-4 px-4 py-2 border-b"></div>
+                    <div class="border-gray-200 bg-white px-4 py-2 border-b">
+                        <div class="mx-auto container">
                             <form @submit.prevent="submit">
                                 <div class="mt-4">
                                     <InputLabel for="minuta_id" value="Reunión:" />
                                     <TextInput id="minuta" v-model="tarea.minuta.alias" type="text"
-                                        class="mt-1 block w-full" disabled />
+                                        class="block mt-1 w-full" disabled />
                                 </div>
 
                                 <div class="mt-4">
                                     <InputLabel for="area_id" value="Pilar: " />
                                     <TextInput id="pilar" v-model="tarea.area.nombre" type="text"
-                                        class="mt-1 block w-full" disabled />
+                                        class="block mt-1 w-full" disabled />
                                 </div>
 
                                 <div class="mt-4">
                                     <InputLabel for="departamento_id" value="Flujo de valor: " />
                                     <TextInput id="flujo_valor" v-model="tarea.departamento.nombre" type="text"
-                                        class="mt-1 block w-full" disabled />
+                                        class="block mt-1 w-full" disabled />
                                 </div>
 
                                 <hr class="my-4">
 
                                 <div class="mt-4">
                                     <InputLabel for="tarea" value="Titulo:" />
-                                    <TextInput id="tarea" v-model="tarea.tarea" type="text" class="mt-1 block w-full"
+                                    <TextInput id="tarea" v-model="tarea.tarea" type="text" class="block mt-1 w-full"
                                         disabled />
                                 </div>
 
-                                <div class="mt-4 z-30">
+                                <div class="z-30 mt-4">
                                     <InputLabel for="responsable_id" value="Responsable:" />
 
                                     <div v-if="tarea.responsable">
                                         <TextInput id="responsable" v-model="tarea.responsable.name" type="text"
-                                            class="mt-1 block w-full" disabled />
+                                            class="block mt-1 w-full" disabled />
                                     </div>
                                     <div v-else>
                                         <InputLabel class="text-red-500" value="Sin responsable" />
                                     </div>
                                 </div>
 
-                                <div class="mt-4 z-30">
+                                <div class="z-30 mt-4">
                                     <InputLabel for="revisor_id" value="Cliente de la tarea:" />
                                     <div v-if="tarea.revisor">
                                         <TextInput id="rivisor" v-model="tarea.revisor.name" type="text"
-                                            class="mt-1 block w-full" disabled />
+                                            class="block mt-1 w-full" disabled />
                                     </div>
                                     <div v-else>
                                         <InputLabel class="text-red-500" value="Sin revisor" />
@@ -200,26 +200,26 @@ const getEvidencias = async () => {
                                 <div class="mt-4">
                                     <InputLabel for="estatus" value="Estatus: " />
                                     <TextInput id="estatus" v-model="tarea.estatus.titulo" type="text"
-                                        class="mt-1 block w-full" disabled />
+                                        class="block mt-1 w-full" disabled />
                                 </div>
                                 <div class="mt-4">
                                     <InputLabel for="fecha" value="Fecha de entrega:" />
-                                    <TextInput id="pilar" v-model="tarea.fecha" type="text" class="mt-1 block w-full"
+                                    <TextInput id="pilar" v-model="tarea.fecha" type="text" class="block mt-1 w-full"
                                         disabled />
                                 </div>
                                 <div class="my-4">
                                     <InputLabel for="nota" value="Notas: " />
-                                    <Textarea class="mt-1 block w-full" v-model="tarea.nota" rows="5" cols="30"
+                                    <Textarea class="block mt-1 w-full" v-model="tarea.nota" rows="5" cols="30"
                                         disabled />
                                 </div>
                             </form>
                         </div>
-                        <div class="contaier mx-auto">
-                            <div class="grid grid-cols-1 gap-4">
+                        <div class="mx-auto contaier">
+                            <div class="gap-4 grid grid-cols-1">
                                 <InputLabel for="img_ref" value="Muestra del trabajo realizado: " />
                                 <div
-                                    class="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
-                                    <div v-for="evidencia in evidencias" class="card w-60 bg-slate-100">
+                                    class="gap-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4">
+                                    <div v-for="evidencia in evidencias" class="bg-slate-100 w-60 card">
                                         <Image :src="evidencia.img_ref" alt="Image" width="250" preview />
                                         <!-- <img :src="evidencia" alt="" srcset=""> -->
                                     </div>

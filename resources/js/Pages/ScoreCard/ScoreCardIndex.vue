@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, ref, watch } from "vue";
-import Layout from '@/Layouts/Layout.vue';
+import Layout from '@/Layouts/Layout2.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import axios from 'axios';
 import Tabs from 'primevue/tabs';
@@ -41,11 +41,11 @@ async function getAreas() {
     <Layout :titulo="title">
 
         <Head title="Assessment" />
-        <div class="overflow-hidden sm:rounded-lg">
-            <div class="breadcrumbsTitulo px-1">
+        <div class="sm:rounded-lg overflow-hidden">
+            <div class="px-1 breadcrumbsTitulo">
                 <h3>ScoreCard</h3>
             </div>
-            <div class="breadcrumbs flex">
+            <div class="flex breadcrumbs">
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
@@ -56,8 +56,8 @@ async function getAreas() {
         </div>
 
         <div class="py-2">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
+            <div class="bg-white overflow-hidden">
+                <div class="border-gray-200 bg-white p-6 border-b">
                     <div class="card">
                         <Tabs :value=0>
                             <TabList>

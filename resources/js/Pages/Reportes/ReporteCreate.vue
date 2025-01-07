@@ -1,7 +1,7 @@
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
-import Layout from "@/Layouts/Layout.vue";
+import Layout from "@/Layouts/Layout2.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
@@ -14,10 +14,14 @@ const props = defineProps({
 const departamentos = ref(props.departamentos);
 
 // Estado para los campos dinámicos
-const avisos = ref([{ value: "" }]);
-const highlights = ref([{ value: "" }]);
-const lowlights = ref([{ value: "" }]);
-const errors = ref([{ value: "" }]);
+const newAviso = ref("");
+const newHighlight = ref("");
+const newLowLight = ref("");
+
+const avisos = ref([]);
+const highlights = ref([]);
+const lowlights = ref([]);
+const errors = ref([]);
 
 async function getDepartamentos() {
     await axios
@@ -34,7 +38,7 @@ async function getDepartamentos() {
 
 const form = useForm({
     nombre: "",
-    departamento_id: "",
+    departamento_id: "1",
     avisos: [],
     highlights: [],
     lowlights: [],
@@ -63,128 +67,156 @@ const submit = () => {
 
 // Funciones para añadir y eliminar campos dinámicos
 
-const addAviso = () => avisos.value.push({ value: "" });
-const removeAviso = (index) => avisos.value.splice(index, 1);
+const addAviso = () => {
+    if (newAviso.value && newAviso.value.trim().length > 0) {
+        avisos.value.push({ value: newAviso.value.trim() });
+        newAviso.value = ""
+    }
+};
 
-const addHighlight = () => highlights.value.push({ value: "" });
+const addHighlight = () => {
+    if (newHighlight.value && newHighlight.value.trim().length > 0) {
+        highlights.value.push({ value: newHighlight.value.trim() });
+        newHighlight.value = "";
+    }
+};
+
+const addLowlight = () => {
+    if (newLowLight.value && newLowLight.value.trim().length > 0) {
+        lowlights.value.push({ value: newLowLight.value.trim() });
+        newLowLight.value = "";
+    }
+};
+
 const removeHighlight = (index) => highlights.value.splice(index, 1);
-
-const addLowlight = () => lowlights.value.push({ value: "" });
+const removeAviso = (index) => avisos.value.splice(index, 1);
 const removeLowlight = (index) => lowlights.value.splice(index, 1);
 
-getDepartamentos();
+onMounted(() => {
+    getDepartamentos();
+});
 </script>
 
 <template>
     <Layout>
 
         <Head title="Usuarios" />
-        <div class="overflow-hidden sm:rounded-lg">
-            <div class="breadcrumbsTitulo px-1">
-                <h3>Nuevo Reporte</h3>
+        <div class="pl-5 overflow-hidden">
+            <div class="breadcrumbsTitulo">
+                <h3 class="font-semibold text-xl">Reportes</h3>
             </div>
-            <div class="breadcrumbs flex">
-                <Link :href="route('dashboard')" class="px-1">
-                <h3>Home -</h3>
-                </Link>
+
+            <div class="flex items-center gap-2 breadcrumbs">
                 <Link :href="route('reporte.index')" class="px-1">
-                <h3>Reportes -</h3>
+                <h3>Lista de reportes</h3>
                 </Link>
+                <i class="pi-angle-right pi" style="font-size: 1rem"></i>
                 <Link class="active">
-                <h3>Nuevo</h3>
+                <b>Nuevo</b>
                 </Link>
             </div>
         </div>
 
-        <div class="py-2">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+        <div class="p-5">
+            <div class="overflow-hidden">
+                <div class="mt-5">
+                    <InputLabel for="departamento_id" value="Flujo de valor: " />
+                    <select class="border-gray-300 focus:border-black rounded-md focus:ring-black w-80 cursor-pointer" required >
+                        <option value="" disabled selected>
+                            Seleccione un flujo de valor
+                        </option>
+                        <option v-for="departamento in departamentos" :key="departamento.id"
+                        :value="departamento.departamento.id" >
+                        {{ departamento.departamento.nombre }}
+                        </option>
+                    </select>
+                </div>
                 <div>
-                    <div class="px-4 my-4 py-2 flex justify-end bg-white border-b border-gray-200"></div>
-                    <div class="px-4 py-2 bg-white border-b border-gray-200">
-                        <div class="container mx-auto">
-                            <form @submit.prevent="submit">
-                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
-                                    <div>
-                                        <InputLabel for="area_id" value="Flujo de valor: " />
-                                        <select ref="select"
-                                            class="mt-1 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                            v-model="form.departamento_id" required>
-                                            <option value="" disabled selected>
-                                                Seleccione una opción
-                                            </option>
-                                            <option v-for="departamento in departamentos" :key="departamento.id"
-                                                :value="departamento.departamento.id">
-                                                {{ departamento.departamento.nombre }}
-                                            </option>
-                                            <!-- <option v-for="departamento in departamentos" :key="departamento.id"
-                                                :value="departamento.id">
-                                                {{ departamento.nombre }}
-                                            </option> -->
-                                        </select>
-                                    </div>
+                    <form @submit.prevent="submit">
+                        <div class="gap-8 grid grid-cols-6 mt-8">
+                            <div class="col-span-6 md:col-span-3">
+                                <div class="border-gray-300 p-6 border border-solid rounded-md">
+                                    <b>Highlights:</b>
 
-                                    <!-- <div>
-                                        <InputLabel for="Avisos" value="Avisos:" />
-                                        <TextInput id="aviso" v-model="form.aviso" type="text" class="mt-1 block w-full"
-                                            autocomplete="aviso" />
-                                    </div> -->
-
-
-
-                                    <!-- Campos dinámicos para Highlight -->
-                                    <div class="col-span-full flex items-center mt-4">
-                                        <InputLabel for="Highlight" value="Highlight:" />
-                                    </div>
-                                    <div v-for="(highlight, index) in highlights" :key="index"
-                                        class="col-span-full flex items-center justify-between">
-                                        <TextInput v-model="highlight.value" type="text" class="mt-1 block w-full"
-                                            autocomplete="Highlight" maxlength="250" />
-                                        <button type="button" @click="removeHighlight(index)"
-                                            class="ml-2 text-red-500">Eliminar</button>
-                                    </div>
-                                    <button type="button" @click="addHighlight" class="mt-2 text-blue-500">Añadir
-                                        Highlight</button>
-
-                                    <!-- Campos dinámicos para Lowlight -->
-                                    <div class="col-span-full flex items-center mt-4">
-                                        <InputLabel for="Lowlight" value="Lowlight:" />
-                                    </div>
-                                    <div v-for="(lowlight, index) in lowlights" :key="index"
-                                        class="col-span-full flex items-center justify-between">
-                                        <TextInput v-model="lowlight.value" type="text" class="mt-1 block w-full"
-                                            autocomplete="Lowlight" maxlength="250" />
-                                        <button type="button" @click="removeLowlight(index)"
-                                            class="ml-2 text-red-500">Eliminar</button>
-                                    </div>
-                                    <button type="button" @click="addLowlight" class="mt-2 text-blue-500">Añadir
-                                        Lowlight</button>
-
-                                    <!-- Campos dinámicos para Avisos -->
-                                    <div class="col-span-full flex items-center mt-4">
-                                        <InputLabel for="Avisos" value="Avisos:" />
-                                    </div>
-                                    <div v-for="(aviso, index) in avisos" :key="index"
-                                        class="col-span-full flex items-center justify-between">
-                                        <TextInput v-model="aviso.value" type="text" class="mt-1 block w-full"
-                                            autocomplete="Aviso" />
-                                        <button type="button" @click="removeAviso(index)"
-                                            class="ml-2 text-red-500">Eliminar</button>
-                                    </div>
-                                    <button type="button" @click="addAviso" class="mt-2 text-blue-500">Añadir
-                                        Aviso</button>
-
-
-                                    <div class="col-span-full flex items-center justify-end mt-4">
-                                        <PrimaryButton class="ms-4 pi pi-save" :class="{
-                                            'opacity-25': form.processing,
-                                        }" :disabled="form.processing">
-
+                                    <div class="flex items-center gap-8 my-5">
+                                        <TextInput v-model="newHighlight" placeholder="Añadir nombre" type="text"
+                                            class="block border-gray-300 shadow-sm mt-1 py-3 focus:border-black rounded-md focus:ring-black w-full text-black sm:text-sm" />
+                                        <PrimaryButton type="button" @click="addHighlight" class="bg-black hover:bg-gray-800">
+                                            <i class="pi pi-plus" style="font-size: 1rem"></i>
                                         </PrimaryButton>
                                     </div>
+
+                                    <ul>
+                                        <li class="h-48 min-h-48 overflow-scroll">
+                                            <div v-for="(highlight, index) in highlights" :key="index"
+                                                class="flex justify-between items-center my-6">
+                                                <p class="text-lg">{{ highlight.value }}</p>
+                                                <i @click="removeHighlight(index)"
+                                                    class="hover:bg-gray-200 p-3 hover:rounded-lg cursor-pointer pi pi-trash"
+                                                    style="color: red; font-size: 1.3rem"></i>
+                                            </div>
+                                        </li>
+                                    </ul>
                                 </div>
-                            </form>
+                            </div>
+
+                            <div class="col-span-6 md:col-span-3">
+                                <div class="border-gray-300 p-6 border border-solid rounded-md">
+                                    <b>Lowlights:</b>
+
+                                    <div class="flex items-center gap-8 my-5">
+                                        <TextInput v-model="newLowLight" placeholder="Añadir nombre" type="text"
+                                            class="block border-gray-300 shadow-sm mt-1 py-3 focus:border-black rounded-md focus:ring-black w-full text-black sm:text-sm" />
+                                        <PrimaryButton type="button" @click="addLowlight" class="bg-black hover:bg-gray-800">
+                                            <i class="pi pi-plus" style="font-size: 1rem"></i>
+                                        </PrimaryButton>
+                                    </div>
+
+                                    <ul>
+                                        <li class="h-48 min-h-48 overflow-scroll">
+                                            <div v-for="(lowlight, index) in lowlights" :key="index"
+                                                class="flex justify-between items-center my-6">
+                                                <p class="text-lg">{{ lowlight.value }}</p>
+                                                <i @click="removeLowlight(index)"
+                                                    class="hover:bg-gray-200 p-3 hover:rounded-lg cursor-pointer pi pi-trash"
+                                                    style="color: red; font-size: 1.3rem"></i>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="col-span-6 md:col-span-3">
+                                <div class="border-gray-300 p-6 border border-solid rounded-md">
+                                    <b>Avisos:</b>
+
+                                    <div class="flex items-center gap-8 my-5">
+                                        <TextInput v-model="newAviso" placeholder="Añadir nombre" type="text"
+                                            class="block border-gray-300 shadow-sm mt-1 py-3 focus:border-black rounded-md focus:ring-black w-full text-black sm:text-sm" />
+                                        <PrimaryButton type="button" @click="addAviso" class="bg-black hover:bg-gray-800">
+                                            <i class="pi pi-plus" style="font-size: 1rem"></i>
+                                        </PrimaryButton>
+                                    </div>
+
+                                    <ul>
+                                        <li class="h-48 min-h-48 overflow-scroll">
+                                            <div v-for="(aviso, index) in avisos" :key="index"
+                                                class="flex justify-between items-center my-6">
+                                                <p class="text-lg">{{ aviso.value }}</p>
+                                                <i @click="removeAviso(index)"
+                                                    class="hover:bg-gray-200 p-3 hover:rounded-lg cursor-pointer pi pi-trash"
+                                                    style="color: red; font-size: 1.3rem"></i>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+
+                        <PrimaryButton type="submit" @click="addLowlight" class="float-end bg-black hover:bg-gray-800 mt-5">
+                            Guardar
+                        </PrimaryButton>
+                    </form>
                 </div>
             </div>
         </div>

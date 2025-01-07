@@ -177,23 +177,23 @@ const deleteEvidencia = async (id) => {
 
 <template>
     <div class="py-2">
-        <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-            <div class="px-4 py-2 bg-white border-b border-gray-200">
-                <div class="container mx-auto">
-                    <h2 class="text-center text-2xl">Editar Tarea</h2>
+        <div class="bg-white overflow-hidden">
+            <div class="border-gray-200 bg-white px-4 py-2 border-b">
+                <div class="mx-auto container">
+                    <h2 class="text-2xl text-center">Editar Tarea</h2>
                     <form @submit.prevent="submit">
                         <div class="mt-4">
                             <InputLabel for="minuta_id" value="Reunión:" />
-                            <TextInput id="minuta_id" type="text" :value="minuta.alias" class="mt-1 block w-full"
+                            <TextInput id="minuta_id" type="text" :value="minuta.alias" class="block mt-1 w-full"
                                 disabled />
                             <TextInput id="minuta_id" v-model="form.minuta_id" type="text"
-                                class="mt-1 block w-full hidden" required disabled autocomplete="minuta_id" />
+                                class="block mt-1 w-full" required disabled autocomplete="minuta_id" />
                         </div>
 
                         <div class="mt-4">
                             <InputLabel for="area_id" value="Pilar: " />
                             <select ref="area_select" @change="onChange($event)"
-                                class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                                 v-model="form.area_id" required>
                                 <option value="" disabled selected>
                                     Seleccione una opcion
@@ -207,7 +207,7 @@ const deleteEvidencia = async (id) => {
                         <div class="mt-4">
                             <InputLabel for="departamento_id" value="Flujo de valor: " />
                             <select ref="departamento_select"
-                                class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                                 v-model="form.departamento_id" required>
                                 <option value="" disabled selected>
                                     Seleccione una opcion
@@ -223,13 +223,13 @@ const deleteEvidencia = async (id) => {
 
                         <div class="mt-4">
                             <InputLabel for="tarea" value="Titulo:" />
-                            <TextInput id="tarea" v-model="form.tarea" type="text" class="mt-1 block w-full" required
+                            <TextInput id="tarea" v-model="form.tarea" type="text" class="block mt-1 w-full" required
                                 autocomplete="tarea" />
                         </div>
-                        <div class="mt-4 z-30">
+                        <div class="z-30 mt-4">
                             <InputLabel for="responsable_id" value="Responsable:" />
                             <select ref="departamento_select"
-                                class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                                 v-model="form.responsable_id" required>
                                 <option value="" disabled selected>
                                     Seleccione una opcion
@@ -239,10 +239,10 @@ const deleteEvidencia = async (id) => {
                                 </option>
                             </select>
                         </div>
-                        <div class="mt-4 z-30">
+                        <div class="z-30 mt-4">
                             <InputLabel for="revisor_id" value="Cliente de la tarea:" />
                             <select ref="departamento_select"
-                                class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                                 v-model="form.revisor_id" required>
                                 <option value="" disabled selected>
                                     Seleccione una opcion
@@ -255,7 +255,7 @@ const deleteEvidencia = async (id) => {
                         <div class="mt-4">
                             <InputLabel for="estatus" value="Estatus: " />
                             <select ref="departamento_select"
-                                class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                                 v-model="form.estatus_id" required>
                                 <option value="" selected disabled>
                                     Seleccione una opcion </option>
@@ -272,15 +272,15 @@ const deleteEvidencia = async (id) => {
 
                         <div class="mt-4">
                             <InputLabel for="fecha" value="Fecha de entrega:" />
-                            <TextInput id="fecha" v-model="form.fecha" type="date" class="mt-1 block w-full" required
+                            <TextInput id="fecha" v-model="form.fecha" type="date" class="block mt-1 w-full" required
                                 autocomplete="responsable_id" />
                         </div>
                         <div class="mt-4">
                             <InputLabel for="nota" value="Notas: " />
-                            <Textarea class="mt-1 block w-full" v-model="form.nota" rows="5" cols="30" />
+                            <Textarea class="block mt-1 w-full" v-model="form.nota" rows="5" cols="30" />
                         </div>
 
-                        <div class="flex items-center justify-end mt-4">
+                        <div class="flex justify-end items-center mt-4">
                             <PrimaryButton class="ms-4 pi pi-save" :class="{ 'opacity-25': form.processing }"
                                 :disabled="form.processing">
 
@@ -292,26 +292,26 @@ const deleteEvidencia = async (id) => {
                         </div>
                     </form>
                 </div>
-                <div class="contaier mx-auto">
+                <div class="mx-auto contaier">
                     <form @submit.prevent="uploadFile" enctype="multipart/form-data">
-                        <div class="grid grid-cols-1 gap-4">
+                        <div class="gap-4 grid grid-cols-1">
                             <div>
                                 <InputLabel for="img_ref" value="Muestra del trabajo realizado: " />
                                 <input id="img_ref" type="file" @change="onFileChange('img_ref', $event)"
-                                    class="mt-1 block w-full" autocomplete="img_ref" />
+                                    class="block mt-1 w-full" autocomplete="img_ref" />
                             </div>
 
-                            <div class="col-span-full flex items-center justify-end mt-4">
+                            <div class="flex justify-end items-center col-span-full mt-4">
                                 <PrimaryButton class="ms-4 pi pi-upload" :class="{
                                     'opacity-25': form.processing,
                                 }" :disabled="form.processing">
                                 </PrimaryButton>
                             </div>
-                            <div class="grid  grid-cols-1">
-                                <div v-for="evidencia in evidencias" class="card w-60 bg-slate-100 text-center">
+                            <div class="grid grid-cols-1">
+                                <div v-for="evidencia in evidencias" class="bg-slate-100 w-60 text-center card">
                                     <Image :src="evidencia.img_ref" alt="Image" width="250" preview />
                                     <!-- <img :src="evidencia" alt="" srcset=""> -->
-                                    <a class="pi pi-trash text-red-500 cursor-pointer hover:text-red-700 text-2xl"
+                                    <a class="text-2xl text-red-500 hover:text-red-700 cursor-pointer pi pi-trash"
                                         @click="deleteEvidencia(evidencia.id)"></a>
                                 </div>
 

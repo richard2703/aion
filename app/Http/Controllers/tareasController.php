@@ -29,8 +29,8 @@ class tareasController extends Controller
 
     public function findAll(Request $request)
     {
-        $user_rol = $request->user()->roles()->first()->name;
-        $user_id = $request->user()->id;
+        // $user_rol = $request->user()->roles()->first()->name;
+        // $user_id = $request->user()->id;
 
 
         $query = tareas::query();
@@ -130,17 +130,17 @@ class tareasController extends Controller
         }
 
         $user = auth()->user();
-        if ($user->hasRole('lider_pilar')) {
-            $result = $query->with('area', 'departamento', 'minuta', 'responsable', 'estatus', 'revisor')->paginate($pageSize, ['*'], 'page', $page);
-        } elseif ($user_rol == 'admin') {
-            $query->join('minutas', 'tareas.minuta_id', '=', 'minutas.id')
-                ->select('tareas.*', 'minutas.alias as minuta_alias') // Select distinct columns
-                ->where('minutas.privada', 0);
-            $result = $query->with('area', 'departamento', 'minuta', 'responsable', 'estatus', 'revisor')->paginate($pageSize, ['*'], 'page', $page);
-        } else {
+        // if ($user->hasRole('lider_pilar')) {
+        //     $result = $query->with('area', 'departamento', 'minuta', 'responsable', 'estatus', 'revisor')->paginate($pageSize, ['*'], 'page', $page);
+        // } elseif ($user_rol == 'admin') {
+        //     $query->join('minutas', 'tareas.minuta_id', '=', 'minutas.id')
+        //         ->select('tareas.*', 'minutas.alias as minuta_alias') // Select distinct columns
+        //         ->where('minutas.privada', 0);
+        //     $result = $query->with('area', 'departamento', 'minuta', 'responsable', 'estatus', 'revisor')->paginate($pageSize, ['*'], 'page', $page);
+        // } else {
 
-            $result = $query->with('area', 'departamento', 'minuta', 'responsable', 'estatus', 'revisor')->where('responsable_id', $user_id)->paginate($pageSize, ['*'], 'page', $page);
-        }
+            $result = $query->with('area', 'departamento', 'minuta', 'responsable', 'estatus', 'revisor')->paginate($pageSize, ['*'], 'page', $page);
+        // }
 
         // $result = $query->with('area', 'departamento', 'minuta', 'responsable', 'estatus', 'revisor')->paginate($pageSize, ['*'], 'page', $page);
 
@@ -197,7 +197,7 @@ class tareasController extends Controller
             'readed' => 0,
         ];
 
-        $notification = Notificacion::create($notification);
+        // $notification = Notificacion::create($notification);
 
         $responsable = User::find($request->responsable_id);
     }

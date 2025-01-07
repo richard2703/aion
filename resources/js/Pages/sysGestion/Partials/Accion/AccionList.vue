@@ -69,20 +69,20 @@ const deleteAccion = async (id) => {
 </script>
 
 <template>
-    <div class="max-h-40 w-full overflow-y-auto no-scrollbar">
+    <div class="w-full max-h-40 overflow-y-auto no-scrollbar">
         <ul>
             <li v-for="accionCorrectiva in accionesCorrectivas"
-                class="border-b border-gray-200 grid grid-cols-[85%_15%]">
+                class="border-gray-200 grid grid-cols-[85%_15%] my-5 border-b">
                 <div>
 
-                    <a class="hover:underline text-blue-500" target="blank" :href="accionCorrectiva.link">
+                    <a class="text-blue-500 hover:underline" target="blank" :href="accionCorrectiva.link">
                         {{ accionCorrectiva.titulo }}
                     </a>
                 </div>
                 <div class="text-right">
-                    <button class="pi pi-pencil text-red-500 mx-2 justify-end"
+                    <button class="justify-end mx-2 text-red-500 pi pi-pencil"
                         @click="editAccion(accionCorrectiva.id)"></button>
-                    <button class="pi pi-times text-red-500 mx-2" @click="deleteAccion(accionCorrectiva.id)"></button>
+                    <button class="mx-2 text-red-500 pi pi-times" @click="deleteAccion(accionCorrectiva.id)"></button>
                 </div>
             </li>
             <div class="text-center" v-if="accionesCorrectivas.length < 1">

@@ -1,7 +1,7 @@
 <script setup>
 import { Head, Link } from "@inertiajs/vue3";
 import { ref, onMounted, watch, computed, reactive } from "vue";
-import Layout from "@/Layouts/Layout.vue";
+import Layout from "@/Layouts/Layout2.vue";
 import Step1Component from "./MultiForm/Step1Component.vue";
 import Step2Component from "./MultiForm/Step2Component.vue";
 import Step3Component from "./MultiForm/Step3Component.vue";

@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, ref } from "vue";
-import Layout from "@/Layouts/Layout.vue";
+import Layout from "@/Layouts/Layout2.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
@@ -71,11 +71,11 @@ onMounted(() => {
 
         <Head title="Opciones" />
 
-        <div class="overflow-hidden sm:rounded-lg">
-            <div class="breadcrumbsTitulo px-1">
+        <div class="sm:rounded-lg overflow-hidden">
+            <div class="px-1 breadcrumbsTitulo">
                 <h3>Opciones</h3>
             </div>
-            <div class="breadcrumbs flex">
+            <div class="flex breadcrumbs">
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
@@ -89,19 +89,19 @@ onMounted(() => {
         </div>
 
         <div class="py-2">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+            <div class="bg-white overflow-hidden">
                 <div>
-                    <div class="px-4 my-4 py-2 flex justify-end bg-white border-b border-gray-200"></div>
-                    <div class="px-4 py-2 bg-white border-b border-gray-200">
-                        <div class="container mx-auto">
+                    <div class="flex justify-end border-gray-200 bg-white my-4 px-4 py-2 border-b"></div>
+                    <div class="border-gray-200 bg-white px-4 py-2 border-b">
+                        <div class="mx-auto container">
                             <form @submit.prevent="submit">
 
-                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+                                <div class="gap-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
 
                                     <div class="mt-4">
                                         <InputLabel for="area_id" value="Area: " />
                                         <select ref="area_select" @change="onChangeArea($event)"
-                                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                            class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                                             v-model="form.area_id" required>
                                             <option value="" disabled selected>
                                                 Seleccione una opcion
@@ -115,7 +115,7 @@ onMounted(() => {
                                         <InputLabel for="challenge_id" value="Challenge: " />
 
                                         <select ref="challenge_select"
-                                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                            class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                                             v-model="form.challenge_id" required>
                                             <option value="" disabled selected>
                                                 Seleccione una opcion
@@ -131,7 +131,7 @@ onMounted(() => {
                                         <InputLabel for="madurez" value="Madurez: " />
 
                                         <select ref="madurez_select"
-                                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                            class="border-gray-300 focus:border-indigo-500 shadow-sm px-3 py-2 rounded-md focus:ring-indigo-500 w-full cursor-pointer"
                                             v-model="form.madurez" required>
                                             <option value="" disabled selected>
                                                 Seleccione una opcion
@@ -144,7 +144,7 @@ onMounted(() => {
                                     </div>
                                 </div>
 
-                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+                                <div class="gap-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
                                     <div class="mt-4">
                                         <InputLabel for="formal" value="Formal: " />
                                         <Textarea v-model="form.formal" rows="5" cols="30" />
@@ -157,7 +157,7 @@ onMounted(() => {
 
 
                                 </div>
-                                <div class="flex items-center justify-end mt-4">
+                                <div class="flex justify-end items-center mt-4">
                                     <PrimaryButton class="ms-4 pi pi-save" :class="{
                                         'opacity-25': form.processing,
                                     }" :disabled="form.processing">

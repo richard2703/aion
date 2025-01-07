@@ -3,7 +3,7 @@ import { Head, Link } from "@inertiajs/vue3";
 import { ref, onMounted, watch } from "vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import axios from "axios";
-import Layout from "@/Layouts/Layout.vue";
+import Layout from "@/Layouts/Layout2.vue";
 import { confirmDialog, showToast } from "../utils/SweetAlert.service";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
@@ -117,11 +117,11 @@ const onSort = (event) => {
     <Layout :titulo="title">
 
         <Head title="Departamento" />
-        <div class="overflow-hidden sm:rounded-lg">
-            <div class="breadcrumbsTitulo px-1">
+        <div class="sm:rounded-lg overflow-hidden">
+            <div class="px-1 breadcrumbsTitulo">
                 <h3>Roles</h3>
             </div>
-            <div class="breadcrumbs flex">
+            <div class="flex breadcrumbs">
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
@@ -132,13 +132,13 @@ const onSort = (event) => {
         </div>
 
         <div class="py-2">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+            <div class="bg-white overflow-hidden">
                 <div>
-                    <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
+                    <div class="flex justify-end border-gray-200 bg-white px-4 py-2 border-b">
                         <PrimaryButton :href="route('roles.create')" class="m-4 pi pi-plus"></PrimaryButton>
                     </div>
-                    <div class="px-4 py-2 bg-white border-b border-gray-200">
-                        <div class="container mx-auto overflow-x-auto">
+                    <div class="border-gray-200 bg-white px-4 py-2 border-b">
+                        <div class="mx-auto overflow-x-auto container">
                             <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
                             <DataTable :value="items" paginator :rows="rows" :totalRecords="totalRecords" :lazy="true"
                                 :first="first" @page="onPage" @sort="onSort" :rowsPerPageOptions="[5, 10, 20, 50]"
@@ -147,7 +147,7 @@ const onSort = (event) => {
                                     'nombre',
                                     // 'usuario.name',
                                 ]" :sortField="sortField" :sortOrder="sortOrder"
-                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+                                class="p-datatable-gridlines p-datatable-sm p-datatable-striped">
                                 <template #empty> Sin registros </template>
                                 <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
                                     sortable></Column>

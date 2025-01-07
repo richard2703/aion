@@ -35,17 +35,17 @@ const editTipo = (id) => {
 
 <template>
     <div class="py-2">
-        <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-            <div class="px-4 py-2 bg-white border-b border-gray-200">
-                <div class="container mx-auto">
-                    <h2 class="text-center text-2xl">Tipo de minuta</h2>
-                    <PrimaryButton v-if="accion === 'list'" class=" mb-4 float-right pi pi-plus"
+        <div class="bg-white overflow-hidden">
+            <div class="border-gray-200 bg-white px-4 py-2 border-b">
+                <div class="mx-auto container">
+                    <h2 class="text-2xl text-center">Tipo de minuta</h2>
+                    <PrimaryButton v-if="accion === 'list'" class="float-right mb-4 pi pi-plus"
                         @click="acciones('create')">
                     </PrimaryButton>
-                    <PrimaryButton v-if="accion !== 'list'" class=" mb-4 float-right pi pi-arrow-left"
+                    <PrimaryButton v-if="accion !== 'list'" class="float-right pi-arrow-left mb-4 pi"
                         @click="acciones('list')">
                     </PrimaryButton>
-                    <!-- <PrimaryButton v-if="accion === 'edit'" class=" mb-4 float-right pi pi-plus" @click="">
+                    <!-- <PrimaryButton v-if="accion === 'edit'" class="float-right mb-4 pi pi-plus" @click="">
                     </PrimaryButton>-->
 
                     <div class="mt-5 py-2">
