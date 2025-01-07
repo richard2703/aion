@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, ref, watch } from "vue";
-import { Head, Link } from "@inertiajs/vue3";
+import { Head, Link, usePage } from "@inertiajs/vue3";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import Layout from "@/Layouts/Layout.vue";
 import { confirmDialog, showToast } from "../utils/SweetAlert.service";
@@ -22,6 +22,7 @@ const globalFilter = ref("");
 const filters = ref({});
 const sortField = ref("id");
 const sortOrder = ref(1);
+const userPermissions = usePage().props.auth.user.permissions;
 
 onMounted(() => {
     getEvaluaciones();
@@ -127,6 +128,7 @@ const onSort = (event) => {
                         </button>
                     </div>
                     <div
+                        v-if="userPermissions.includes('evaluacion_crear')"
                         class="px-4 py-2 flex justify-end bg-white border-b border-gray-200"
                     >
                         <PrimaryButton
@@ -211,48 +213,64 @@ const onSort = (event) => {
                                         #body="slotProps"
                                         class="justify-center"
                                     >
-                                        <PrimaryButton
+                                        <div
                                             v-if="
-                                                slotProps.data
-                                                    .seccion_completa !==
-                                                slotProps.data.seccion_total
-                                            "
-                                            class="m-2 pi pi-file-edit"
-                                            :href="
-                                                route(
-                                                    'evaluacion.select',
-                                                    slotProps.data.id
+                                                userPermissions.includes(
+                                                    'evaluacion_secciones'
                                                 )
                                             "
                                         >
-                                            <span
-                                                class="p-1"
-                                                :style="{
-                                                    fontSize: '10px',
-                                                }"
+                                            <PrimaryButton
+                                                v-if="
+                                                    slotProps.data
+                                                        .seccion_completa !==
+                                                    slotProps.data.seccion_total
+                                                "
+                                                class="m-2 pi pi-file-edit"
+                                                :href="
+                                                    route(
+                                                        'evaluacion.select',
+                                                        slotProps.data.id
+                                                    )
+                                                "
                                             >
-                                                Secciones</span
-                                            >
-                                        </PrimaryButton>
+                                                <span
+                                                    class="p-1"
+                                                    :style="{
+                                                        fontSize: '10px',
+                                                    }"
+                                                >
+                                                    Secciones</span
+                                                >
+                                            </PrimaryButton>
+                                        </div>
 
-                                        <PrimaryButton
-                                            class="m-2 pi pi-chart-scatter"
-                                            :href="
-                                                route(
-                                                    'evaluacion.details',
-                                                    slotProps.data.id
+                                        <div
+                                            v-if="
+                                                userPermissions.includes(
+                                                    'evaluacion_benchmark'
                                                 )
                                             "
                                         >
-                                            <span
-                                                class="p-1"
-                                                :style="{
-                                                    fontSize: '10px',
-                                                }"
+                                            <PrimaryButton
+                                                class="m-2 pi pi-chart-scatter"
+                                                :href="
+                                                    route(
+                                                        'evaluacion.details',
+                                                        slotProps.data.id
+                                                    )
+                                                "
                                             >
-                                                Benchmark</span
-                                            >
-                                        </PrimaryButton>
+                                                <span
+                                                    class="p-1"
+                                                    :style="{
+                                                        fontSize: '10px',
+                                                    }"
+                                                >
+                                                    Benchmark</span
+                                                >
+                                            </PrimaryButton>
+                                        </div>
 
                                         <!-- <PrimaryButton class="m-2 pi pi-trash" @click.prevent="
                                             deleteSeccion(slotProps.data.id)
