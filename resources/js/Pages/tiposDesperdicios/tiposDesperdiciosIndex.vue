@@ -1,5 +1,5 @@
 <script setup>
-import { Head, Link } from "@inertiajs/vue3";
+import { Head, Link, usePage } from "@inertiajs/vue3";
 import { ref, onMounted, watch } from "vue";
 import axios from "axios";
 import Layout from "@/Layouts/Layout.vue";
@@ -24,6 +24,7 @@ const filters = ref({});
 const sortField = ref("id");
 const sortOrder = ref(1);
 
+const userPermissions = usePage().props.auth.user.permissions;
 async function getTipos(
     page = 1,
     rowsPerPage = rows.value,
@@ -154,19 +155,27 @@ watch(globalFilter, (newValue) => {
                     <div
                         class="px-4 py-2 flex justify-end bg-white border-b border-gray-200"
                     >
-                        <PrimaryButton
-                            :href="route('tiposDesperdicios.create')"
-                            class="m-4 pi pi-plus"
+                        <div
+                            v-if="
+                                userPermissions.includes(
+                                    'tipo_desperdicio_crear'
+                                )
+                            "
                         >
-                            <span
-                                class="p-1"
-                                :style="{
-                                    fontSize: '10px',
-                                }"
+                            <PrimaryButton
+                                :href="route('tiposDesperdicios.create')"
+                                class="m-4 pi pi-plus"
                             >
-                                Nuevo tipo de desperdicio</span
-                            >
-                        </PrimaryButton>
+                                <span
+                                    class="p-1"
+                                    :style="{
+                                        fontSize: '10px',
+                                    }"
+                                >
+                                    Nuevo tipo de desperdicio</span
+                                >
+                            </PrimaryButton>
+                        </div>
                     </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto overflow-x-auto">
@@ -235,32 +244,53 @@ watch(globalFilter, (newValue) => {
                                         #body="slotProps"
                                         class="text-center"
                                     >
-                                        <PrimaryButton
-                                            class="me-2 pi pi-file-edit"
-                                            :href="
-                                                route(
-                                                    'tiposDesperdicios.edit',
-                                                    slotProps.data.id
-                                                )
-                                            "
-                                        >
-                                            <span
-                                                class="p-1"
-                                                :style="{
-                                                    fontSize: '10px',
-                                                }"
+                                        <div class="flex justify-evenly">
+                                            <div
+                                                v-if="
+                                                    userPermissions.includes(
+                                                        'tipo_desperdicio_editar'
+                                                    )
+                                                "
+                                                class="inline"
                                             >
-                                                Editar</span
+                                                <PrimaryButton
+                                                    class="me-2 pi pi-file-edit"
+                                                    :href="
+                                                        route(
+                                                            'tiposDesperdicios.edit',
+                                                            slotProps.data.id
+                                                        )
+                                                    "
+                                                >
+                                                    <span
+                                                        class="p-1"
+                                                        :style="{
+                                                            fontSize: '10px',
+                                                        }"
+                                                    >
+                                                        Editar</span
+                                                    >
+                                                </PrimaryButton>
+                                            </div>
+                                            <div
+                                                v-if="
+                                                    userPermissions.includes(
+                                                        'tipo_desperdicio_eliminar'
+                                                    )
+                                                "
+                                                class="inline"
                                             >
-                                        </PrimaryButton>
-
-                                        <PrimaryButton
-                                            class="me-2 pi pi-trash"
-                                            @click.prevent="
-                                                deleteItem(slotProps.data.id)
-                                            "
-                                        >
-                                        </PrimaryButton>
+                                                <PrimaryButton
+                                                    class="me-2 pi pi-trash"
+                                                    @click.prevent="
+                                                        deleteItem(
+                                                            slotProps.data.id
+                                                        )
+                                                    "
+                                                >
+                                                </PrimaryButton>
+                                            </div>
+                                        </div>
                                     </template>
                                 </Column>
                             </DataTable>
