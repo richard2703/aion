@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import Layout from "@/Layouts/Layout.vue";
-import { Head, useForm, Link } from "@inertiajs/vue3";
+import { Head, useForm, Link, usePage } from "@inertiajs/vue3";
 import SectionBorder from "@/Components/SectionBorder.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
@@ -22,6 +22,8 @@ const departamentos = ref(props.departamentos);
 const roles = ref(props.roles);
 
 const userArea = usuario.value.area_id;
+
+const userPermissions = usePage().props.auth.user.permissions;
 
 const profileForm = useForm({
     name: usuario.value.name,
@@ -372,23 +374,31 @@ onMounted(() => {
                                     </div> -->
 
                                 <div class="flex items-center justify-end mt-4">
-                                    <PrimaryButton
-                                        class="ms-4 pi pi-save"
-                                        :class="{
-                                            'opacity-25':
-                                                profileForm.processing,
-                                        }"
-                                        :disabled="profileForm.processing"
+                                    <div
+                                        v-if="
+                                            userPermissions.includes(
+                                                'usuarios_editar'
+                                            )
+                                        "
                                     >
-                                        <span
-                                            class="p-1"
-                                            :style="{
-                                                fontSize: '10px',
+                                        <PrimaryButton
+                                            class="ms-4 pi pi-save"
+                                            :class="{
+                                                'opacity-25':
+                                                    profileForm.processing,
                                             }"
+                                            :disabled="profileForm.processing"
                                         >
-                                            Actualizar perfil</span
-                                        >
-                                    </PrimaryButton>
+                                            <span
+                                                class="p-1"
+                                                :style="{
+                                                    fontSize: '10px',
+                                                }"
+                                            >
+                                                Actualizar perfil</span
+                                            >
+                                        </PrimaryButton>
+                                    </div>
                                 </div>
                             </form>
 
@@ -440,23 +450,31 @@ onMounted(() => {
                                 </div>
 
                                 <div class="flex items-center justify-end mt-4">
-                                    <PrimaryButton
-                                        class="ms-4 pi pi-save"
-                                        :class="{
-                                            'opacity-25':
-                                                passwordForm.processing,
-                                        }"
-                                        :disabled="passwordForm.processing"
+                                    <div
+                                        v-if="
+                                            userPermissions.includes(
+                                                'usuarios_editar'
+                                            )
+                                        "
                                     >
-                                        <span
-                                            class="p-1"
-                                            :style="{
-                                                fontSize: '10px',
+                                        <PrimaryButton
+                                            class="ms-4 pi pi-save"
+                                            :class="{
+                                                'opacity-25':
+                                                    passwordForm.processing,
                                             }"
+                                            :disabled="passwordForm.processing"
                                         >
-                                            Actualizar contraseña</span
-                                        >
-                                    </PrimaryButton>
+                                            <span
+                                                class="p-1"
+                                                :style="{
+                                                    fontSize: '10px',
+                                                }"
+                                            >
+                                                Actualizar contraseña</span
+                                            >
+                                        </PrimaryButton>
+                                    </div>
                                 </div>
                             </form>
                         </div>
