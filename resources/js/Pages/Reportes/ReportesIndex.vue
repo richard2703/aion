@@ -1,5 +1,5 @@
 <script setup>
-import { Head, Link } from "@inertiajs/vue3";
+import { Head, Link, usePage } from "@inertiajs/vue3";
 import { ref, onMounted, watch } from "vue";
 import axios from "axios";
 import Layout from "@/Layouts/Layout.vue";
@@ -24,6 +24,7 @@ const filters = ref({});
 const sortField = ref("id"); // Valor predeterminado
 const sortOrder = ref(1);
 const title = "reportes";
+const userPremissions = usePage().props.auth.user.permissions;
 
 // Función para obtener áreas
 async function getreporteSemanal(
@@ -147,19 +148,21 @@ function handleClick(id) {
                     <div
                         class="px-4 py-2 flex justify-end bg-white border-b border-gray-200"
                     >
-                        <PrimaryButton
-                            :href="route('reporte.create')"
-                            class="m-4 pi pi-plus"
-                        >
-                            <span
-                                class="p-1"
-                                :style="{
-                                    fontSize: '10px',
-                                }"
+                        <div v-if="userPremissions.includes('reporte_crear')">
+                            <PrimaryButton
+                                :href="route('reporte.create')"
+                                class="m-4 pi pi-plus"
                             >
-                                Nuevo reporte</span
-                            >
-                        </PrimaryButton>
+                                <span
+                                    class="p-1"
+                                    :style="{
+                                        fontSize: '10px',
+                                    }"
+                                >
+                                    Nuevo reporte</span
+                                >
+                            </PrimaryButton>
+                        </div>
                     </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto">
@@ -222,55 +225,72 @@ function handleClick(id) {
                                     bodyClass="text-center" sortable></Column> -->
 
                                 <Column header="" headerStyle="width:4em;">
-                                    <template
-                                        #body="slotProps"
-                                        class="text-center"
-                                    >
-                                        <PrimaryButton
-                                            class="pi pi-eye me-2"
-                                            :href="
-                                                route(
-                                                    'reporte.show',
-                                                    slotProps.data.id
-                                                )
-                                            "
-                                        >
-                                            <span
-                                                class="p-1"
-                                                :style="{
-                                                    fontSize: '10px',
-                                                }"
+                                    <template #body="slotProps">
+                                        <div class="flex justify-evenly">
+                                            <div
+                                                v-if="
+                                                    userPremissions.includes(
+                                                        'reporte_ver_web'
+                                                    )
+                                                "
+                                                class="inline"
                                             >
-                                                Ver</span
-                                            >
-                                        </PrimaryButton>
-                                        <!-- <PrimaryButton class="pi pi-eye me-2" @click="handleClick(slotProps.data.id)"
-                                            :disabled="isLoading">
+                                                <PrimaryButton
+                                                    class="pi pi-eye me-2"
+                                                    :href="
+                                                        route(
+                                                            'reporte.show',
+                                                            slotProps.data.id
+                                                        )
+                                                    "
+                                                >
+                                                    <span
+                                                        class="p-1"
+                                                        :style="{
+                                                            fontSize: '10px',
+                                                        }"
+                                                    >
+                                                        Ver</span
+                                                    >
+                                                </PrimaryButton>
+                                            </div>
+
+                                            <!-- <PrimaryButton class="pi pi-eye me-2" @click="handleClick(slotProps.data.id)"
+                                        :disabled="isLoading">
                                             <span v-if="!isLoading">Ver Reporte</span>
                                             <span v-else>
                                                 <i class="pi pi-spinner pi-spin"></i> Cargando...
                                             </span>
                                         </PrimaryButton> -->
-
-                                        <PrimaryButton
-                                            class="pi pi-download me-2"
-                                            :href="
-                                                route(
-                                                    'reporte.pdf',
-                                                    slotProps.data.id
-                                                )
-                                            "
-                                            target="_blank"
-                                        >
-                                            <span
-                                                class="p-1"
-                                                :style="{
-                                                    fontSize: '10px',
-                                                }"
+                                            <div
+                                                v-if="
+                                                    userPremissions.includes(
+                                                        'reporte_descargar'
+                                                    )
+                                                "
+                                                class="inline"
                                             >
-                                                Descargar</span
-                                            >
-                                        </PrimaryButton>
+                                                <PrimaryButton
+                                                    class="pi pi-download me-2"
+                                                    :href="
+                                                        route(
+                                                            'reporte.pdf',
+                                                            slotProps.data.id
+                                                        )
+                                                    "
+                                                    target="_blank"
+                                                >
+                                                    <span
+                                                        class="p-1"
+                                                        :style="{
+                                                            fontSize: '10px',
+                                                        }"
+                                                    >
+                                                        Descargar</span
+                                                    >
+                                                </PrimaryButton>
+                                            </div>
+                                        </div>
                                     </template>
                                 </Column>
                             </DataTable>

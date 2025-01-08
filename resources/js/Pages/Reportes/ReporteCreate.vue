@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import { Head, Link, useForm } from "@inertiajs/vue3";
+import { Head, Link, useForm, usePage } from "@inertiajs/vue3";
 import Layout from "@/Layouts/Layout.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
@@ -18,6 +18,7 @@ const avisos = ref([{ value: "" }]);
 const highlights = ref([{ value: "" }]);
 const lowlights = ref([{ value: "" }]);
 const errors = ref([{ value: "" }]);
+const userPremissions = usePage().props.auth.user.permissions;
 
 async function getDepartamentos() {
     await axios
@@ -76,7 +77,7 @@ getDepartamentos();
 
 <template>
     <Layout>
-        <Head title="Usuarios" />
+        <Head title="Reporte" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
                 <h3>Nuevo Reporte</h3>
@@ -166,21 +167,38 @@ getDepartamentos();
                                             autocomplete="Highlight"
                                             maxlength="250"
                                         />
+                                        <div
+                                            v-if="
+                                                userPremissions.includes(
+                                                    'reporte_eliminar'
+                                                )
+                                            "
+                                        >
+                                            <button
+                                                type="button"
+                                                @click="removeHighlight(index)"
+                                                class="ml-2 text-red-500"
+                                            >
+                                                Eliminar
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        v-if="
+                                            userPremissions.includes(
+                                                'reporte_crear'
+                                            )
+                                        "
+                                    >
                                         <button
                                             type="button"
-                                            @click="removeHighlight(index)"
-                                            class="ml-2 text-red-500"
+                                            @click="addHighlight"
+                                            class="mt-2 text-blue-500"
                                         >
-                                            Eliminar
+                                            Añadir Highlight
                                         </button>
                                     </div>
-                                    <button
-                                        type="button"
-                                        @click="addHighlight"
-                                        class="mt-2 text-blue-500"
-                                    >
-                                        Añadir Highlight
-                                    </button>
 
                                     <!-- Campos dinámicos para Lowlight -->
                                     <div
@@ -203,21 +221,38 @@ getDepartamentos();
                                             autocomplete="Lowlight"
                                             maxlength="250"
                                         />
+                                        <div
+                                            v-if="
+                                                userPremissions.includes(
+                                                    'reporte_eliminar'
+                                                )
+                                            "
+                                        >
+                                            <button
+                                                type="button"
+                                                @click="removeLowlight(index)"
+                                                class="ml-2 text-red-500"
+                                            >
+                                                Eliminar
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        v-if="
+                                            userPremissions.includes(
+                                                'reporte_crear'
+                                            )
+                                        "
+                                    >
                                         <button
                                             type="button"
-                                            @click="removeLowlight(index)"
-                                            class="ml-2 text-red-500"
+                                            @click="addLowlight"
+                                            class="mt-2 text-blue-500"
                                         >
-                                            Eliminar
+                                            Añadir Lowlight
                                         </button>
                                     </div>
-                                    <button
-                                        type="button"
-                                        @click="addLowlight"
-                                        class="mt-2 text-blue-500"
-                                    >
-                                        Añadir Lowlight
-                                    </button>
 
                                     <!-- Campos dinámicos para Avisos -->
                                     <div
@@ -239,41 +274,67 @@ getDepartamentos();
                                             class="mt-1 block w-full"
                                             autocomplete="Aviso"
                                         />
+                                        <div
+                                            v-if="
+                                                userPremissions.includes(
+                                                    'reporte_eliminar'
+                                                )
+                                            "
+                                        >
+                                            <button
+                                                type="button"
+                                                @click="removeAviso(index)"
+                                                class="ml-2 text-red-500"
+                                            >
+                                                Eliminar
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        v-if="
+                                            userPremissions.includes(
+                                                'reporte_crear'
+                                            )
+                                        "
+                                    >
                                         <button
                                             type="button"
-                                            @click="removeAviso(index)"
-                                            class="ml-2 text-red-500"
+                                            @click="addAviso"
+                                            class="mt-2 text-blue-500"
                                         >
-                                            Eliminar
+                                            Añadir Aviso
                                         </button>
                                     </div>
-                                    <button
-                                        type="button"
-                                        @click="addAviso"
-                                        class="mt-2 text-blue-500"
-                                    >
-                                        Añadir Aviso
-                                    </button>
 
                                     <div
                                         class="col-span-full flex items-center justify-end mt-4"
                                     >
-                                        <PrimaryButton
-                                            class="ms-4 pi pi-save"
-                                            :class="{
-                                                'opacity-25': form.processing,
-                                            }"
-                                            :disabled="form.processing"
+                                        <div
+                                            v-if="
+                                                userPremissions.includes(
+                                                    'reporte_crear'
+                                                )
+                                            "
                                         >
-                                            <span
-                                                class="p-1"
-                                                :style="{
-                                                    fontSize: '10px',
+                                            <PrimaryButton
+                                                class="ms-4 pi pi-save"
+                                                :class="{
+                                                    'opacity-25':
+                                                        form.processing,
                                                 }"
+                                                :disabled="form.processing"
                                             >
-                                                Guardar</span
-                                            >
-                                        </PrimaryButton>
+                                                <span
+                                                    class="p-1"
+                                                    :style="{
+                                                        fontSize: '10px',
+                                                    }"
+                                                >
+                                                    Guardar</span
+                                                >
+                                            </PrimaryButton>
+                                        </div>
                                     </div>
                                 </div>
                             </form>
