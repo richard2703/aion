@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import { Head, Link, useForm } from "@inertiajs/vue3";
+import { Head, Link, useForm, usePage } from "@inertiajs/vue3";
 import Layout from "@/Layouts/Layout.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
@@ -12,7 +12,7 @@ const props = defineProps({
 });
 
 const areas = ref(props.areas);
-
+const userPermissions = usePage().props.auth.user.permissions;
 async function getAreas() {
     await axios
         .get("/api/areas")
@@ -129,22 +129,31 @@ getAreas();
                                     <div
                                         class="col-span-full flex items-center justify-end mt-4"
                                     >
-                                        <PrimaryButton
-                                            class="ms-4 pi pi-save"
-                                            :class="{
-                                                'opacity-25': form.processing,
-                                            }"
-                                            :disabled="form.processing"
+                                        <div
+                                            v-if="
+                                                userPermissions.includes(
+                                                    'flujos_de_valor_crear'
+                                                )
+                                            "
                                         >
-                                            <span
-                                                class="p-1"
-                                                :style="{
-                                                    fontSize: '10px',
+                                            <PrimaryButton
+                                                class="ms-4 pi pi-save"
+                                                :class="{
+                                                    'opacity-25':
+                                                        form.processing,
                                                 }"
+                                                :disabled="form.processing"
                                             >
-                                                Guardar</span
-                                            >
-                                        </PrimaryButton>
+                                                <span
+                                                    class="p-1"
+                                                    :style="{
+                                                        fontSize: '10px',
+                                                    }"
+                                                >
+                                                    Guardar</span
+                                                >
+                                            </PrimaryButton>
+                                        </div>
                                     </div>
                                 </div>
                             </form>
