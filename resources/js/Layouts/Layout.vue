@@ -374,7 +374,7 @@ const menuItems = [
                 role: ["superadmin"],
             },
             {
-                label: "Configuración de Alineación",
+                label: "Personalizaciones",
                 route: "config.index",
                 icon: "",
                 role: ["admin", "superadmin"],
