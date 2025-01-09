@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import Layout from "@/Layouts/Layout.vue";
-import { Head, Link, useForm } from "@inertiajs/vue3";
+import { Head, Link, useForm, usePage } from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
@@ -13,6 +13,7 @@ const props = defineProps({
 
 const areas = ref(props.areas);
 const secciones = ref([]);
+const userPermissions = usePage().props.auth.user.permissions;
 
 async function getAreas() {
     await axios
@@ -153,7 +154,14 @@ onMounted(() => {
                                     />
                                 </div>
 
-                                <div class="flex items-center justify-end mt-4">
+                                <div
+                                    v-if="
+                                        userPermissions.includes(
+                                            'challenges_crear'
+                                        )
+                                    "
+                                    class="flex items-center justify-end mt-4"
+                                >
                                     <PrimaryButton
                                         class="ms-4 pi pi-save"
                                         :class="{
