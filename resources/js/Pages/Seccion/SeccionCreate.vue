@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import Layout from "@/Layouts/Layout.vue";
-import { Head, Link, useForm } from "@inertiajs/vue3";
+import { Head, Link, useForm, usePage } from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { showToast } from "../utils/SweetAlert.service";
@@ -12,6 +12,7 @@ const props = defineProps({});
 const title = "assessment";
 const subTitle = "secciones";
 const areas = ref([]);
+const userPermissions = usePage().props.auth.user.permissions;
 
 const form = useForm({
     area_id: "",
@@ -102,7 +103,10 @@ const submit = () => {
                                 />
                             </div>
                         </div>
-                        <div class="flex items-center justify-end mt-4">
+                        <div
+                            v-if="userPermissions.includes('secciones_crear')"
+                            class="flex items-center justify-end mt-4"
+                        >
                             <PrimaryButton
                                 class="ms-4 pi pi-save"
                                 :class="{
