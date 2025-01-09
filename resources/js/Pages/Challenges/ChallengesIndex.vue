@@ -216,7 +216,7 @@ const onSort = (event) => {
                                 <Column header="" headerStyle="width:4em;">
                                     <template
                                         #body="slotProps"
-                                        class="flex justify-evently"
+                                        class="flex justify-evenly"
                                     >
                                         <div
                                             v-if="

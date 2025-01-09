@@ -225,7 +225,7 @@ console.log(opciones.value);
                                         #body="slotProps"
                                         class="text-center"
                                     >
-                                        <div class="flex justify-evently">
+                                        <div class="flex justify-evenly">
                                             <div
                                                 v-if="
                                                     userPermissions.includes(
