@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import Layout from "@/Layouts/Layout.vue";
-import { Head, Link, useForm } from "@inertiajs/vue3";
+import { Head, Link, useForm, usePage } from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { showToast } from "../utils/SweetAlert.service";
@@ -17,6 +17,7 @@ const props = defineProps({
 const opcion = ref(props.opcion);
 const areas = ref({});
 const challenges = ref(props.challenges);
+const userPermissions = usePage().props.auth.user.permissions;
 
 async function getAreas() {
     await axios
@@ -215,6 +216,11 @@ onMounted(() => {
                                     </div>
 
                                     <div
+                                        v-if="
+                                            userPermissions.includes(
+                                                'opciones_editar'
+                                            )
+                                        "
                                         class="flex items-center justify-end mt-4"
                                     >
                                         <PrimaryButton
