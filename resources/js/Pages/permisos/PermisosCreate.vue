@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import Layout from "@/Layouts/Layout.vue";
-import { Head, Link, useForm } from "@inertiajs/vue3";
+import { Head, Link, useForm, usePage } from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
@@ -23,6 +23,8 @@ const responsable_id = ref();
 
 const title = "rolesypermisos";
 
+const userPermissions = usePage().props.auth.user.permissions;
+
 async function getAreas() {
     await axios
         .get("/api/areas")
@@ -43,15 +45,6 @@ async function getUsuarios() {
 
 const form = useForm({
     name: "",
-    // departamento_id: "",
-    // alias: "",
-    // tipo: "",
-    // proceso_id: "",
-    // procedimientos_id: "",
-    // tareas: "",
-    // notas: "",
-    // estatus: "",
-    // responsable_id: "",
 });
 
 const onChange = async (event) => {
@@ -156,6 +149,11 @@ const search = (event) => {
                                     </div>
                                 </div>
                                 <div
+                                    v-if="
+                                        userPermissions.includes(
+                                            'permisos_crear'
+                                        )
+                                    "
                                     class="px-4 my-4 pt-2 flex justify-end bg-white border-t border-gray-200"
                                 >
                                     <PrimaryButton

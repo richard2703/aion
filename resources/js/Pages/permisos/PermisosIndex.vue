@@ -1,5 +1,5 @@
 <script setup>
-import { Head, Link } from "@inertiajs/vue3";
+import { Head, Link, usePage } from "@inertiajs/vue3";
 import { ref, onMounted, watch } from "vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import axios from "axios";
@@ -24,6 +24,7 @@ const filters = ref({});
 const sortField = ref("id");
 const sortOrder = ref(-1);
 
+const userPermissions = usePage().props.auth.user.permissions;
 async function getItems(
     page = 1,
     rowsPerPage = rows.value,
@@ -58,7 +59,7 @@ const deleteItems = async (id) => {
             "warning"
         );
         if (result.isConfirmed) {
-            await axios.delete(route("objetivo.destroy", id));
+            await axios.delete(route("permisos.destroy", id));
             items.value = items.value.filter((item) => item.id !== id);
             showToast("El registro ha sido eliminado", "success");
         }
@@ -132,19 +133,21 @@ const onSort = (event) => {
                     <div
                         class="px-4 py-2 flex justify-end bg-white border-b border-gray-200"
                     >
-                        <PrimaryButton
-                            :href="route('permisos.create')"
-                            class="m-4 pi pi-plus"
-                        >
-                            <span
-                                class="p-1"
-                                :style="{
-                                    fontSize: '10px',
-                                }"
+                        <div v-if="userPermissions.includes('permisos_crear')">
+                            <PrimaryButton
+                                :href="route('permisos.create')"
+                                class="m-4 pi pi-plus"
                             >
-                                Nuevo permiso</span
-                            >
-                        </PrimaryButton>
+                                <span
+                                    class="p-1"
+                                    :style="{
+                                        fontSize: '10px',
+                                    }"
+                                >
+                                    Nuevo permiso</span
+                                >
+                            </PrimaryButton>
+                        </div>
                     </div>
                     <div class="px-4 py-2 bg-white border-b bSrder-gray-200">
                         <div class="container mx-auto overflow-x-auto">
@@ -197,30 +200,54 @@ const onSort = (event) => {
                                         #body="slotProps"
                                         class="text-center"
                                     >
-                                        <PrimaryButton
-                                            class="m-2 pi pi-file-edit"
-                                            :href="
-                                                route(
-                                                    'minutas.edit',
-                                                    slotProps.data.id
-                                                )
-                                            "
-                                        >
-                                            <span
-                                                class="p-1"
-                                                :style="{
-                                                    fontSize: '10px',
-                                                }"
+                                        <div class="flex justify-evenly">
+                                            <div
+                                                v-if="
+                                                    userPermissions.includes(
+                                                        'permisos_editar'
+                                                    )
+                                                "
+                                                class="inline"
                                             >
-                                                Editar</span
+                                                <PrimaryButton
+                                                    class="m-2 pi pi-file-edit"
+                                                    :href="
+                                                        route(
+                                                            'permisos.edit',
+                                                            slotProps.data.id
+                                                        )
+                                                    "
+                                                >
+                                                    <span
+                                                        class="p-1"
+                                                        :style="{
+                                                            fontSize: '10px',
+                                                        }"
+                                                    >
+                                                        Editar</span
+                                                    >
+                                                </PrimaryButton>
+                                            </div>
+                                            <div
+                                                v-if="
+                                                    userPermissions.includes(
+                                                        'permisos_eliminar'
+                                                    )
+                                                "
+                                                class="inline"
                                             >
-                                        </PrimaryButton>
-                                        <!--
-                                        <PrimaryButton class="m-2" @click.prevent="
-                                            deleteItems(slotProps.data.id)
-                                            ">
-                                            Borrar
-                                        </PrimaryButton> -->
+                                                <PrimaryButton
+                                                    class="m-2"
+                                                    @click.prevent="
+                                                        deleteItems(
+                                                            slotProps.data.id
+                                                        )
+                                                    "
+                                                >
+                                                    Borrar
+                                                </PrimaryButton>
+                                            </div>
+                                        </div>
                                     </template>
                                 </Column>
                             </DataTable>

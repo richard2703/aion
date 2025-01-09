@@ -138,7 +138,10 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
 
     Route::get('permisos', [App\Http\Controllers\permisosController::class, 'index'])->name('permisos.index');
     Route::get('permisos/create', [App\Http\Controllers\permisosController::class, 'create'])->name('permisos.create');
+    Route::get('permisos/{permiso}/edit', [App\Http\Controllers\permisosController::class, 'edit'])->name('permisos.edit');
     Route::post('permisos/store', [App\Http\Controllers\permisosController::class, 'store'])->name('permisos.store');
+    Route::patch('permisos/{permiso}/update', [App\Http\Controllers\permisosController::class, 'update'])->name('permisos.update');
+    Route::delete('permisos/{permiso}/destroy', [App\Http\Controllers\permisosController::class, 'destroy'])->name('permisos.destroy');
 
     //Tareas
     Route::get('tareas', [App\Http\Controllers\tareasController::class, 'index'])->name('tareas.index');
