@@ -103,6 +103,7 @@ class kpiController extends Controller
         $kpis->departamento_id = $request->departamento_id;
         $kpis->proceso_id = $request->proceso_id;
         $kpis->procedimiento_id = $request->procedimiento_id;
+        $kpis->archivado = null;
         $kpis->tipo = 1;
 
         if ($request->departamento_id !== null) {
@@ -144,6 +145,7 @@ class kpiController extends Controller
         $kpi->departamento_id = $request->departamento_id;
         $kpi->proceso_id = $request->proceso_id;
         $kpi->procedimiento_id = $request->procedimiento_id;
+        $request->archivar ? $kpi->archivado = 1 : $kpi->archivado = null;
         $kpi->tipo = 1;
         if ($request->departamento_id !== null) {
             $kpi->tipo = 2;
