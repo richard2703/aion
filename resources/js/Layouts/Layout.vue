@@ -317,7 +317,7 @@ const menuItems = [
     {
         label: "Configuraciones",
         icon: "",
-        role: ["admin", "superadmin"],
+        role: ["admin", "superadmin", "user"],
         children: [
             {
                 label: "Pilares",
@@ -407,7 +407,7 @@ const menuItems = [
                 label: "KPI's",
                 route: "kpi.index",
                 icon: "",
-                role: ["admin", "superadmin"],
+                role: ["admin", "superadmin", "user"],
             },
             {
                 label: "Roles",
