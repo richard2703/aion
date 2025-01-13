@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kpis;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -59,8 +60,14 @@ class kpiController extends Controller
     public function byDepartamento($departamento_id)
     {
         $kpis = Kpis::with(['area', 'departamento', 'proceso', 'procedimiento', 'registros' => function ($query) {
-            $query->latest()->take(22); // Limit to latest 22 registros
-        }])->where('departamento_id', $departamento_id)->get();
+            $query
+                ->whereYear('created_at', Carbon::now()->year)
+                ->latest()
+                ->take(22); // Limit to latest 22 registros
+        }])
+            ->where('departamento_id', $departamento_id)
+            ->where('archivado', null)
+            ->get();
 
         return response()->json($kpis);
     }

@@ -17,6 +17,9 @@ class registros_kpi extends Model
     protected $fillable = [
         'kpi_id',
         'actual',
+        'objetivo',
+        'medicion',
+        'regla', // 1 = subir, 0 = bajar
         'created_for',
         'created_at',
         'updated_at',
