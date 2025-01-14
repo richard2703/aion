@@ -89,7 +89,7 @@
                     </div>
                     <div
                         v-if="profileMenuOpen"
-                        class="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded shadow-lg"
+                        class="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded shadow-lg z-50"
                     >
                         <h3
                             class="px-4 py-2 border-b bg-gray-800 text-gray-100"
@@ -198,6 +198,39 @@
                     <slot />
                 </main>
             </div>
+            <!-- Botón para el sidebar derecho -->
+            <button
+                @click="isRightSidebarOpen = !isRightSidebarOpen"
+                class="text-white hover:text-gray-300"
+            >
+                <i
+                    :class="[
+                        'pi text-2xl',
+                        isRightSidebarOpen
+                            ? 'pi-angle-double-right'
+                            : 'pi-angle-double-left',
+                    ]"
+                ></i>
+            </button>
+            <!-- Sidebar Derecho -->
+            <div
+                v-if="isRightSidebarOpen"
+                class="bg-gray-800 text-white w-64 p-4 h-screen overflow-auto md:block absolute md:static right-0 z-50"
+            >
+                <h3 class="text-lg font-bold mb-4">Sidebar Derecho</h3>
+                <nav class="flex flex-col space-y-2">
+                    <div v-for="item in rightSidebarItems" :key="item.label">
+                        <button
+                            @click="item.action"
+                            class="flex items-center gap-3 p-2 rounded-md hover:bg-gray-700 w-full"
+                        >
+                            <i :class="item.icon" class="pi w-5 h-5"></i>
+                            <span>{{ item.label }}</span>
+                        </button>
+                        {{ title }}
+                    </div>
+                </nav>
+            </div>
         </div>
     </div>
 </template>
@@ -212,6 +245,21 @@ const profileMenuOpen = ref(false);
 const notificationMenuOpen = ref(false);
 const openMenus = ref([]);
 const userAuth = usePage().props.auth.user.roles;
+
+const isRightSidebarOpen = ref(false); // Sidebar derecho
+const rightSidebarItems = ref([
+    {
+        label: "Elemento 1",
+        icon: "pi pi-home",
+        action: () => alert("Acción 1"),
+    },
+    { label: "Elemento 2", icon: "pi pi-cog", action: () => alert("Acción 2") },
+    {
+        label: "Elemento 3",
+        icon: "pi pi-user",
+        action: () => alert("Acción 3"),
+    },
+]);
 
 const menuItems = [
     {
