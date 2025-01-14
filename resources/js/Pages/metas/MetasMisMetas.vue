@@ -1,5 +1,5 @@
 <script setup>
-import { Head, Link } from "@inertiajs/vue3";
+import { Head, Link, usePage } from "@inertiajs/vue3";
 import { ref, onMounted, watch } from "vue";
 import axios from "axios";
 import Layout from "@/Layouts/Layout.vue";
@@ -24,7 +24,8 @@ const globalFilter = ref("");
 const filters = ref({});
 const sortField = ref("id"); // Valor predeterminado
 const sortOrder = ref(1);
-const title = "reportes";
+const title = "Metas";
+const userPremissions = usePage().props.auth.user.permissions;
 
 // Manejar paginación
 const onPage = (event) => {
@@ -83,6 +84,7 @@ watch(globalFilter, (newValue) => {
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div>
                     <div
+                        v-if="userPremissions.includes('metas.create')"
                         class="px-4 py-2 flex justify-end bg-white border-b border-gray-200"
                     >
                         <PrimaryButton
@@ -162,24 +164,32 @@ watch(globalFilter, (newValue) => {
                                         #body="slotProps"
                                         class="text-center"
                                     >
-                                        <PrimaryButton
-                                            class="pi pi-file-edit me-2"
-                                            :href="
-                                                route(
-                                                    'metas.edit',
-                                                    slotProps.data.id
+                                        <div
+                                            v-if="
+                                                userPremissions.includes(
+                                                    'metas_editar'
                                                 )
                                             "
                                         >
-                                            <span
-                                                class="p-1"
-                                                :style="{
-                                                    fontSize: '10px',
-                                                }"
+                                            <PrimaryButton
+                                                class="pi pi-file-edit me-2"
+                                                :href="
+                                                    route(
+                                                        'metas.edit',
+                                                        slotProps.data.id
+                                                    )
+                                                "
                                             >
-                                                Editar</span
-                                            >
-                                        </PrimaryButton>
+                                                <span
+                                                    class="p-1"
+                                                    :style="{
+                                                        fontSize: '10px',
+                                                    }"
+                                                >
+                                                    Editar</span
+                                                >
+                                            </PrimaryButton>
+                                        </div>
 
                                         <!-- <PrimaryButton class="pi pi-trash me-2" @click.prevent="
                                             deleteArea(slotProps.data.id)

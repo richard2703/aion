@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
-import { Head, Link } from "@inertiajs/vue3";
+import { Head, Link, usePage } from "@inertiajs/vue3";
 import Layout from "@/Layouts/Layout.vue";
 import axios from "axios";
 import ColorPicker from "primevue/colorpicker";
@@ -58,6 +58,8 @@ const viewModal = ref({ show: false, event: null });
 const areas = ref([]);
 
 const filteredColors = ref("");
+
+const userPermissions = usePage().props.auth.user.permissions;
 
 // formatear fecha
 const formatDate = (year, month, day) => {
@@ -158,6 +160,9 @@ const deleteEvento = async (event) => {
 
 // Mostrar modales
 const showCreateModal = (day) => {
+    if (!userPermissions.includes("eventos_crear")) {
+        return;
+    }
     const formattedDate = formatDate(
         currentYear.value,
         currentMonth.value + 1,
@@ -179,6 +184,9 @@ const showCreateModal = (day) => {
 };
 
 const showEditModal = (event) => {
+    if (!userPermissions.includes("eventos_editar")) {
+        return;
+    }
     modal.value = {
         show: true,
         type: "edit",
@@ -224,7 +232,7 @@ const getAreas = async () => {
 
 <template>
     <Layout>
-        <Head title="Reporte Semanal" />
+        <Head title="Eventos" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
                 <h3>Eventos</h3>
@@ -288,12 +296,14 @@ const getAreas = async () => {
                         class="border p-4 rounded-lg text-center relative hover:bg-gray-50"
                     >
                         <div>{{ day }}</div>
-                        <button
-                            class="absolute top-2 right-2 bg-slate-600 text-white text-xs px-2 py-1 rounded"
-                            @click="showCreateModal(day)"
-                        >
-                            +
-                        </button>
+                        <div v-if="userPermissions.includes('eventos_crear')">
+                            <button
+                                class="absolute top-2 right-2 bg-slate-600 text-white text-xs px-2 py-1 rounded"
+                                @click="showCreateModal(day)"
+                            >
+                                +
+                            </button>
+                        </div>
                         <ul class="mt-2 text-sm">
                             <li
                                 v-for="event in events[
@@ -480,17 +490,29 @@ const getAreas = async () => {
                         </div>
 
                         <div class="flex justify-end space-x-2">
+                            <div
+                                v-if="
+                                    userPermissions.includes('eventos_editar')
+                                "
+                            >
+                                <button
+                                    class="px-4 py-2 bg-[#BEA34B] text-white rounded pi pi-pencil"
+                                    @click="showEditModal(viewModal.event)"
+                                ></button>
+                            </div>
+                            <div
+                                v-if="
+                                    userPermissions.includes('eventos_eliminar')
+                                "
+                            >
+                                <button
+                                    class="px-4 py-2 bg-red-500 text-white rounded pi pi-trash"
+                                    @click="deleteEvento(viewModal.event)"
+                                ></button>
+                            </div>
                             <button
                                 class="px-4 py-2 bg-slate-800 text-white rounded pi pi-times"
                                 @click="closeviewModal"
-                            ></button>
-                            <button
-                                class="px-4 py-2 bg-[#BEA34B] text-white rounded pi pi-pencil"
-                                @click="showEditModal(viewModal.event)"
-                            ></button>
-                            <button
-                                class="px-4 py-2 bg-red-500 text-white rounded pi pi-trash"
-                                @click="deleteEvento(viewModal.event)"
                             ></button>
                         </div>
                     </div>

@@ -1,5 +1,5 @@
 <script setup>
-import { Head, useForm, Link } from "@inertiajs/vue3";
+import { Head, useForm, Link, usePage } from "@inertiajs/vue3";
 import Layout from "@/Layouts/Layout.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
@@ -7,12 +7,14 @@ import TextInput from "@/Components/TextInput.vue";
 import { confirmDialog, showToast } from "../utils/SweetAlert.service";
 
 const props = defineProps({
+    permiso: Object,
     area: Object,
 });
 
+const userPermissions = usePage().props.auth.user.permissions;
+
 const form = useForm({
-    nombre: props.area.nombre,
-    descripcion: props.area.descripcion,
+    name: props.permiso.name,
 });
 
 const submit = async () => {
@@ -23,7 +25,7 @@ const submit = async () => {
             "info"
         );
         if (result.isConfirmed) {
-            form.patch(route("area.update", props.area.id), {
+            form.patch(route("permisos.update", props.permiso.id), {
                 onFinish: () => {
                     showToast("El registro ha sido actualizado", "success");
                     form.reset();
@@ -37,11 +39,12 @@ const submit = async () => {
 </script>
 
 <template>
-    <Layout title="Area">
-        <Head title="Usuarios" />
+    <Layout :titulo="title">
+        <Head title="Permisos" />
+
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
-                <h3>Permisos</h3>
+                <h3>Nuevo Permisos</h3>
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
@@ -50,8 +53,8 @@ const submit = async () => {
                 <Link :href="route('permisos.index')" class="px-1">
                     <h3>Permisos -</h3>
                 </Link>
-                <Link href="#" class="active">
-                    <h3>Actualizar</h3>
+                <Link class="active">
+                    <h3>Nuevo</h3>
                 </Link>
             </div>
         </div>
@@ -68,56 +71,45 @@ const submit = async () => {
                                 <div
                                     class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4"
                                 >
-                                    <div>
+                                    <div class="mt-4">
                                         <InputLabel
-                                            for="name"
+                                            for="nombre"
                                             value="Nombre: "
                                         />
                                         <TextInput
                                             id="name"
-                                            v-model="form.nombre"
+                                            v-model="form.name"
                                             type="text"
                                             class="mt-1 block w-full"
                                             required
-                                            autofocus
-                                            autocomplete="name"
+                                            autocomplete="new-challenge"
                                         />
                                     </div>
-
-                                    <div>
-                                        <InputLabel
-                                            for="description"
-                                            value="Description"
-                                        />
-                                        <TextInput
-                                            id="description"
-                                            v-model="form.descripcion"
-                                            type="text"
-                                            class="mt-1 block w-full"
-                                            autocomplete="username"
-                                        />
-                                    </div>
-
-                                    <div
-                                        class="col-span-full flex items-center justify-end mt-4"
+                                </div>
+                                <div
+                                    v-if="
+                                        userPermissions.includes(
+                                            'permisos_editar'
+                                        )
+                                    "
+                                    class="px-4 my-4 pt-2 flex justify-end bg-white border-t border-gray-200"
+                                >
+                                    <PrimaryButton
+                                        class="ms-4 pi pi-save"
+                                        :class="{
+                                            'opacity-25': form.processing,
+                                        }"
+                                        :disabled="form.processing"
                                     >
-                                        <PrimaryButton
-                                            class="ms-4 pi pi-save"
-                                            :class="{
-                                                'opacity-25': form.processing,
+                                        <span
+                                            class="p-1"
+                                            :style="{
+                                                fontSize: '10px',
                                             }"
-                                            :disabled="form.processing"
                                         >
-                                            <span
-                                                class="p-1"
-                                                :style="{
-                                                    fontSize: '10px',
-                                                }"
-                                            >
-                                                Actualizar</span
-                                            >
-                                        </PrimaryButton>
-                                    </div>
+                                            Actualizar</span
+                                        >
+                                    </PrimaryButton>
                                 </div>
                             </form>
                         </div>

@@ -1,5 +1,5 @@
 <script setup>
-import { Head, Link } from "@inertiajs/vue3";
+import { Head, Link, usePage } from "@inertiajs/vue3";
 import { ref, onMounted, watch } from "vue";
 import axios from "axios";
 import Layout from "@/Layouts/Layout.vue";
@@ -24,6 +24,7 @@ const filters = ref({});
 const sortField = ref("id"); // Valor predeterminado
 const sortOrder = ref(1);
 const title = "Pilares";
+const userPremissions = usePage().props.auth.user.permissions;
 
 // Función para obtener áreas
 async function getAreas(
@@ -138,19 +139,21 @@ watch(globalFilter, (newValue) => {
                     <div
                         class="px-4 py-2 flex justify-end bg-white border-b border-gray-200"
                     >
-                        <PrimaryButton
-                            :href="route('area.create')"
-                            class="m-4 pi pi-plus"
-                        >
-                            <span
-                                class="p-1"
-                                :style="{
-                                    fontSize: '10px',
-                                }"
+                        <div v-if="userPremissions.includes('pilares_crear')">
+                            <PrimaryButton
+                                :href="route('area.create')"
+                                class="m-4 pi pi-plus"
                             >
-                                Nuevo pilar</span
-                            >
-                        </PrimaryButton>
+                                <span
+                                    class="p-1"
+                                    :style="{
+                                        fontSize: '10px',
+                                    }"
+                                >
+                                    Nuevo pilar</span
+                                >
+                            </PrimaryButton>
+                        </div>
                     </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto">
@@ -208,29 +211,57 @@ watch(globalFilter, (newValue) => {
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps">
                                         <div class="text-center">
-                                            <PrimaryButton
-                                                class="pi pi-file-edit me-2"
-                                                :href="
-                                                    route(
-                                                        'area.edit',
-                                                        slotProps.data.id
-                                                    )
-                                                "
-                                            >
-                                                <span
-                                                    class="p-1"
-                                                    :style="{
-                                                        fontSize: '10px',
-                                                    }"
+                                            <div class="flex justify-evenly">
+                                                <div
+                                                    v-if="
+                                                        userPremissions.includes(
+                                                            'pilares_editar'
+                                                        )
+                                                    "
+                                                    class="inline"
                                                 >
-                                                    Editar pilar</span
-                                                >
-                                            </PrimaryButton>
+                                                    <PrimaryButton
+                                                        class="pi pi-file-edit me-2"
+                                                        :href="
+                                                            route(
+                                                                'area.edit',
+                                                                slotProps.data
+                                                                    .id
+                                                            )
+                                                        "
+                                                    >
+                                                        <span
+                                                            class="p-1"
+                                                            :style="{
+                                                                fontSize:
+                                                                    '10px',
+                                                            }"
+                                                        >
+                                                            Editar pilar</span
+                                                        >
+                                                    </PrimaryButton>
+                                                </div>
 
-                                            <!-- <PrimaryButton class="pi pi-trash me-2" @click.prevent="
-                                                deleteArea(slotProps.data.id)
-                                                ">
-                                            </PrimaryButton> -->
+                                                <div
+                                                    v-if="
+                                                        userPremissions.includes(
+                                                            'pilares_eliminar'
+                                                        )
+                                                    "
+                                                    class="inline"
+                                                >
+                                                    <PrimaryButton
+                                                        class="pi pi-trash me-2"
+                                                        @click.prevent="
+                                                            deleteArea(
+                                                                slotProps.data
+                                                                    .id
+                                                            )
+                                                        "
+                                                    >
+                                                    </PrimaryButton>
+                                                </div>
+                                            </div>
                                         </div>
                                     </template>
                                 </Column>

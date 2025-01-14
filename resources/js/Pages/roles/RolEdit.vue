@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import { Head, Link, useForm } from "@inertiajs/vue3";
+import { Head, Link, useForm, usePage } from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
@@ -14,6 +14,8 @@ const props = defineProps({
 });
 
 const title = "Editar Rol";
+
+const userPermissions = usePage().props.auth.user.permissions;
 
 const form = useForm({
     name: props.role.name,
@@ -63,9 +65,7 @@ const submit = () => {
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto">
                             <form @submit.prevent="submit">
-                                <div
-                                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4"
-                                >
+                                <div class="grid grid-cols-1 gap-4">
                                     <div class="mt-4">
                                         <InputLabel
                                             for="nombre"
@@ -80,34 +80,37 @@ const submit = () => {
                                             autocomplete="new-challenge"
                                         />
                                     </div>
-                                    <div class="mt-4">
-                                        <InputLabel value="Permisos: " />
-                                        <div>
-                                            <div
-                                                v-for="permiso in props.permissions"
-                                                :key="permiso.id"
-                                                class="mt-2"
-                                            >
-                                                <label
-                                                    class="flex items-center"
-                                                >
-                                                    <input
-                                                        type="checkbox"
-                                                        v-model="
-                                                            form.selectedPermisos
-                                                        "
-                                                        :value="permiso.id"
-                                                        class="form-checkbox"
-                                                    />
-                                                    <span class="ml-2">{{
-                                                        permiso.name
-                                                    }}</span>
-                                                </label>
-                                            </div>
+                                </div>
+                                <div class="mt-4">
+                                    <InputLabel value="Permisos: " />
+                                    <div
+                                        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2"
+                                    >
+                                        <div
+                                            v-for="permiso in props.permissions"
+                                            :key="permiso.id"
+                                            class="mt-2"
+                                        >
+                                            <label class="flex items-center">
+                                                <input
+                                                    type="checkbox"
+                                                    v-model="
+                                                        form.selectedPermisos
+                                                    "
+                                                    :value="permiso.id"
+                                                    class="form-checkbox"
+                                                />
+                                                <span class="ml-2">{{
+                                                    permiso.name
+                                                }}</span>
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
                                 <div
+                                    v-if="
+                                        userPermissions.includes('roles_editar')
+                                    "
                                     class="px-4 my-4 pt-2 flex justify-end bg-white border-t border-gray-200"
                                 >
                                     <PrimaryButton

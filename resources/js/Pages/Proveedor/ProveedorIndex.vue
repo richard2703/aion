@@ -1,5 +1,5 @@
 <script setup>
-import { Head, Link } from "@inertiajs/vue3";
+import { Head, Link, usePage } from "@inertiajs/vue3";
 import { ref, onMounted } from "vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import axios from "axios";
@@ -13,6 +13,7 @@ import ContenidoPanel from "./Partials/TabPanel/ContenidoPanel.vue";
 
 const props = defineProps({});
 const areas = ref([]);
+const userPermissions = usePage().props.auth.user.permissions;
 
 onMounted(() => {
     getAreas();
@@ -50,19 +51,21 @@ const getAreas = async () => {
                 <div
                     class="px-4 py-2 flex justify-end bg-white border-b border-gray-200"
                 >
-                    <PrimaryButton
-                        class="m-4 pi pi-plus"
-                        :href="route('proveedores.create')"
-                    >
-                        <span
-                            class="p-1"
-                            :style="{
-                                fontSize: '10px',
-                            }"
+                    <div v-if="userPermissions.includes('directorio_crear')">
+                        <PrimaryButton
+                            class="m-4 pi pi-plus"
+                            :href="route('proveedores.create')"
                         >
-                            Nuevo proveedor</span
-                        >
-                    </PrimaryButton>
+                            <span
+                                class="p-1"
+                                :style="{
+                                    fontSize: '10px',
+                                }"
+                            >
+                                Nuevo proveedor</span
+                            >
+                        </PrimaryButton>
+                    </div>
                 </div>
                 <div class="px-4 py-2 bg-white border-b border-gray-200">
                     <div class="container mx-auto overflow-x-auto">

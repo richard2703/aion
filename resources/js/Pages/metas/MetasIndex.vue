@@ -1,5 +1,5 @@
 <script setup>
-import { Head, Link } from "@inertiajs/vue3";
+import { Head, Link, usePage } from "@inertiajs/vue3";
 import { ref, onMounted, watch } from "vue";
 import axios from "axios";
 import Layout from "@/Layouts/Layout.vue";
@@ -23,7 +23,8 @@ const globalFilter = ref("");
 const filters = ref({});
 const sortField = ref("id"); // Valor predeterminado
 const sortOrder = ref(1);
-const title = "reportes";
+const title = "Metas";
+const userPremissions = usePage().props.auth.user.permissions;
 
 // Función para obtener áreas
 async function getTabla(
@@ -145,6 +146,7 @@ function handleClick(id) {
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div>
                     <div
+                        v-if="userPremissions.includes('metas_crear')"
                         class="px-4 py-2 flex justify-end bg-white border-b border-gray-200"
                     >
                         <PrimaryButton
@@ -215,24 +217,33 @@ function handleClick(id) {
                                         #body="slotProps"
                                         class="text-center"
                                     >
-                                        <PrimaryButton
-                                            class="pi pi-eye me-2"
-                                            :href="
-                                                route(
-                                                    'metas.trimestre',
-                                                    slotProps.data.id
+                                        <div
+                                            v-if="
+                                                userPremissions.includes(
+                                                    'metas_ver'
                                                 )
                                             "
                                         >
-                                            <span
-                                                class="p-1"
-                                                :style="{
-                                                    fontSize: '10px',
-                                                }"
+                                            <PrimaryButton
+                                                class="pi pi-eye me-2"
+                                                :href="
+                                                    route(
+                                                        'metas.trimestre',
+                                                        slotProps.data.id
+                                                    )
+                                                "
                                             >
-                                                Ver metas</span
-                                            >
-                                        </PrimaryButton>
+                                                <span
+                                                    class="p-1"
+                                                    :style="{
+                                                        fontSize: '10px',
+                                                    }"
+                                                >
+                                                    Ver metas</span
+                                                >
+                                            </PrimaryButton>
+                                        </div>
+
                                         <!-- <PrimaryButton class="pi pi-eye me-2" @click="handleClick(slotProps.data.id)"
                                             :disabled="isLoading">
                                             <span v-if="!isLoading">Ver Reporte</span>

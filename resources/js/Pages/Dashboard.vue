@@ -296,7 +296,7 @@ const closeDateModal = () => {
                                             <h2
                                                 class="text-center py-4 font-bold text-3xl"
                                             >
-                                                Objetivos
+                                                OKR
                                             </h2>
                                             <ul>
                                                 <li

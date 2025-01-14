@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, ref, watch } from "vue";
-import { useForm } from "@inertiajs/vue3";
+import { useForm, usePage } from "@inertiajs/vue3";
 import axios from "axios";
 import Modal from "@/Components/Modal.vue";
 import Chart from "primevue/chart";
@@ -36,6 +36,7 @@ const isEditModalVidible = ref(false);
 const editedRegistro = ref();
 const titulo = ref();
 const viejo = ref();
+const userPremissions = usePage().props.auth.user.permissions;
 const promedio = ref();
 
 const formCreateModal = useForm({
@@ -49,7 +50,6 @@ const formCreateModal = useForm({
 const formEditModal = useForm({
     actual: "",
 });
-console.log({ kpi: kpi.value });
 
 onMounted(() => {
     // for carts

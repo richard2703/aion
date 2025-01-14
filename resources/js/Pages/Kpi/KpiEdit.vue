@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import Layout from "@/Layouts/Layout.vue";
-import { Head, Link, useForm } from "@inertiajs/vue3";
+import { Head, Link, useForm, usePage } from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
@@ -21,6 +21,7 @@ const departamentos = ref(props.departamentos);
 const procesos = ref(props.procesos);
 const procedimientos = ref(props.procedimientos);
 const kpi = ref(props.kpi);
+const userPermissions = usePage().props.auth.user.permissions;
 
 const form = useForm({
     titulo: kpi.value.titulo,
@@ -359,6 +360,9 @@ async function submit() {
                                 </div>
                                 <hr />
                                 <div
+                                    v-if="
+                                        userPermissions.includes('kpi_editar')
+                                    "
                                     class="flex items-center justify-between mt-4"
                                 >
                                     <label class="mx-4 flex items-center gap-2"
@@ -369,6 +373,7 @@ async function submit() {
                                         />
                                         Archivar</label
                                     >
+
                                     <PrimaryButton
                                         class="ms-4 pi pi-save"
                                         :class="{
