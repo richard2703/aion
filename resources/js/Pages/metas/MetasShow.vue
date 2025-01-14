@@ -33,18 +33,21 @@ async function getreportes(
     filter = "",
     sortField = "id",
     sortOrder = 1,
-    id = reporteSemanal.value.id,
+    id = reporteSemanal.value.id
 ) {
     try {
-        const response = await axios.get(route("getReportes.findAllReportes", id), {
-            params: {
-                page,
-                rows: rowsPerPage,
-                filter,
-                sortField,
-                sortOrder: sortOrder === 1 ? "asc" : "desc",
-            },
-        });
+        const response = await axios.get(
+            route("getReportes.findAllReportes", id),
+            {
+                params: {
+                    page,
+                    rows: rowsPerPage,
+                    filter,
+                    sortField,
+                    sortOrder: sortOrder === 1 ? "asc" : "desc",
+                },
+            }
+        );
         reportes.value = response.data;
         // console.log('reportes', response);
 
@@ -85,7 +88,9 @@ const collapsedReport = ref([]);
 
 function collapsedReportReport(id) {
     if (collapsedReport.value.includes(id)) {
-        collapsedReport.value = collapsedReport.value.filter(item => item !== id);
+        collapsedReport.value = collapsedReport.value.filter(
+            (item) => item !== id
+        );
     } else {
         collapsedReport.value.push(id);
     }
@@ -127,15 +132,19 @@ watch(globalFilter, (newValue) => {
 });
 
 function formatNumber(value) {
-    if (value == null) return ''; // Manejar el caso cuando el valor es nulo o indefinido
+    if (value == null) return ""; // Manejar el caso cuando el valor es nulo o indefinido
     return parseFloat(value).toFixed(2);
 }
 
 const getClass = (kpiItem) => {
     if (kpiItem.regla === 1) {
-        return kpiItem.actual >= kpiItem.objetivo ? 'bg-green-100' : 'bg-red-100';
+        return kpiItem.actual >= kpiItem.objetivo
+            ? "bg-green-100"
+            : "bg-red-100";
     } else {
-        return kpiItem.actual <= kpiItem.objetivo ? 'bg-green-100' : 'bg-red-100';
+        return kpiItem.actual <= kpiItem.objetivo
+            ? "bg-green-100"
+            : "bg-red-100";
     }
 };
 </script>
@@ -151,7 +160,6 @@ const getClass = (kpiItem) => {
     border-radius: 5px;
     padding: 10px;
     background-color: white;
-
 }
 
 .departamento-header {
@@ -167,41 +175,52 @@ const getClass = (kpiItem) => {
 </style>
 
 <template>
-    <Layout :titulo="'Reporte Semanal ' + reporteSemanal.numeroSemana">
-
-        <Head title="Reporte Semanal" />
+    <Layout titulo="Metas">
+        <Head title="Metas" />
         <div class="overflow-hidden sm:rounded-lg">
-            <div class="breadcrumbsTitulo px-1">
-                <h3>Reporte Semanal: Semana {{ reporteSemanal.numeroSemana }}</h3>
-            </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
-                <h3>Home -</h3>
+                    <h3>Home -</h3>
                 </Link>
-                <Link :href="route('reporte.index')" class="px-1">
-                <h3>Reportes -</h3>
+                <Link :href="route('metas.index')" class="px-1">
+                    <h3>Metas -</h3>
                 </Link>
                 <Link class="active">
-                <h3>Reporte Semanal</h3>
+                    <h3>Mis Metas</h3>
                 </Link>
             </div>
         </div>
 
         <div class="py-2">
             <div v-for="reporte in reportes" :key="reporte.id" class="reporte">
-                <div @click="collapsedReportReport(reporte.id)" class="departamento-header">
-                    <h3 class="text-xl font-bold text-purple-700">{{ reporte.departamento.nombre }}</h3>
+                <div
+                    @click="collapsedReportReport(reporte.id)"
+                    class="departamento-header"
+                >
+                    <h3 class="text-xl font-bold text-purple-700">
+                        {{ reporte.departamento.nombre }}
+                    </h3>
                     <div v-if="reporte.departamento.deleted_at">
-                        <p class="text-red-500">Este Flujo ha sido eliminado.</p>
+                        <p class="text-red-500">
+                            Este Flujo ha sido eliminado.
+                        </p>
                     </div>
                 </div>
-                <div v-if="!iscollapsedReport(reporte.id)" class="departamento-content">
+                <div
+                    v-if="!iscollapsedReport(reporte.id)"
+                    class="departamento-content"
+                >
                     <div class="grid grid-cols-2 gap-4">
                         <!-- Highlights Section -->
                         <div>
-                            <h2 class="text-xl font-bold text-purple-700">Highlights</h2>
-                            <ul class=" pl-5 mt-2 pl-5">
-                                <li v-for="highlight in reporte.highlights" :key="highlight.id">
+                            <h2 class="text-xl font-bold text-purple-700">
+                                Highlights
+                            </h2>
+                            <ul class="pl-5 mt-2 pl-5">
+                                <li
+                                    v-for="highlight in reporte.highlights"
+                                    :key="highlight.id"
+                                >
                                     {{ highlight.light }}
                                 </li>
                             </ul>
@@ -212,9 +231,14 @@ const getClass = (kpiItem) => {
 
                         <!-- Low Lights Section -->
                         <div>
-                            <h2 class="text-xl font-bold text-purple-700">Low lights</h2>
-                            <ul class=" pl-5 mt-2">
-                                <li v-for="lowlight in reporte.lowlights" :key="lowlight.id">
+                            <h2 class="text-xl font-bold text-purple-700">
+                                Low lights
+                            </h2>
+                            <ul class="pl-5 mt-2">
+                                <li
+                                    v-for="lowlight in reporte.lowlights"
+                                    :key="lowlight.id"
+                                >
                                     {{ lowlight.light }}
                                 </li>
                             </ul>
@@ -230,31 +254,71 @@ const getClass = (kpiItem) => {
                     <!-- KPIs Section -->
                     <div class="grid grid-cols-2 gap-4 mt-8">
                         <div>
-                            <h2 class="text-xl font-bold text-purple-700">KPI's</h2>
-                            <table v-for="kpis in reporte.kpis" :key="kpis.id" class="min-w-full border-collapse mb-4">
+                            <h2 class="text-xl font-bold text-purple-700">
+                                KPI's
+                            </h2>
+                            <table
+                                v-for="kpis in reporte.kpis"
+                                :key="kpis.id"
+                                class="min-w-full border-collapse mb-4"
+                            >
                                 <thead>
                                     <tr>
-                                        <th class="py-2 px-4 border" colspan="3" style="border-color: black;">
+                                        <th
+                                            class="py-2 px-4 border"
+                                            colspan="3"
+                                            style="border-color: black"
+                                        >
                                             {{ kpis?.titulo }}
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td class="py-2 px-4 border" style="border-color: black;">Plan</td>
-                                        <td class="py-2 px-4 border" style="border-color: black;">Hoy</td>
-                                        <td class="py-2 px-4 border" style="border-color: black;">Promedio</td>
+                                        <td
+                                            class="py-2 px-4 border"
+                                            style="border-color: black"
+                                        >
+                                            Plan
+                                        </td>
+                                        <td
+                                            class="py-2 px-4 border"
+                                            style="border-color: black"
+                                        >
+                                            Hoy
+                                        </td>
+                                        <td
+                                            class="py-2 px-4 border"
+                                            style="border-color: black"
+                                        >
+                                            Promedio
+                                        </td>
                                     </tr>
                                     <tr>
-                                        <td class="py-2 px-4 border " style="border-color: black;">
+                                        <td
+                                            class="py-2 px-4 border"
+                                            style="border-color: black"
+                                        >
                                             {{ kpis?.objetivo }}
                                         </td>
-                                        <td :class="getClass(kpis)" class="py-2 px-4 border "
-                                            style="text-align-last: justify; border-color: black;">
+                                        <td
+                                            :class="getClass(kpis)"
+                                            class="py-2 px-4 border"
+                                            style="
+                                                text-align-last: justify;
+                                                border-color: black;
+                                            "
+                                        >
                                             {{ formatNumber(kpis?.actual) }}
                                         </td>
-                                        <td :class="getClass(kpis)" class="py-2 px-4 border "
-                                            style="text-align-last: justify; border-color: black;">
+                                        <td
+                                            :class="getClass(kpis)"
+                                            class="py-2 px-4 border"
+                                            style="
+                                                text-align-last: justify;
+                                                border-color: black;
+                                            "
+                                        >
                                             {{ formatNumber(kpis?.promedio) }}
                                         </td>
                                     </tr>
@@ -273,9 +337,14 @@ const getClass = (kpiItem) => {
                             </p>
                         </div> -->
                         <div>
-                            <h2 class="text-xl font-bold text-purple-700">Avisos</h2>
-                            <ul class=" pl-5 mt-2">
-                                <li v-for="aviso in reporte.avisos" :key="aviso.id">
+                            <h2 class="text-xl font-bold text-purple-700">
+                                Avisos
+                            </h2>
+                            <ul class="pl-5 mt-2">
+                                <li
+                                    v-for="aviso in reporte.avisos"
+                                    :key="aviso.id"
+                                >
                                     {{ aviso.aviso }}
                                 </li>
                             </ul>
@@ -284,7 +353,6 @@ const getClass = (kpiItem) => {
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

@@ -1,5 +1,5 @@
 <script setup>
-import { Head, Link, useForm } from "@inertiajs/vue3";
+import { Head, Link, useForm, usePage } from "@inertiajs/vue3";
 import { ref, onMounted, watch } from "vue";
 import axios from "axios";
 import Layout from "@/Layouts/Layout.vue";
@@ -40,6 +40,7 @@ const filters = ref({});
 const sortField = ref("id");
 const sortOrder = ref(1);
 const isModal = ref(false);
+const userPremissions = usePage().props.auth.user.permissions;
 
 async function getdesperdicios(
     page = 1,
@@ -177,24 +178,37 @@ const submitModal = async () => {
                     <div
                         class="px-4 py-2 flex justify-end bg-white border-b border-gray-200"
                     >
-                        <PrimaryButton
-                            @click="openEditModal()"
-                            class="m-4 pi text-sm"
+                        <div
+                            v-if="
+                                userPremissions.includes('desperdicios_excel')
+                            "
                         >
-                            Excel
-                        </PrimaryButton>
-                        <PrimaryButton
-                            :href="route('desperdicio.create')"
-                            class="m-4 pi pi-plus"
-                            ><span
-                                class="p-1"
-                                :style="{
-                                    fontSize: '10px',
-                                }"
+                            <PrimaryButton
+                                @click="openEditModal()"
+                                class="m-4 pi text-sm"
                             >
-                                Nuevo desperdicio</span
-                            ></PrimaryButton
+                                Excel
+                            </PrimaryButton>
+                        </div>
+
+                        <div
+                            v-if="
+                                userPremissions.includes('desperdicios_crear')
+                            "
                         >
+                            <PrimaryButton
+                                :href="route('desperdicio.create')"
+                                class="m-4 pi pi-plus"
+                                ><span
+                                    class="p-1"
+                                    :style="{
+                                        fontSize: '10px',
+                                    }"
+                                >
+                                    Nuevo desperdicio</span
+                                ></PrimaryButton
+                            >
+                        </div>
                     </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto overflow-x-auto">
@@ -282,36 +296,53 @@ const submitModal = async () => {
                                     bodyClass="text-center" sortable></Column> -->
 
                                 <Column header="" headerStyle="width:4em;">
-                                    <template
-                                        #body="slotProps"
-                                        class="text-center"
-                                    >
-                                        <PrimaryButton
-                                            class="me-2 pi pi-file-edit"
-                                            :href="
-                                                route(
-                                                    'desperdicio.edit',
-                                                    slotProps.data.id
-                                                )
-                                            "
-                                        >
-                                            <span
-                                                class="p-1"
-                                                :style="{
-                                                    fontSize: '10px',
-                                                }"
+                                    <template #body="slotProps">
+                                        <div class="flex justify-center">
+                                            <div
+                                                v-if="
+                                                    userPremissions.includes(
+                                                        'desperdicios_editar'
+                                                    )
+                                                "
                                             >
-                                                editar</span
-                                            >
-                                        </PrimaryButton>
+                                                <PrimaryButton
+                                                    class="me-2 pi pi-file-edit"
+                                                    :href="
+                                                        route(
+                                                            'desperdicio.edit',
+                                                            slotProps.data.id
+                                                        )
+                                                    "
+                                                >
+                                                    <span
+                                                        class="p-1"
+                                                        :style="{
+                                                            fontSize: '10px',
+                                                        }"
+                                                    >
+                                                        editar</span
+                                                    >
+                                                </PrimaryButton>
+                                            </div>
 
-                                        <PrimaryButton
-                                            class="me-2 pi pi-trash"
-                                            @click.prevent="
-                                                deleteItem(slotProps.data.id)
-                                            "
-                                        >
-                                        </PrimaryButton>
+                                            <div
+                                                v-if="
+                                                    userPremissions.includes(
+                                                        'desperdicios_eliminar'
+                                                    )
+                                                "
+                                            >
+                                                <PrimaryButton
+                                                    class="me-2 pi pi-trash"
+                                                    @click.prevent="
+                                                        deleteItem(
+                                                            slotProps.data.id
+                                                        )
+                                                    "
+                                                >
+                                                </PrimaryButton>
+                                            </div>
+                                        </div>
                                     </template>
                                 </Column>
                             </DataTable>

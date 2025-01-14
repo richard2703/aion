@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import Layout from "@/Layouts/Layout.vue";
-import { Head, Link, useForm } from "@inertiajs/vue3";
+import { Head, Link, useForm, usePage } from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
@@ -22,6 +22,7 @@ const departamentos = ref(props.departamentos);
 const procesos = ref(props.procesos);
 const procedimiento = ref(props.procedimiento);
 const proceso = ref(props.proceso);
+const userPermissions = usePage().props.auth.user.permissions;
 
 const form = useForm({
     area_id: proceso.value.area_id,
@@ -285,7 +286,14 @@ const submit = () => {
                                     </div> -->
                                 </div>
                                 <hr />
-                                <div class="flex items-center justify-end mt-4">
+                                <div
+                                    v-if="
+                                        userPermissions.includes(
+                                            'procedimientos_editar'
+                                        )
+                                    "
+                                    class="flex items-center justify-end mt-4"
+                                >
                                     <PrimaryButton
                                         class="ms-4 pi pi-save"
                                         :class="{

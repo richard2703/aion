@@ -10,8 +10,6 @@ import Column from "primevue/column";
 import InputText from "primevue/inputtext";
 import Comentario from "@/Components/Comentarios/Comentario.vue";
 
-
-
 // Definir propiedades
 const props = defineProps({
     reporteSemanal: Object,
@@ -40,20 +38,23 @@ async function getreportes(
     filter = "",
     sortField = "id",
     sortOrder = 1,
-    id = reporteSemanal.value.id,
+    id = reporteSemanal.value.id
 ) {
     try {
-        const response = await axios.get(route("getReportes.findAllReportes", id), {
-            params: {
-                page,
-                rows: rowsPerPage,
-                filter,
-                sortField,
-                sortOrder: sortOrder === 1 ? "asc" : "desc",
-            },
-        });
+        const response = await axios.get(
+            route("getReportes.findAllReportes", id),
+            {
+                params: {
+                    page,
+                    rows: rowsPerPage,
+                    filter,
+                    sortField,
+                    sortOrder: sortOrder === 1 ? "asc" : "desc",
+                },
+            }
+        );
         reportes.value = response.data;
-        console.log('reportes', response);
+        console.log("reportes", response);
 
         totalRecords.value = response.data.total;
         first.value = (response.data.current_page - 1) * rows.value;
@@ -92,7 +93,9 @@ const collapsedReport = ref([]);
 
 function collapsedReportReport(id) {
     if (collapsedReport.value.includes(id)) {
-        collapsedReport.value = collapsedReport.value.filter(item => item !== id);
+        collapsedReport.value = collapsedReport.value.filter(
+            (item) => item !== id
+        );
     } else {
         collapsedReport.value.push(id);
     }
@@ -136,42 +139,57 @@ watch(globalFilter, (newValue) => {
 });
 
 function formatNumber(value) {
-    if (value == null) return ''; // Manejar el caso cuando el valor es nulo o indefinido
+    if (value == null) return ""; // Manejar el caso cuando el valor es nulo o indefinido
     return parseFloat(value).toFixed(2);
 }
 
 const getClass = (kpiItem) => {
     if (kpiItem.regla === 1) {
-        return kpiItem.actual >= kpiItem.objetivo ? 'bg-green-100' : 'bg-red-100';
+        return kpiItem.actual >= kpiItem.objetivo
+            ? "bg-green-100"
+            : "bg-red-100";
     } else {
-        return kpiItem.actual <= kpiItem.objetivo ? 'bg-green-100' : 'bg-red-100';
+        return kpiItem.actual <= kpiItem.objetivo
+            ? "bg-green-100"
+            : "bg-red-100";
     }
 };
 
 const getTerminada = (estatus) => {
     if (estatus === 1) {
-        return estatus === 1 ? 'text-green-500 font-bold' : '';
+        return estatus === 1 ? "text-green-500 font-bold" : "";
     }
 };
 
 const getTrend = (promedio, objetivo, regla) => {
-
     const diferencia = (promedio - objetivo) / objetivo;
 
     if (diferencia > 0.05) {
-        return regla === 1 ? 'pi pi-arrow-up text-green-500 font-black' : 'pi pi-arrow-up text-red-500 font-black';
+        return regla === 1
+            ? "pi pi-arrow-up text-green-500 font-black"
+            : "pi pi-arrow-up text-red-500 font-black";
     } else if (diferencia > 0.03) {
-        return regla === 1 ? 'pi pi-arrow-up text-green-300' : 'pi pi-arrow-up text-red-300';
+        return regla === 1
+            ? "pi pi-arrow-up text-green-300"
+            : "pi pi-arrow-up text-red-300";
     } else if (diferencia > 0.01) {
-        return regla === 1 ? 'pi pi-arrow-up text-yellow-500' : 'pi pi-arrow-up text-orange-500';
+        return regla === 1
+            ? "pi pi-arrow-up text-yellow-500"
+            : "pi pi-arrow-up text-orange-500";
     } else if (diferencia < -0.01) {
-        return regla === 1 ? 'pi pi-arrow-down text-orange-500' : 'pi pi-arrow-down text-yellow-500 ';
+        return regla === 1
+            ? "pi pi-arrow-down text-orange-500"
+            : "pi pi-arrow-down text-yellow-500 ";
     } else if (diferencia < -0.03) {
-        return regla === 1 ? 'pi pi-arrow-down font-weight: bolder' : 'pi pi-arrow-down text-green-300';
+        return regla === 1
+            ? "pi pi-arrow-down font-weight: bolder"
+            : "pi pi-arrow-down text-green-300";
     } else if (diferencia < -0.05) {
-        return regla === 1 ? 'pi pi-arrow-down text-red-500 font-black' : 'pi pi-arrow-down text-green-500 font-black';
+        return regla === 1
+            ? "pi pi-arrow-down text-red-500 font-black"
+            : "pi pi-arrow-down text-green-500 font-black";
     } else {
-        return 'pi pi-minus text-gray-500';
+        return "pi pi-minus text-gray-500";
     }
 };
 </script>
@@ -187,7 +205,6 @@ const getTrend = (promedio, objetivo, regla) => {
     border-radius: 5px;
     padding: 10px;
     background-color: white;
-
 }
 
 .departamento-header {
@@ -213,21 +230,23 @@ const getTrend = (promedio, objetivo, regla) => {
     <Layout :titulo="'Reporte Semanal ' + reporteSemanal.numeroSemana">
         <div class="flex px-2">
             <div>
-
                 <Head title="Reporte Semanal" />
                 <div class="overflow-hidden sm:rounded-lg">
                     <div class="breadcrumbsTitulo px-1">
-                        <h3>Reporte Semanal: Semana {{ reporteSemanal.numeroSemana }}</h3>
+                        <h3>
+                            Reporte Semanal: Semana
+                            {{ reporteSemanal.numeroSemana }}
+                        </h3>
                     </div>
                     <div class="breadcrumbs flex">
                         <Link :href="route('dashboard')" class="px-1">
-                        <h3>Home -</h3>
+                            <h3>Home -</h3>
                         </Link>
                         <Link :href="route('reporte.index')" class="px-1">
-                        <h3>Reportes -</h3>
+                            <h3>Reportes -</h3>
                         </Link>
                         <Link class="active">
-                        <h3>Reporte Semanal</h3>
+                            <h3>Reporte Semanal</h3>
                         </Link>
                     </div>
                 </div>
@@ -235,83 +254,155 @@ const getTrend = (promedio, objetivo, regla) => {
                 <div class="py-2">
                     <!-- Índice de Departamentos -->
                     <div class="flex">
-                        <div class="reporte w-full ">
-                            <h2 class="text-lg font-bold">Índice de Departamentos</h2>
+                        <div class="reporte w-full">
+                            <h2 class="text-lg font-bold">
+                                Índice de Flujos de valor
+                            </h2>
                             <ul class="list-disc pl-4">
-                                <li v-for="reporte in reportes" :key="reporte.id">
-                                    <a :href="'#departamento-' + reporte.id" class="text-purple-700 hover:underline">
+                                <li
+                                    v-for="reporte in reportes"
+                                    :key="reporte.id"
+                                >
+                                    <a
+                                        :href="'#departamento-' + reporte.id"
+                                        class="text-purple-700 hover:underline"
+                                    >
                                         {{ reporte.departamento.nombre }}
                                     </a>
                                 </li>
                             </ul>
                         </div>
-
                     </div>
-                    <div v-for="reporte in reportes" :key="reporte.id" class="reporte w-full">
-                        <div :id="'departamento-' + reporte.id" @click="collapsedReportReport(reporte.id)"
-                            class="departamento-header">
-                            <h3 class="text-xl font-bold text-purple-700">{{ reporte.departamento.nombre }}</h3>
-                            <h3 class="text-s font-bold text-purple-700">{{ reporte.usuario?.name }}</h3>
+                    <div
+                        v-for="reporte in reportes"
+                        :key="reporte.id"
+                        class="reporte w-full"
+                    >
+                        <div
+                            :id="'departamento-' + reporte.id"
+                            @click="collapsedReportReport(reporte.id)"
+                            class="departamento-header"
+                        >
+                            <h3 class="text-xl font-bold text-purple-700">
+                                {{ reporte.departamento.nombre }}
+                            </h3>
+                            <h3 class="text-s font-bold text-purple-700">
+                                {{ reporte.usuario?.name }}
+                            </h3>
                             <div v-if="reporte.departamento.deleted_at">
-                                <p class="text-red-500">Este Flujo ha sido eliminado.</p>
+                                <p class="text-red-500">
+                                    Este Flujo ha sido eliminado.
+                                </p>
                             </div>
                         </div>
-                        <div v-if="!iscollapsedReport(reporte.id)" class="departamento-content">
+                        <div
+                            v-if="!iscollapsedReport(reporte.id)"
+                            class="departamento-content"
+                        >
                             <div class="grid grid-cols-3 gap-4">
                                 <!-- Highlights Section -->
                                 <div>
-                                    <h2 class="text-xl font-bold text-purple-700">Plan a 30 Dias</h2>
-                                    <ul class=" pl-5 mt-2 pl-5">
+                                    <h2
+                                        class="text-xl font-bold text-purple-700"
+                                    >
+                                        Plan a 30 Dias
+                                    </h2>
+                                    <ul class="pl-5 mt-2 pl-5">
                                         <!-- <li v-for="treinta in reporte.treintas" :key="treinta.id"
                                     :class="getTerminada(treinta.status)">
                                     {{ treinta.meta }}
                                 </li> -->
-                                        <li v-for="treinta in reporte.treintas" :key="treinta.id"
-                                            :class="getTerminada(treinta.status)">
-                                            <span v-if="treinta.status === 1" class="pi pi-check ml-2"></span>
+                                        <li
+                                            v-for="treinta in reporte.treintas"
+                                            :key="treinta.id"
+                                            :class="
+                                                getTerminada(treinta.status)
+                                            "
+                                        >
+                                            <span
+                                                v-if="treinta.status === 1"
+                                                class="pi pi-check ml-2"
+                                            ></span>
                                             {{ treinta.meta }}
                                         </li>
                                     </ul>
                                     <div v-if="!reporte.treintas.length">
-                                        <p>No hay Metas a 30 dias disponibles.</p>
+                                        <p>
+                                            No hay Metas a 30 dias disponibles.
+                                        </p>
                                     </div>
                                 </div>
 
                                 <!-- Low Lights Section -->
                                 <div>
-                                    <h2 class="text-xl font-bold text-purple-700">Plan a 60 Dias</h2>
-                                    <ul class=" pl-5 mt-2">
-                                        <li v-for="sesenta in reporte.sesentas" :key="sesenta.id"
-                                            :class="getTerminada(sesenta.status)">
-                                            <span v-if="sesenta.status === 1" class="pi pi-check ml-2"></span>
+                                    <h2
+                                        class="text-xl font-bold text-purple-700"
+                                    >
+                                        Plan a 60 Dias
+                                    </h2>
+                                    <ul class="pl-5 mt-2">
+                                        <li
+                                            v-for="sesenta in reporte.sesentas"
+                                            :key="sesenta.id"
+                                            :class="
+                                                getTerminada(sesenta.status)
+                                            "
+                                        >
+                                            <span
+                                                v-if="sesenta.status === 1"
+                                                class="pi pi-check ml-2"
+                                            ></span>
                                             {{ sesenta.meta }}
                                         </li>
                                     </ul>
                                     <div v-if="!reporte.sesentas.length">
-                                        <p>No hay Metas a 60 dias disponibles.</p>
+                                        <p>
+                                            No hay Metas a 60 dias disponibles.
+                                        </p>
                                     </div>
                                 </div>
 
                                 <div>
-                                    <h2 class="text-xl font-bold text-purple-700">Plan a 90 Dias</h2>
-                                    <ul class=" pl-5 mt-2">
-                                        <li v-for="noventa in reporte.noventas" :key="noventa.id"
-                                            :class="getTerminada(noventa.status)">
-                                            <span v-if="noventa.status === 1" class="pi pi-check ml-2"></span>
+                                    <h2
+                                        class="text-xl font-bold text-purple-700"
+                                    >
+                                        Plan a 90 Dias
+                                    </h2>
+                                    <ul class="pl-5 mt-2">
+                                        <li
+                                            v-for="noventa in reporte.noventas"
+                                            :key="noventa.id"
+                                            :class="
+                                                getTerminada(noventa.status)
+                                            "
+                                        >
+                                            <span
+                                                v-if="noventa.status === 1"
+                                                class="pi pi-check ml-2"
+                                            ></span>
                                             {{ noventa.meta }}
                                         </li>
                                     </ul>
                                     <div v-if="!reporte.noventas.length">
-                                        <p>No hay Metas a 90 dias disponibles.</p>
+                                        <p>
+                                            No hay Metas a 90 dias disponibles.
+                                        </p>
                                     </div>
                                 </div>
                             </div>
                             <div class="grid grid-cols-2 gap-4">
                                 <!-- Highlights Section -->
                                 <div>
-                                    <h2 class="text-xl font-bold text-purple-700">Destacados</h2>
-                                    <ul class=" pl-5 mt-2 pl-5">
-                                        <li v-for="highlight in reporte.highlights" :key="highlight.id">
+                                    <h2
+                                        class="text-xl font-bold text-purple-700"
+                                    >
+                                        Destacados
+                                    </h2>
+                                    <ul class="pl-5 mt-2 pl-5">
+                                        <li
+                                            v-for="highlight in reporte.highlights"
+                                            :key="highlight.id"
+                                        >
                                             {{ highlight.light }}
                                         </li>
                                     </ul>
@@ -322,9 +413,16 @@ const getTrend = (promedio, objetivo, regla) => {
 
                                 <!-- Low Lights Section -->
                                 <div>
-                                    <h2 class="text-xl font-bold text-purple-700">Negativos</h2>
-                                    <ul class=" pl-5 mt-2">
-                                        <li v-for="lowlight in reporte.lowlights" :key="lowlight.id">
+                                    <h2
+                                        class="text-xl font-bold text-purple-700"
+                                    >
+                                        Negativos
+                                    </h2>
+                                    <ul class="pl-5 mt-2">
+                                        <li
+                                            v-for="lowlight in reporte.lowlights"
+                                            :key="lowlight.id"
+                                        >
                                             {{ lowlight.light }}
                                         </li>
                                     </ul>
@@ -339,14 +437,20 @@ const getTrend = (promedio, objetivo, regla) => {
 
                             <!-- KPIs Section -->
                             <div class="grid grid-cols-2 gap-4 mt-8">
-
                                 <div>
-                                    <h2 class="text-xl font-bold text-purple-700">Acciones PDCA</h2>
-                                    <ul class=" pl-5 mt-2">
-                                        <li v-for="actividad in reporte.actividades" :key="actividad.id">
+                                    <h2
+                                        class="text-xl font-bold text-purple-700"
+                                    >
+                                        Acciones PDCA
+                                    </h2>
+                                    <ul class="pl-5 mt-2">
+                                        <li
+                                            v-for="actividad in reporte.actividades"
+                                            :key="actividad.id"
+                                        >
                                             <!-- {{ actividad.titulo }} -->
-                                            <Link :href=actividad.link>
-                                            {{ actividad.titulo }}
+                                            <Link :href="actividad.link">
+                                                {{ actividad.titulo }}
                                             </Link>
                                         </li>
                                     </ul>
@@ -355,9 +459,16 @@ const getTrend = (promedio, objetivo, regla) => {
                                     </div>
                                 </div>
                                 <div>
-                                    <h2 class="text-xl font-bold text-purple-700">Avisos y Acciones de mejora</h2>
-                                    <ul class=" pl-5 mt-2">
-                                        <li v-for="aviso in reporte.avisos" :key="aviso.id">
+                                    <h2
+                                        class="text-xl font-bold text-purple-700"
+                                    >
+                                        Avisos y Acciones de mejora
+                                    </h2>
+                                    <ul class="pl-5 mt-2">
+                                        <li
+                                            v-for="aviso in reporte.avisos"
+                                            :key="aviso.id"
+                                        >
                                             {{ aviso.aviso }}
                                         </li>
                                     </ul>
@@ -370,39 +481,106 @@ const getTrend = (promedio, objetivo, regla) => {
                             <!-- Seccion de CAPAIA y ScoreCard -->
                             <div class="grid grid-cols-1 gap-4 mt-8">
                                 <div>
-                                    <h2 class="text-xl font-bold text-purple-700">Comprobacion de KPI's</h2>
-                                    <table v-for="kpis in reporte.kpis" :key="kpis.id"
-                                        class="min-w-full border-collapse mb-4">
+                                    <h2
+                                        class="text-xl font-bold text-purple-700"
+                                    >
+                                        Comprobacion de KPI's
+                                    </h2>
+                                    <table
+                                        v-for="kpis in reporte.kpis"
+                                        :key="kpis.id"
+                                        class="min-w-full border-collapse mb-4"
+                                    >
                                         <thead>
                                             <tr>
-                                                <th class="py-2 px-4 border" colspan="4" style="border-color: black;">
+                                                <th
+                                                    class="py-2 px-4 border"
+                                                    colspan="4"
+                                                    style="border-color: black"
+                                                >
                                                     {{ kpis?.titulo }}
                                                 </th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td class="py-2 px-4 border" style="border-color: black;">Plan</td>
-                                                <td class="py-2 px-4 border" style="border-color: black;">Hoy</td>
-                                                <td class="py-2 px-4 border" style="border-color: black;">Promedio</td>
-                                                <td class="py-2 px-4 border" style="border-color: black;">Tendencia</td>
+                                                <td
+                                                    class="py-2 px-4 border"
+                                                    style="border-color: black"
+                                                >
+                                                    Plan
+                                                </td>
+                                                <td
+                                                    class="py-2 px-4 border"
+                                                    style="border-color: black"
+                                                >
+                                                    Hoy
+                                                </td>
+                                                <td
+                                                    class="py-2 px-4 border"
+                                                    style="border-color: black"
+                                                >
+                                                    Promedio
+                                                </td>
+                                                <td
+                                                    class="py-2 px-4 border"
+                                                    style="border-color: black"
+                                                >
+                                                    Tendencia
+                                                </td>
                                             </tr>
                                             <tr>
-                                                <td class="py-2 px-4 border " style="border-color: black;">
+                                                <td
+                                                    class="py-2 px-4 border"
+                                                    style="border-color: black"
+                                                >
                                                     {{ kpis?.objetivo }}
                                                 </td>
-                                                <td :class="getClass(kpis)" class="py-2 px-4 border "
-                                                    style="text-align-last: justify; border-color: black;">
-                                                    {{ formatNumber(kpis?.actual) }}
+                                                <td
+                                                    :class="getClass(kpis)"
+                                                    class="py-2 px-4 border"
+                                                    style="
+                                                        text-align-last: justify;
+                                                        border-color: black;
+                                                    "
+                                                >
+                                                    {{
+                                                        formatNumber(
+                                                            kpis?.actual
+                                                        )
+                                                    }}
                                                 </td>
-                                                <td :class="getClass(kpis)" class="py-2 px-4 border "
-                                                    style="text-align-last: justify; border-color: black;">
-                                                    {{ formatNumber(kpis?.promedio) }}
+                                                <td
+                                                    :class="getClass(kpis)"
+                                                    class="py-2 px-4 border"
+                                                    style="
+                                                        text-align-last: justify;
+                                                        border-color: black;
+                                                    "
+                                                >
+                                                    {{
+                                                        formatNumber(
+                                                            kpis?.promedio
+                                                        )
+                                                    }}
                                                 </td>
 
-                                                <td class="py-2 px-4 border "
-                                                    style="text-align-last: justify; border-color: black;">
-                                                    <p :class="getTrend(kpis.promedio, kpis.objetivo, kpis.regla)"></p>
+                                                <td
+                                                    class="py-2 px-4 border"
+                                                    style="
+                                                        text-align-last: justify;
+                                                        border-color: black;
+                                                    "
+                                                >
+                                                    <p
+                                                        :class="
+                                                            getTrend(
+                                                                kpis.promedio,
+                                                                kpis.objetivo,
+                                                                kpis.regla
+                                                            )
+                                                        "
+                                                    ></p>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -411,29 +589,39 @@ const getTrend = (promedio, objetivo, regla) => {
                                         <p>No hay Kpis disponibles.</p>
                                     </div>
                                 </div>
-
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
             <div class="flex h-screen justify-end">
                 <!-- Collapsible Panel -->
-                <div :class="[
-                    'transition-all duration-300 bg-gray-200 overflow-hidden',
-                    isCollapsed ? 'w-16' : 'w-96'
-                ]" class="h-full">
+                <div
+                    :class="[
+                        'transition-all duration-300 bg-gray-200 overflow-hidden',
+                        isCollapsed ? 'w-16' : 'w-96',
+                    ]"
+                    class="h-full"
+                >
                     <div class="p-4 flex flex-col items-center">
                         <!-- Toggle Button -->
-                        <button @click="togglePanel" :class="isCollapsed ? 'w-16' : 'w-96'"
-                            class="fixed top-50 text-3xl" v-tooltip.left="'Abre la sección de comentarios '">
-                            <span class="pi pi-book text-purple-700 font-bold shadow"></span>
+                        <button
+                            @click="togglePanel"
+                            :class="isCollapsed ? 'w-16' : 'w-96'"
+                            class="fixed top-50 text-3xl"
+                            v-tooltip.left="'Abre la sección de comentarios '"
+                        >
+                            <span
+                                class="pi pi-book text-purple-700 font-bold shadow"
+                            ></span>
                         </button>
 
                         <!-- Panel Content -->
                         <div v-show="!isCollapsed" class="w-full">
-                            <Comentario class="fixed top-60 r" :reporte_semanal_id="reporteSemanal.id" />
+                            <Comentario
+                                class="fixed top-60 r"
+                                :reporte_semanal_id="reporteSemanal.id"
+                            />
                         </div>
                     </div>
                 </div>

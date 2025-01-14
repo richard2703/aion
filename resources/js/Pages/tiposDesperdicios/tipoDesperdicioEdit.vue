@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import Layout from "@/Layouts/Layout.vue";
-import { Head, Link, useForm } from "@inertiajs/vue3";
+import { Head, Link, useForm, usePage } from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
@@ -28,6 +28,7 @@ const tiposMinutas = ref([]);
 
 const title = "tiposDesperdicios";
 
+const userPermissions = usePage().props.auth.user.permissions;
 const form = useForm({
     area_id: tipoDesperdicio.value.area_id,
     departamento_id: tipoDesperdicio.value.departamento_id,
@@ -228,22 +229,30 @@ const search = (event) => {
                                 <div
                                     class="px-4 my-4 pt-2 flex justify-end bg-white border-t border-gray-200"
                                 >
-                                    <PrimaryButton
-                                        class="ms-4 pi pi-save"
-                                        :class="{
-                                            'opacity-25': form.processing,
-                                        }"
-                                        :disabled="form.processing"
+                                    <div
+                                        v-if="
+                                            userPermissions.includes(
+                                                'tipo_desperdicio_editar'
+                                            )
+                                        "
                                     >
-                                        <span
-                                            class="p-1"
-                                            :style="{
-                                                fontSize: '10px',
+                                        <PrimaryButton
+                                            class="ms-4 pi pi-save"
+                                            :class="{
+                                                'opacity-25': form.processing,
                                             }"
+                                            :disabled="form.processing"
                                         >
-                                            Actualizar</span
-                                        >
-                                    </PrimaryButton>
+                                            <span
+                                                class="p-1"
+                                                :style="{
+                                                    fontSize: '10px',
+                                                }"
+                                            >
+                                                Actualizar</span
+                                            >
+                                        </PrimaryButton>
+                                    </div>
                                 </div>
                             </form>
                         </div>

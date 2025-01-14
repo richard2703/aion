@@ -1,5 +1,5 @@
 <script setup>
-import { Head, Link } from "@inertiajs/vue3";
+import { Head, Link, usePage } from "@inertiajs/vue3";
 import { ref, onMounted, watch } from "vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import axios from "axios";
@@ -24,6 +24,7 @@ const filters = ref({});
 const sortField = ref("id");
 const sortOrder = ref(1);
 
+const userPermissions = usePage().props.auth.user.permissions;
 async function getItems(
     page = 1,
     rowsPerPage = rows.value,
@@ -132,19 +133,21 @@ const onSort = (event) => {
                     <div
                         class="px-4 py-2 flex justify-end bg-white border-b border-gray-200"
                     >
-                        <PrimaryButton
-                            :href="route('objetivo.create')"
-                            class="m-4 pi pi-plus"
-                        >
-                            <span
-                                class="p-1"
-                                :style="{
-                                    fontSize: '10px',
-                                }"
+                        <div v-if="userPermissions.includes('objetivos_crear')">
+                            <PrimaryButton
+                                :href="route('objetivo.create')"
+                                class="m-4 pi pi-plus"
                             >
-                                Nuevo objetivo</span
-                            >
-                        </PrimaryButton>
+                                <span
+                                    class="p-1"
+                                    :style="{
+                                        fontSize: '10px',
+                                    }"
+                                >
+                                    Nuevo objetivo</span
+                                >
+                            </PrimaryButton>
+                        </div>
                     </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto overflow-x-auto">
@@ -198,32 +201,53 @@ const onSort = (event) => {
                                         #body="slotProps"
                                         class="text-center"
                                     >
-                                        <PrimaryButton
-                                            class="m-2 pi pi-file-edit"
-                                            :href="
-                                                route(
-                                                    'objetivo.edit',
-                                                    slotProps.data.id
-                                                )
-                                            "
-                                        >
-                                            <span
-                                                class="p-1"
-                                                :style="{
-                                                    fontSize: '10px',
-                                                }"
+                                        <div class="flex justify-evenly">
+                                            <div
+                                                v-if="
+                                                    userPermissions.includes(
+                                                        'objetivos_editar'
+                                                    )
+                                                "
+                                                class="inline"
                                             >
-                                                Editar</span
+                                                <PrimaryButton
+                                                    class="m-2 pi pi-file-edit"
+                                                    :href="
+                                                        route(
+                                                            'objetivo.edit',
+                                                            slotProps.data.id
+                                                        )
+                                                    "
+                                                >
+                                                    <span
+                                                        class="p-1"
+                                                        :style="{
+                                                            fontSize: '10px',
+                                                        }"
+                                                    >
+                                                        Editar</span
+                                                    >
+                                                </PrimaryButton>
+                                            </div>
+                                            <div
+                                                v-if="
+                                                    userPermissions.includes(
+                                                        'objetivos_eliminar'
+                                                    )
+                                                "
+                                                class="inline"
                                             >
-                                        </PrimaryButton>
-
-                                        <PrimaryButton
-                                            class="m-2 pi pi-trash"
-                                            @click.prevent="
-                                                deleteItems(slotProps.data.id)
-                                            "
-                                        >
-                                        </PrimaryButton>
+                                                <PrimaryButton
+                                                    class="m-2 pi pi-trash"
+                                                    @click.prevent="
+                                                        deleteItems(
+                                                            slotProps.data.id
+                                                        )
+                                                    "
+                                                >
+                                                </PrimaryButton>
+                                            </div>
+                                        </div>
                                     </template>
                                 </Column>
                             </DataTable>

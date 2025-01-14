@@ -83,6 +83,25 @@ class permisosController extends Controller
         return redirect()->route('permisos.index');
     }
 
+    public function edit(Permission $permiso)
+    {
+        return Inertia::render('permisos/PermisosEdit', [
+            'permiso' => $permiso,
+        ]);
+    }
+
+    public function update(Request $request, Permission $permiso)
+    {
+        $permiso->update($request->all());
+        return redirect()->route('permisos.index');
+    }
+
+    public function destroy(Permission $permiso)
+    {
+        $permiso->delete();
+        return response()->json(['success' => true]);
+    }
+
     function all()
     {
         // dd("all");

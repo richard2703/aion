@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import { Head, Link, useForm } from "@inertiajs/vue3";
+import { Head, Link, useForm, usePage } from "@inertiajs/vue3";
 import Layout from "@/Layouts/Layout.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
@@ -13,6 +13,7 @@ const props = defineProps({
 });
 
 const departamentos = ref(props.departamentos);
+const userPremissions = usePage().props.auth.user.permissions;
 
 async function getDepartamentos() {
     await axios
@@ -106,8 +107,8 @@ onMounted(() => {
                 <Link :href="route('dashboard')" class="px-1">
                     <h3>Home -</h3>
                 </Link>
-                <Link :href="route('reporte.index')" class="px-1">
-                    <h3>Reportes -</h3>
+                <Link :href="route('metas.index')" class="px-1">
+                    <h3>Metas -</h3>
                 </Link>
                 <Link class="active">
                     <h3>Editar</h3>
@@ -168,11 +169,20 @@ onMounted(() => {
                                     :key="index"
                                     class="col-span-full flex items-center justify-between"
                                 >
-                                    <input
-                                        type="checkbox"
-                                        v-model="treinta.status"
-                                    />
-                                    Terminada
+                                    <div
+                                        v-if="
+                                            userPremissions.includes(
+                                                'metas_terminar'
+                                            )
+                                        "
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            v-model="treinta.status"
+                                        />
+                                        Terminada
+                                    </div>
+
                                     <TextInput
                                         v-model="treinta.value"
                                         type="text"
@@ -180,21 +190,38 @@ onMounted(() => {
                                         autocomplete="treinta"
                                         maxlength="250"
                                     />
+
+                                    <div
+                                        v-if="
+                                            userPremissions.includes(
+                                                'metas_eliminar'
+                                            )
+                                        "
+                                    >
+                                        <button
+                                            type="button"
+                                            @click="removetreintas(index)"
+                                            class="ml-2 text-red-500"
+                                        >
+                                            Eliminar
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div
+                                    v-if="
+                                        userPremissions.includes('metas_crear')
+                                    "
+                                    class="text-center"
+                                >
                                     <button
                                         type="button"
-                                        @click="removetreintas(index)"
-                                        class="ml-2 text-red-500"
+                                        @click="addtreintas"
+                                        class="mt-2 text-blue-500 w-full"
                                     >
-                                        Eliminar
+                                        Agregar item
                                     </button>
                                 </div>
-                                <button
-                                    type="button"
-                                    @click="addtreintas"
-                                    class="mt-2 text-blue-500"
-                                >
-                                    Agregar item
-                                </button>
 
                                 <!-- Campos dinámicos para Lowlight -->
                                 <div
@@ -210,11 +237,20 @@ onMounted(() => {
                                     :key="index"
                                     class="col-span-full flex items-center justify-between"
                                 >
-                                    <input
-                                        type="checkbox"
-                                        v-model="sesenta.status"
-                                    />
-                                    Terminada
+                                    <div
+                                        v-if="
+                                            userPremissions.includes(
+                                                'metas_terminar'
+                                            )
+                                        "
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            v-model="sesenta.status"
+                                        />
+                                        Terminada
+                                    </div>
+
                                     <TextInput
                                         v-model="sesenta.value"
                                         type="text"
@@ -222,21 +258,38 @@ onMounted(() => {
                                         autocomplete="sesenta"
                                         maxlength="250"
                                     />
+
+                                    <div
+                                        v-if="
+                                            userPremissions.includes(
+                                                'metas_eliminar'
+                                            )
+                                        "
+                                    >
+                                        <button
+                                            type="button"
+                                            @click="removesesentas(index)"
+                                            class="ml-2 text-red-500"
+                                        >
+                                            Eliminar
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div
+                                    v-if="
+                                        userPremissions.includes('metas_crear')
+                                    "
+                                    class="text-center"
+                                >
                                     <button
                                         type="button"
-                                        @click="removesesentas(index)"
-                                        class="ml-2 text-red-500"
+                                        @click="addsesentas"
+                                        class="mt-2 text-blue-500 w-full"
                                     >
-                                        Eliminar
+                                        Añadir Item
                                     </button>
                                 </div>
-                                <button
-                                    type="button"
-                                    @click="addsesentas"
-                                    class="mt-2 text-blue-500"
-                                >
-                                    Añadir Item
-                                </button>
 
                                 <!-- Campos dinámicos para 90 -->
                                 <div
@@ -252,34 +305,63 @@ onMounted(() => {
                                     :key="index"
                                     class="col-span-full flex items-center justify-between"
                                 >
-                                    <input
-                                        type="checkbox"
-                                        v-model="noventa.status"
-                                    />
-                                    Terminada
+                                    <div
+                                        v-if="
+                                            userPremissions.includes(
+                                                'metas_terminar'
+                                            )
+                                        "
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            v-model="noventa.status"
+                                        />
+                                        Terminada
+                                    </div>
+
                                     <TextInput
                                         v-model="noventa.value"
                                         type="text"
                                         class="mt-1 block w-full"
                                         autocomplete="noventas"
                                     />
-                                    <button
-                                        type="button"
-                                        @click="removenoventas(index)"
-                                        class="ml-2 text-red-500"
+
+                                    <div
+                                        v-if="
+                                            userPremissions.includes(
+                                                'metas_eliminar'
+                                            )
+                                        "
                                     >
-                                        Eliminar
-                                    </button>
+                                        <button
+                                            type="button"
+                                            @click="removenoventas(index)"
+                                            class="ml-2 text-red-500"
+                                        >
+                                            Eliminar
+                                        </button>
+                                    </div>
                                 </div>
-                                <button
-                                    type="button"
-                                    @click="addnoventas"
-                                    class="mt-2 text-blue-500"
-                                >
-                                    Añadir Item
-                                </button>
 
                                 <div
+                                    v-if="
+                                        userPremissions.includes('metas_crear')
+                                    "
+                                    class="text-center"
+                                >
+                                    <button
+                                        type="button"
+                                        @click="addnoventas"
+                                        class="mt-2 text-blue-500 w-full"
+                                    >
+                                        Añadir Item
+                                    </button>
+                                </div>
+
+                                <div
+                                    v-if="
+                                        userPremissions.includes('metas_editar')
+                                    "
                                     class="col-span-full flex items-center justify-end mt-4"
                                 >
                                     <PrimaryButton

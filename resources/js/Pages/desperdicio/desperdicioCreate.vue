@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import Layout from "@/Layouts/Layout.vue";
-import { Head, Link, useForm } from "@inertiajs/vue3";
+import { Head, Link, useForm, usePage } from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
@@ -13,11 +13,11 @@ const props = defineProps({
     tipos: Array,
 });
 
+const title = "Desperdicios";
 const areas = ref(props.areas);
 const departamentos = ref(props.departamentos);
 const tipos = ref(props.tipos);
-
-const title = "Desperdicios";
+const userPremissions = usePage().props.auth.user.permissions;
 
 const form = useForm({
     area_id: "",
@@ -411,6 +411,11 @@ const showTooltipDetectabilidad = ref(false);
                                     </div>
                                 </div>
                                 <div
+                                    v-if="
+                                        userPremissions.includes(
+                                            'desperdicios_crear'
+                                        )
+                                    "
                                     class="px-4 my-4 pt-2 flex justify-end bg-white border-t border-gray-200"
                                 >
                                     <PrimaryButton

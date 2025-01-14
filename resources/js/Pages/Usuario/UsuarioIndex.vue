@@ -1,5 +1,5 @@
 <script setup>
-import { Head, Link } from "@inertiajs/vue3";
+import { Head, Link, usePage } from "@inertiajs/vue3";
 import { ref, onMounted, watch } from "vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import axios from "axios";
@@ -22,6 +22,7 @@ const globalFilter = ref("");
 const filters = ref({});
 const sortField = ref("id");
 const sortOrder = ref(1);
+const userPremissions = usePage().props.auth.user.permissions;
 
 async function getUsuarios(
     page = 1,
@@ -136,10 +137,12 @@ watch(globalFilter, (newValue) => {
                     <div
                         class="px-4 py-2 flex justify-end bg-white border-b border-gray-200"
                     >
-                        <PrimaryButton
-                            :href="route('user.create')"
-                            class="m-4 pi pi-plus"
-                        ></PrimaryButton>
+                        <div v-if="userPremissions.includes('usuarios_crear')">
+                            <PrimaryButton
+                                :href="route('user.create')"
+                                class="m-4 pi pi-plus"
+                            ></PrimaryButton>
+                        </div>
                     </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto overflow-x-auto">
@@ -216,35 +219,52 @@ watch(globalFilter, (newValue) => {
                                         #body="slotProps"
                                         class="text-center"
                                     >
-                                        <div class="flex justify-center">
-                                            <PrimaryButton
-                                                class="m-2 pi pi-file-edit"
-                                                :href="
-                                                    route(
-                                                        'user.edit',
-                                                        slotProps.data.id
+                                        <div class="flex justify-evenly">
+                                            <div
+                                                v-if="
+                                                    userPremissions.includes(
+                                                        'usuarios_editar'
                                                     )
                                                 "
+                                                class="inline"
                                             >
-                                                <span
-                                                    class="p-1"
-                                                    :style="{
-                                                        fontSize: '10px',
-                                                    }"
+                                                <PrimaryButton
+                                                    class="m-2 pi pi-file-edit"
+                                                    :href="
+                                                        route(
+                                                            'user.edit',
+                                                            slotProps.data.id
+                                                        )
+                                                    "
                                                 >
-                                                    Editar</span
-                                                >
-                                            </PrimaryButton>
-
-                                            <PrimaryButton
-                                                class="m-2 pi pi-trash"
-                                                @click.prevent="
-                                                    deleteUser(
-                                                        slotProps.data.id
+                                                    <span
+                                                        class="p-1"
+                                                        :style="{
+                                                            fontSize: '10px',
+                                                        }"
+                                                    >
+                                                        Editar</span
+                                                    >
+                                                </PrimaryButton>
+                                            </div>
+                                            <div
+                                                v-if="
+                                                    userPremissions.includes(
+                                                        'usuarios_eliminar'
                                                     )
                                                 "
+                                                class="inline"
                                             >
-                                            </PrimaryButton>
+                                                <PrimaryButton
+                                                    class="m-2 pi pi-trash"
+                                                    @click.prevent="
+                                                        deleteUser(
+                                                            slotProps.data.id
+                                                        )
+                                                    "
+                                                >
+                                                </PrimaryButton>
+                                            </div>
                                         </div>
                                     </template>
                                 </Column>

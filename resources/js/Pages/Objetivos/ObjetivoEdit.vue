@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import Layout from "@/Layouts/Layout.vue";
-import { Head, Link, useForm } from "@inertiajs/vue3";
+import { Head, Link, useForm, usePage } from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { showToast } from "../utils/SweetAlert.service";
@@ -15,6 +15,7 @@ const props = defineProps({
 
 const objetivo = ref(props.objetivo);
 const title = "Objetivos";
+const userPermissions = usePage().props.auth.user.permissions;
 
 const form = useForm({
     meta: objetivo.value.meta,
@@ -111,6 +112,11 @@ const submit = () => {
                                 </div>
 
                                 <div
+                                    v-if="
+                                        userPermissions.includes(
+                                            'objetivos_editar'
+                                        )
+                                    "
                                     class="px-4 my-4 pt-2 flex justify-end bg-white border-t border-gray-200"
                                 >
                                     <PrimaryButton

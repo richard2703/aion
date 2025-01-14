@@ -1,5 +1,6 @@
 <script setup>
 import { onMounted, ref, watch } from "vue";
+import { usePage } from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
 import { confirmDialog, showToast } from "@/Pages/utils/SweetAlert.service";
 
@@ -11,6 +12,7 @@ const area = ref(props.area);
 const procesos = ref("");
 const selectedProceso = ref("");
 const proveedores = ref("");
+const userPermissions = usePage().props.auth.user.permissions;
 
 onMounted(() => {
     getProcesos();
@@ -136,18 +138,23 @@ const deleteProveedor = async (id) => {
                 </div>
 
                 <div class="flex justify-end space-x-2">
-                    <button
-                        class="px-4 py-2 text-[#BEA34B] rounded pi pi-pencil"
-                        @click="
-                            $inertia.visit(
-                                route('proveedores.edit', proveedor.id)
-                            )
-                        "
-                    ></button>
-                    <button
-                        class="px-4 py-2 text-red-500 rounded pi pi-trash"
-                        @click="deleteProveedor(proveedor.id)"
-                    ></button>
+                    <div v-if="userPermissions.includes('directorio_editar')">
+                        <button
+                            class="px-4 py-2 text-[#BEA34B] rounded pi pi-pencil"
+                            @click="
+                                $inertia.visit(
+                                    route('proveedores.edit', proveedor.id)
+                                )
+                            "
+                        ></button>
+                    </div>
+
+                    <div v-if="userPermissions.includes('directorio_eliminar')">
+                        <button
+                            class="px-4 py-2 text-red-500 rounded pi pi-trash"
+                            @click="deleteProveedor(proveedor.id)"
+                        ></button>
+                    </div>
                 </div>
                 <hr class="my-4">
             </div>
