@@ -305,6 +305,11 @@ const getPromedio = async () => {
                                     >
                                         {{ formatNumber(promedio) || "-" }}
                                         <PrimaryButton
+                                            v-if="
+                                                userPremissions.includes(
+                                                    'pdca_kpi_crear'
+                                                )
+                                            "
                                             class="pi pi-plus"
                                             @click="
                                                 openCreateModal(
