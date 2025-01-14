@@ -25,9 +25,9 @@ class Kpis extends Model
         'objetivo',
         'medicion',
         'descripcion',
-        'regla',
-        'tipo',
-        //1 = pilar, 2 = flujo de valor, 3 = proceso, 4 = procedimiento
+        'regla', // 0 = baja, 1 = sube
+        'tipo', //1 = pilar, 2 = flujo de valor, 3 = proceso, 4 = procedimiento
+        'archivado',
     ];
 
     public function area(): BelongsTo

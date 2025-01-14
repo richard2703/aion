@@ -34,6 +34,7 @@ const form = useForm({
     descripcion: kpi.value.descripcion,
     medicion: kpi.value.medicion,
     regla: kpi.value.regla,
+    archivar: kpi.value.archivar,
 });
 
 onMounted(() => {
@@ -362,8 +363,17 @@ async function submit() {
                                     v-if="
                                         userPermissions.includes('kpi_editar')
                                     "
-                                    class="flex items-center justify-end mt-4"
+                                    class="flex items-center justify-between mt-4"
                                 >
+                                    <label class="mx-4 flex items-center gap-2"
+                                        ><input
+                                            type="checkbox"
+                                            id="cbox1"
+                                            v-model="form.archivar"
+                                        />
+                                        Archivar</label
+                                    >
+
                                     <PrimaryButton
                                         class="ms-4 pi pi-save"
                                         :class="{

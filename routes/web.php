@@ -127,6 +127,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     // registros_kpis
     Route::post('/registros_kpi/store', [App\Http\Controllers\registros_kpisController::class, 'store'])->name('registros_kpi.store');
     Route::patch('/registros_kpi/{registros_kpi}/update', [App\Http\Controllers\registros_kpisController::class, 'update'])->name('registros_kpi.update');
+    Route::get('/registros_kpi/{kpi}/promedio', [App\Http\Controllers\registros_kpisController::class, 'promedio'])->name('registros_kpi.promedio');
+
 
     Route::get('admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin.index');
 

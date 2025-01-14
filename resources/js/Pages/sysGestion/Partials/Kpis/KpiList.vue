@@ -37,10 +37,14 @@ const editedRegistro = ref();
 const titulo = ref();
 const viejo = ref();
 const userPremissions = usePage().props.auth.user.permissions;
+const promedio = ref();
 
 const formCreateModal = useForm({
     actual: "",
     kpi_id: "",
+    objetivo: "",
+    medicion: "",
+    regla: "",
 });
 
 const formEditModal = useForm({
@@ -73,9 +77,9 @@ const getClass = (kpi) => {
 
 const getClassPromedio = (kpi) => {
     if (kpi.regla === 1) {
-        return kpi.promedio >= kpi.objetivo ? "bg-green-100" : "bg-red-100";
+        return promedio.value >= kpi.objetivo ? "bg-green-100" : "bg-red-100";
     } else {
-        return kpi.promedio <= kpi.objetivo ? "bg-green-100" : "bg-red-100";
+        return promedio.value <= kpi.objetivo ? "bg-green-100" : "bg-red-100";
     }
 };
 
@@ -94,6 +98,7 @@ const formatDataSet = async () => {
             chartTarget.value = chartValues.value.map(() => kpi.value.objetivo);
             chartYearToDate.value[chartYearToDate.value.length - 1] =
                 kpi.value.promedio;
+            getPromedio();
         })
         .catch((error) => {
             console.log(error);
@@ -200,6 +205,12 @@ const closeModal = () => {
 };
 
 async function submitCreateModal() {
+    formCreateModal.objetivo = kpi.value.objetivo;
+    formCreateModal.regla = kpi.value.regla;
+    formCreateModal.medicion = kpi.value.medicion;
+    // console.log({ formCreateModal, kpi: kpi.value });
+    // return;
+
     closeModal();
     await axios
         .post(route("registros_kpi.store"), formCreateModal)
@@ -230,6 +241,18 @@ function formatNumber(value) {
 
 const formatearFecha = (dateString) => {
     return format(new Date(dateString), "dd/MM/yyyy");
+};
+
+const getPromedio = async () => {
+    await axios
+        .get(route("registros_kpi.promedio", kpi.value.id))
+        .then((response) => {
+            promedio.value = response.data.promedio;
+            console.log({ promedio: promedio.value });
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 };
 </script>
 
@@ -276,37 +299,27 @@ const formatearFecha = (dateString) => {
                                         </PrimaryButton>
                                     </td> -->
                                     <td
-                                        class="py-2 px-4 border flex justify-between"
+                                        class="py-2 px-4 border"
                                         :class="getClassPromedio(kpi)"
                                         style="text-align-last: justify"
                                     >
-                                        <div class="w-1/4 inline">
-                                            {{
-                                                formatNumber(kpi.promedio) ||
-                                                "-"
-                                            }}
-                                        </div>
-
-                                        <div
-                                            class="w-1/4 inline"
+                                        {{ formatNumber(promedio) || "-" }}
+                                        <PrimaryButton
                                             v-if="
                                                 userPremissions.includes(
                                                     'pdca_kpi_crear'
                                                 )
                                             "
+                                            class="pi pi-plus"
+                                            @click="
+                                                openCreateModal(
+                                                    kpi.id,
+                                                    kpi.actual,
+                                                    kpi.titulo
+                                                )
+                                            "
                                         >
-                                            <PrimaryButton
-                                                class="pi pi-plus"
-                                                @click="
-                                                    openCreateModal(
-                                                        kpi.id,
-                                                        kpi.actual,
-                                                        kpi.titulo
-                                                    )
-                                                "
-                                            >
-                                            </PrimaryButton>
-                                        </div>
+                                        </PrimaryButton>
                                     </td>
                                 </tr>
                             </tbody>

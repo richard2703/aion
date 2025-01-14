@@ -16,6 +16,9 @@ class registros_kpisController extends Controller
         $registro_kpi = new registros_kpi();
         $registro_kpi->kpi_id = $request->kpi_id;
         $registro_kpi->actual = $request->actual;
+        $registro_kpi->objetivo = $request->objetivo;
+        $registro_kpi->medicion = $request->medicion;
+        $registro_kpi->regla = $request->regla;
         $registro_kpi->created_for = auth()->user()->id;
         $registro_kpi->save();
 
@@ -66,20 +69,14 @@ class registros_kpisController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function promedio()
+    public function promedio(Kpis $kpi)
     {
-
-        // $fechaInicio = Carbon::now()->subMonths(12);
-
-        // $promedio = registros_kpi::where('kpi_id', $id)
-        //     ->where('created_at', '>=', $fechaInicio)
-        //     ->avg('actual');
-
-        $promedio = registros_kpi::where('kpi_id', 4)
+        $promedio = registros_kpi::where('kpi_id', $kpi->id)
+            ->whereYear('created_at', now()->year)
             ->latest('created_at')
             ->take(12)
-            // ->get();
             ->avg('actual');
+
         return response()->json(['promedio' => $promedio], 200);
     }
 
@@ -93,6 +90,7 @@ class registros_kpisController extends Controller
             'created_at',
         )
             ->where('kpi_id', $id)
+            ->whereYear('created_at', Carbon::now()->year)
             ->orderBy('created_at', 'asc')
             ->skip(registros_kpi::where('kpi_id', $id)->count() - 22)
             ->take(22)
