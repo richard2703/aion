@@ -34,7 +34,7 @@ const form = useForm({
     descripcion: kpi.value.descripcion,
     medicion: kpi.value.medicion,
     regla: kpi.value.regla,
-    archivar: kpi.value.archivar,
+    archivar: kpi.value.archivado == 1 ? true : false,
 });
 
 onMounted(() => {
