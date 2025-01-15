@@ -193,7 +193,7 @@
             </div>
 
             <!-- Main content -->
-            <div class="flex-1 bg-gray-100 p-6 overflow-auto">
+            <div class="flex-1 bg-gray-100 p-6 overflow-auto no-scrollbar">
                 <main>
                     <slot />
                 </main>
@@ -215,10 +215,26 @@
             <!-- Sidebar Derecho -->
             <div
                 v-if="isRightSidebarOpen"
-                class="bg-gray-800 text-white w-64 p-4 h-screen overflow-auto md:block absolute md:static right-0 z-50"
+                class="fixed flex top-0 right-0 w-96 h-screen bg-gray-800 text-white shadow-lg z-50 transition-transform transform translate-x-0"
             >
-                <h3 class="text-lg font-bold mb-4">Sidebar Derecho</h3>
-                <nav class="flex flex-col space-y-2">
+                <div
+                    @click="isRightSidebarOpen = false"
+                    class="flex items-center justify-between block p-4 border-b border-gray-700 hover:text-white hover:bg-gray-700"
+                >
+                    <!-- TODO: Quitar TITULO Y SUBTITULO -->
+                    <!-- <h3 class="text-lg font-bold">
+                        {{ titulo }} <br />
+                        {{ subTitulo }}
+                    </h3> -->
+                    <!-- TODO: Quitar TITULO Y SUBTITULO -->
+                    <button
+                        @click="isRightSidebarOpen = false"
+                        class="text-gray-300 hover:text-white"
+                    >
+                        <i class="pi pi-angle-double-right text-2xl"></i>
+                    </button>
+                </div>
+                <!-- <nav class="flex flex-col space-y-2 p-4">
                     <div v-for="item in rightSidebarItems" :key="item.label">
                         <button
                             @click="item.action"
@@ -227,10 +243,29 @@
                             <i :class="item.icon" class="pi w-5 h-5"></i>
                             <span>{{ item.label }}</span>
                         </button>
-                        {{ title }}
                     </div>
-                </nav>
+                </nav> -->
+                <div class="text-white p-4 overflow-y-auto">
+                    <div>
+                        <Calendario />
+                    </div>
+
+                    <div v-if="titulo === 'reportes semanales'">
+                        <div>
+                            <Comentario
+                                :reporte_semanal_id="reporteSemanal.id"
+                            />
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <!-- Fondo de superposición -->
+            <div
+                v-if="isRightSidebarOpen"
+                @click="isRightSidebarOpen = false"
+                class="fixed inset-0 bg-black bg-opacity-50 z-40"
+            ></div>
         </div>
     </div>
 </template>
@@ -239,7 +274,17 @@
 import { onMounted, ref } from "vue";
 import Logo from "./Shared/Logo.vue";
 import { Link, usePage } from "@inertiajs/vue3";
+import Comentario from "@/Components/Comentarios/Comentario.vue";
+import Calendario from "@/Components/Calendario.vue";
 
+const props = defineProps({
+    titulo: String,
+    subTitulo: String,
+    reporteSemanal: Object | null,
+});
+
+const titulo = ref(props.titulo);
+const subTitulo = ref(props.subTitulo);
 const isOpen = ref(false);
 const profileMenuOpen = ref(false);
 const notificationMenuOpen = ref(false);
@@ -247,6 +292,7 @@ const openMenus = ref([]);
 const userAuth = usePage().props.auth.user.roles;
 
 const isRightSidebarOpen = ref(false); // Sidebar derecho
+
 const rightSidebarItems = ref([
     {
         label: "Elemento 1",
