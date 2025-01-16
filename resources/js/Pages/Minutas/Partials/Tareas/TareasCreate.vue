@@ -5,8 +5,8 @@ import axios from "axios";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
-import AutoComplete from 'primevue/autocomplete';
-import Textarea from 'primevue/textarea';
+import AutoComplete from "primevue/autocomplete";
+import Textarea from "primevue/textarea";
 import { showToast } from "@/Pages/utils/SweetAlert.service";
 
 const props = defineProps({
@@ -16,7 +16,7 @@ const props = defineProps({
 });
 
 // Define emits
-const emit = defineEmits(['close']);
+const emit = defineEmits(["close"]);
 
 const areas = ref(props.areas);
 const departamentos = ref(props.departamentos);
@@ -52,7 +52,9 @@ const getAreas = async () => {
 
 const getDepartamentos = async (area_id) => {
     try {
-        const response = await axios.get(route("departamentos.byArea", area_id));
+        const response = await axios.get(
+            route("departamentos.byArea", area_id)
+        );
         departamentos.value = response.data.departamentos;
     } catch (error) {
         console.error(error);
@@ -74,7 +76,9 @@ const search = (event) => {
             filteredUsuarios.value = [...usuarios.value];
         } else {
             filteredUsuarios.value = usuarios.value.filter((usuario) => {
-                return usuario.name.toLowerCase().includes(event.query.toLowerCase());
+                return usuario.name
+                    .toLowerCase()
+                    .includes(event.query.toLowerCase());
             });
         }
     }, 250);
@@ -87,7 +91,7 @@ const submit = async () => {
         await form.post(route("tareas.store"), {
             onFinish: () => {
                 showToast("El registro ha sido creado", "success");
-                emit('tareaGuardada');
+                emit("tareaGuardada");
                 closeModal();
             },
         });
@@ -99,7 +103,7 @@ const submit = async () => {
 
 const closeModal = () => {
     // Emit event to close modal in the parent component
-    emit('close');
+    emit("close");
 };
 
 onMounted(() => {
@@ -118,109 +122,180 @@ onMounted(() => {
                     <form @submit.prevent="submit">
                         <div class="mt-4">
                             <InputLabel for="minuta_id" value="Reunión:" />
-                            <TextInput id="minuta_id" type="text" :value="minuta.alias" class="mt-1 block w-full"
-                                disabled />
-                            <TextInput id="minuta_id" v-model="form.minuta_id" type="text"
-                                class="mt-1 block w-full hidden" required disabled autocomplete="minuta_id" />
+                            <TextInput
+                                id="minuta_id"
+                                type="text"
+                                :value="minuta.alias"
+                                class="mt-1 block w-full"
+                                disabled
+                            />
+                            <TextInput
+                                id="minuta_id"
+                                v-model="form.minuta_id"
+                                type="text"
+                                class="mt-1 block w-full hidden"
+                                required
+                                disabled
+                                autocomplete="minuta_id"
+                            />
                         </div>
 
                         <div class="mt-4">
                             <InputLabel for="area_id" value="Pilar: " />
-                            <select ref="area_select" @change="onChange($event)"
+                            <select
+                                ref="area_select"
+                                @change="onChange($event)"
                                 class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                v-model="form.area_id" required>
+                                v-model="form.area_id"
+                                required
+                            >
                                 <option value="" disabled selected>
                                     Seleccione una opcion
                                 </option>
-                                <option v-for="area in areas" :key="area.id" :value="area.id">
+                                <option
+                                    v-for="area in areas"
+                                    :key="area.id"
+                                    :value="area.id"
+                                >
                                     {{ area.nombre }}
                                 </option>
                             </select>
                         </div>
 
                         <div class="mt-4">
-                            <InputLabel for="departamento_id" value="Flujo de valor: " />
-                            <select ref="departamento_select"
+                            <InputLabel
+                                for="departamento_id"
+                                value="Flujo de valor: "
+                            />
+                            <select
+                                ref="departamento_select"
                                 class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                v-model="form.departamento_id" required>
+                                v-model="form.departamento_id"
+                                required
+                            >
                                 <option value="" disabled selected>
                                     Seleccione una opcion
                                 </option>
-                                <option v-for="departamento in departamentos" :key="departamento.id"
-                                    :value="departamento.id">
+                                <option
+                                    v-for="departamento in departamentos"
+                                    :key="departamento.id"
+                                    :value="departamento.id"
+                                >
                                     {{ departamento.nombre }}
                                 </option>
                             </select>
                         </div>
 
-                        <hr class="my-4">
+                        <hr class="my-4" />
 
                         <div class="mt-4">
                             <InputLabel for="tarea" value="Tarea:" />
-                            <TextInput id="tarea" v-model="form.tarea" type="text" class="mt-1 block w-full" required
-                                autocomplete="tarea" />
+                            <TextInput
+                                id="tarea"
+                                v-model="form.tarea"
+                                type="text"
+                                class="mt-1 block w-full"
+                                required
+                                autocomplete="tarea"
+                            />
                         </div>
                         <div class="mt-4 z-30">
-                            <InputLabel for="responsable_id" value="Responsable:" />
-                            <select ref="departamento_select"
+                            <InputLabel
+                                for="responsable_id"
+                                value="Responsable:"
+                            />
+                            <select
+                                ref="departamento_select"
                                 class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                v-model="form.responsable_id" required>
+                                v-model="form.responsable_id"
+                                required
+                            >
                                 <option value="" disabled selected>
                                     Seleccione una opcion
                                 </option>
-                                <option v-for="usuario in usuarios" :key="usuario.id" :value="usuario.id">
+                                <option
+                                    v-for="usuario in usuarios"
+                                    :key="usuario.id"
+                                    :value="usuario.id"
+                                >
                                     {{ usuario.name }}
                                 </option>
                             </select>
                         </div>
                         <div class="mt-4 z-30">
-                            <InputLabel for="revisor_id" value="Cliente de la tarea:" />
-                            <select ref="departamento_select"
+                            <InputLabel
+                                for="revisor_id"
+                                value="Cliente de la tarea:"
+                            />
+                            <select
+                                ref="departamento_select"
                                 class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                v-model="form.revisor_id" required>
+                                v-model="form.revisor_id"
+                                required
+                            >
                                 <option value="" disabled selected>
                                     Seleccione una opcion
                                 </option>
-                                <option v-for="usuario in usuarios" :key="usuario.id" :value="usuario.id">
+                                <option
+                                    v-for="usuario in usuarios"
+                                    :key="usuario.id"
+                                    :value="usuario.id"
+                                >
                                     {{ usuario.name }}
                                 </option>
                             </select>
                         </div>
                         <div class="mt-4">
                             <InputLabel for="estatus" value="Estatus: " />
-                            <select ref="departamento_select"
+                            <select
+                                ref="departamento_select"
                                 class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                v-model="form.estatus_id" required>
+                                v-model="form.estatus_id"
+                                required
+                            >
                                 <option value="" selected disabled>
-                                    Seleccione una opcion </option>
-                                <option value=1>
-                                    Retrasado </option>
-                                <option value=2>
-                                    Iniciado </option>
-                                <option value=3>
-                                    En proceso </option>
-                                <option value=4>
-                                    Terminado </option>
+                                    Seleccione una opcion
+                                </option>
+                                <option value="1">Retrasado</option>
+                                <option value="2">Iniciado</option>
+                                <option value="3">En proceso</option>
+                                <option value="4">Terminado</option>
                             </select>
                         </div>
                         <div class="mt-4">
                             <InputLabel for="fecha" value="Fecha de entrega:" />
-                            <TextInput id="fecha" v-model="form.fecha" type="date" class="mt-1 block w-full" required
-                                autocomplete="responsable_id" />
+                            <TextInput
+                                id="fecha"
+                                v-model="form.fecha"
+                                type="date"
+                                class="mt-1 block w-full"
+                                required
+                                autocomplete="responsable_id"
+                            />
                         </div>
                         <div class="mt-4">
                             <InputLabel for="nota" value="Notas: " />
-                            <Textarea class="mt-1 block w-full" v-model="form.nota" rows="5" cols="30" />
+                            <Textarea
+                                class="mt-1 block w-full"
+                                v-model="form.nota"
+                                rows="5"
+                                cols="30"
+                            />
                         </div>
 
                         <div class="flex items-center justify-end mt-4">
-                            <PrimaryButton class="ms-4 pi pi-save" :class="{ 'opacity-25': form.processing }"
-                                :disabled="form.processing">
-
+                            <PrimaryButton
+                                class="ms-4 pi pi-save"
+                                :class="{ 'opacity-25': form.processing }"
+                                :disabled="form.processing"
+                            >
                             </PrimaryButton>
-                            <PrimaryButton @click="emit('close')" class="ms-4 pi pi-times"
-                                :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-
+                            <PrimaryButton
+                                @click="emit('close')"
+                                class="ms-4 pi pi-times"
+                                :class="{ 'opacity-25': form.processing }"
+                                :disabled="form.processing"
+                            >
                             </PrimaryButton>
                         </div>
                     </form>

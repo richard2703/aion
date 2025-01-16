@@ -221,12 +221,6 @@
                     @click="isRightSidebarOpen = false"
                     class="flex items-center justify-between block p-4 border-b border-gray-700 hover:text-white hover:bg-gray-700"
                 >
-                    <!-- TODO: Quitar TITULO Y SUBTITULO -->
-                    <!-- <h3 class="text-lg font-bold">
-                        {{ titulo }} <br />
-                        {{ subTitulo }}
-                    </h3> -->
-                    <!-- TODO: Quitar TITULO Y SUBTITULO -->
                     <button
                         @click="isRightSidebarOpen = false"
                         class="text-gray-300 hover:text-white"
@@ -245,13 +239,22 @@
                         </button>
                     </div>
                 </nav> -->
-                <div class="text-white p-4 overflow-y-auto">
-                    <div>
+                <div class="text-white overflow-y-auto">
+                    <div class="p-2">
                         <Calendario />
                     </div>
 
+                    <div>
+                        <button
+                            @click="() => (isMinutasModal = true)"
+                            class="flex items-center gap-3 p-2 rounded-md hover:bg-gray-700 w-full"
+                        >
+                            <span>Minutas</span>
+                        </button>
+                    </div>
+
                     <div v-if="titulo === 'reportes semanales'">
-                        <div>
+                        <div class="p-2">
                             <Comentario
                                 :reporte_semanal_id="reporteSemanal.id"
                             />
@@ -268,6 +271,32 @@
             ></div>
         </div>
     </div>
+    <!-- Modal de minutas -->
+    <Modal
+        :show="isMinutasModal"
+        @close="isMinutasModal = false"
+        class="w-[80%]"
+    >
+        <template v-slot="{ modalData }">
+            <MinutasList @newTarea="tareaCreate" />
+        </template>
+    </Modal>
+
+    <Modal
+        :show="isTareasModal"
+        @close="isTareasModal = false"
+        class="w-[80%]"
+        :modal-data="minuta"
+    >
+        <template v-slot="{ modalData }">
+            <TareasCreate
+                class="z-50"
+                :minuta="modalData"
+                @close="isTareasModal = false"
+                @tareaGuardada="actualizarTareas"
+            />
+        </template>
+    </Modal>
 </template>
 
 <script setup>
@@ -276,6 +305,11 @@ import Logo from "./Shared/Logo.vue";
 import { Link, usePage } from "@inertiajs/vue3";
 import Comentario from "@/Components/Comentarios/Comentario.vue";
 import Calendario from "@/Components/Calendario.vue";
+
+import Modal from "@/Components/Modal.vue";
+import MinutasList from "@/Components/Minutas/MinutasList.vue";
+import TareasCreate from "@/Pages/Minutas/Partials/Tareas/TareasCreate.vue";
+import axios from "axios";
 
 const props = defineProps({
     titulo: String,
@@ -292,6 +326,10 @@ const openMenus = ref([]);
 const userAuth = usePage().props.auth.user.roles;
 
 const isRightSidebarOpen = ref(false); // Sidebar derecho
+
+const isMinutasModal = ref(false);
+const isTareasModal = ref(false);
+const minuta = ref("");
 
 const rightSidebarItems = ref([
     {
@@ -578,6 +616,16 @@ const getNotifications = async () => {
     } catch (error) {
         console.error("Error fetching notifications:", error);
     }
+};
+
+const tareaCreate = async (minuta_id) => {
+    console.log("desde layout", { minuta_id });
+    await axios.get(route("minutas.byId", minuta_id)).then((response) => {
+        console.log({ minuta: response.data });
+        minuta.value = response.data;
+    });
+    isMinutasModal.value = false;
+    isTareasModal.value = true;
 };
 </script>
 

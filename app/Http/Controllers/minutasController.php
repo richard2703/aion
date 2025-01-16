@@ -357,4 +357,9 @@ class minutasController extends Controller
         $result = $query->where('minutas.area_id', $area_id)->with('area', 'departamento', 'lider', 'proceso', 'tipoMinuta')->paginate($pageSize, ['*'], 'page', $page);
         return response()->json($result);
     }
+
+    function byId(minutas $minuta)
+    {
+        return response()->json($minuta);
+    }
 }
