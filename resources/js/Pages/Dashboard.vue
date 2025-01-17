@@ -162,12 +162,16 @@ const closeDateModal = () => {
                                         class="grid sm:grid-cols-1 md:grid-cols-2 bg-gray-300"
                                     >
                                         <div class="bg-gray-300">
-                                            <img
-                                                class="h-96"
-                                                :src="banner_path"
-                                                alt="Banner actual"
-                                                srcset=""
-                                            />
+                                            <div
+                                                class="flex justify-center w-full"
+                                            >
+                                                <img
+                                                    class="object-cover"
+                                                    :src="banner_path"
+                                                    alt="Banner actual"
+                                                    srcset=""
+                                                />
+                                            </div>
                                             <div>
                                                 <p class="italic m-4 text-lg">
                                                     {{ slogan }}

@@ -124,7 +124,7 @@
             <!-- Sidebar -->
             <div
                 :class="[
-                    'bg-gray-800 text-white w-48 p-1',
+                    'bg-gray-800 text-white w-60 p-1',
                     { hidden: !isOpen, block: isOpen },
                     'md:block',
                     'z-50',
