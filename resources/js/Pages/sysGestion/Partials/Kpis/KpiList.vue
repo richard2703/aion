@@ -282,7 +282,14 @@ const getPromedio = async () => {
                                 </tr>
                                 <tr>
                                     <td class="py-2 px-4 border">
-                                        {{ kpi.objetivo || "-" }}
+                                        <div></div>
+                                        {{
+                                            kpi.regla == 1
+                                                ? "Subir a"
+                                                : "Bajar a"
+                                        }}
+                                        {{ kpi.objetivo || "0" }}
+                                        {{ kpi.medicion }}
                                     </td>
                                     <td
                                         :class="getClass(kpi)"
