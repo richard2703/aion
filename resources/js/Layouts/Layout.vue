@@ -244,16 +244,16 @@
                         <Calendario />
                     </div>
 
-                    <div>
-                        <button
-                            @click="() => (isMinutasModal = true)"
-                            class="flex items-center gap-3 p-2 rounded-md hover:bg-gray-700 w-full"
-                        >
-                            <span>Minutas</span>
-                        </button>
-                    </div>
-
                     <div v-if="titulo === 'reportes semanales'">
+                        <div>
+                            <button
+                                @click="() => (isMinutasModal = true)"
+                                class="flex items-center gap-3 p-2 rounded-md hover:bg-gray-700 w-full"
+                            >
+                                <span>Minutas</span>
+                            </button>
+                        </div>
+
                         <div class="p-2">
                             <Comentario
                                 :reporte_semanal_id="reporteSemanal.id"
