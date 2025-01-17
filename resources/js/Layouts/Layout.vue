@@ -89,7 +89,7 @@
                     </div>
                     <div
                         v-if="profileMenuOpen"
-                        class="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded shadow-lg"
+                        class="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded shadow-lg z-50"
                     >
                         <h3
                             class="px-4 py-2 border-b bg-gray-800 text-gray-100"
@@ -193,25 +193,157 @@
             </div>
 
             <!-- Main content -->
-            <div class="flex-1 bg-gray-100 p-6 overflow-auto">
+            <div class="flex-1 bg-gray-100 p-6 overflow-auto no-scrollbar">
                 <main>
                     <slot />
                 </main>
             </div>
+            <!-- Botón para el sidebar derecho -->
+            <button
+                @click="isRightSidebarOpen = !isRightSidebarOpen"
+                class="text-white hover:text-gray-300"
+            >
+                <i
+                    :class="[
+                        'pi text-2xl',
+                        isRightSidebarOpen
+                            ? 'pi-angle-double-right'
+                            : 'pi-angle-double-left',
+                    ]"
+                ></i>
+            </button>
+            <!-- Sidebar Derecho -->
+            <div
+                v-if="isRightSidebarOpen"
+                class="fixed flex top-0 right-0 w-96 h-screen bg-gray-800 text-white shadow-lg z-50 transition-transform transform translate-x-0"
+            >
+                <div
+                    @click="isRightSidebarOpen = false"
+                    class="flex items-center justify-between block p-4 border-b border-gray-700 hover:text-white hover:bg-gray-700"
+                >
+                    <button
+                        @click="isRightSidebarOpen = false"
+                        class="text-gray-300 hover:text-white"
+                    >
+                        <i class="pi pi-angle-double-right text-2xl"></i>
+                    </button>
+                </div>
+                <!-- <nav class="flex flex-col space-y-2 p-4">
+                    <div v-for="item in rightSidebarItems" :key="item.label">
+                        <button
+                            @click="item.action"
+                            class="flex items-center gap-3 p-2 rounded-md hover:bg-gray-700 w-full"
+                        >
+                            <i :class="item.icon" class="pi w-5 h-5"></i>
+                            <span>{{ item.label }}</span>
+                        </button>
+                    </div>
+                </nav> -->
+                <div class="text-white overflow-y-auto">
+                    <div class="p-2">
+                        <Calendario />
+                    </div>
+
+                    <div v-if="titulo === 'reportes semanales'">
+                        <div>
+                            <button
+                                @click="() => (isMinutasModal = true)"
+                                class="flex items-center gap-3 p-2 rounded-md hover:bg-gray-700 w-full"
+                            >
+                                <span>Minutas</span>
+                            </button>
+                        </div>
+
+                        <div class="p-2">
+                            <Comentario
+                                :reporte_semanal_id="reporteSemanal.id"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fondo de superposición -->
+            <div
+                v-if="isRightSidebarOpen"
+                @click="isRightSidebarOpen = false"
+                class="fixed inset-0 bg-black bg-opacity-50 z-40"
+            ></div>
         </div>
     </div>
+    <!-- Modal de minutas -->
+    <Modal
+        :show="isMinutasModal"
+        @close="isMinutasModal = false"
+        class="w-[80%]"
+    >
+        <template v-slot="{ modalData }">
+            <MinutasList @newTarea="tareaCreate" />
+        </template>
+    </Modal>
+
+    <Modal
+        :show="isTareasModal"
+        @close="isTareasModal = false"
+        class="w-[80%]"
+        :modal-data="minuta"
+    >
+        <template v-slot="{ modalData }">
+            <TareasCreate
+                class="z-50"
+                :minuta="modalData"
+                @close="isTareasModal = false"
+                @tareaGuardada="actualizarTareas"
+            />
+        </template>
+    </Modal>
 </template>
 
 <script setup>
 import { onMounted, ref } from "vue";
 import Logo from "./Shared/Logo.vue";
 import { Link, usePage } from "@inertiajs/vue3";
+import Comentario from "@/Components/Comentarios/Comentario.vue";
+import Calendario from "@/Components/Calendario.vue";
 
+import Modal from "@/Components/Modal.vue";
+import MinutasList from "@/Components/Minutas/MinutasList.vue";
+import TareasCreate from "@/Pages/Minutas/Partials/Tareas/TareasCreate.vue";
+import axios from "axios";
+
+const props = defineProps({
+    titulo: String,
+    subTitulo: String,
+    reporteSemanal: Object | null,
+});
+
+const titulo = ref(props.titulo);
+const subTitulo = ref(props.subTitulo);
 const isOpen = ref(false);
 const profileMenuOpen = ref(false);
 const notificationMenuOpen = ref(false);
 const openMenus = ref([]);
 const userAuth = usePage().props.auth.user.roles;
+
+const isRightSidebarOpen = ref(false); // Sidebar derecho
+
+const isMinutasModal = ref(false);
+const isTareasModal = ref(false);
+const minuta = ref("");
+
+const rightSidebarItems = ref([
+    {
+        label: "Elemento 1",
+        icon: "pi pi-home",
+        action: () => alert("Acción 1"),
+    },
+    { label: "Elemento 2", icon: "pi pi-cog", action: () => alert("Acción 2") },
+    {
+        label: "Elemento 3",
+        icon: "pi pi-user",
+        action: () => alert("Acción 3"),
+    },
+]);
 
 const menuItems = [
     {
@@ -484,6 +616,16 @@ const getNotifications = async () => {
     } catch (error) {
         console.error("Error fetching notifications:", error);
     }
+};
+
+const tareaCreate = async (minuta_id) => {
+    console.log("desde layout", { minuta_id });
+    await axios.get(route("minutas.byId", minuta_id)).then((response) => {
+        console.log({ minuta: response.data });
+        minuta.value = response.data;
+    });
+    isMinutasModal.value = false;
+    isTareasModal.value = true;
 };
 </script>
 

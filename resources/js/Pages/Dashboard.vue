@@ -84,7 +84,7 @@ const getLastAssessment = async () => {
     }
 };
 
-const getEventos = async (fecha) => {
+const getEventos = async () => {
     try {
         const { data } = await axios.get(route("eventos.findAll"));
         eventos.value = data;
@@ -312,95 +312,6 @@ const closeDateModal = () => {
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex h-full justify-end">
-                <!-- Collapsible Panel -->
-                <div
-                    :class="[
-                        'transition-all duration-300 bg-gray-200 overflow-y-auto overflow-hidden',
-                        isCollapsed ? 'w-16' : 'w-96',
-                    ]"
-                    class="h-screen"
-                >
-                    <div class="p-4 flex flex-col items-center">
-                        <!-- Toggle Button -->
-                        <button
-                            @click="togglePanel"
-                            :class="isCollapsed ? 'w-16' : 'w-96'"
-                            class="top-50 text-3xl"
-                            v-tooltip.left="'Abre la sección de Eventos '"
-                        >
-                            <span
-                                class="pi pi-calendar text-slate-800 font-bold shadow"
-                            ></span>
-                        </button>
-
-                        <!-- Panel Content -->
-                        <div
-                            v-show="!isCollapsed"
-                            class="py-6 w-full flex justify-center"
-                        >
-                            <v-date-picker
-                                @dayclick="handleDateClick"
-                                :attributes="attrs"
-                                :masks="masks"
-                            />
-                        </div>
-                        <div></div>
-
-                        <Modal
-                            :show="isDateModalOpen"
-                            :modalData="evento"
-                            maxWidth="lg"
-                        >
-                            <template v-slot="{ modalData }">
-                                <div class="flex flex-col w-full">
-                                    <div
-                                        v-for="eventoByDate in eventosByDate"
-                                        :key="index"
-                                        class="p-4 font-normal text-gray-800 w-full mb-4"
-                                    >
-                                        <h1
-                                            class="mb-4 text-4xl font-bold leading-none tracking-tight text-gray-800"
-                                        >
-                                            {{ eventoByDate.titulo }}
-                                        </h1>
-                                        <h2
-                                            class="mb-4 text-xl font-bold leading-none tracking-tight text-gray-800 text-right"
-                                        >
-                                            {{ eventoByDate.fecha_inicio }}
-                                        </h2>
-                                        <p class="leading-normal">
-                                            {{ eventoByDate.descripcion }}
-                                        </p>
-                                        <div
-                                            class="flex flex-row items-center mt-4 text-gray-700"
-                                        >
-                                            <div class="w-1/2">
-                                                {{ eventoByDate.area.nombre }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="pr-4 flex justify-end">
-                                        <img
-                                            src="../../img/logos/logoAionBusiness_color.png"
-                                            alt=""
-                                            class="w-14"
-                                        />
-                                    </div>
-                                </div>
-
-                                <div class="flex justify-end space-x-2 p-4">
-                                    <button
-                                        class="px-4 py-2 bg-slate-800 text-white rounded pi pi-times"
-                                        @click="closeDateModal"
-                                    ></button>
-                                </div>
-                            </template>
-                        </Modal>
                     </div>
                 </div>
             </div>
