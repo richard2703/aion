@@ -250,7 +250,7 @@
                                 @click="() => (isMinutasModal = true)"
                                 class="flex items-center gap-3 p-2 rounded-md hover:bg-gray-700 w-full"
                             >
-                                <span>Minutas</span>
+                                <span>Tareas en minutas</span>
                             </button>
                         </div>
 
