@@ -31,9 +31,7 @@ class userController extends Controller
 
     function all()
     {
-        // dd("all");
-        $usuarios = User::get();
-
+        $usuarios = User::orderBy('name', 'asc')->get();
         return response()->json($usuarios);
     }
     function findAll(Request $request)

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comentario;
+use App\Models\ComentarioMencion;
 use Illuminate\Http\Request;
 
 class comentarioController extends Controller
@@ -10,7 +11,12 @@ class comentarioController extends Controller
     //
     public function index($reporte_semanal_id)
     {
-        return  response()->json(Comentario::orderBy('created_at', 'desc')->where('reporte_semanal_id', $reporte_semanal_id)->where('user_id', auth()->user()->id)->get());
+        $comentarios = Comentario::orderBy('created_at', 'desc')->where('reporte_semanal_id', $reporte_semanal_id)->where('user_id', auth()->user()->id)->get();
+        $menciones = ComentarioMencion::with('comentario')->where('user_id', auth()->user()->id)->get();
+        return  response()->json([
+            'comentarios' => $comentarios,
+            'menciones' => $menciones
+        ]);
     }
 
     function edit(Comentario $comentario)
@@ -18,15 +24,27 @@ class comentarioController extends Controller
         return response()->json($comentario);
     }
 
-    function store(Request $request)
+    public function store(Request $request)
     {
         $user = auth()->user();
-        $data = [
+
+        // Crear el comentario
+        $comentario = Comentario::create([
             'reporte_semanal_id' => $request->reporte_semanal_id,
             'user_id' => $user->id,
-            'texto' => $request->texto
-        ];
-        Comentario::create($data);
+            'texto' => $request->texto,
+        ]);
+
+        // Guardar las menciones
+        if (!empty($request->menciones)) {
+            foreach ($request->menciones as $usuarioId) {
+                ComentarioMencion::create([
+                    'comentario_id' => $comentario->id,
+                    'user_id' => $usuarioId,
+                ]);
+            }
+        }
+
         return response()->json(['success' => true]);
     }
 
@@ -38,6 +56,10 @@ class comentarioController extends Controller
 
     function destroy(Comentario $comentario)
     {
+        // Delete associated records in comentario_menciones
+        ComentarioMencion::where('comentario_id', $comentario->id)->delete();
+
+
         $comentario->delete();
         return response()->json(['success' => true]);
     }

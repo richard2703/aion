@@ -13,6 +13,7 @@ const props = defineProps({
 
 const reporte_semanal_id = props.reporte_semanal_id;
 const comentarios = ref([]);
+const menciones = ref([]);
 const comentario = ref();
 const editar = ref(false);
 
@@ -28,7 +29,9 @@ const getComentarios = async () => {
     const response = await axios.get(
         route("comentario.getComentarios", reporte_semanal_id)
     );
-    comentarios.value = response.data;
+    comentarios.value = response.data.comentarios;
+    menciones.value = response.data.menciones;
+    console.log({ response: menciones.value });
 };
 
 const getComentario = async (comentario_id) => {
@@ -73,24 +76,47 @@ const deleteComentario = async (comentario_id) => {
                     </Message>
                 </div>
                 <div v-if="comentarios" class="my-4 h-60 overflow-y-auto">
-                    <ul
-                        v-for="comentario in comentarios"
-                        :key="comentario.id"
-                        class="list-disc list-inside"
-                    >
-                        <div class="flex justify-between">
-                            <li
-                                class="text-sm text-gray-600 text-justify cursor-pointer hover:text-gray-300"
-                                @click.stop="getComentario(comentario.id)"
-                            >
-                                {{ comentario.texto }}
-                            </li>
-                            <button
-                                class="float-right mx-4 pi pi-trash text-red-500 cursor-pointer hover:text-red-300"
-                                @click.stop="deleteComentario(comentario.id)"
-                            ></button>
-                        </div>
-                    </ul>
+                    <div>
+                        <h3 class="text-bold text-black">Observaciones</h3>
+                        <ul
+                            v-for="comentario in comentarios"
+                            :key="comentario.id"
+                            class="list-disc list-inside"
+                        >
+                            <div class="flex justify-between">
+                                <li
+                                    class="text-sm text-gray-600 text-justify cursor-pointer hover:text-gray-300"
+                                    @click.stop="getComentario(comentario.id)"
+                                >
+                                    {{ comentario.texto }}
+                                </li>
+                                <button
+                                    class="float-right mx-4 pi pi-trash text-red-500 cursor-pointer hover:text-red-300"
+                                    @click.stop="
+                                        deleteComentario(comentario.id)
+                                    "
+                                ></button>
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+                <div v-if="menciones" class="my-4 h-42 overflow-y-auto">
+                    <div class="text-bold text-black">
+                        <h3>Menciones</h3>
+                        <ul
+                            v-for="mencion in menciones"
+                            :key="mencion.id"
+                            class="list-disc list-inside"
+                        >
+                            <div class="flex justify-between">
+                                <li
+                                    class="text-sm text-gray-600 text-justify cursor-pointer hover:text-gray-300"
+                                >
+                                    {{ mencion.comentario.texto }}
+                                </li>
+                            </div>
+                        </ul>
+                    </div>
                 </div>
                 <ComentarioCreate
                     v-if="!editar"

@@ -24,4 +24,9 @@ class Comentario extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
+    public function menciones()
+    {
+        return $this->hasMany(ComentarioMencion::class);
+    }
 }

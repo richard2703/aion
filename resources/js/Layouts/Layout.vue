@@ -44,7 +44,7 @@
 
                     <div
                         v-if="notificationMenuOpen"
-                        class="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded shadow-lg"
+                        class="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded shadow-lg z-50"
                     >
                         <h3
                             class="px-4 py-2 border-b bg-gray-800 text-sm text-gray-100"
