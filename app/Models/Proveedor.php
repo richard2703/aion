@@ -19,6 +19,7 @@ class Proveedor extends Model
         'nombre',
         'servicio',
         'pagina_web',
+        'link_orden',
         'telefono',
         'correo',
         'info'

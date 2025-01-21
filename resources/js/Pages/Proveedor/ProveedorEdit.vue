@@ -24,6 +24,7 @@ const form = useForm({
     nombre: proveedor.value.nombre,
     servicio: proveedor.value.servicio,
     pagina_web: proveedor.value.pagina_web,
+    link_orden: proveedor.value.link_orden,
     telefono: proveedor.value.telefono,
     correo: proveedor.value.correo,
     info: proveedor.value.info,
@@ -194,6 +195,21 @@ console.log({ proveedor: proveedor });
                                         type="text"
                                         class="mt-1 block w-full"
                                         placeholder="https://proveedor_web.com"
+                                        required
+                                        autocomplete="pagina_web"
+                                    />
+                                </div>
+                                <div class="mt-4">
+                                    <InputLabel
+                                        for="link_orden"
+                                        value="Link para orden de compra:"
+                                    />
+                                    <TextInput
+                                        id="link_orden"
+                                        v-model="form.link_orden"
+                                        type="text"
+                                        class="mt-1 block w-full"
+                                        placeholder="https://ERP.com"
                                         required
                                         autocomplete="pagina_web"
                                     />
