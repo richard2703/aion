@@ -114,7 +114,7 @@ const setChartData = () => {
                 type: "bar",
                 label: "kpi",
                 data: chartValues,
-                backgroundColor: ["rgba(115, 72, 207, 0.2)"],
+                backgroundColor: ["rgba(115, 72, 207, 1)"],
                 borderColor: ["rgb(74, 13, 204)"],
                 borderWidth: 1,
             },
@@ -122,7 +122,7 @@ const setChartData = () => {
                 type: "bar",
                 label: "YTD",
                 data: chartYearToDate,
-                backgroundColor: ["rgba(145, 144, 147 , 0.7)"],
+                backgroundColor: ["rgba(145, 144, 147 , 1)"],
                 borderColor: ["rgb(145, 144, 147 )"],
                 borderWidth: 1,
             },
@@ -334,16 +334,20 @@ const getPromedio = async () => {
                     </div>
                 </div>
 
-                <div class="card overflow-x-auto">
+                <div class="card flex flex-col">
                     <div class="text-center">
                         <span class="text-2xl font-bold">Check</span>
                     </div>
-                    <Chart
-                        class="w-full h-full"
-                        type="bar"
-                        :data="chartData"
-                        :options="chartOptions"
-                    />
+                    <div
+                        :class="kpi.regla == 1 ? 'fondo-subir' : 'fondo-bajar'"
+                    >
+                        <Chart
+                            class="w-full h-full"
+                            type="bar"
+                            :data="chartData"
+                            :options="chartOptions"
+                        />
+                    </div>
                 </div>
             </div>
         </div>
@@ -424,3 +428,28 @@ const getPromedio = async () => {
         </template>
     </Modal>
 </template>
+<style scoped>
+.fondo-subir {
+    /* background-color: rgba(255, 0, 0, 0.2); */
+    background-image: linear-gradient(
+        rgba(0, 0, 255, 0.5),
+        rgba(0, 255, 0, 0.5),
+        rgba(255, 255, 0, 0.5),
+        rgba(255, 0, 0, 0.5)
+    );
+    width: 100%;
+    height: 100%;
+}
+
+.fondo-bajar {
+    /* background-color: rgba(255, 0, 0, 0.2); */
+    background-image: linear-gradient(
+        rgba(255, 0, 0, 0.5),
+        rgba(255, 255, 0, 0.5),
+        rgba(0, 255, 0, 0.5),
+        rgba(0, 0, 255, 0.5)
+    );
+    width: 100%;
+    height: 100%;
+}
+</style>
