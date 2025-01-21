@@ -62,6 +62,7 @@ watch(globalFilter, (newValue) => {
 
 <template>
     <Layout :titulo="title">
+
         <Head title="semanales" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
@@ -69,10 +70,10 @@ watch(globalFilter, (newValue) => {
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
-                    <h3>Home -</h3>
+                <h3>Home -</h3>
                 </Link>
                 <Link class="active">
-                    <h3>Mis Metas</h3>
+                <h3>Mis Metas</h3>
                 </Link>
                 <!-- <Link class="active">
                 <h3>Mis Metas</h3>
@@ -83,111 +84,54 @@ watch(globalFilter, (newValue) => {
         <div class="py-2">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div>
-                    <div
-                        v-if="userPremissions.includes('metas.create')"
-                        class="px-4 py-2 flex justify-end bg-white border-b border-gray-200"
-                    >
-                        <PrimaryButton
-                            :href="route('metas.create')"
-                            class="m-4 pi pi-plus"
-                        >
-                            <span
-                                class="p-1"
-                                :style="{
-                                    fontSize: '10px',
-                                }"
-                            >
-                                Nueva meta</span
-                            >
+                    <div v-if="userPremissions.includes('metas.create')"
+                        class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
+                        <PrimaryButton :href="route('metas.create')" class="m-4 pi pi-plus">
+                            <span class="p-1" :style="{
+                                fontSize: '10px',
+                            }">
+                                Nueva meta</span>
                         </PrimaryButton>
                     </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto">
                             <!-- <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" /> -->
 
-                            <DataTable
-                                :value="metas"
-                                paginator
-                                :rows="rows"
-                                :totalRecords="totalRecords"
-                                :lazy="true"
-                                :first="first"
-                                @page="onPage"
-                                @sort="onSort"
-                                :rowsPerPageOptions="[5, 10, 20, 50]"
-                                tableStyle="min-width: 50rem"
-                                :filters="filters"
-                                :globalFilterFields="[
+                            <DataTable :value="metas" paginator :rows="rows" :totalRecords="totalRecords" :lazy="true"
+                                :first="first" @page="onPage" @sort="onSort" :rowsPerPageOptions="[5, 10, 20, 50]"
+                                tableStyle="min-width: 50rem" :filters="filters" :globalFilterFields="[
                                     'id',
                                     'nombre',
                                     'descripcion',
-                                ]"
-                                :sortField="sortField"
-                                :sortOrder="sortOrder"
-                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines"
-                            >
+                                ]" :sortField="sortField" :sortOrder="sortOrder"
+                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
                                 <template #empty> No data found. </template>
-                                <Column
-                                    field="id"
-                                    header="ID"
-                                    headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;"
-                                    sortable
-                                ></Column>
-                                <Column
-                                    field="trimestre.trimestre"
-                                    header="Trimestre"
-                                    headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;"
-                                    bodyClass="text-center"
-                                    sortable
-                                ></Column>
-                                <Column
-                                    field="trimestre.ano"
-                                    header="año"
-                                    headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;"
-                                    bodyClass="text-center"
-                                    sortable
-                                ></Column>
-                                <Column
-                                    field="departamento.nombre"
-                                    header="Flujo de valor "
-                                    headerStyle="width:4em;"
-                                    bodyClass="text-center"
-                                    sortable
-                                >
+                                <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
+                                    sortable></Column>
+                                <Column field="trimestre.trimestre" header="Trimestre" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+                                <Column field="trimestre.ano" header="año" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+                                <Column field="departamento.nombre" header="Flujo de valor " headerStyle="width:4em;"
+                                    bodyClass="text-center" sortable>
                                 </Column>
 
                                 <Column header="" headerStyle="width:4em;">
-                                    <template
-                                        #body="slotProps"
-                                        class="text-center"
-                                    >
-                                        <div
-                                            v-if="
-                                                userPremissions.includes(
-                                                    'metas_editar'
-                                                )
-                                            "
-                                        >
-                                            <PrimaryButton
-                                                class="pi pi-file-edit me-2"
-                                                :href="
-                                                    route(
-                                                        'metas.edit',
-                                                        slotProps.data.id
-                                                    )
-                                                "
-                                            >
-                                                <span
-                                                    class="p-1"
-                                                    :style="{
-                                                        fontSize: '10px',
-                                                    }"
-                                                >
-                                                    Editar</span
-                                                >
+                                    <template #body="slotProps" class="text-center">
+                                        <div v-if="
+                                            userPremissions.includes(
+                                                'metas_editarGeneral'
+                                            )
+                                        ">
+                                            <PrimaryButton class="pi pi-file-edit me-2" :href="route(
+                                                'metas.edit',
+                                                slotProps.data.id
+                                            )
+                                                ">
+                                                <span class="p-1" :style="{
+                                                    fontSize: '10px',
+                                                }">
+                                                    Editar</span>
                                             </PrimaryButton>
                                         </div>
 
