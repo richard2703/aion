@@ -11,7 +11,12 @@ class comentarioController extends Controller
     //
     public function index($reporte_semanal_id)
     {
-        return  response()->json(Comentario::orderBy('created_at', 'desc')->where('reporte_semanal_id', $reporte_semanal_id)->where('user_id', auth()->user()->id)->get());
+        $comentarios = Comentario::orderBy('created_at', 'desc')->where('reporte_semanal_id', $reporte_semanal_id)->where('user_id', auth()->user()->id)->get();
+        $menciones = ComentarioMencion::with('comentario')->where('user_id', auth()->user()->id)->get();
+        return  response()->json([
+            'comentarios' => $comentarios,
+            'menciones' => $menciones
+        ]);
     }
 
     function edit(Comentario $comentario)

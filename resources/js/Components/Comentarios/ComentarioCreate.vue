@@ -106,7 +106,7 @@ const getUsuarios = async () => {
                     v-for="user in filteredUsers"
                     :key="user.id"
                     @click="selectUser(user)"
-                    class="p-2 hover:bg-gray-100 cursor-pointer"
+                    class="p-2 hover:bg-gray-100 cursor-pointer text-black"
                 >
                     {{ user.name }}
                 </li>
