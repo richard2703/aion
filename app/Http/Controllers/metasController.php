@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\encargado_flujo;
 use App\Models\metas;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -257,7 +258,13 @@ class metasController extends Controller
 
     public function misMetas()
     {
-        $metas = metaflujos::where('created_for', auth()->id())->with(['trimestre', 'departamento'])->orderby('created_at', 'desc')->get();
+        // $metas = metaflujos::where('created_for', auth()->id())->with(['trimestre', 'departamento'])->orderby('created_at', 'desc')->get();
+        $departamentosIds = encargado_flujo::where('user_id', auth()->id())
+            ->pluck('departamento_id');
+        $metas = metaflujos::whereIn('departamento_id', $departamentosIds)
+            ->with(['trimestre', 'departamento'])
+            ->orderby('created_at', 'desc')
+            ->get();
         // dd($metas);
         return Inertia::render('metas/MetasMisMetas', ['metas' => $metas]);
     }

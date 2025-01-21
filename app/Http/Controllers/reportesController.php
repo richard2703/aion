@@ -30,7 +30,13 @@ class reportesController extends Controller
 
     public function misReportes()
     {
-        $reportes = reportes::where('created_for', auth()->id())->with(['semana', 'departamento'])->orderby('created_at', 'desc')->get();
+        $departamentosIds = encargado_flujo::where('user_id', auth()->id())
+            ->pluck('departamento_id');
+        // $reportes = reportes::where('created_for', auth()->id())->with(['semana', 'departamento'])->orderby('created_at', 'desc')->get();
+        $reportes = reportes::whereIn('departamento_id', $departamentosIds)
+            ->with(['semana', 'departamento'])
+            ->orderBy('created_at', 'desc')
+            ->get();
         // dd($reportes);
         return Inertia::render('Reportes/ReportesMisReportes', ['reportes' => $reportes]);
     }
