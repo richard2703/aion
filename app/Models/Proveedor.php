@@ -27,11 +27,11 @@ class Proveedor extends Model
 
     public function area()
     {
-        return $this->belongsTo(Area::class, 'area_id', 'id');
+        return $this->belongsTo(Area::class, 'area_id', 'id')->withTrashed();
     }
 
     public function proceso()
     {
-        return $this->belongsTo(Proceso::class, 'proceso_id', 'id');
+        return $this->belongsTo(Proceso::class, 'proceso_id', 'id')->withTrashed();
     }
 }
