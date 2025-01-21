@@ -201,7 +201,7 @@
             <!-- Botón para el sidebar derecho -->
             <button
                 @click="isRightSidebarOpen = !isRightSidebarOpen"
-                class="text-white hover:text-gray-300"
+                class="text-white bg-gray-800 hover:bg-gray-500 w-7"
             >
                 <i
                     :class="[
@@ -219,11 +219,11 @@
             >
                 <div
                     @click="isRightSidebarOpen = false"
-                    class="flex items-center justify-between block p-4 border-b border-gray-700 hover:text-white hover:bg-gray-700"
+                    class="flex items-center justify-center block w-7 p-4 border-b border-gray-700 hover:text-white hover:bg-gray-500"
                 >
                     <button
                         @click="isRightSidebarOpen = false"
-                        class="text-gray-300 hover:text-white"
+                        class="text-white"
                     >
                         <i class="pi pi-angle-double-right text-2xl"></i>
                     </button>

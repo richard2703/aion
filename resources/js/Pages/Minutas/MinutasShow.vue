@@ -221,8 +221,8 @@ const getTareas = async (
     sortOrder = 1,
     archived = isTerminadoShow.value
 ) => {
-    await axios
-        .get(`/api/tareas/${minuta_id}`, {
+    try {
+        const response = await axios.get(`/api/tareas/${minuta_id}`, {
             params: {
                 page,
                 rows: rowsPerPage,
@@ -231,21 +231,22 @@ const getTareas = async (
                 sortOrder: sortOrder === 1 ? "asc" : "desc",
                 archived,
             },
-        })
-        .then((response) => {
-            tareas.value = response.data[0].data;
-            totalRecords.value = response.data.total;
-            first.value = (response.data.current_page - 1) * rows.value;
-            tareasTotales.value = response.data.conteo.totales;
-            tareasTerminadas.value = response.data.conteo.terminadas;
-            tareasEnProceso.value = response.data.conteo.enProceso;
-            tareasIniciadas.value = response.data.conteo.iniciadas;
-            tareasRetrasadas.value = response.data.conteo.retrasadas;
-            console.log("tareas", response.data);
-        })
-        .catch((error) => {
-            console.log(error);
         });
+
+        totalRecords.value = response.data[0].total;
+        tareas.value = response.data[0].data;
+        first.value = (response.data[0].current_page - 1) * rows.value;
+        tareasTotales.value = response.data.conteo.totales;
+        tareasTerminadas.value = response.data.conteo.terminadas;
+        tareasEnProceso.value = response.data.conteo.enProceso;
+        tareasIniciadas.value = response.data.conteo.iniciadas;
+        tareasRetrasadas.value = response.data.conteo.retrasadas;
+        console.log({
+            tareasTotales: tareasTotales.value,
+        });
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 watch(
