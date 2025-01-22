@@ -18,9 +18,12 @@ const eventos = ref([]);
 const eventosByDate = ref([]);
 const selectedDate = ref(null);
 const isDateModalOpen = ref(false);
+const item = ref([]);
+const eventosTitulo = ref("");
 
 onMounted(() => {
     getEventos();
+    getItem();
 });
 
 const getEventos = async () => {
@@ -67,12 +70,24 @@ const closeDateModal = () => {
     selectedDate.value = null;
     isDateModalOpen.value = false;
 };
+
+const getItem = () => {
+    axios
+        .get("/api/config-dashboard")
+        .then((response) => {
+            item.value = response.data;
+            eventosTitulo.value = item.value[0].titulo_evento;
+        })
+        .catch((error) => {
+            console.error("Error fetching item:", error);
+        });
+};
 </script>
 
 <template>
     <div class="flex justify-center py-4">
-        <div class="justify-center">
-            <h1>Calendario de eventos</h1>
+        <div class="justify-center text-center">
+            <h1>{{ eventosTitulo || "Calendario de eventos" }}</h1>
             <!-- <VDatePicker v-model="date" /> -->
             <v-date-picker
                 @dayclick="handleDateClick"

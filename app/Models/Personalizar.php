@@ -20,5 +20,6 @@ class Personalizar extends Model
         'logo',
         'banner',
         'portada',
+        'titulo_evento'
     ];
 }

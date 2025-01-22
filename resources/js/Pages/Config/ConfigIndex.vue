@@ -8,6 +8,7 @@ import { showToast } from "../utils/SweetAlert.service";
 import ConfigDashboard from "@/Pages/Config/Partials/ConfigDashboard.vue";
 import ConfigTipoMinuta from "@/Pages/Config/Partials/ConfigTipoMinuta.vue";
 import ConfigPortada from "@/Pages/Config/Partials/ConfigPortada.vue";
+import ConfigEventos from "./Partials/ConfigEventos.vue";
 
 const count = ref(0);
 const userPermissions = usePage().props.auth.user.permissions;
@@ -21,6 +22,9 @@ onMounted(() => {
         return;
     } else if (userPermissions.includes("personalizacion_tipo_minutas")) {
         template.value = "tipoMinuta";
+        return;
+    } else if (userPermissions.includes("personalizacion_eventos")) {
+        template.value = "eventos";
         return;
     } else {
         template.value = "";
@@ -125,6 +129,25 @@ onMounted(() => {
                                                 </button>
                                             </div>
                                         </li>
+                                        <li
+                                            class="text-blue-300 hover:text-blue-800 font-bold text-xl"
+                                        >
+                                            <div
+                                                v-if="
+                                                    userPermissions.includes(
+                                                        'personalizacion_eventos'
+                                                    )
+                                                "
+                                            >
+                                                <button
+                                                    @click="
+                                                        template = 'eventos'
+                                                    "
+                                                >
+                                                    Eventos
+                                                </button>
+                                            </div>
+                                        </li>
                                     </ul>
                                 </div>
                                 <div class="bg-white p-4">
@@ -137,10 +160,9 @@ onMounted(() => {
                                     <ConfigPortada
                                         v-if="template === 'Portada'"
                                     />
-
-                                    <div v-if="template === 'seccion3'">
-                                        {{ template }}
-                                    </div>
+                                    <ConfigEventos
+                                        v-if="template === 'eventos'"
+                                    />
                                     <div v-if="template === 'seccion4'">
                                         {{ template }}
                                     </div>
