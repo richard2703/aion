@@ -118,6 +118,11 @@ const deleteProveedor = async (id) => {
                             }}</a>
                         </p>
                         <p class="leading-normal">
+                            <a class="hover:underline text-blue-500 cursor-pointer" :href="proveedor.link_orden" target="_blank">
+                                <span>Hacer orden de compra </span>
+                            </a>
+                        </p>
+                        <p class="leading-normal">
                             <span>Informacion Adicional: </span>
                             <br />
                             <div class="h-20 overflow-y-auto">{{ proveedor.info }}</div>
