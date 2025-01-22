@@ -38,7 +38,6 @@ const monthNames = [
 
 // Event data
 const events = ref({}); // Events organized by date
-
 // Modals
 const modal = ref({
     show: false,
@@ -54,12 +53,11 @@ const modal = ref({
     },
 });
 const viewModal = ref({ show: false, event: null });
-
 const areas = ref([]);
-
 const filteredColors = ref("");
-
 const userPermissions = usePage().props.auth.user.permissions;
+const item = ref([]);
+const eventosTitulo = ref("");
 
 // formatear fecha
 const formatDate = (year, month, day) => {
@@ -199,10 +197,9 @@ const showEvent = (event) => {
 };
 
 onMounted(() => {
-    console.log({ eventos: props.eventos });
-
     getAreas();
     getEventos();
+    getItem();
 });
 
 // Navegacion entre meses
@@ -228,6 +225,18 @@ const getAreas = async () => {
             console.log(error);
         });
 };
+
+const getItem = () => {
+    axios
+        .get("/api/config-dashboard")
+        .then((response) => {
+            item.value = response.data;
+            eventosTitulo.value = item.value[0].titulo_evento;
+        })
+        .catch((error) => {
+            console.error("Error fetching item:", error);
+        });
+};
 </script>
 
 <template>
@@ -242,7 +251,7 @@ const getAreas = async () => {
                     <h3>Home -</h3>
                 </Link>
                 <Link href="#" class="active">
-                    <h3>Eventos</h3>
+                    <h3>Calendario</h3>
                 </Link>
             </div>
         </div>
@@ -250,7 +259,7 @@ const getAreas = async () => {
         <div class="py-2">
             <div class="max-w-4xl mx-auto py-10">
                 <h1 class="text-2xl font-bold text-center mb-6">
-                    Calendario de Eventos
+                    {{ eventosTitulo || "Calendario de eventos" }}
                 </h1>
 
                 <!-- Month and Year Selector -->

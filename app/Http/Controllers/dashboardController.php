@@ -72,6 +72,7 @@ class dashboardController extends Controller
         $personalizar->proposito = $request->proposito;
         $personalizar->slogan = $request->slogan;
         $personalizar->actuacion = $request->actuacion;
+        $personalizar->titulo_evento = $request->evento;
 
         // Manejar la carga del logo
         if ($request->hasFile('logo')) {
