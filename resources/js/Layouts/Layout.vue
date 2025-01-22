@@ -485,7 +485,7 @@ const menuItems = [
                 label: "Eventos",
                 route: "eventos.index",
                 icon: "",
-                role: ["superadmin"], // TODO: LIMITAR A SUPERADMIN Y LIDER_PILAR ( PRINCIPALMENTE A GYC)
+                role: ["superadmin", "eventos"], // TODO: LIMITAR A SUPERADMIN Y LIDER_PILAR ( PRINCIPALMENTE A GYC)
             },
             {
                 label: "Secciones",
