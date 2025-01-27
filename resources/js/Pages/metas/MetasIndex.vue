@@ -44,7 +44,7 @@ async function getTabla(
                 sortOrder: sortOrder === 1 ? "asc" : "desc",
             },
         });
-        tabla.value = response.data;
+        tabla.value = response.data.data;
         console.log("tabla", tabla.value);
 
         totalRecords.value = response.data.total;
@@ -127,6 +127,7 @@ function handleClick(id) {
 
 <template>
     <Layout :titulo="title">
+
         <Head title="semanales" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
@@ -134,10 +135,10 @@ function handleClick(id) {
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
-                    <h3>Home -</h3>
+                <h3>Home -</h3>
                 </Link>
                 <Link class="active">
-                    <h3>Metas</h3>
+                <h3>Metas</h3>
                 </Link>
             </div>
         </div>
@@ -145,102 +146,51 @@ function handleClick(id) {
         <div class="py-2">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div>
-                    <div
-                        v-if="userPremissions.includes('metas_crear')"
-                        class="px-4 py-2 flex justify-end bg-white border-b border-gray-200"
-                    >
-                        <PrimaryButton
-                            :href="route('metas.create')"
-                            class="m-4 pi pi-plus"
-                        >
-                            <span
-                                class="p-1"
-                                :style="{
-                                    fontSize: '10px',
-                                }"
-                            >
-                                Nueva meta</span
-                            >
+                    <div v-if="userPremissions.includes('metas_crear')"
+                        class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
+                        <PrimaryButton :href="route('metas.create')" class="m-4 pi pi-plus">
+                            <span class="p-1" :style="{
+                                fontSize: '10px',
+                            }">
+                                Nueva meta</span>
                         </PrimaryButton>
                     </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto">
                             <!-- <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" /> -->
 
-                            <DataTable
-                                :value="tabla"
-                                paginator
-                                :rows="rows"
-                                :totalRecords="totalRecords"
-                                :lazy="true"
-                                :first="first"
-                                @page="onPage"
-                                @sort="onSort"
-                                :rowsPerPageOptions="[5, 10, 20, 50]"
-                                tableStyle="min-width: 50rem"
-                                :filters="filters"
-                                :globalFilterFields="[
+                            <DataTable :value="tabla" paginator :rows="rows" :totalRecords="totalRecords" :lazy="true"
+                                :first="first" @page="onPage" @sort="onSort" :rowsPerPageOptions="[5, 10, 20, 50]"
+                                tableStyle="min-width: 50rem" :filters="filters" :globalFilterFields="[
                                     'id',
                                     'nombre',
                                     'descripcion',
-                                ]"
-                                :sortField="sortField"
-                                :sortOrder="sortOrder"
-                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines"
-                            >
+                                ]" :sortField="sortField" :sortOrder="sortOrder"
+                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
                                 <template #empty> No data found. </template>
-                                <Column
-                                    field="id"
-                                    header="ID"
-                                    headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;"
-                                    sortable
-                                ></Column>
-                                <Column
-                                    field="trimestre"
-                                    header="Trimestre"
-                                    headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;"
-                                    bodyClass="text-center"
-                                    sortable
-                                ></Column>
-                                <Column
-                                    field="ano"
-                                    header="Año "
-                                    headerStyle="width:4em;"
-                                    bodyClass="text-center"
-                                    sortable
-                                ></Column>
+                                <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
+                                    sortable></Column>
+                                <Column field="trimestre" header="Trimestre" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+                                <Column field="ano" header="Año " headerStyle="width:4em;" bodyClass="text-center"
+                                    sortable></Column>
 
                                 <Column header="" headerStyle="width:4em;">
-                                    <template
-                                        #body="slotProps"
-                                        class="text-center"
-                                    >
-                                        <div
-                                            v-if="
-                                                userPremissions.includes(
-                                                    'metas_ver'
-                                                )
-                                            "
-                                        >
-                                            <PrimaryButton
-                                                class="pi pi-eye me-2"
-                                                :href="
-                                                    route(
-                                                        'metas.trimestre',
-                                                        slotProps.data.id
-                                                    )
-                                                "
-                                            >
-                                                <span
-                                                    class="p-1"
-                                                    :style="{
-                                                        fontSize: '10px',
-                                                    }"
-                                                >
-                                                    Ver metas</span
-                                                >
+                                    <template #body="slotProps" class="text-center">
+                                        <div v-if="
+                                            userPremissions.includes(
+                                                'metas_ver'
+                                            )
+                                        ">
+                                            <PrimaryButton class="pi pi-eye me-2" :href="route(
+                                                'metas.trimestre',
+                                                slotProps.data.id
+                                            )
+                                                ">
+                                                <span class="p-1" :style="{
+                                                    fontSize: '10px',
+                                                }">
+                                                    Ver metas</span>
                                             </PrimaryButton>
                                         </div>
 

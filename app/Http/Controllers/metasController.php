@@ -21,7 +21,7 @@ class metasController extends Controller
         return Inertia::render('metas/MetasIndex');
     }
 
-    public function findAllMetas()
+    public function findAllMetas(Request $request)
     {
         $query = metatrimestres::query();
         // if ($pageSize && $page) {
@@ -29,7 +29,16 @@ class metasController extends Controller
         // } else {
         //     $departamentos = $query->with('kpis')->get();
         // }
-        $metasTrimestre = $query->orderBy('created_at', 'desc')->get();
+        $pageSize = $request->get('rows', 10);
+        $page = $request->get('page', 1);
+        $filters = $request->get('filter', '');
+        $sortField = $request->get('sortField', 'id');
+        $sortOrder = $request->get('sortOrder', 'asc');
+
+        $metasTrimestre = $query->orderBy('created_at', 'desc')->paginate($pageSize, ['*'], 'page', $page);
+
+        // $metasTrimestre = $query->orderBy('created_at', 'desc')->get();
+
 
         return response()->json($metasTrimestre);
     }
