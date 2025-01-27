@@ -111,6 +111,8 @@ Route::get('/getReportes/{id}', [App\Http\Controllers\reportesController::class,
 //metas
 // Route::get('/getFlujo', [App\Http\Controllers\reportesController::class, 'findAll'])->name('getFlujo.findAll');
 Route::get('/getMetas', [App\Http\Controllers\metasController::class, 'findAllMetas'])->name('metas.findAllMetas');
+Route::get('/misMetasIndex', [App\Http\Controllers\metasController::class, 'misMetasIndex'])->name('metas.misMetasIndex');
+Route::get('/getMetasTrimestre', [App\Http\Controllers\metasController::class, 'getMetasTrimestre'])->name('metas.getMetasTrimestre');
 // Route::get('/getReportes/{id}', [App\Http\Controllers\reportesController::class, 'findAllReportes'])->name('getReportes.findAllReportes');
 
 // tareaEvidencia

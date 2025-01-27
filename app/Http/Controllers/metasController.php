@@ -267,21 +267,67 @@ class metasController extends Controller
 
     public function misMetas()
     {
-        // $metas = metaflujos::where('created_for', auth()->id())->with(['trimestre', 'departamento'])->orderby('created_at', 'desc')->get();
+        // $departamentosIds = encargado_flujo::where('user_id', auth()->id())
+        //     ->pluck('departamento_id');
+        // $metas = metaflujos::whereIn('departamento_id', $departamentosIds)
+        //     ->with(['trimestre', 'departamento'])
+        //     ->orderby('created_at', 'desc')
+        //     ->get();
+        // // dd($metas);
+        // return Inertia::render('metas/MetasMisMetas', ['metas' => $metas]);
+        return Inertia::render('metas/MetasMisMetas');
+    }
+    public function misMetasIndex(Request $request)
+    {
+        // $departamentosIds = encargado_flujo::where('user_id', auth()->id())
+        //     ->pluck('departamento_id');
+        // $metas = metaflujos::whereIn('departamento_id', $departamentosIds)
+        //     ->with(['trimestre', 'departamento'])
+        //     ->orderby('created_at', 'desc')
+        //     ->get();
+        // // dd($metas);
+
         $departamentosIds = encargado_flujo::where('user_id', auth()->id())
             ->pluck('departamento_id');
-        $metas = metaflujos::whereIn('departamento_id', $departamentosIds)
-            ->with(['trimestre', 'departamento'])
-            ->orderby('created_at', 'desc')
-            ->get();
-        // dd($metas);
-        return Inertia::render('metas/MetasMisMetas', ['metas' => $metas]);
+        $query = metaflujos::query();
+        $pageSize = $request->get('rows', 10);
+        $page = $request->get('page', 1);
+        $filters = $request->get('filter', '');
+        $sortField = $request->get('sortField', 'id');
+        $sortOrder = $request->get('sortOrder', 'asc');
+        $query->whereIn('departamento_id', $departamentosIds);
+
+        $metas = $query->with(['trimestre', 'departamento'])->orderBy('created_at', 'desc')->paginate($pageSize, ['*'], 'page', $page);
+
+        // $metasTrimestre = $query->orderBy('created_at', 'desc')->get();
+
+
+        return response()->json($metas);
     }
 
     public function metas($trimestre)
     {
-        $metas = metaflujos::where('trimestre_id', $trimestre)->with(['trimestre', 'departamento'])->orderby('created_at', 'desc')->get();
-        // dd($metas);
-        return Inertia::render('metas/MetasMisMetas', ['metas' => $metas]);
+        // $metas = metaflujos::where('trimestre_id', $trimestre)->with(['trimestre', 'departamento'])->orderby('created_at', 'desc')->get();
+        // dd($trimestre);
+        return Inertia::render('metas/MetasTrimestre', ['trimestre' => $trimestre]);
+    }
+
+    public function getMetasTrimestre(Request $request)
+    {
+        // dd("getMetasTrimestre");
+        $query = metaflujos::query();
+        $pageSize = $request->get('rows', 10);
+        $page = $request->get('page', 1);
+        $filters = $request->get('filter', '');
+        $sortField = $request->get('sortField', 'id');
+        $sortOrder = $request->get('sortOrder', 'asc');
+
+        $trimestre = $request->get('pediodo', '');
+
+        $query->where('trimestre_id', $trimestre);
+
+        $metas = $query->with(['trimestre', 'departamento'])->orderBy('created_at', 'desc')->paginate($pageSize, ['*'], 'page', $page);
+
+        return response()->json($metas);
     }
 }

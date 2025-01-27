@@ -12,9 +12,10 @@ import InputText from "primevue/inputtext";
 // Definir propiedades
 const props = defineProps({
     // reporteSemanal: Array,
-    metas: Array,
+    trimestre: Array,
 });
 
+const trimestre = ref(props.trimestre);
 const metas = ref();
 const totalRecords = ref(0);
 const rows = ref(10);
@@ -27,24 +28,29 @@ const sortOrder = ref(1);
 const title = "Metas";
 const userPremissions = usePage().props.auth.user.permissions;
 
-async function getMisMetas(
+async function getMetasTrimestre(
     page = 1,
     rowsPerPage = rows.value,
     filter = "",
     sortField = "id",
-    sortOrder = 1
+    sortOrder = 1,
+    pediodo = trimestre.value,
+
 ) {
     try {
-        const response = await axios.get("/api/misMetasIndex", {
+        console.log("trimestre");
+
+        const response = await axios.get("/api/getMetasTrimestre", {
             params: {
                 page,
                 rows: rowsPerPage,
                 filter,
                 sortField,
                 sortOrder: sortOrder === 1 ? "asc" : "desc",
+                pediodo,
             },
         });
-        console.log("response", response.data);
+        console.log("response", response);
         metas.value = response.data.data;
         totalRecords.value = response.data.total;
         first.value = (response.data.current_page - 1) * rows.value;
@@ -57,7 +63,7 @@ async function getMisMetas(
 const onPage = (event) => {
     const page = event.page + 1;
     rows.value = event.rows; // Actualizar filas por página
-    getMisMetas(
+    getMetasTrimestre(
         page,
         rows.value,
         globalFilter.value,
@@ -69,7 +75,7 @@ const onPage = (event) => {
 const onSort = (event) => {
     sortField.value = event.sortField || "id";
     sortOrder.value = event.sortOrder;
-    getMisMetas(
+    getMetasTrimestre(
         page,
         rows.value,
         globalFilter.value,
@@ -78,10 +84,11 @@ const onSort = (event) => {
     );
 };
 
+
 // Obtener áreas al montar el componente
 onMounted(() => {
-    console.log("metas", metas.value);
-    getMisMetas();
+    console.log("trimestre", trimestre.value);
+    getMetasTrimestre();
 });
 
 // Actualizar filtro global
@@ -105,14 +112,14 @@ watch(globalFilter, (newValue) => {
         <Head title="semanales" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
-                <h3>Mis Metas</h3>
+                <h3>Metas Trimestre</h3>
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
                 <Link class="active">
-                <h3>Mis Metas</h3>
+                <h3>Metas Trimestre</h3>
                 </Link>
                 <!-- <Link class="active">
                 <h3>Mis Metas</h3>
