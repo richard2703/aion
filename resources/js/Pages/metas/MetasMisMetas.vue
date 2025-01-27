@@ -44,7 +44,6 @@ async function getMisMetas(
                 sortOrder: sortOrder === 1 ? "asc" : "desc",
             },
         });
-        console.log("response", response.data);
         metas.value = response.data.data;
         totalRecords.value = response.data.total;
         first.value = (response.data.current_page - 1) * rows.value;
@@ -159,7 +158,7 @@ watch(globalFilter, (newValue) => {
                                     <template #body="slotProps" class="text-center">
                                         <div v-if="
                                             userPremissions.includes(
-                                                'metas_editarGeneral'
+                                                'metas_editar'
                                             )
                                         ">
                                             <PrimaryButton class="pi pi-file-edit me-2" :href="route(
