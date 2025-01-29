@@ -82,17 +82,31 @@ class registros_kpisController extends Controller
 
     public function registros($id)
     {
-        $registros = registros_kpi::select(
-            'id',
-            'kpi_id',
-            'actual',
-            'promedio',
-            'created_at',
-        )
+        // $registros = registros_kpi::select(
+        //     'id',
+        //     'kpi_id',
+        //     'actual',
+        //     'promedio',
+        //     'created_at',
+        // )
+        //     ->where('kpi_id', $id)
+        //     ->whereYear('created_at', Carbon::now()->year)
+        //     ->orderBy('created_at', 'asc')
+        //     ->skip(registros_kpi::where('kpi_id', $id)->count() - 22)
+        //     ->take(22)
+        //     ->get();
+
+        $total = registros_kpi::where('kpi_id', $id)
+            ->whereYear('created_at', Carbon::now()->year)
+            ->count();
+
+        $offset = max(0, $total - 22);
+
+        $registros = registros_kpi::select('id', 'kpi_id', 'actual', 'promedio', 'created_at')
             ->where('kpi_id', $id)
             ->whereYear('created_at', Carbon::now()->year)
             ->orderBy('created_at', 'asc')
-            ->skip(registros_kpi::where('kpi_id', $id)->count() - 22)
+            ->skip($offset)
             ->take(22)
             ->get();
 

@@ -88,11 +88,13 @@ const formatDataSet = async () => {
     await axios
         .get(route("registros_kpi.registros", kpi.value.id))
         .then((response) => {
+            // console.log('pre', kpi.value.id);
             chartValues.value = response.data.map((record) => record.actual);
             chartLabels.value = response.data.map((record) =>
                 formatearFecha(record.created_at)
             );
             registrosKpi.value = response.data;
+            // console.log('post', { chartValues: chartValues.value, chartLabels: chartLabels.value, registrosKpi: registrosKpi.value });
 
             chartYearToDate.value = chartValues.value.map(() => 0);
             chartTarget.value = chartValues.value.map(() => kpi.value.objetivo);
@@ -110,9 +112,9 @@ const setChartData = () => {
         labels: chartLabels,
         datasets: [
             {
-                // label: kpi.value.titulo,
+                label: kpi.value.id,
                 type: "bar",
-                label: "kpi",
+                // label: "kpi",
                 data: chartValues,
                 backgroundColor: ["rgba(115, 72, 207, 1)"],
                 borderColor: ["rgb(74, 13, 204)"],
@@ -248,7 +250,7 @@ const getPromedio = async () => {
         .get(route("registros_kpi.promedio", kpi.value.id))
         .then((response) => {
             promedio.value = response.data.promedio;
-            console.log({ promedio: promedio.value });
+            // console.log({ promedio: promedio.value });
         })
         .catch((error) => {
             console.log(error);
@@ -291,11 +293,8 @@ const getPromedio = async () => {
                                         {{ kpi.objetivo || "0" }}
                                         {{ kpi.medicion }}
                                     </td>
-                                    <td
-                                        :class="getClass(kpi)"
-                                        class="py-2 px-4 border"
-                                        style="text-align-last: justify"
-                                    >
+                                    <td :class="getClass(kpi)" class="py-2 px-4 border"
+                                        style="text-align-last: justify">
                                         {{ kpi.actual || "-" }}
                                     </td>
                                     <!-- <td :class="getClass(kpi)" class="py-2 px-4 border "
@@ -305,27 +304,20 @@ const getPromedio = async () => {
                                             @click="openCreateModal(kpi.id, kpi.actual, kpi.titulo)">
                                         </PrimaryButton>
                                     </td> -->
-                                    <td
-                                        class="py-2 px-4 border"
-                                        :class="getClassPromedio(kpi)"
-                                        style="text-align-last: justify"
-                                    >
+                                    <td class="py-2 px-4 border" :class="getClassPromedio(kpi)"
+                                        style="text-align-last: justify">
                                         {{ formatNumber(promedio) || "-" }}
-                                        <PrimaryButton
-                                            v-if="
-                                                userPremissions.includes(
-                                                    'pdca_kpi_crear'
-                                                )
-                                            "
-                                            class="pi pi-plus"
-                                            @click="
-                                                openCreateModal(
-                                                    kpi.id,
-                                                    kpi.actual,
-                                                    kpi.titulo
-                                                )
-                                            "
-                                        >
+                                        <PrimaryButton v-if="
+                                            userPremissions.includes(
+                                                'pdca_kpi_crear'
+                                            )
+                                        " class="pi pi-plus" @click="
+                                            openCreateModal(
+                                                kpi.id,
+                                                kpi.actual,
+                                                kpi.titulo
+                                            )
+                                            ">
                                         </PrimaryButton>
                                     </td>
                                 </tr>
@@ -338,15 +330,8 @@ const getPromedio = async () => {
                     <div class="text-center">
                         <span class="text-2xl font-bold">Check</span>
                     </div>
-                    <div
-                        :class="kpi.regla == 1 ? 'fondo-subir' : 'fondo-bajar'"
-                    >
-                        <Chart
-                            class="w-full h-full"
-                            type="bar"
-                            :data="chartData"
-                            :options="chartOptions"
-                        />
+                    <div :class="kpi.regla == 1 ? 'fondo-subir' : 'fondo-bajar'">
+                        <Chart class="w-full h-full" type="bar" :data="chartData" :options="chartOptions" />
                     </div>
                 </div>
             </div>
@@ -357,9 +342,7 @@ const getPromedio = async () => {
     <Modal :show="isCreateModalVidible" maxWidth="lg">
         <template v-slot="">
             <div>
-                <div
-                    class="px-4 my-4 py-2 flex justify-center bg-white border-b border-gray-200"
-                >
+                <div class="px-4 my-4 py-2 flex justify-center bg-white border-b border-gray-200">
                     <p class="text-lg font-medium text-gray-900">
                         {{ titulo }}
                     </p>
@@ -367,58 +350,29 @@ const getPromedio = async () => {
                 <div class="px-4 py-2 bg-white border-b border-gray-200">
                     <div class="container mx-auto">
                         <form @submit.prevent="submitCreateModal">
-                            <div
-                                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4"
-                            >
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
                                 <div class="my-4">
-                                    <InputLabel
-                                        for="Valor Actual"
-                                        value="Valor Actual: "
-                                    />
-                                    <TextInput
-                                        id="viejo"
-                                        v-model="viejo"
-                                        type="text"
-                                        class="mt-1 block w-full"
-                                        disabled
-                                    />
+                                    <InputLabel for="Valor Actual" value="Valor Actual: " />
+                                    <TextInput id="viejo" v-model="viejo" type="text" class="mt-1 block w-full"
+                                        disabled />
                                 </div>
                                 <div class="my-4">
-                                    <InputLabel
-                                        for="Nuevo Valor"
-                                        value="Nuevo Valor "
-                                    />
-                                    <TextInput
-                                        id="objetivo"
-                                        v-model="formCreateModal.actual"
-                                        type="number"
-                                        step="any"
-                                        class="mt-1 block w-full"
-                                        required
-                                        autocomplete="new-challenge"
-                                    />
+                                    <InputLabel for="Nuevo Valor" value="Nuevo Valor " />
+                                    <TextInput id="objetivo" v-model="formCreateModal.actual" type="number" step="any"
+                                        class="mt-1 block w-full" required autocomplete="new-challenge" />
                                 </div>
                             </div>
 
                             <div class="flex justify-between">
-                                <PrimaryButton
-                                    @click.prevent="closeModal"
-                                    class="bg-red-500 ms-4 pi pi-times"
-                                    :class="{
-                                        'opacity-25': formCreateModal.abort,
-                                    }"
-                                    :disabled="formCreateModal.abort"
-                                >
+                                <PrimaryButton @click.prevent="closeModal" class="bg-red-500 ms-4 pi pi-times" :class="{
+                                    'opacity-25': formCreateModal.abort,
+                                }" :disabled="formCreateModal.abort">
                                 </PrimaryButton>
 
-                                <PrimaryButton
-                                    class="ms-4 pi pi-save"
-                                    :class="{
-                                        'opacity-25':
-                                            formCreateModal.processing,
-                                    }"
-                                    :disabled="formCreateModal.processing"
-                                >
+                                <PrimaryButton class="ms-4 pi pi-save" :class="{
+                                    'opacity-25':
+                                        formCreateModal.processing,
+                                }" :disabled="formCreateModal.processing">
                                 </PrimaryButton>
                             </div>
                         </form>
@@ -431,24 +385,20 @@ const getPromedio = async () => {
 <style scoped>
 .fondo-subir {
     /* background-color: rgba(255, 0, 0, 0.2); */
-    background-image: linear-gradient(
-        rgba(0, 0, 255, 0.5),
-        rgba(0, 255, 0, 0.5),
-        rgba(255, 255, 0, 0.5),
-        rgba(255, 0, 0, 0.5)
-    );
+    background-image: linear-gradient(rgba(0, 0, 255, 0.5),
+            rgba(0, 255, 0, 0.5),
+            rgba(255, 255, 0, 0.5),
+            rgba(255, 0, 0, 0.5));
     width: 100%;
     height: 100%;
 }
 
 .fondo-bajar {
     /* background-color: rgba(255, 0, 0, 0.2); */
-    background-image: linear-gradient(
-        rgba(255, 0, 0, 0.5),
-        rgba(255, 255, 0, 0.5),
-        rgba(0, 255, 0, 0.5),
-        rgba(0, 0, 255, 0.5)
-    );
+    background-image: linear-gradient(rgba(255, 0, 0, 0.5),
+            rgba(255, 255, 0, 0.5),
+            rgba(0, 255, 0, 0.5),
+            rgba(0, 0, 255, 0.5));
     width: 100%;
     height: 100%;
 }
