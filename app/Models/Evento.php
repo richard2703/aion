@@ -16,6 +16,11 @@ class Evento extends Model
         'descripcion',
         'fecha_inicio',
         'fecha_final',
+        'recurrencia',        // 'none', 'daily', 'weekly', 'monthly'
+        'dia_semana',         // Solo para eventos semanales (0 = Domingo, 6 = Sábado)
+        'dia_mes',            // Solo para eventos mensuales (1-31, first_monday, last_friday)
+        'num_repeticiones'    // Cantidad de repeticiones
+
     ];
 
     function area(): BelongsTo
