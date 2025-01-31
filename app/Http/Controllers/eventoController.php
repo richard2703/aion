@@ -65,7 +65,9 @@ class eventoController extends Controller
             'recurrencia' => 'required|in:none,daily,weekly,monthly',
             'dia_semana' => 'nullable|integer|min:0|max:6',
             'dia_mes' => 'nullable|string',
-            'num_repeticiones' => 'nullable|integer|min:1'
+            'num_repeticiones' => 'nullable|integer|min:1',
+            'ubicacion' => 'nullable|string|min:1',
+            'link' => 'nullable|string|min:1',
         ]);
 
         $fechaInicio = Carbon::parse($data['fecha_inicio']);
@@ -104,6 +106,8 @@ class eventoController extends Controller
                     'dia_semana' => $data['dia_semana'] ?? null,
                     'dia_mes' => $data['dia_mes'] ?? null,
                     'num_repeticiones' => $data['num_repeticiones'],
+                    'ubicacion' => $data['ubicacion'],
+                    'link' => $data['link'],
                 ]);
 
                 $eventosCreados[] = $evento;

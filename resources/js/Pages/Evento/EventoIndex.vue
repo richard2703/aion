@@ -137,6 +137,8 @@ const submit = async () => {
                 dia_semana: modal.value.event.dia_semana,
                 dia_mes: modal.value.event.dia_mes,
                 num_repeticiones: modal.value.event.num_repeticiones,
+                ubicacion: modal.value.event.ubicacion,
+                link: modal.value.event.link
             });
 
             if (!events.value[formattedDate]) {
@@ -201,6 +203,8 @@ const showCreateModal = (day) => {
             dia_semana: null,
             dia_mes: "",
             num_repeticiones: 1,
+            ubicacion: "",
+            link: "",
         },
     };
 };
@@ -439,6 +443,19 @@ const getItem = () => {
                                     <option v-for="area in areas" :key="area.id" :value="area.id">{{ area.nombre }}
                                     </option>
                                 </select>
+                            </div>
+
+                            <!-- ubicacion -->
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium mb-1">Ubicacion</label>
+                                <input v-model="modal.event.ubicacion" type="text" class="w-full border rounded p-2"
+                                    required />
+                            </div>
+
+                            <!-- link -->
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium mb-1">Link de referencia</label>
+                                <input v-model="modal.event.link" type="text" class="w-full border rounded p-2" />
                             </div>
 
                             <!-- Recurrencia -->
