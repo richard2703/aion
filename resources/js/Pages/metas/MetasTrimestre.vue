@@ -118,6 +118,9 @@ watch(globalFilter, (newValue) => {
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
+                <Link :href="route('metas.index')" class="px-1">
+                <h3>Metas -</h3>
+                </Link>
                 <Link class="active">
                 <h3>Metas Trimestre</h3>
                 </Link>
