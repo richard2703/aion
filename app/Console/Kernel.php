@@ -14,7 +14,7 @@ class Kernel extends ConsoleKernel
     {
         // Aquí agregamos el comando para revisar las tareas vencidas
         // $schedule->command('app:revisar-tareas-vencidas')->dailyAt('00:01');
-        $schedule->command('app:revisar-tareas-vencidas')->everyMinute();
+        $schedule->command('app:revisar-tareas-vencidas')->everyMinute()->withoutOverlapping();
     }
 
     /**
