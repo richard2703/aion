@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         // Aquí agregamos el comando para revisar las tareas vencidas
-        $schedule->command('app:revisar-tareas-vencidas')->dailyAt('00:01');
+        // $schedule->command('app:revisar-tareas-vencidas')->dailyAt('00:01');
+        $schedule->command('app:revisar-tareas-vencidas')->everyMinute();
     }
 
     /**
