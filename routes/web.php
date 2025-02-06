@@ -254,4 +254,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('proveedores/{proveedor}/edit', [App\Http\Controllers\proveedorController::class, 'edit'])->name('proveedores.edit');
     Route::patch('proveedores/{proveedor}/update', [App\Http\Controllers\proveedorController::class, 'update'])->name('proveedores.update');
     Route::delete('proveedores/{proveedor}/destroy', [App\Http\Controllers\proveedorController::class, 'destroy'])->name('proveedores.destroy');
+
+    //Helpers
+    Route::get('helper/tareasVencidas', [App\Http\Controllers\helper::class, 'tareasVencidas'])->name('helper.tareasVencidas');
 });

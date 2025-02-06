@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\User;
 use Carbon\Carbon;
+use App\Http\Controllers\helper;
 
 class minutasController extends Controller
 {
@@ -15,6 +16,9 @@ class minutasController extends Controller
      */
     public function index(Request $request)
     {
+        $helper = new helper(); // Instancia del controlador
+        $tareasVencidas = $helper->tareasVencidas(); // Llamar a la función
+
         return Inertia::render('Minutas/MinutasIndex', [
             'area_id' => $request->get('area_id'),
             'departamento_id' => $request->get('departamento_id'),
