@@ -69,10 +69,12 @@ class dashboardController extends Controller
     {
         $personalizar = Personalizar::findOrFail($id);
 
-        $personalizar->proposito = $request->proposito;
-        $personalizar->slogan = $request->slogan;
-        $personalizar->actuacion = $request->actuacion;
-        $personalizar->titulo_evento = $request->evento;
+        // $personalizar->proposito = $request->proposito;
+        // $personalizar->slogan = $request->slogan;
+        // $personalizar->actuacion = $request->actuacion;
+        // $personalizar->titulo_evento = $request->evento;
+        $personalizar->update($request->only('proposito', 'slogan', 'actuacion', 'titulo_evento'));
+
 
         // Manejar la carga del logo
         if ($request->hasFile('logo')) {
