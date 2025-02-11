@@ -1167,6 +1167,7 @@ const sendMail = async () => {
             <Modal
                 :show="isCreateModalVisible"
                 :modalData="minuta"
+                :closeable="false"
                 maxWidth="lg"
                 @close="isCreateModalVisible = false"
             >
@@ -1183,6 +1184,7 @@ const sendMail = async () => {
             <Modal
                 :show="isEditModalVisible"
                 :modalData="{ tarea, minuta }"
+                :closeable="false"
                 maxWidth="lg"
                 @close="isEditModalVisible = false"
             >
