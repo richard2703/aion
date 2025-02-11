@@ -316,7 +316,7 @@ class minutasController extends Controller
 
         $user = auth()->user();
 
-        if ($user->hasRole('superadmin')) {
+        if ($user->hasRole(['superadmin', 'cc'])) {
             // Superadmin ve todo (niveles 0 al 3)
             $query->whereBetween('privada', [0, 3]);
         } elseif ($user->hasRole('lider_pilar')) {

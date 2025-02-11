@@ -71,6 +71,8 @@ const getDepartamentos = async (area_id) => {
     try {
         const response = await axios.get(route("departamentos.byArea", area_id));
         departamentos.value = response.data.departamentos;
+        console.log('departamentos.value', departamentos.value);
+
     } catch (error) {
         console.error(error);
     }
