@@ -6,13 +6,13 @@ import axios from "axios";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
-import AutoComplete from 'primevue/autocomplete';
-import Textarea from 'primevue/textarea';
+import AutoComplete from "primevue/autocomplete";
+import Textarea from "primevue/textarea";
 import { showToast } from "@/Pages/utils/SweetAlert.service";
-import Image from 'primevue/image';
+import Image from "primevue/image";
 
 const props = defineProps({
-    tarea: Object
+    tarea: Object,
 });
 
 const tarea = ref(props.tarea);
@@ -28,8 +28,8 @@ const form = useForm({
     area_id: tarea.value.area_id,
     departamento_id: tarea.value.departamento_id,
     minuta_id: tarea.value.minuta_id,
-    responsable_id: tarea.value.responsable ? tarea.value.responsable.name : '',
-    revisor_id: tarea.value.revisor ? tarea.value.revisor.name : '',
+    responsable_id: tarea.value.responsable ? tarea.value.responsable.name : "",
+    revisor_id: tarea.value.revisor ? tarea.value.revisor.name : "",
     tarea: tarea.value.tarea,
     fecha: tarea.value.fecha,
     nota: tarea.value.nota,
@@ -59,7 +59,9 @@ const onChange = async (event) => {
 
 const getDepartamentos = async (area_id) => {
     try {
-        const response = await axios.get(route("departamentos.byArea", area_id));
+        const response = await axios.get(
+            route("departamentos.byArea", area_id)
+        );
         departamentos.value = response.data.departamentos;
     } catch (error) {
         console.error(error);
@@ -89,7 +91,7 @@ const submit = async () => {
         await form.patch(route("tareas.update", tarea.value.id), {
             onFinish: () => {
                 showToast("El registro ha sido creado", "success");
-                window.location.href = route('tareas.index');
+                window.location.href = route("tareas.misTareas");
             },
         });
     } catch (error) {
@@ -104,15 +106,19 @@ const search = (event) => {
             filteredUsuarios.value = [...usuarios.value];
         } else {
             filteredUsuarios.value = usuarios.value.filter((usuario) => {
-                return usuario.name.toLowerCase().includes(event.query.toLowerCase());
+                return usuario.name
+                    .toLowerCase()
+                    .includes(event.query.toLowerCase());
             });
         }
     }, 250);
-}
+};
 
 const getEvidencias = async () => {
     try {
-        const response = await axios.get(route("tareaEvidencia.getByTarea", tarea.value.id));
+        const response = await axios.get(
+            route("tareaEvidencia.getByTarea", tarea.value.id)
+        );
         evidencias.value = response.data;
     } catch (error) {
         console.error(error);
@@ -122,7 +128,6 @@ const getEvidencias = async () => {
 
 <template>
     <Layout>
-
         <Head title="Tareas" />
 
         <div class="overflow-hidden sm:rounded-lg">
@@ -131,13 +136,13 @@ const getEvidencias = async () => {
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
-                <h3>Home -</h3>
+                    <h3>Home -</h3>
                 </Link>
-                <Link :href="route('tareas.index')" class="px-1">
-                <h3>Tareas -</h3>
+                <Link :href="route('tareas.misTareas')" class="px-1">
+                    <h3>Tareas -</h3>
                 </Link>
                 <Link :href="route('tareas.detail', tarea.id)" class="active">
-                <h3>Detalle</h3>
+                    <h3>Detalle</h3>
                 </Link>
             </div>
         </div>
@@ -145,85 +150,167 @@ const getEvidencias = async () => {
         <div class="py-2">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div>
-                    <div class="px-4 my-4 py-2 flex justify-end bg-white border-b border-gray-200"></div>
+                    <div
+                        class="px-4 my-4 py-2 flex justify-end bg-white border-b border-gray-200"
+                    ></div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto">
                             <form @submit.prevent="submit">
                                 <div class="mt-4">
-                                    <InputLabel for="minuta_id" value="Reunión:" />
-                                    <TextInput id="minuta" v-model="tarea.minuta.alias" type="text"
-                                        class="mt-1 block w-full" disabled />
+                                    <InputLabel
+                                        for="minuta_id"
+                                        value="Reunión:"
+                                    />
+                                    <TextInput
+                                        id="minuta"
+                                        v-model="tarea.minuta.alias"
+                                        type="text"
+                                        class="mt-1 block w-full"
+                                        disabled
+                                    />
                                 </div>
 
                                 <div class="mt-4">
                                     <InputLabel for="area_id" value="Pilar: " />
-                                    <TextInput id="pilar" v-model="tarea.area.nombre" type="text"
-                                        class="mt-1 block w-full" disabled />
+                                    <TextInput
+                                        id="pilar"
+                                        v-model="tarea.area.nombre"
+                                        type="text"
+                                        class="mt-1 block w-full"
+                                        disabled
+                                    />
                                 </div>
 
                                 <div class="mt-4">
-                                    <InputLabel for="departamento_id" value="Flujo de valor: " />
-                                    <TextInput id="flujo_valor" v-model="tarea.departamento.nombre" type="text"
-                                        class="mt-1 block w-full" disabled />
+                                    <InputLabel
+                                        for="departamento_id"
+                                        value="Flujo de valor: "
+                                    />
+                                    <TextInput
+                                        id="flujo_valor"
+                                        v-model="tarea.departamento.nombre"
+                                        type="text"
+                                        class="mt-1 block w-full"
+                                        disabled
+                                    />
                                 </div>
 
-                                <hr class="my-4">
+                                <hr class="my-4" />
 
                                 <div class="mt-4">
                                     <InputLabel for="tarea" value="Titulo:" />
-                                    <TextInput id="tarea" v-model="tarea.tarea" type="text" class="mt-1 block w-full"
-                                        disabled />
+                                    <TextInput
+                                        id="tarea"
+                                        v-model="tarea.tarea"
+                                        type="text"
+                                        class="mt-1 block w-full"
+                                        disabled
+                                    />
                                 </div>
 
                                 <div class="mt-4 z-30">
-                                    <InputLabel for="responsable_id" value="Responsable:" />
+                                    <InputLabel
+                                        for="responsable_id"
+                                        value="Responsable:"
+                                    />
 
                                     <div v-if="tarea.responsable">
-                                        <TextInput id="responsable" v-model="tarea.responsable.name" type="text"
-                                            class="mt-1 block w-full" disabled />
+                                        <TextInput
+                                            id="responsable"
+                                            v-model="tarea.responsable.name"
+                                            type="text"
+                                            class="mt-1 block w-full"
+                                            disabled
+                                        />
                                     </div>
                                     <div v-else>
-                                        <InputLabel class="text-red-500" value="Sin responsable" />
+                                        <InputLabel
+                                            class="text-red-500"
+                                            value="Sin responsable"
+                                        />
                                     </div>
                                 </div>
 
                                 <div class="mt-4 z-30">
-                                    <InputLabel for="revisor_id" value="Cliente de la tarea:" />
+                                    <InputLabel
+                                        for="revisor_id"
+                                        value="Cliente de la tarea:"
+                                    />
                                     <div v-if="tarea.revisor">
-                                        <TextInput id="rivisor" v-model="tarea.revisor.name" type="text"
-                                            class="mt-1 block w-full" disabled />
+                                        <TextInput
+                                            id="rivisor"
+                                            v-model="tarea.revisor.name"
+                                            type="text"
+                                            class="mt-1 block w-full"
+                                            disabled
+                                        />
                                     </div>
                                     <div v-else>
-                                        <InputLabel class="text-red-500" value="Sin revisor" />
+                                        <InputLabel
+                                            class="text-red-500"
+                                            value="Sin revisor"
+                                        />
                                     </div>
                                 </div>
                                 <div class="mt-4">
-                                    <InputLabel for="estatus" value="Estatus: " />
-                                    <TextInput id="estatus" v-model="tarea.estatus.titulo" type="text"
-                                        class="mt-1 block w-full" disabled />
+                                    <InputLabel
+                                        for="estatus"
+                                        value="Estatus: "
+                                    />
+                                    <TextInput
+                                        id="estatus"
+                                        v-model="tarea.estatus.titulo"
+                                        type="text"
+                                        class="mt-1 block w-full"
+                                        disabled
+                                    />
                                 </div>
                                 <div class="mt-4">
-                                    <InputLabel for="fecha" value="Fecha de entrega:" />
-                                    <TextInput id="pilar" v-model="tarea.fecha" type="text" class="mt-1 block w-full"
-                                        disabled />
+                                    <InputLabel
+                                        for="fecha"
+                                        value="Fecha de entrega:"
+                                    />
+                                    <TextInput
+                                        id="pilar"
+                                        v-model="tarea.fecha"
+                                        type="text"
+                                        class="mt-1 block w-full"
+                                        disabled
+                                    />
                                 </div>
                                 <div class="my-4">
                                     <InputLabel for="nota" value="Notas: " />
-                                    <Textarea class="mt-1 block w-full" v-model="tarea.nota" rows="5" cols="30"
-                                        disabled />
+                                    <Textarea
+                                        class="mt-1 block w-full"
+                                        v-model="tarea.nota"
+                                        rows="5"
+                                        cols="30"
+                                        disabled
+                                    />
                                 </div>
                             </form>
                         </div>
                         <div class="contaier mx-auto">
                             <div class="grid grid-cols-1 gap-4">
-                                <InputLabel for="img_ref" value="Muestra del trabajo realizado: " />
+                                <InputLabel
+                                    for="img_ref"
+                                    value="Muestra del trabajo realizado: "
+                                />
                                 <div
-                                    class="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
-                                    <div v-for="evidencia in evidencias" class="card w-60 bg-slate-100">
-                                        <Image :src="evidencia.img_ref" alt="Image" width="250" preview />
+                                    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-4"
+                                >
+                                    <div
+                                        v-for="evidencia in evidencias"
+                                        class="card w-60 bg-slate-100"
+                                    >
+                                        <Image
+                                            :src="evidencia.img_ref"
+                                            alt="Image"
+                                            width="250"
+                                            preview
+                                        />
                                         <!-- <img :src="evidencia" alt="" srcset=""> -->
                                     </div>
-
                                 </div>
                             </div>
                         </div>

@@ -96,7 +96,7 @@ const submit = async () => {
         await form.patch(route("tareas.update", tarea.value.id), {
             onFinish: () => {
                 showToast("El registro ha sido creado", "success");
-                window.location.href = route("tareas.index");
+                window.location.href = route("tareas.misTareas");
             },
         });
     } catch (error) {
@@ -182,7 +182,7 @@ const deleteEvidencia = async (id) => {
                 <Link :href="route('dashboard')" class="px-1">
                     <h3>Home -</h3>
                 </Link>
-                <Link :href="route('tareas.index')" class="px-1">
+                <Link :href="route('tareas.misTareas')" class="px-1">
                     <h3>Tareas -</h3>
                 </Link>
                 <Link :href="route('tareas.edit', tarea.id)" class="active">
