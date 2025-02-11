@@ -541,7 +541,7 @@ const sendMail = async () => {
                         </div>
                         <div>
                             <Fieldset
-                                legend="Asistentes"
+                                legend="Participantes"
                                 class="h-80 overflow-y-auto"
                             >
                                 <div class="float-right">
