@@ -397,11 +397,11 @@ class tareasController extends Controller
             $tareas = $query->with('area', 'departamento', 'minuta', 'responsable', 'revisor', 'estatus')->where('minuta_id', $minuta_id)->where('validacion', null)->paginate($pageSize, ['*'], 'page', $page);
         }
 
-        $tareasTotales = tareas::where('minuta_id', $minuta_id)->count();
-        $tareasTerminadas = tareas::where('estatus_id', 4)->where('minuta_id', $minuta_id)->count();
-        $tareasEnProceso = tareas::where('estatus_id', 3)->where('minuta_id', $minuta_id)->count();
-        $tareasIniciadas = tareas::where('estatus_id', 2)->where('minuta_id', $minuta_id)->count();
-        $tareasRetrasadas = tareas::where('estatus_id', 1)->where('minuta_id', $minuta_id)->count();
+        $tareasTotales = tareas::where('minuta_id', $minuta_id)->where('validacion', null)->count();
+        $tareasTerminadas = tareas::where('estatus_id', 4)->where('minuta_id', $minuta_id)->where('validacion', null)->count();
+        $tareasEnProceso = tareas::where('estatus_id', 3)->where('minuta_id', $minuta_id)->where('validacion', null)->count();
+        $tareasIniciadas = tareas::where('estatus_id', 2)->where('minuta_id', $minuta_id)->where('validacion', null)->count();
+        $tareasRetrasadas = tareas::where('estatus_id', 1)->where('minuta_id', $minuta_id)->where('validacion', null)->count();
 
 
         return response()->json([$tareas, 'conteo' => [

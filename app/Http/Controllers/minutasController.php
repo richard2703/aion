@@ -350,11 +350,13 @@ class minutasController extends Controller
             $query->where('oculto', 0);
         }
 
-        $query->withCount('tarea as tareas_total');
+        $query->withCount(['tarea as tareas_total' => function ($query) {
+            $query->where('validacion', null);
+        }]);
 
         $query->withCount(['tarea as tareas_completadas' => function ($query) {
             $query->whereHas('estatus', function ($query) {
-                $query->where('titulo', 'Terminado');
+                $query->where('titulo', 'Terminado')->where('validacion', null);
             });
         }]);
 

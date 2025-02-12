@@ -241,9 +241,6 @@ const getTareas = async (
         tareasEnProceso.value = response.data.conteo.enProceso;
         tareasIniciadas.value = response.data.conteo.iniciadas;
         tareasRetrasadas.value = response.data.conteo.retrasadas;
-        console.log({
-            tareasTotales: tareasTotales.value,
-        });
     } catch (error) {
         console.log(error);
     }
@@ -420,19 +417,25 @@ const sendMail = async () => {
     }
 };
 
-// const tareasTotales = computed(() => tareas.value?.length || 0);
+const setTareasTerminado = () => {
+    estatus.value = "4";
+};
 
-// const tareasTerminadas = computed(() => {
-//     return tareas.value?.filter((tarea) => tarea.estatus_id === 4).length || 0;
-// });
+const setTareasEnProceso = () => {
+    estatus.value = "3";
+};
 
-// const tareasEnProceso = computed(() => {
-//     return tareas.value?.filter((tarea) => tarea.estatus_id === 3).length || 0;
-// });
+const setTareasIniciadas = () => {
+    estatus.value = "2";
+};
 
-// const tareasIniciadas = computed(() => {
-//     return tareas.value?.filter((tarea) => tarea.estatus_id === 2).length || 0;
-// });
+const setTareasRetrasadas = () => {
+    estatus.value = "1";
+};
+
+const setTareasTotales = () => {
+    estatus.value = "";
+};
 </script>
 
 <template>
@@ -655,15 +658,28 @@ const sendMail = async () => {
                                         class="mb-3"
                                     />
                                     <PrimaryButton
-                                        class="mb-4 float-right pi pi-filter"
+                                        class="mb-4 float-right pi"
+                                        :class="
+                                            customFilter
+                                                ? 'pi-times'
+                                                : 'pi-filter'
+                                        "
                                         @click="openFilter"
                                     >
                                     </PrimaryButton>
                                     <PrimaryButton
                                         v-if="customFilter"
-                                        class="mb-4 float-right pi pi-times"
+                                        class="mb-4 float-right pi pi-minus"
                                         @click="clearFilter"
                                     >
+                                        <span
+                                            class="p-1"
+                                            :style="{
+                                                fontSize: '10px',
+                                            }"
+                                        >
+                                            Limpiar filtros</span
+                                        >
                                     </PrimaryButton>
                                     <!-- Trigger to open modal -->
                                     <div
@@ -734,50 +750,46 @@ const sendMail = async () => {
                                     </PrimaryButton> -->
                                 </div>
                                 <div class="tareas-summary mb-4">
-                                    <!-- <div>
+                                    <PrimaryButton
+                                        @click="setTareasTotales"
+                                        class="totales"
+                                    >
                                         <span>Total de Tareas:</span>
                                         <strong>{{ tareasTotales }}</strong>
-                                    </div>
-                                    <div class="terminadas">
-                                        <span>Tareas Terminadas:</span>
+                                    </PrimaryButton>
+
+                                    <PrimaryButton
+                                        @click="setTareasTerminado"
+                                        class="terminadas"
+                                    >
+                                        <span>Total de Tareas Terminadas:</span>
                                         <strong>{{ tareasTerminadas }}</strong>
-                                    </div>
-                                    <div class="en-proceso">
-                                        <span>Tareas en Proceso:</span>
+                                    </PrimaryButton>
+
+                                    <PrimaryButton
+                                        @click="setTareasEnProceso"
+                                        class="en-proceso"
+                                    >
+                                        <span>Total de Tareas en Proceso:</span>
                                         <strong>{{ tareasEnProceso }}</strong>
-                                    </div>
-                                    <div class="en-espera">
-                                        <span>Tareas en espera:</span>
+                                    </PrimaryButton>
+
+                                    <PrimaryButton
+                                        @click="setTareasIniciadas"
+                                        class="en-espera"
+                                    >
+                                        <span
+                                            >Total de Tareas en Iniciadas:</span
+                                        >
                                         <strong>{{ tareasIniciadas }}</strong>
-                                    </div>
-                                    <div class="en-retrasadas">
-                                        <span>Tareas retrasadas:</span>
+                                    </PrimaryButton>
+
+                                    <PrimaryButton
+                                        @click="setTareasRetrasadas"
+                                        class="en-retrasadas"
+                                    >
+                                        <span>Total de Tareas Retrasadas:</span>
                                         <strong>{{ tareasRetrasadas }}</strong>
-                                    </div> -->
-
-                                    <PrimaryButton class="totales">
-                                        <span>Total de Tareas:</span>
-                                        <strong>{{ tareasTotales }}</strong>
-                                    </PrimaryButton>
-
-                                    <PrimaryButton class="terminadas">
-                                        <span>Total de Tareas:</span>
-                                        <strong>{{ tareasTotales }}</strong>
-                                    </PrimaryButton>
-
-                                    <PrimaryButton class="en-proceso">
-                                        <span>Total de Tareas:</span>
-                                        <strong>{{ tareasTotales }}</strong>
-                                    </PrimaryButton>
-
-                                    <PrimaryButton class="en-espera">
-                                        <span>Total de Tareas:</span>
-                                        <strong>{{ tareasTotales }}</strong>
-                                    </PrimaryButton>
-
-                                    <PrimaryButton class="en-retrasadas">
-                                        <span>Total de Tareas:</span>
-                                        <strong>{{ tareasTotales }}</strong>
                                     </PrimaryButton>
                                 </div>
 
