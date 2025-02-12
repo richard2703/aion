@@ -734,7 +734,7 @@ const sendMail = async () => {
                                     </PrimaryButton> -->
                                 </div>
                                 <div class="tareas-summary mb-4">
-                                    <div>
+                                    <!-- <div>
                                         <span>Total de Tareas:</span>
                                         <strong>{{ tareasTotales }}</strong>
                                     </div>
@@ -753,7 +753,32 @@ const sendMail = async () => {
                                     <div class="en-retrasadas">
                                         <span>Tareas retrasadas:</span>
                                         <strong>{{ tareasRetrasadas }}</strong>
-                                    </div>
+                                    </div> -->
+
+                                    <PrimaryButton class="totales">
+                                        <span>Total de Tareas:</span>
+                                        <strong>{{ tareasTotales }}</strong>
+                                    </PrimaryButton>
+
+                                    <PrimaryButton class="terminadas">
+                                        <span>Total de Tareas:</span>
+                                        <strong>{{ tareasTotales }}</strong>
+                                    </PrimaryButton>
+
+                                    <PrimaryButton class="en-proceso">
+                                        <span>Total de Tareas:</span>
+                                        <strong>{{ tareasTotales }}</strong>
+                                    </PrimaryButton>
+
+                                    <PrimaryButton class="en-espera">
+                                        <span>Total de Tareas:</span>
+                                        <strong>{{ tareasTotales }}</strong>
+                                    </PrimaryButton>
+
+                                    <PrimaryButton class="en-retrasadas">
+                                        <span>Total de Tareas:</span>
+                                        <strong>{{ tareasTotales }}</strong>
+                                    </PrimaryButton>
                                 </div>
 
                                 <!-- formulario de filtrado de tareas -->
@@ -1233,6 +1258,13 @@ const sendMail = async () => {
     /* Texto blanco para contraste */
     text-align: center;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tareas-summary .totales {
+    background-color: #fdfdfd;
+    color: #333;
+    border-color: #333;
+    /* Verde para tareas totales */
 }
 
 .tareas-summary .terminadas {
