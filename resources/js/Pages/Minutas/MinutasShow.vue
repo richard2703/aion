@@ -610,8 +610,8 @@ const setTareasTotales = () => {
 
                                 <div class="mt-4">
                                     <InputLabel
-                                        for="asistentes"
-                                        value="Asistentes: "
+                                        for="participantes"
+                                        value="Participantes: "
                                     /><br />
                                     <div class="mx-2">
                                         <ul
