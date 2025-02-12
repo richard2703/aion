@@ -28,12 +28,21 @@ class kpiController extends Controller
         if ($filter) {
             $query->where(function ($q) use ($filter) {
                 $q->where('kpis.id', 'like', '%' . $filter . '%')
-                    ->orWhere('kpis.nombre', 'like', '%' . $filter . '%')
+                    ->orWhere('kpis.titulo', 'like', '%' . $filter . '%')
                     ->orWhere('kpis.descripcion', 'like', '%' . $filter . '%')
-                    ->orWhere('kpis.link_externo', 'like', '%' . $filter . '%')
+                    ->orWhereHas('area', function ($q) use ($filter) {
+                        $q->where('areas.nombre', 'like', '%' . $filter . '%')
+                            ->orWhere('areas.descripcion', 'like', '%' . $filter . '%');
+                    })
+                    ->orWhereHas('departamento', function ($q) use ($filter) {
+                        $q->where('departamentos.nombre', 'like', '%' . $filter . '%')
+                            ->orWhere('departamentos.descripcion', 'like', '%' . $filter . '%');
+                    })
+                    ->orWhereHas('proceso', function ($q) use ($filter) {
+                        $q->where('procesos.nombre', 'like', '%' . $filter . '%');
+                    })
                     ->orWhereHas('procedimiento', function ($q) use ($filter) {
-                        $q->where('procedimientos.nombre', 'like', '%' . $filter . '%')
-                            ->orWhere('procedimientos.descripcion', 'like', '%' . $filter . '%');
+                        $q->where('procedimientos.nombre', 'like', '%' . $filter . '%');
                     });
             });
         }
