@@ -34,7 +34,7 @@ const form = useForm({
     tarea: "",
     fecha: "",
     nota: "",
-    estatus_id: "",
+    estatus_id: "2",
 });
 
 const onChange = async (event) => {
@@ -253,11 +253,8 @@ onMounted(() => {
                                 v-model="form.estatus_id"
                                 required
                             >
-                                <option value="" selected disabled>
-                                    Seleccione una opcion
-                                </option>
                                 <option value="1">Retrasado</option>
-                                <option value="2">Iniciado</option>
+                                <option value="2" selected>Iniciado</option>
                                 <option value="3">En proceso</option>
                                 <option value="4">Terminado</option>
                             </select>

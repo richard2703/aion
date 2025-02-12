@@ -96,7 +96,10 @@ const submit = async () => {
         await form.patch(route("tareas.update", tarea.value.id), {
             onFinish: () => {
                 showToast("El registro ha sido creado", "success");
-                window.location.href = route("tareas.index");
+                window.location.href = route(
+                    "minutas.show",
+                    tarea.value.minuta_id
+                );
             },
         });
     } catch (error) {
@@ -182,7 +185,7 @@ const deleteEvidencia = async (id) => {
                 <Link :href="route('dashboard')" class="px-1">
                     <h3>Home -</h3>
                 </Link>
-                <Link :href="route('tareas.index')" class="px-1">
+                <Link :href="route('tareas.misTareas')" class="px-1">
                     <h3>Tareas -</h3>
                 </Link>
                 <Link :href="route('tareas.edit', tarea.id)" class="active">
@@ -200,84 +203,6 @@ const deleteEvidencia = async (id) => {
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto">
                             <form @submit.prevent="submit">
-                                <div
-                                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-6"
-                                >
-                                    <div class="mt-4">
-                                        <InputLabel
-                                            for="minuta_id"
-                                            value="Reunión:"
-                                        />
-                                        <select
-                                            ref="departamento_select"
-                                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                            v-model="form.minuta_id"
-                                            required
-                                        >
-                                            <option value="" disabled selected>
-                                                Seleccione una opcion
-                                            </option>
-                                            <option
-                                                v-for="minuta in minutas"
-                                                :key="minuta.id"
-                                                :value="minuta.id"
-                                            >
-                                                {{ minuta.alias }}
-                                            </option>
-                                        </select>
-                                    </div>
-
-                                    <div class="mt-4">
-                                        <InputLabel
-                                            for="area_id"
-                                            value="Pilar: "
-                                        />
-                                        <select
-                                            ref="area_select"
-                                            @change="onChange($event)"
-                                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                            v-model="form.area_id"
-                                            required
-                                        >
-                                            <option value="" disabled selected>
-                                                Seleccione una opcion
-                                            </option>
-                                            <option
-                                                v-for="area in areas"
-                                                :key="area.id"
-                                                :value="area.id"
-                                            >
-                                                {{ area.nombre }}
-                                            </option>
-                                        </select>
-                                    </div>
-
-                                    <div class="mt-4">
-                                        <InputLabel
-                                            for="departamento_id"
-                                            value="Flujo de valor: "
-                                        />
-                                        <select
-                                            ref="departamento_select"
-                                            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                            v-model="form.departamento_id"
-                                            required
-                                        >
-                                            <option value="" disabled selected>
-                                                Seleccione una opcion
-                                            </option>
-                                            <option
-                                                v-for="departamento in departamentos"
-                                                :key="departamento.id"
-                                                :value="departamento.id"
-                                            >
-                                                {{ departamento.nombre }}
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <hr class="my-4" />
-
                                 <div
                                     class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-6"
                                 >
@@ -355,9 +280,6 @@ const deleteEvidencia = async (id) => {
                                             v-model="form.estatus_id"
                                             required
                                         >
-                                            <option value="" selected disabled>
-                                                Seleccione una opcion
-                                            </option>
                                             <option value="1">Retrasado</option>
                                             <option value="2">Iniciado</option>
                                             <option value="3">
