@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Comentario;
 use App\Models\ComentarioMencion;
 use Illuminate\Http\Request;
+use App\Models\Notificacion;
+
 
 class comentarioController extends Controller
 {
@@ -42,7 +44,25 @@ class comentarioController extends Controller
                     'comentario_id' => $comentario->id,
                     'user_id' => $usuarioId,
                 ]);
+
+                // Enviar notificaciones
+
+                $notification = [
+                    'user_id' => $usuarioId,
+                    'titulo' => 'Reporte Semanal',
+                    'link' => '/reportes/' . $request->reporte_semanal_id . '/show',
+                    'readed' => 0,
+                ];
+                $notificacion = new NotificacionController();
+                $notificacion->store($notification);
             }
+        }
+
+
+        $notificaciones = Notificacion::where('user_id', '!=', $user->id)->where('reporte_semanal_id', $request->reporte_semanal_id)->get();
+        foreach ($notificaciones as $notificacion) {
+            $notificacion->readed = 0;
+            $notificacion->save();
         }
 
         return response()->json(['success' => true]);

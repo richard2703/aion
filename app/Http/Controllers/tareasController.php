@@ -197,7 +197,9 @@ class tareasController extends Controller
             'readed' => 0,
         ];
 
-        $notification = Notificacion::create($notification);
+        // $notification = Notificacion::create($notification);
+        $notificacion = new NotificacionController();
+        $notificacion->store($notification);
 
         $responsable = User::find($request->responsable_id);
     }

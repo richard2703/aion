@@ -7,7 +7,11 @@ use Illuminate\Http\Request;
 
 class notificacionController extends Controller
 {
-    //
+    public function store($notification)
+    {
+        return Notificacion::create($notification);
+    }
+
     public function getByUser(Request $request)
     {
         $user_id = $request->user()->id;
