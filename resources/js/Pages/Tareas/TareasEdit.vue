@@ -96,10 +96,7 @@ const submit = async () => {
         await form.patch(route("tareas.update", tarea.value.id), {
             onFinish: () => {
                 showToast("El registro ha sido creado", "success");
-                window.location.href = route(
-                    "minutas.show",
-                    tarea.value.minuta_id
-                );
+                window.location.href = route("tareas.misTareas");
             },
         });
     } catch (error) {
