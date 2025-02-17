@@ -53,7 +53,8 @@ class comentarioController extends Controller
                     'link' => '/reportes/' . $request->reporte_semanal_id . '/show',
                     'readed' => 0,
                 ];
-                $notificacion = new NotificacionController();
+                //tiene que ir con minus
+                $notificacion = new notificacionController();
                 $notificacion->store($notification);
             }
         }
