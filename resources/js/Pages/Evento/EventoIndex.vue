@@ -408,7 +408,8 @@ const getItem = () => {
                     </div>
                 </div> -->
 
-                <div v-if="modal.show" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+                <div v-if="modal.show"
+                    class="absolute inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
                     <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
                         <h2 class="text-xl font-semibold mb-4">
                             {{ modal.type === "create" ? "Crear nuevo Evento" : "Actualizar Evento" }}
@@ -507,7 +508,7 @@ const getItem = () => {
                     </div>
                 </div>
                 <div v-if="viewModal.show"
-                    class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+                    class="absolute inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
                     <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
                         <!--
                         <h2 class="text-xl font-semibold mb-4">
