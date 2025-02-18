@@ -198,7 +198,8 @@ class tareasController extends Controller
         ];
 
         // $notification = Notificacion::create($notification);
-        $notificacion = new NotificacionController();
+        //la notificacion se guarda en la base de datos
+        $notificacion = new notificacionController();
         $notificacion->store($notification);
 
         $responsable = User::find($request->responsable_id);
