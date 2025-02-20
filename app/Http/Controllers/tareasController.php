@@ -204,12 +204,15 @@ class tareasController extends Controller
 
         $responsable = User::find($request->responsable_id);
     }
-
     /**
      * Display the specified resource.
      */
     public function show(tareas $tarea)
     {
+        if (auth()->user()->id == $tarea->responsable_id && $tarea->estatus_id == 2) {
+            $tarea->estatus_id = 3;
+            $tarea->save();
+        }
         $tarea->load('area', 'departamento', 'minuta', 'responsable', 'estatus', 'revisor', 'evidencia');
         return response()->json($tarea);
     }
