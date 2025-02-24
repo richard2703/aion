@@ -40,6 +40,8 @@ const hasta = ref("");
 const tier = ref("");
 const tiposMinutas = ref([]);
 const userPermissions = usePage().props.auth.user.permissions;
+const userLogin = usePage().props.auth.user.user.id;
+
 
 const formFilter = useForm({
     area_id: "",
@@ -96,6 +98,34 @@ watch(
     }
 );
 
+// async function getMinutas(
+//     page = 1,
+//     rowsPerPage = rows.value,
+//     filter = "",
+//     sortField = "id",
+//     sortOrder = -1
+// ) {
+//     try {
+//         const response = await axios.get(
+//             route("minutas.byArea", area.value.id),
+//             {
+//                 params: {
+//                     page,
+//                     rows: rowsPerPage,
+//                     filter,
+//                     sortField,
+//                     sortOrder: sortOrder === 1 ? "asc" : "desc",
+//                 },
+//             }
+//         );
+//         minutas.value = response.data.data;
+//         totalRecords.value = response.data.total;
+//         first.value = (response.data.current_page - 1) * rows.value;
+//     } catch (error) {
+//         console.error(error);
+//     }
+// }
+
 async function getMinutas(
     page = 1,
     rowsPerPage = rows.value,
@@ -113,6 +143,7 @@ async function getMinutas(
                     filter,
                     sortField,
                     sortOrder: sortOrder === 1 ? "asc" : "desc",
+                    user_id: userLogin,
                 },
             }
         );
@@ -252,48 +283,27 @@ const flujoBody = (rowData) => {
 <template>
     <div class="overflow-x-auto mt-4">
         <div class="flex gap-4">
-            <InputText
-                v-model="globalFilter"
-                placeholder="Buscar..."
-                class="mb-3"
-            />
-            <PrimaryButton
-                class="mb-4 float-right pi pi-filter"
-                @click="openFilter"
-            >
+            <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
+            <PrimaryButton class="mb-4 float-right pi pi-filter" @click="openFilter">
             </PrimaryButton>
-            <PrimaryButton
-                v-if="customFilter"
-                class="mb-4 float-right pi pi-times"
-                @click="clearFilter"
-            >
+            <PrimaryButton v-if="customFilter" class="mb-4 float-right pi pi-times" @click="clearFilter">
             </PrimaryButton>
         </div>
 
         <!-- formulario de filtrado de tareas -->
         <div v-if="customFilter" class="">
             <form @submit.prevent="filterTable()">
-                <div
-                    class="m-4 border rounded-lg border-gray-200 flex gap-2 grid grid-cols-4"
-                >
+                <div class="m-4 border rounded-lg border-gray-200 flex gap-2 grid grid-cols-4">
                     <div class="m-4">
-                        <InputLabel
-                            for="departamento_id"
-                            value="Flujo de valor: "
-                        />
-                        <select
-                            ref="departamento_select"
+                        <InputLabel for="departamento_id" value="Flujo de valor: " />
+                        <select ref="departamento_select"
                             class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                            v-model="flujoValor"
-                        >
+                            v-model="flujoValor">
                             <option value="" selected>
                                 Seleccione una opcion
                             </option>
-                            <option
-                                v-for="departamento in departamentos"
-                                :key="departamento.id"
-                                :value="departamento.id"
-                            >
+                            <option v-for="departamento in departamentos" :key="departamento.id"
+                                :value="departamento.id">
                                 {{ departamento.nombre }}
                             </option>
                         </select>
@@ -301,19 +311,13 @@ const flujoBody = (rowData) => {
 
                     <div class="m-4">
                         <InputLabel for="lider_id" value="Lider: " />
-                        <select
-                            ref="lider_select"
+                        <select ref="lider_select"
                             class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                            v-model="lider"
-                        >
+                            v-model="lider">
                             <option value="" selected>
                                 Seleccione una opcion
                             </option>
-                            <option
-                                v-for="usuario in usuarios"
-                                :key="usuario.id"
-                                :value="usuario.id"
-                            >
+                            <option v-for="usuario in usuarios" :key="usuario.id" :value="usuario.id">
                                 {{ usuario.name }}
                             </option>
                         </select>
@@ -322,20 +326,13 @@ const flujoBody = (rowData) => {
                     <div class="mt-4">
                         <InputLabel for="tipo" value="Tipo: " />
 
-                        <select
-                            ref="tipo_select"
+                        <select ref="tipo_select"
                             class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                            v-model="tipo"
-                            required
-                        >
+                            v-model="tipo" required>
                             <option value="" disabled selected>
                                 Seleccione una opcion
                             </option>
-                            <option
-                                v-for="tipoMinuta in tiposMinutas"
-                                :key="tipoMinuta.id"
-                                :value="tipoMinuta.id"
-                            >
+                            <option v-for="tipoMinuta in tiposMinutas" :key="tipoMinuta.id" :value="tipoMinuta.id">
                                 {{ tipoMinuta.titulo }}
                             </option>
                         </select>
@@ -343,19 +340,13 @@ const flujoBody = (rowData) => {
 
                     <div class="m-4">
                         <InputLabel for="proceso_id" value="Proceso: " />
-                        <select
-                            ref="departamento_select"
+                        <select ref="departamento_select"
                             class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                            v-model="proceso"
-                        >
+                            v-model="proceso">
                             <option value="" selected>
                                 Seleccione una opcion
                             </option>
-                            <option
-                                v-for="proceso in procesos"
-                                :key="proceso.id"
-                                :value="proceso.id"
-                            >
+                            <option v-for="proceso in procesos" :key="proceso.id" :value="proceso.id">
                                 {{ proceso.nombre }}
                             </option>
                         </select>
@@ -363,38 +354,20 @@ const flujoBody = (rowData) => {
 
                     <div class="m-4">
                         <InputLabel for="fecha" value="Fecha de entrega de: " />
-                        <TextInput
-                            id="fecha"
-                            v-model="desde"
-                            type="date"
-                            class="mt-1 block w-full"
-                            autocomplete="fecha"
-                        />
+                        <TextInput id="fecha" v-model="desde" type="date" class="mt-1 block w-full"
+                            autocomplete="fecha" />
                     </div>
 
                     <div class="m-4">
-                        <InputLabel
-                            for="created_at"
-                            value="Fecha de entrega hasta: "
-                        />
-                        <TextInput
-                            id="fecha"
-                            v-model="hasta"
-                            type="date"
-                            class="mt-1 block w-full"
-                            autocomplete="fecha"
-                        />
+                        <InputLabel for="created_at" value="Fecha de entrega hasta: " />
+                        <TextInput id="fecha" v-model="hasta" type="date" class="mt-1 block w-full"
+                            autocomplete="fecha" />
                     </div>
                     <div class="m-4">
-                        <InputLabel
-                            for="created_at"
-                            value="Nivel de minuta: "
-                        />
-                        <select
-                            ref="departamento_select"
+                        <InputLabel for="created_at" value="Nivel de minuta: " />
+                        <select ref="departamento_select"
                             class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                            v-model="tier"
-                        >
+                            v-model="tier">
                             <option value="" selected>
                                 Seleccione una opcion
                             </option>
@@ -416,19 +389,9 @@ const flujoBody = (rowData) => {
             </form>
         </div>
 
-        <DataTable
-            :value="minutas"
-            paginator
-            :rows="rows"
-            :totalRecords="totalRecords"
-            :lazy="true"
-            :first="first"
-            @page="onPage"
-            @sort="onSort"
-            :rowsPerPageOptions="[5, 10, 20, 50]"
-            tableStyle="min-width: 50rem"
-            :filters="filters"
-            :globalFilterFields="[
+        <DataTable :value="minutas" paginator :rows="rows" :totalRecords="totalRecords" :lazy="true" :first="first"
+            @page="onPage" @sort="onSort" :rowsPerPageOptions="[5, 10, 20, 50]" tableStyle="min-width: 50rem"
+            :filters="filters" :globalFilterFields="[
                 'id',
                 'departamento.nombre',
                 'alias',
@@ -436,29 +399,14 @@ const flujoBody = (rowData) => {
                 'lider.name',
                 'notas',
                 'created_at',
-            ]"
-            :sortField="sortField"
-            :sortOrder="sortOrder"
-            class="p-datatable-sm p-datatable-striped p-datatable-gridlines"
-        >
+            ]" :sortField="sortField" :sortOrder="sortOrder"
+            class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
             <template #empty> Sin registros </template>
-            <Column
-                field="id"
-                header="ID"
-                headerStyle="width:4em;"
-                bodyStyle="text-align:center;"
-                sortable
-            ></Column>
+            <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;" sortable></Column>
             <!-- <Column field="departamento?.nombre" header="Fujo de valor" headerStyle="width:4em;"
                 bodyStyle="text-align:center;" bodyClass="text-center" :body="flujoBody" sortable></Column> -->
-            <Column
-                field="departamento?.nombre"
-                header="Flujo de valor"
-                headerStyle="width:4em;"
-                bodyStyle="text-align:center;"
-                bodyClass="text-center"
-                sortable
-            >
+            <Column field="departamento?.nombre" header="Flujo de valor" headerStyle="width:4em;"
+                bodyStyle="text-align:center;" bodyClass="text-center" sortable>
                 <template #body="slotProps">
                     {{
                         slotProps.data.departamento?.nombre ||
@@ -466,62 +414,26 @@ const flujoBody = (rowData) => {
                     }}
                 </template>
             </Column>
-            <Column
-                field="tipo_minuta.titulo"
-                header="Tipo"
-                headerStyle="width:4em;"
-                bodyStyle="text-align:center;"
-                bodyClass="text-center"
-                sortable
-            ></Column>
-            <Column
-                field="alias"
-                header="Alias"
-                headerStyle="width:4em;"
-                bodyClass="text-center"
-                sortable
-            ></Column>
-            <Column
-                field="proceso.nombre"
-                header="Proceso"
-                headerStyle="width:4em;"
-                bodyClass="text-center"
-                sortable
-            >
+            <Column field="tipo_minuta.titulo" header="Tipo" headerStyle="width:4em;" bodyStyle="text-align:center;"
+                bodyClass="text-center" sortable></Column>
+            <Column field="alias" header="Alias" headerStyle="width:4em;" bodyClass="text-center" sortable></Column>
+            <Column field="proceso.nombre" header="Proceso" headerStyle="width:4em;" bodyClass="text-center" sortable>
             </Column>
-            <Column
-                field="lider.name"
-                header="Lider"
-                headerStyle="width:4em;"
-                bodyStyle="text-align:center;"
-                bodyClass="text-center"
-                sortable
-            ></Column>
-            <Column
-                header="fecha"
-                headerStyle="width:4em;"
-                bodyStyle="text-align:center;"
-                bodyClass="text-center"
-                sortable
-            >
+            <Column field="lider.name" header="Lider" headerStyle="width:4em;" bodyStyle="text-align:center;"
+                bodyClass="text-center" sortable></Column>
+            <Column header="fecha" headerStyle="width:4em;" bodyStyle="text-align:center;" bodyClass="text-center"
+                sortable>
                 <template #body="slotProps">
                     {{ formatearFecha(slotProps.data.created_at) }}
                 </template>
             </Column>
-            <Column
-                header="Tareas"
-                headerStyle="width:4em;"
-                bodyStyle="text-align:center;"
-                bodyClass="text-center"
-                sortable
-            >
+            <Column header="Tareas" headerStyle="width:4em;" bodyStyle="text-align:center;" bodyClass="text-center"
+                sortable>
                 <template #body="slotProps">
-                    <span
-                        v-if="
-                            slotProps.data.tareas_completadas !== undefined &&
-                            slotProps.data.tareas_total !== undefined
-                        "
-                    >
+                    <span v-if="
+                        slotProps.data.tareas_completadas !== undefined &&
+                        slotProps.data.tareas_total !== undefined
+                    ">
                         {{
                             "(" +
                             slotProps.data.tareas_completadas +
@@ -537,32 +449,17 @@ const flujoBody = (rowData) => {
                 <template #body="slotProps" class="text-center">
                     <div class="flex justify-center">
                         <div v-if="userPermissions.includes('minutas_editar')">
-                            <PrimaryButton
-                                class="pi pi-file-edit m-2"
-                                :href="route('minutas.edit', slotProps.data.id)"
-                            >
-                                <span class="p-1" :style="{ fontSize: '10px' }"
-                                    >Editar</span
-                                >
+                            <PrimaryButton class="pi pi-file-edit m-2" :href="route('minutas.edit', slotProps.data.id)">
+                                <span class="p-1" :style="{ fontSize: '10px' }">Editar</span>
                             </PrimaryButton>
                         </div>
 
-                        <PrimaryButton
-                            class="pi pi-list m-2"
-                            :href="route('minutas.show', slotProps.data.id)"
-                        >
-                            <span class="p-1" :style="{ fontSize: '10px' }"
-                                >Tareas</span
-                            >
+                        <PrimaryButton class="pi pi-list m-2" :href="route('minutas.show', slotProps.data.id)">
+                            <span class="p-1" :style="{ fontSize: '10px' }">Tareas</span>
                         </PrimaryButton>
 
-                        <div
-                            v-if="userPermissions.includes('minutas_eliminar')"
-                        >
-                            <PrimaryButton
-                                class="pi pi-trash m-2"
-                                @click.prevent="deleteMinuta(slotProps.data.id)"
-                            >
+                        <div v-if="userPermissions.includes('minutas_eliminar')">
+                            <PrimaryButton class="pi pi-trash m-2" @click.prevent="deleteMinuta(slotProps.data.id)">
                             </PrimaryButton>
                         </div>
                     </div>

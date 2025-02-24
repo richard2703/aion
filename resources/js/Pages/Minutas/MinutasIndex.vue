@@ -63,6 +63,7 @@ const getAreas = async () => {
 
 <template>
     <Layout :titulo="title">
+
         <Head title="Minutas" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
@@ -70,10 +71,10 @@ const getAreas = async () => {
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
-                    <h3>Home -</h3>
+                <h3>Home -</h3>
                 </Link>
                 <Link :href="route('minutas.index')" class="active">
-                    <h3>Minutas</h3>
+                <h3>Minutas</h3>
                 </Link>
             </div>
         </div>
@@ -81,14 +82,9 @@ const getAreas = async () => {
         <div class="py-2">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div>
-                    <div
-                        class="px-4 py-2 flex justify-end bg-white border-b border-gray-200"
-                    >
+                    <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
                         <div v-if="userPermissions.includes('minutas_crear')">
-                            <PrimaryButton
-                                class="m-4 pi pi-plus"
-                                :href="route('minutas.create')"
-                            ></PrimaryButton>
+                            <PrimaryButton class="m-4 pi pi-plus" :href="route('minutas.create')"></PrimaryButton>
                         </div>
                     </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
@@ -96,27 +92,15 @@ const getAreas = async () => {
                             <div class="card">
                                 <Tabs :value="area_id ? area_id : 0">
                                     <TabList>
-                                        <Tab
-                                            v-for="(area, key) in areas"
-                                            :key="key"
-                                            :value="key"
-                                        >
+                                        <Tab v-for="(area, key) in areas" :key="key" :value="key">
                                             {{ area.nombre }}
                                         </Tab>
                                     </TabList>
                                     <TabPanels>
-                                        <TabPanel
-                                            v-for="(area, key) in areas"
-                                            :key="key"
-                                            :value="key"
-                                            class="overflow-auto"
-                                        >
-                                            <ContenidoPanel
-                                                :area="area"
-                                                :departamento_id="
-                                                    departamento_id
-                                                "
-                                            />
+                                        <TabPanel v-for="(area, key) in areas" :key="key" :value="key"
+                                            class="overflow-auto">
+                                            <ContenidoPanel :area="area" :departamento_id="departamento_id
+                                                " />
                                         </TabPanel>
                                     </TabPanels>
                                 </Tabs>
