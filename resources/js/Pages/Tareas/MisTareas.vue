@@ -35,6 +35,7 @@ const title = "tareas";
 
 <template>
     <Layout :titulo="title">
+
         <Head title="Tareas" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
@@ -42,10 +43,10 @@ const title = "tareas";
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
-                    <h3>Home -</h3>
+                <h3>Home -</h3>
                 </Link>
                 <Link :href="route('tareas.misTareas')" class="active">
-                    <h3>Mis Tareas</h3>
+                <h3>Mis Tareas</h3>
                 </Link>
             </div>
         </div>
@@ -61,14 +62,10 @@ const title = "tareas";
                             </TabList>
                             <TabPanels>
                                 <TabPanel value="0">
-                                    <TareasPorHacer
-                                        :authUser="props.authUser"
-                                    />
+                                    <TareasPorHacer :authUser="props.authUser" />
                                 </TabPanel>
                                 <TabPanel value="1">
-                                    <TareasPorRevisar
-                                        :authUser="props.authUser"
-                                    />
+                                    <TareasPorRevisar :authUser="props.authUser" />
                                 </TabPanel>
                             </TabPanels>
                         </Tabs>

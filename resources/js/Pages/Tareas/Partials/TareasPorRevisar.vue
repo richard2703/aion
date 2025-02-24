@@ -40,6 +40,9 @@ const estatus = ref("");
 const desde = ref("");
 const hasta = ref("");
 
+// const userLogin = usePage().props.auth.user.user.id;
+
+
 const formValidate = useForm({
     validacion: "",
 });
@@ -53,7 +56,7 @@ onMounted(() => {
     getAreas();
     getDepartamentos();
     getUsuarios();
-    console.log('Hola k aze!!!', tipo.value);
+    console.log('Hola k aze!!!', authUser.value);
 
 });
 
@@ -73,6 +76,7 @@ const getTareas = async (
                 filter,
                 sortField,
                 sortOrder: sortOrder === 1 ? "asc" : "desc",
+                user_id: authUser.value.id,
             },
         })
         .then((response) => {

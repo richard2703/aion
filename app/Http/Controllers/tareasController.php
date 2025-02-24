@@ -447,7 +447,7 @@ class tareasController extends Controller
     public function byUser(Request $request)
     {
 
-        $user = Auth::user();
+        // $user = Auth::user();
 
         $query = tareas::query();
         $pageSize = $request->get('rows', 10);
@@ -455,6 +455,7 @@ class tareasController extends Controller
         $filters = $request->get('filter', '');
         $sortField = $request->get('sortField', 'id');
         $sortOrder = $request->get('sortOrder', 'asc');
+        $userId = $request->get('user_id');
 
         // new stuff
 
@@ -545,14 +546,16 @@ class tareasController extends Controller
             $query->orderBy('id', $sortOrder);
         }
 
-        $tareas = $query->with('area', 'departamento', 'minuta', 'responsable', 'revisor', 'estatus')->where('responsable_id', $user->id)->where('validacion', null)->paginate($pageSize, ['*'], 'page', $page);
+        // $tareas = $query->with('area', 'departamento', 'minuta', 'responsable', 'revisor', 'estatus')->where('responsable_id', $user->id)->where('validacion', null)->paginate($pageSize, ['*'], 'page', $page);
+        $tareas = $query->with('area', 'departamento', 'minuta', 'responsable', 'revisor', 'estatus')->where('responsable_id', $userId)->where('validacion', null)->paginate($pageSize, ['*'], 'page', $page);
+
 
         return response()->json($tareas);
     }
 
     function toReview(Request $request)
     {
-        $user = Auth::user();
+        // $user = Auth::user();
 
         $query = tareas::query();
         $pageSize = $request->get('rows', 10);
@@ -560,6 +563,8 @@ class tareasController extends Controller
         $filters = $request->get('filter', '');
         $sortField = $request->get('sortField', 'id');
         $sortOrder = $request->get('sortOrder', 'asc');
+        $userId = $request->get('user_id');
+
 
         // Apply global filter if it exists
         if (isset($filters['global']['value']) && !empty($filters['global']['value'])) {
@@ -645,7 +650,9 @@ class tareasController extends Controller
             $query->orderBy('id', $sortOrder);
         }
 
-        $tareas = $query->with('area', 'departamento', 'minuta', 'responsable', 'revisor', 'estatus')->where('revisor_id', $user->id)->where('validacion', null)->paginate($pageSize, ['*'], 'page', $page);
+        // $tareas = $query->with('area', 'departamento', 'minuta', 'responsable', 'revisor', 'estatus')->where('revisor_id', $user->id)->where('validacion', null)->paginate($pageSize, ['*'], 'page', $page);
+        $tareas = $query->with('area', 'departamento', 'minuta', 'responsable', 'revisor', 'estatus')->where('revisor_id', $userId)->where('validacion', null)->paginate($pageSize, ['*'], 'page', $page);
+
         return response()->json($tareas);
     }
 }
