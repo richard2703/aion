@@ -1,82 +1,119 @@
 <template>
     <div class="flex flex-col h-screen">
         <!-- Header -->
-        <header class="flex items-center justify-between bg-gray-800 text-white p-4">
+        <header
+            class="flex items-center justify-between bg-gray-800 text-white p-4"
+        >
             <div class="flex items-center gap-4">
                 <button @click="isOpen = !isOpen" class="text-white md:hidden">
                     <i class="pi pi-bars text-2xl"></i>
                 </button>
                 <Link href="/" class="flex items-center gap-2">
-                <Logo class="h-10" />
-                <span class="text-lg font-bold">AION Business</span>
+                    <Logo class="h-10" />
+                    <span class="text-lg font-bold">AION Business</span>
                 </Link>
             </div>
             <nav class="flex items-center gap-4">
                 <div class="relative">
-                    <button class="relative text-gray-300 hover:text-white" @click="toggleNotificationMenu">
+                    <button
+                        class="relative text-gray-300 hover:text-white"
+                        @click="toggleNotificationMenu"
+                    >
                         <i class="pi pi-bell text-xl"></i>
-                        <span v-if="countNotifications"
-                            class="absolute top-0 right-0 bg-red-500 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">{{
-                                countNotifications }}</span>
+                        <span
+                            v-if="countNotifications"
+                            class="absolute top-0 right-0 bg-red-500 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full"
+                            >{{ countNotifications }}</span
+                        >
                     </button>
                 </div>
                 <div class="relative">
-                    <button @click="toggleProfileMenu" class="flex items-center gap-2">
-                        <i :class="[
-                            'pi',
-                            profileMenuOpen
-                                ? 'pi-chevron-up'
-                                : 'pi-chevron-down',
-                        ]"></i>
+                    <button
+                        @click="toggleProfileMenu"
+                        class="flex items-center gap-2"
+                    >
+                        <i
+                            :class="[
+                                'pi',
+                                profileMenuOpen
+                                    ? 'pi-chevron-up'
+                                    : 'pi-chevron-down',
+                            ]"
+                        ></i>
                     </button>
 
-                    <div v-if="notificationMenuOpen"
-                        class="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded shadow-lg z-50">
-                        <h3 class="px-4 py-2 border-b bg-gray-800 text-sm text-gray-100">
+                    <div
+                        v-if="notificationMenuOpen"
+                        class="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded shadow-lg z-50"
+                    >
+                        <h3
+                            class="px-4 py-2 border-b bg-gray-800 text-sm text-gray-100"
+                        >
                             Notificaciones
                         </h3>
                         <div class="mt-2 text-sm bg-white rounded shadow-xl">
                             <div class="block flex justify-end">
                                 <Link
                                     class="px-2 py-1 hover:bg-blue-50 text-xs text-blue-500 position-fixed hover:text-blue-300"
-                                    @click="markAsRead">
-                                marcarcon como leido
+                                    @click="markAsRead"
+                                >
+                                    marcarcon como leido
                                 </Link>
                                 <Link
                                     class="px-2 py-1 hover:bg-blue-50 text-xs text-blue-500 position-fixed hover:text-blue-300"
-                                    @click="deleteReaded">
-                                Borrar leidos
+                                    @click="deleteReaded"
+                                >
+                                    Borrar leidos
                                 </Link>
                             </div>
                             <div v-for="notification in userNotifications">
-                                <Link v-if="notification.readed == 0"
+                                <Link
+                                    v-if="notification.readed == 0"
                                     class="block px-6 py-2 hover:text-white hover:bg-neutral-500"
-                                    :href="notification.link">
-                                {{ notification.titulo }}
-                                </Link>
-                                <Link v-if="notification.readed == 1"
-                                    class="flex justify-between block px-6 py-2 text-white bg-neutral-400 hover:bg-neutral-500"
-                                    :href="notification.link">
-                                <span>
+                                    :href="notification.link"
+                                >
                                     {{ notification.titulo }}
-                                </span>
-                                <span> ✅ </span>
+                                </Link>
+                                <Link
+                                    v-if="notification.readed == 1"
+                                    class="flex justify-between block px-6 py-2 text-white bg-neutral-400 hover:bg-neutral-500"
+                                    :href="notification.link"
+                                >
+                                    <span>
+                                        {{ notification.titulo }}
+                                    </span>
+                                    <span> ✅ </span>
                                 </Link>
                             </div>
                         </div>
                     </div>
-                    <div v-if="profileMenuOpen"
-                        class="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded shadow-lg z-50">
-                        <h3 class="px-4 py-2 border-b bg-gray-800 text-gray-100">
+                    <div
+                        v-if="profileMenuOpen"
+                        class="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded shadow-lg z-50"
+                    >
+                        <h3
+                            class="px-4 py-2 border-b bg-gray-800 text-gray-100"
+                        >
                             {{ $page.props.auth.user.user.name }}
                         </h3>
 
-                        <Link class="block w-full text-left px-4 py-2 hover:bg-gray-100" href="/user/profile">Perfil de
-                        Usuario</Link>
-                        <Link class="block w-full text-left px-4 py-2 hover:bg-gray-100" href="/tareas/mis-tareas">Mis
-                        Tareas</Link>
-                        <Link class="block w-full text-left px-4 py-2 hover:bg-gray-100" href="/logout" method="post"
-                            as="button">Cerrar sesión</Link>
+                        <Link
+                            class="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                            href="/user/profile"
+                            >Perfil de Usuario</Link
+                        >
+                        <Link
+                            class="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                            href="/tareas/mis-tareas"
+                            >Mis Tareas</Link
+                        >
+                        <Link
+                            class="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                            href="/logout"
+                            method="post"
+                            as="button"
+                            >Cerrar sesión</Link
+                        >
                     </div>
                 </div>
             </nav>
@@ -85,48 +122,68 @@
         <!-- Content Area -->
         <div class="flex flex-1 h-full mb-4">
             <!-- Sidebar -->
-            <div :class="[
-                'bg-gray-800 text-white w-60 p-1',
-                { hidden: !isOpen, block: isOpen },
-                'md:block',
-                'z-50',
-                'md:static',
-                'absolute',
-                'h-screen overflow-auto',
-                'mb-4',
-            ]">
+            <div
+                :class="[
+                    'bg-gray-800 text-white w-60 p-1',
+                    { hidden: !isOpen, block: isOpen },
+                    'md:block',
+                    'z-50',
+                    'md:static',
+                    'absolute',
+                    'h-screen overflow-auto',
+                    'mb-4',
+                ]"
+            >
                 <nav class="flex flex-col space-y-2">
                     <div v-for="item in filteredMenu" :key="item.label">
-                        <button @click="
-                            item.children
-                                ? toggleSubmenu(item)
-                                : $inertia.visit(route(`${item.route}`))
+                        <button
+                            @click="
+                                item.children
+                                    ? toggleSubmenu(item)
+                                    : $inertia.visit(route(`${item.route}`))
                             "
-                            class="flex items-center justify-between p-2 rounded-md hover:bg-gray-700 hover:text-[#dfb569] w-full">
+                            class="flex items-center justify-between p-2 rounded-md hover:bg-gray-700 hover:text-[#dfb569] w-full"
+                        >
                             <div class="flex items-center gap-3">
                                 <!-- <i :class="item.icon" class="pi w-5 h-5"></i> -->
-                                <span :class="openMenus.includes(item)
-                                    ? 'text-[#dfb569]'
-                                    : ''
-                                    ">{{ item.label }}</span>
+                                <span
+                                    :class="
+                                        openMenus.includes(item)
+                                            ? 'text-[#dfb569]'
+                                            : ''
+                                    "
+                                    >{{ item.label }}</span
+                                >
                             </div>
-                            <i v-if="item.children" :class="[
-                                'pi',
-                                openMenus.includes(item)
-                                    ? 'pi-chevron-down'
-                                    : 'pi-chevron-right',
-                            ]" class="transition-transform"></i>
+                            <i
+                                v-if="item.children"
+                                :class="[
+                                    'pi',
+                                    openMenus.includes(item)
+                                        ? 'pi-chevron-down'
+                                        : 'pi-chevron-right',
+                                ]"
+                                class="transition-transform"
+                            ></i>
                         </button>
-                        <div v-if="item.children && openMenus.includes(item)" class="pl-6 space-y-2 max-h-screen">
-                            <button v-for="child in item.children" :key="child.label" @click="
-                                child.label === 'Capacitacion'
-                                    ? navigate(
-                                        'https://laproductivitycenter.com'
-                                    )
-                                    : $inertia.visit(
-                                        route(`${child.route}`)
-                                    )
-                                " class="flex items-center gap-3 p-2 rounded-md hover:bg-gray-700">
+                        <div
+                            v-if="item.children && openMenus.includes(item)"
+                            class="pl-6 space-y-2 max-h-screen"
+                        >
+                            <button
+                                v-for="child in item.children"
+                                :key="child.label"
+                                @click="
+                                    child.label === 'Capacitacion'
+                                        ? navigate(
+                                              'https://laproductivitycenter.com'
+                                          )
+                                        : $inertia.visit(
+                                              route(`${child.route}`)
+                                          )
+                                "
+                                class="flex items-center gap-3 p-2 rounded-md hover:bg-gray-700"
+                            >
                                 <i :class="child.icon" class="pi w-5 h-5"></i>
                                 <span>{{ child.label }}</span>
                             </button>
@@ -142,21 +199,32 @@
                 </main>
             </div>
             <!-- Botón para el sidebar derecho -->
-            <button @click="isRightSidebarOpen = !isRightSidebarOpen"
-                class="text-white bg-gray-800 hover:bg-gray-500 w-7">
-                <i :class="[
-                    'pi text-2xl',
-                    isRightSidebarOpen
-                        ? 'pi-angle-double-right'
-                        : 'pi-angle-double-left',
-                ]"></i>
+            <button
+                @click="isRightSidebarOpen = !isRightSidebarOpen"
+                class="text-white bg-gray-800 hover:bg-gray-500 w-7"
+            >
+                <i
+                    :class="[
+                        'pi text-2xl',
+                        isRightSidebarOpen
+                            ? 'pi-angle-double-right'
+                            : 'pi-angle-double-left',
+                    ]"
+                ></i>
             </button>
             <!-- Sidebar Derecho -->
-            <div v-if="isRightSidebarOpen"
-                class="fixed flex top-0 right-0 w-96 h-screen bg-gray-800 text-white shadow-lg z-50 transition-transform transform translate-x-0">
-                <div @click="isRightSidebarOpen = false"
-                    class="flex items-center justify-center block w-7 p-4 border-b border-gray-700 hover:text-white hover:bg-gray-500">
-                    <button @click="isRightSidebarOpen = false" class="text-white">
+            <div
+                v-if="isRightSidebarOpen"
+                class="fixed flex top-0 right-0 w-96 h-screen bg-gray-800 text-white shadow-lg z-50 transition-transform transform translate-x-0"
+            >
+                <div
+                    @click="isRightSidebarOpen = false"
+                    class="flex items-center justify-center block w-7 p-4 border-b border-gray-700 hover:text-white hover:bg-gray-500"
+                >
+                    <button
+                        @click="isRightSidebarOpen = false"
+                        class="text-white"
+                    >
                         <i class="pi pi-angle-double-right text-2xl"></i>
                     </button>
                 </div>
@@ -178,35 +246,55 @@
 
                     <div v-if="titulo === 'reportes semanales'">
                         <div>
-                            <button @click="() => (isMinutasModal = true)"
-                                class="flex items-center gap-3 p-2 rounded-md hover:bg-gray-700 w-full">
+                            <button
+                                @click="() => (isMinutasModal = true)"
+                                class="flex items-center gap-3 p-2 rounded-md hover:bg-gray-700 w-full"
+                            >
                                 <span>Tareas en minutas</span>
                             </button>
                         </div>
 
                         <div class="p-2">
-                            <Comentario :reporte_semanal_id="reporteSemanal.id" />
+                            <Comentario
+                                :reporte_semanal_id="reporteSemanal.id"
+                            />
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Fondo de superposición -->
-            <div v-if="isRightSidebarOpen" @click="isRightSidebarOpen = false"
-                class="fixed inset-0 bg-black bg-opacity-50 z-40"></div>
+            <div
+                v-if="isRightSidebarOpen"
+                @click="isRightSidebarOpen = false"
+                class="fixed inset-0 bg-black bg-opacity-50 z-40"
+            ></div>
         </div>
     </div>
     <!-- Modal de minutas -->
-    <Modal :show="isMinutasModal" @close="isMinutasModal = false" class="w-[80%]">
+    <Modal
+        :show="isMinutasModal"
+        @close="isMinutasModal = false"
+        class="w-[80%]"
+    >
         <template v-slot="{ modalData }">
             <MinutasList @newTarea="tareaCreate" />
         </template>
     </Modal>
 
-    <Modal :show="isTareasModal" @close="isTareasModal = false" class="w-[80%]" :modal-data="minuta">
+    <Modal
+        :show="isTareasModal"
+        @close="isTareasModal = false"
+        class="w-[80%]"
+        :modal-data="minuta"
+    >
         <template v-slot="{ modalData }">
-            <TareasCreate class="z-50" :minuta="modalData" @close="isTareasModal = false"
-                @tareaGuardada="actualizarTareas" />
+            <TareasCreate
+                class="z-50"
+                :minuta="modalData"
+                @close="isTareasModal = false"
+                @tareaGuardada="actualizarTareas"
+            />
         </template>
     </Modal>
 </template>
@@ -355,6 +443,12 @@ const menuItems = [
                 route: "proveedores.index",
                 icon: "",
                 role: ["admin", "superadmin"],
+            },
+            {
+                label: "NotebookLM",
+                route: "notebook.index",
+                icon: "",
+                role: ["user", "admin", "superadmin"],
             },
         ],
     },
