@@ -92,6 +92,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('/minutas/{minuta}/id', [App\Http\Controllers\minutasController::class, 'byId'])->name('minutas.byId');
     Route::patch('/minutas/{minuta}/update', [App\Http\Controllers\minutasController::class, 'update'])->name('minutas.update');
     Route::delete('/minutas/{minuta}/destroy', [App\Http\Controllers\minutasController::class, 'destroy'])->name('minutas.destroy');
+    Route::get('/minutas/{minuta}/pdf', [App\Http\Controllers\minutasController::class, 'pdf'])->name('minutas.pdf');
 
     // Proceso
     Route::get('/procesos', [App\Http\Controllers\procesoController::class, 'index'])->name('proceso.index');

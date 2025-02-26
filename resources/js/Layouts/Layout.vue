@@ -636,16 +636,16 @@ const tareaCreate = async (minuta_id) => {
 };
 
 // TODO: retirar del arreglo "NotebookLM" si se implementa el "embedded"
-const handleClick = (child) => {
+function handleClick(child) {
     if (["Capacitacion", "NotebookLM"].includes(child.label)) {
         // navigate to external URL
         navigate(child.route);
     } else {
         // navigate to route
-        this.$inertia.visit(route(`${child.route}`));
+        window.location.href = route(child.route);
     }
     // add more conditions or logic here
-};
+}
 </script>
 
 <style>

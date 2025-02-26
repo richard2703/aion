@@ -8,6 +8,9 @@ use Inertia\Inertia;
 use App\Models\User;
 use Carbon\Carbon;
 use App\Http\Controllers\helper;
+use App\Models\Asistente;
+use App\Models\tareas;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 
 
@@ -508,5 +511,18 @@ class minutasController extends Controller
     function byId(minutas $minuta)
     {
         return response()->json($minuta);
+    }
+
+    function pdf(minutas $minuta)
+    {
+        $minuta->load('lider', 'area', 'departamento', 'proceso', 'tipoMinuta');
+        $asistentes = Asistente::with('user')->where('minuta_id', $minuta->id)->get();
+        $tareas = tareas::with('area', 'departamento', 'estatus', 'minuta', 'responsable', 'revisor', 'evidencia')->where('minuta_id', $minuta->id)->get();
+
+        // return view('MinutaPDF', ['minuta' => $minuta, 'asistentes' => $asistentes, 'tareas' => $tareas]);
+
+        $pdf = Pdf::loadView('MinutaPDF', ['minuta' => $minuta, 'asistentes' => $asistentes, 'tareas' => $tareas]);
+
+        return $pdf->download('minuta.pdf');
     }
 }
