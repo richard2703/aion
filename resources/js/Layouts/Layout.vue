@@ -173,15 +173,7 @@
                             <button
                                 v-for="child in item.children"
                                 :key="child.label"
-                                @click="
-                                    child.label === 'Capacitacion'
-                                        ? navigate(
-                                              'https://laproductivitycenter.com'
-                                          )
-                                        : $inertia.visit(
-                                              route(`${child.route}`)
-                                          )
-                                "
+                                @click="handleClick(child)"
                                 class="flex items-center gap-3 p-2 rounded-md hover:bg-gray-700"
                             >
                                 <i :class="child.icon" class="pi w-5 h-5"></i>
@@ -446,7 +438,8 @@ const menuItems = [
             },
             {
                 label: "NotebookLM",
-                route: "notebook.index",
+                // route: "notebook.index", // Reemplaza con la ruta adecuada en cuando notebookLM este para ser "embedded"
+                route: "https://notebooklm.google/",
                 icon: "",
                 role: ["user", "admin", "superadmin"],
             },
@@ -640,6 +633,18 @@ const tareaCreate = async (minuta_id) => {
     });
     isMinutasModal.value = false;
     isTareasModal.value = true;
+};
+
+// TODO: retirar del arreglo "NotebookLM" si se implementa el "embedded"
+const handleClick = (child) => {
+    if (["Capacitacion", "NotebookLM"].includes(child.label)) {
+        // navigate to external URL
+        navigate(child.route);
+    } else {
+        // navigate to route
+        this.$inertia.visit(route(`${child.route}`));
+    }
+    // add more conditions or logic here
 };
 </script>
 
