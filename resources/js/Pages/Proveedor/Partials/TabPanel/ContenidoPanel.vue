@@ -130,14 +130,13 @@ const deleteProveedor = async (id) => {
                                 <div class="h-20 overflow-y-auto">{{ proveedor.info }}</div>
                             </p>
                         </div>
-                        <div>
-                            {{ proveedor.video }}
-                            <video controls>
-    <source :src="proveedor.video" type="video/mp4">
-    Tu navegador no soporta la etiqueta de video.
-</video>
-                        </div>
-                        </div>
+                            <div>
+                                <p class="text-center text-red-500">(El tamaño del video esta limitado a 100mb)</p>
+                                <video controls>
+                                    <source :src="proveedor.video" type="video/mp4">
+                                    Tu navegador no soporta la etiqueta de video.
+                                </video>
+                            </div>
                         <div
                             class="flex flex-row items-center mt-4 text-gray-700"
                         >
@@ -173,9 +172,8 @@ const deleteProveedor = async (id) => {
                     </div>
                 </div>
                 <hr class="my-4">
+                </div>
             </div>
-
-
         </div>
     </div>
 </template>
