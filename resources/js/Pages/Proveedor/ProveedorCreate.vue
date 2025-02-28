@@ -268,6 +268,9 @@ const onFileChange = (key, event) => {
                                     class="mt-1 block w-full"
                                     autocomplete="video"
                                 />
+                                <p class="text-center text-red-500">
+                                    (El tamaño del video esta limitado a 100mb)
+                                </p>
                             </div>
                             <div class="mt-4 w-full">
                                 <InputLabel

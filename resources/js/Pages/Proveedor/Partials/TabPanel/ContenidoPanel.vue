@@ -131,7 +131,6 @@ const deleteProveedor = async (id) => {
                             </p>
                         </div>
                             <div>
-                                <p class="text-center text-red-500">(El tamaño del video esta limitado a 100mb)</p>
                                 <video controls>
                                     <source :src="proveedor.video" type="video/mp4">
                                     Tu navegador no soporta la etiqueta de video.
