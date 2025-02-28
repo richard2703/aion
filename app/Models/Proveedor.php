@@ -22,7 +22,8 @@ class Proveedor extends Model
         'link_orden',
         'telefono',
         'correo',
-        'info'
+        'info',
+        'video',
     ];
 
     public function area()

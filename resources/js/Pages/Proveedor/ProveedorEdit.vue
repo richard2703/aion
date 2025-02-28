@@ -28,6 +28,7 @@ const form = useForm({
     telefono: proveedor.value.telefono,
     correo: proveedor.value.correo,
     info: proveedor.value.info,
+    video: "",
 });
 
 onMounted(() => {
@@ -64,19 +65,41 @@ const onChange = (event) => {
         });
 };
 
-const submit = () => {
+const submit = async () => {
     if (isUrlValid(form.pagina_web)) {
-        form.patch(route("proveedores.update", proveedor.value.id), {
-            onSuccess: () => {
-                showToast("Proveedor creado con exito", "success");
+        const formData = new FormData();
+        formData.append("area_id", form.area_id);
+        formData.append("proceso_id", form.proceso_id);
+        formData.append("nombre", form.nombre);
+        formData.append("servicio", form.servicio);
+        formData.append("pagina_web", form.pagina_web);
+        formData.append("link_orden", form.link_orden);
+        formData.append("telefono", form.telefono);
+        formData.append("correo", form.correo);
+        formData.append("info", form.info);
+        formData.append("video", form.video);
+
+        await axios
+            .post(route("proveedor.update", proveedor.value.id), formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            })
+            .then(() => {
+                showToast("Proveedor actualizado con exito", "success");
                 form.reset();
-            },
-        });
+                window.location.href = route("proveedores.index");
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     } else {
         showToast("El link a la pagina web no es valido", "error");
     }
 };
-console.log({ proveedor: proveedor });
+const onFileChange = (key, event) => {
+    form[key] = event.target.files[0];
+};
 </script>
 
 <template>
@@ -244,6 +267,19 @@ console.log({ proveedor: proveedor });
                                         autocomplete="correo"
                                     />
                                 </div>
+                            </div>
+                            <div class="mt-4 w-full">
+                                <InputLabel
+                                    for="presentacion"
+                                    value="Video de presentación: "
+                                />
+                                <input
+                                    id="video"
+                                    type="file"
+                                    @change="onFileChange('video', $event)"
+                                    class="mt-1 block w-full"
+                                    autocomplete="video"
+                                />
                             </div>
                             <div class="mt-4 w-full">
                                 <InputLabel
