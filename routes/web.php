@@ -253,7 +253,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('proveedores/nuevo', [App\Http\Controllers\proveedorController::class, 'create'])->name('proveedores.create');
     Route::post('proveedores/store', [App\Http\Controllers\proveedorController::class, 'store'])->name('proveedores.store');
     Route::get('proveedores/{proveedor}/edit', [App\Http\Controllers\proveedorController::class, 'edit'])->name('proveedores.edit');
-    Route::patch('proveedores/{proveedor}/update', [App\Http\Controllers\proveedorController::class, 'update'])->name('proveedores.update');
+    Route::post('proveedor/{proveedor}/update', [App\Http\Controllers\proveedorController::class, 'update'])->name('proveedor.update');
     Route::delete('proveedores/{proveedor}/destroy', [App\Http\Controllers\proveedorController::class, 'destroy'])->name('proveedores.destroy');
 
     //Helpers
