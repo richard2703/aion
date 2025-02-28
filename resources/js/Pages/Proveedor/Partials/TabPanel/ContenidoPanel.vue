@@ -100,33 +100,44 @@ const deleteProveedor = async (id) => {
                         >
                             <span>Proveedor: </span> {{ proveedor.nombre }}
                         </h3>
-                        <p class="leading-normal">
-                            <span>Servicio: </span> {{ proveedor.servicio }}
-                        </p>
-                        <p class="leading-normal">
-                            <span>No. Telefono: </span>
-                            <a class="hover:underline text-blue-500 cursor-pointer" :href="'tel:' + proveedor.telefono">{{ proveedor.telefono }}</a>
-                        </p>
-                        <p class="leading-normal">
-                            <span>Correo Electronico: </span>
-                            {{ proveedor.correo }}
-                        </p>
-                        <p class="leading-normal">
-                            <span>Sitio Web: </span>
-                            <a class="hover:underline text-blue-500 cursor-pointer" :href="proveedor.pagina_web" target="_blank">{{
-                                proveedor.pagina_web
-                            }}</a>
-                        </p>
-                        <p class="leading-normal">
-                            <a class="hover:underline text-blue-500 cursor-pointer" :href="proveedor.link_orden" target="_blank">
-                                <span>Hacer orden de compra </span>
-                            </a>
-                        </p>
-                        <p class="leading-normal">
-                            <span>Informacion Adicional: </span>
-                            <br />
-                            <div class="h-20 overflow-y-auto">{{ proveedor.info }}</div>
-                        </p>
+                        <div class="grid grid-cols-2">
+                            <div>
+                            <p class="leading-normal">
+                                <span>Servicio: </span> {{ proveedor.servicio }}
+                            </p>
+                            <p class="leading-normal">
+                                <span>No. Telefono: </span>
+                                <a class="hover:underline text-blue-500 cursor-pointer" :href="'tel:' + proveedor.telefono">{{ proveedor.telefono }}</a>
+                            </p>
+                            <p class="leading-normal">
+                                <span>Correo Electronico: </span>
+                                {{ proveedor.correo }}
+                            </p>
+                            <p class="leading-normal">
+                                <span>Sitio Web: </span>
+                                <a class="hover:underline text-blue-500 cursor-pointer" :href="proveedor.pagina_web" target="_blank">{{
+                                    proveedor.pagina_web
+                                }}</a>
+                            </p>
+                            <p class="leading-normal">
+                                <a class="hover:underline text-blue-500 cursor-pointer" :href="proveedor.link_orden" target="_blank">
+                                    <span>Hacer orden de compra </span>
+                                </a>
+                            </p>
+                            <p class="leading-normal">
+                                <span>Informacion Adicional: </span>
+                                <br />
+                                <div class="h-20 overflow-y-auto">{{ proveedor.info }}</div>
+                            </p>
+                        </div>
+                        <div>
+                            {{ proveedor.video }}
+                            <video controls>
+    <source :src="proveedor.video" type="video/mp4">
+    Tu navegador no soporta la etiqueta de video.
+</video>
+                        </div>
+                        </div>
                         <div
                             class="flex flex-row items-center mt-4 text-gray-700"
                         >
