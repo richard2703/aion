@@ -443,6 +443,13 @@ const menuItems = [
                 icon: "",
                 role: ["user", "admin", "superadmin"],
             },
+            {
+                label: "Tutorial",
+                // route: "notebook.index", // Reemplaza con la ruta adecuada en cuando notebookLM este para ser "embedded"
+                route: "tutorial.index",
+                icon: "",
+                role: ["user", "admin", "superadmin"],
+            },
         ],
     },
     {
