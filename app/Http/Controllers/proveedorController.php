@@ -40,17 +40,17 @@ class proveedorController extends Controller
         $proveedores = $query->get();
 
         // local
-        $proveedores->transform(function ($proveedor) {
-            $proveedor->video = $proveedor->video ? Storage::disk('public')->url($proveedor->video) : null;
-            return $proveedor;
-        });
-
-        // server
         // $proveedores->transform(function ($proveedor) {
-        //     $video = ("public/storage/$proveedor->video");
-        //     $proveedor->video = $proveedor->video ? asset($video) : null;
+        //     $proveedor->video = $proveedor->video ? Storage::disk('public')->url($proveedor->video) : null;
         //     return $proveedor;
         // });
+
+        // server
+        $proveedores->transform(function ($proveedor) {
+            $video = ("public/storage/$proveedor->video");
+            $proveedor->video = $proveedor->video ? asset($video) : null;
+            return $proveedor;
+        });
 
         $proveedoresPorProceso = $proveedores->groupBy(function ($proveedor) {
             return optional($proveedor->proceso)->nombre ?? 'Sin proceso';
