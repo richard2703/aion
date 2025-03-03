@@ -261,4 +261,13 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
 
     //Notebook
     Route::get('notebook', [App\Http\Controllers\notebookController::class, 'index'])->name('notebook.index');
+
+    //Tutorial
+    Route::get('tutorial', [App\Http\Controllers\tutorialController::class, 'index'])->name('tutorial.index');
+
+    // PDF
+    Route::get('/pdfs/{filename}', [App\Http\Controllers\PdfController::class, 'getPdf']);
+
+    // Terminos y condiciones
+    Route::get('terminos', [App\Http\Controllers\terminosController::class, 'index'])->name('terminos.index');
 });

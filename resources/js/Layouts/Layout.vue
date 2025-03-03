@@ -554,6 +554,25 @@ const menuItems = [
             },
         ],
     },
+    {
+        label: "Ayuda",
+        icon: "",
+        role: ["admin", "user", "superadmin"],
+        children: [
+            {
+                label: "Tutorial",
+                route: "tutorial.index",
+                icon: "",
+                role: ["user", "admin", "superadmin"],
+            },
+            {
+                label: "Terminos y condiciones",
+                route: "terminos.index",
+                icon: "",
+                role: ["user", "admin", "superadmin"],
+            },
+        ],
+    },
 ];
 const userNotifications = ref([]);
 const countNotifications = ref(0);
