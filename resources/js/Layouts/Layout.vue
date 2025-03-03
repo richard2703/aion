@@ -443,13 +443,6 @@ const menuItems = [
                 icon: "",
                 role: ["user", "admin", "superadmin"],
             },
-            {
-                label: "Tutorial",
-                // route: "notebook.index", // Reemplaza con la ruta adecuada en cuando notebookLM este para ser "embedded"
-                route: "tutorial.index",
-                icon: "",
-                role: ["user", "admin", "superadmin"],
-            },
         ],
     },
     {
@@ -558,6 +551,25 @@ const menuItems = [
                 route: "permisos.index",
                 icon: "",
                 role: ["admin", "superadmin"],
+            },
+        ],
+    },
+    {
+        label: "Ayuda",
+        icon: "",
+        role: ["admin", "user", "superadmin"],
+        children: [
+            {
+                label: "Tutorial",
+                route: "tutorial.index",
+                icon: "",
+                role: ["user", "admin", "superadmin"],
+            },
+            {
+                label: "Terminos y condiciones",
+                route: "terminos.index",
+                icon: "",
+                role: ["user", "admin", "superadmin"],
             },
         ],
     },
