@@ -359,19 +359,22 @@ const deleteEvidencia = async (id) => {
                                         >
                                         </PrimaryButton>
                                     </div>
-                                    <div
-                                        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-4"
-                                    >
+                                    <div class="grid grid-cols-1 gap-4">
                                         <div
-                                            v-for="evidencia in evidencias"
-                                            class="card w-60 bg-slate-100 text-center"
+                                            v-for="(
+                                                evidencia, index
+                                            ) in evidencias"
+                                            :key="index"
+                                            class="card flex justify-evenly hover:bg-slate-100"
                                         >
-                                            <Image
-                                                :src="evidencia.img_ref"
-                                                alt="Image"
-                                                width="250"
-                                                preview
-                                            />
+                                            <a
+                                                :href="evidencia.img_ref"
+                                                download
+                                                class="cursor-pointer text-blue-500 text-xl"
+                                            >
+                                                referencia a documento
+                                                {{ Number(index) + 1 }}</a
+                                            >
                                             <!-- <img :src="evidencia" alt="" srcset=""> -->
                                             <a
                                                 class="pi pi-trash text-red-500 cursor-pointer hover:text-red-700 text-2xl"
