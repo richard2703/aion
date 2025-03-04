@@ -72,8 +72,7 @@ const getDepartamentos = async (area_id) => {
             route("departamentos.byArea", area_id)
         );
         departamentos.value = response.data.departamentos;
-        console.log('departamentos.value', departamentos.value);
-
+        console.log("departamentos.value", departamentos.value);
     } catch (error) {
         console.error(error);
     }
@@ -396,15 +395,18 @@ const deleteEvidencia = async (id) => {
                             </div>
                             <div class="grid grid-cols-1">
                                 <div
-                                    v-for="evidencia in evidencias"
-                                    class="card w-60 bg-slate-100 text-center"
+                                    v-for="(evidencia, index) in evidencias"
+                                    :key="index"
+                                    class="card flex justify-evenly hover:bg-slate-100"
                                 >
-                                    <Image
-                                        :src="evidencia.img_ref"
-                                        alt="Image"
-                                        width="250"
-                                        preview
-                                    />
+                                    <a
+                                        :href="evidencia.img_ref"
+                                        download
+                                        class="cursor-pointer text-blue-500 text-xl"
+                                    >
+                                        referencia a documento
+                                        {{ Number(index) + 1 }}</a
+                                    >
                                     <!-- <img :src="evidencia" alt="" srcset=""> -->
                                     <a
                                         class="pi pi-trash text-red-500 cursor-pointer hover:text-red-700 text-2xl"

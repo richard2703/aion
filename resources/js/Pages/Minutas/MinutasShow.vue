@@ -104,6 +104,7 @@ const formatearFecha = (fecha) => {
 
 const actualizarTareas = () => {
     getTareas(minuta.value.id);
+    getAsistentes(minuta.value.id);
 };
 
 async function getUsuarios() {
@@ -260,6 +261,7 @@ watch(
         desde,
         hasta,
         isTerminadoShow,
+        isCreateModalVisible,
     ],
     ([
         newGlobalFilter,
@@ -271,6 +273,7 @@ watch(
         newDesde,
         newHasta,
         newIsTerminadoShow,
+        newIsCreateModalVisible,
     ]) => {
         filters.value = {
             global: { value: newGlobalFilter, matchMode: "contains" },
@@ -295,6 +298,7 @@ watch(
             sortOrder.value,
             newIsTerminadoShow
         );
+        getAsistentes(minuta.value.id);
     }
 );
 

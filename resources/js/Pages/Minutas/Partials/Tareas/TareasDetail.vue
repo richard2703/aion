@@ -5,10 +5,10 @@ import axios from "axios";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
-import AutoComplete from 'primevue/autocomplete';
-import Textarea from 'primevue/textarea';
+import AutoComplete from "primevue/autocomplete";
+import Textarea from "primevue/textarea";
 import { showToast } from "@/Pages/utils/SweetAlert.service";
-import Image from 'primevue/image';
+import Image from "primevue/image";
 
 const props = defineProps({
     areas: Array,
@@ -18,7 +18,7 @@ const props = defineProps({
 });
 
 // Define emits
-const emit = defineEmits(['close']);
+const emit = defineEmits(["close"]);
 
 const task = ref(props.task);
 const tarea = ref({});
@@ -64,7 +64,9 @@ const getAreas = async () => {
 
 const getDepartamentos = async (area_id) => {
     try {
-        const response = await axios.get(route("departamentos.byArea", area_id));
+        const response = await axios.get(
+            route("departamentos.byArea", area_id)
+        );
         departamentos.value = response.data.departamentos;
     } catch (error) {
         console.error(error);
@@ -86,7 +88,9 @@ const search = (event) => {
             filteredUsuarios.value = [...usuarios.value];
         } else {
             filteredUsuarios.value = usuarios.value.filter((usuario) => {
-                return usuario.name.toLowerCase().includes(event.query.toLowerCase());
+                return usuario.name
+                    .toLowerCase()
+                    .includes(event.query.toLowerCase());
             });
         }
     }, 250);
@@ -94,11 +98,10 @@ const search = (event) => {
 
 const submit = async () => {
     try {
-
         await form.patch(route("tareas.update", task.value.id), {
             onFinish: () => {
                 showToast("El registro ha sido creado", "success");
-                emit('tareaGuardada');
+                emit("tareaGuardada");
                 closeModal();
             },
         });
@@ -110,12 +113,14 @@ const submit = async () => {
 
 const closeModal = () => {
     // Emit event to close modal in the parent component
-    emit('close');
+    emit("close");
 };
 
 const getEvidencias = async () => {
     try {
-        const response = await axios.get(route("tareaEvidencia.getByTarea", task.value.id));
+        const response = await axios.get(
+            route("tareaEvidencia.getByTarea", task.value.id)
+        );
         evidencias.value = response.data;
     } catch (error) {
         console.error(error);
@@ -132,66 +137,133 @@ const getEvidencias = async () => {
                     <form @submit.prevent="submit">
                         <div class="mt-4">
                             <InputLabel for="minuta_id" value="Reunión:" />
-                            <TextInput id="minuta_id" type="text" :value="task.minuta.alias" class="mt-1 block w-full"
-                                disabled />
+                            <TextInput
+                                id="minuta_id"
+                                type="text"
+                                :value="task.minuta.alias"
+                                class="mt-1 block w-full"
+                                disabled
+                            />
                         </div>
 
                         <div class="mt-4">
                             <InputLabel for="area_id" value="Pilar: " />
-                            <TextInput id="pilar" type="text" :value="task.area.nombre" class="mt-1 block w-full"
-                                disabled />
+                            <TextInput
+                                id="pilar"
+                                type="text"
+                                :value="task.area.nombre"
+                                class="mt-1 block w-full"
+                                disabled
+                            />
                         </div>
 
                         <div class="mt-4">
-                            <InputLabel for="departamento_id" value="Flujo de valor: " />
-                            <TextInput id="flujo_valor" type="text" :value="task.area.nombre" class="mt-1 block w-full"
-                                disabled />
+                            <InputLabel
+                                for="departamento_id"
+                                value="Flujo de valor: "
+                            />
+                            <TextInput
+                                id="flujo_valor"
+                                type="text"
+                                :value="task.area.nombre"
+                                class="mt-1 block w-full"
+                                disabled
+                            />
                         </div>
 
-                        <hr class="my-4">
+                        <hr class="my-4" />
 
                         <div class="mt-4">
                             <InputLabel for="tarea" value="Tarea:" />
-                            <TextInput id="tarea" type="text" :value="task.tarea" class="mt-1 block w-full" disabled />
+                            <TextInput
+                                id="tarea"
+                                type="text"
+                                :value="task.tarea"
+                                class="mt-1 block w-full"
+                                disabled
+                            />
                         </div>
                         <div class="mt-4 z-30">
-                            <InputLabel for="responsable_id" value="Responsable:" />
+                            <InputLabel
+                                for="responsable_id"
+                                value="Responsable:"
+                            />
                             <div v-if="task.responsable">
-                                <TextInput id="responsable" v-model="task.responsable.name" type="text"
-                                    class="mt-1 block w-full" disabled />
+                                <TextInput
+                                    id="responsable"
+                                    v-model="task.responsable.name"
+                                    type="text"
+                                    class="mt-1 block w-full"
+                                    disabled
+                                />
                             </div>
                             <div v-else>
-                                <InputLabel class="text-red-500" value="Sin responsable" />
+                                <InputLabel
+                                    class="text-red-500"
+                                    value="Sin responsable"
+                                />
                             </div>
                         </div>
                         <div class="mt-4 z-30">
-                            <InputLabel for="revisor_id" value="Cliente de la tarea:" />
+                            <InputLabel
+                                for="revisor_id"
+                                value="Cliente de la tarea:"
+                            />
                             <div v-if="task.revisor">
-                                <TextInput id="rivisor" v-model="task.revisor.name" type="text"
-                                    class="mt-1 block w-full" disabled />
+                                <TextInput
+                                    id="rivisor"
+                                    v-model="task.revisor.name"
+                                    type="text"
+                                    class="mt-1 block w-full"
+                                    disabled
+                                />
                             </div>
                             <div v-else>
-                                <InputLabel class="text-red-500" value="Sin revisor" />
+                                <InputLabel
+                                    class="text-red-500"
+                                    value="Sin revisor"
+                                />
                             </div>
                         </div>
                         <div class="mt-4">
                             <InputLabel for="estatus" value="Estatus: " />
-                            <TextInput id="estatus" type="text" :value="task.estatus.titulo" class="mt-1 block w-full"
-                                disabled />
+                            <TextInput
+                                id="estatus"
+                                type="text"
+                                :value="task.estatus.titulo"
+                                class="mt-1 block w-full"
+                                disabled
+                            />
                         </div>
 
                         <div class="mt-4">
                             <InputLabel for="fecha" value="Fecha de entrega:" />
-                            <TextInput id="fecha" type="text" :value="task.fecha" class="mt-1 block w-full" disabled />
+                            <TextInput
+                                id="fecha"
+                                type="text"
+                                :value="task.fecha"
+                                class="mt-1 block w-full"
+                                disabled
+                            />
                         </div>
                         <div class="mt-4">
                             <InputLabel for="nota" value="Notas: " />
-                            <Textarea class="mt-1 block w-full" v-model="form.nota" rows="5" cols="30" disabled />
+                            <Textarea
+                                class="mt-1 block w-full"
+                                v-model="form.nota"
+                                rows="5"
+                                cols="30"
+                                disabled
+                            />
                         </div>
 
                         <div class="flex items-center justify-end mt-4">
-                            <PrimaryButton @click="emit('close')" class="ms-4"
-                                :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                            <PrimaryButton
+                                @click="emit('close')"
+                                class="ms-4"
+                                :class="{ 'opacity-25': form.processing }"
+                                :disabled="form.processing"
+                            >
                                 cerrar
                             </PrimaryButton>
                         </div>
@@ -199,13 +271,26 @@ const getEvidencias = async () => {
                 </div>
                 <div class="contaier mx-auto">
                     <div class="grid grid-cols-1 gap-4">
-                        <InputLabel for="img_ref" value="Muestra del trabajo realizado: " />
-                        <div class="grid  grid-cols-1">
-                            <div v-for="evidencia in evidencias" class="card w-60 bg-slate-100">
-                                <Image :src="evidencia.img_ref" alt="Image" width="250" preview />
+                        <InputLabel
+                            for="img_ref"
+                            value="Muestra del trabajo realizado: "
+                        />
+                        <div class="grid grid-cols-1">
+                            <div
+                                v-for="(evidencia, index) in evidencias"
+                                :key="index + 1"
+                                class="card flex justify-evenly hover:bg-slate-100"
+                            >
+                                <a
+                                    :href="evidencia.img_ref"
+                                    download
+                                    class="cursor-pointer text-blue-500 text-xl"
+                                >
+                                    referencia a documento
+                                    {{ Number(index) + 1 }}</a
+                                >
                                 <!-- <img :src="evidencia" alt="" srcset=""> -->
                             </div>
-
                         </div>
                     </div>
                 </div>
