@@ -183,7 +183,11 @@ const closeDateModal = () => {
                                                 <h2
                                                     class="text-center py-4 font-bold text-3xl"
                                                 >
-                                                    Propósito
+                                                    <a
+                                                        href="https://youtu.be/O5cKbdjSjRY?si=8ffxigOQ_G0uC1OF"
+                                                        target="_blank"
+                                                        >Propósito</a
+                                                    >
                                                 </h2>
                                                 <p class="italic m-4 text-lg">
                                                     {{ proposito }}
