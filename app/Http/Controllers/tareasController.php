@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\ActualizacionTareaMail;
 use App\Mail\NuevaTareaMail;
+use App\Models\Asistente;
 use App\Models\Notificacion;
 use App\Models\tareas;
 use App\Models\User;
@@ -161,6 +162,20 @@ class tareasController extends Controller
      */
     public function store(Request $request)
     {
+        $asistentes = Asistente::where('minuta_id', $request->minuta_id)->get();
+        $newAsistentes = "";
+        foreach ($asistentes as $asistente) {
+            if ($asistente->user_id != $request->responsable_id) {
+                $newAsistentes = $request->responsable_id;
+            }
+        }
+
+        if ($newAsistentes != "") {
+            Asistente::create([
+                'minuta_id' => $request->minuta_id,
+                'user_id' => $newAsistentes
+            ]);
+        }
 
         $data = [
             'area_id' => $request->area_id,
