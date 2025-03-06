@@ -83,11 +83,11 @@ watch(() => props.pdfUrl, loadPdf);
         <div ref="containerRef" class="pdf-container"></div>
 
         <!-- Custom navigation controls -->
-        <div class="controls" v-if="!hasError && !isLoading">
+        <!-- <div class="controls" v-if="!hasError && !isLoading">
             <button @click="prevPage">⬅️ Anterior</button>
             <span>Página {{ currentPage }}</span>
             <button @click="nextPage">Siguiente ➡️</button>
-        </div>
+        </div> -->
     </div>
 </template>
 
