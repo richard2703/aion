@@ -10,7 +10,7 @@
                 </button>
                 <Link href="/" class="flex items-center gap-2">
                     <Logo class="h-10" />
-                    <span class="text-lg font-bold">AION Business</span>
+                    <span class="text-lg font-bold">AION Suplementos</span>
                 </Link>
             </div>
             <nav class="flex items-center gap-4">
