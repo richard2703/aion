@@ -41,6 +41,7 @@ const valueToRank = (value) => {
             <button
                 @click="onValueChange('flujoDeValor')"
                 class="flex items-center text-md font-regular mb-2 hover:text-gray-600"
+                :disabled="valueToRank(value) < 1"
             >
                 <svg
                     :class="{ 'rotate-90': valueToRank(value) >= 2 }"
@@ -73,6 +74,7 @@ const valueToRank = (value) => {
             <button
                 @click="onValueChange('proceso')"
                 class="flex items-center text-md font-regular mb-2 hover:text-gray-600"
+                :disabled="valueToRank(value) < 2"
             >
                 <svg
                     :class="{ 'rotate-90': valueToRank(value) >= 3 }"
@@ -104,6 +106,7 @@ const valueToRank = (value) => {
         >
             <button
                 @click="onValueChange('procedimiento')"
+                :disabled="valueToRank(value) < 3"
                 class="flex items-center text-md font-regular hover:text-gray-600 mb-2"
             >
                 <svg
@@ -135,6 +138,7 @@ const valueToRank = (value) => {
         >
             <button
                 @click="onValueChange('estandar')"
+                :disabled="valueToRank(value) < 4"
                 class="flex items-center text-md font-regular hover:text-gray-600 mb-2"
             >
                 <svg

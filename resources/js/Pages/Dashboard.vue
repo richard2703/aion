@@ -488,85 +488,284 @@ watch(
                                         </div>
                                     </div>
                                     <br />
-                                    <div class="grid grid-cols-1 bg-gray-300">
-                                        <div class="bg-gray-300">
+                                    <div class="grid grid-cols-1">
+                                        <div>
                                             <h2
                                                 class="text-center py-4 font-bold text-3xl"
                                             >
-                                                Metromap
+                                                Documentación
                                             </h2>
                                         </div>
-                                    </div>
-                                    <PilaresSelect
-                                        :currentPilarID="currentPilar"
-                                        :onSelectedPilar="onSelectedPilar"
-                                    >
-                                    </PilaresSelect>
-                                    <div class="grid grid-cols-3">
-                                        <!-- Menú de navegación -->
-                                        <div
-                                            class="col-span-3 xl:col-span-1 py-10"
-                                        >
-                                            <div class="text-base">
-                                                <h4 class="mb-1 font-semibold">
-                                                    Lista de navegación
-                                                </h4>
-                                                <p
-                                                    class="text-gray-500 text-sm"
-                                                >
-                                                    Accede rápidamente a cada
-                                                    nivel de información dentro
-                                                    de los pilares
-                                                </p>
-                                            </div>
-                                            <div class="mt-5">
-                                                <NavigationMenu
-                                                    :value="selectedItem"
-                                                    :onValueChange="
-                                                        setSelectedItem
-                                                    "
-                                                    :activeFlujo="flujoName"
-                                                    :activeProceso="procesoName"
-                                                    :activeProcedimiento="
-                                                        procedimientoName
-                                                    "
-                                                />
-                                            </div>
-                                        </div>
 
-                                        <!-- Contenido dinámico -->
-                                        <div
-                                            class="col-span-3 xl:col-span-2 p-8"
+                                        <PilaresSelect
+                                            :currentPilarID="currentPilar"
+                                            :onSelectedPilar="onSelectedPilar"
                                         >
-                                            <!-- Contenido para Flujo de Valor -->
+                                        </PilaresSelect>
+                                        <div class="grid grid-cols-3">
+                                            <!-- Menú de navegación -->
                                             <div
-                                                v-if="
-                                                    selectedItem ===
-                                                    'flujoDeValor'
-                                                "
-                                                class="border-gray-300 p-8 border rounded-md"
+                                                class="col-span-3 xl:col-span-1 py-10"
                                             >
-                                                <h2
-                                                    class="mb-4 font-medium text-lg"
-                                                >
-                                                    Flujo de valor
-                                                </h2>
-                                                <div
-                                                    class="mx-auto mb-3 overflow-x-auto container"
-                                                >
-                                                    <div
-                                                        class="sm:col-span-1 lg:col-span-1"
+                                                <div class="text-base">
+                                                    <h4
+                                                        class="mb-1 font-semibold"
                                                     >
+                                                        Lista de navegación
+                                                    </h4>
+                                                    <p
+                                                        class="text-gray-500 text-sm"
+                                                    >
+                                                        Accede rápidamente a
+                                                        cada nivel de
+                                                        información dentro de
+                                                        los pilares
+                                                    </p>
+                                                </div>
+                                                <div class="mt-5">
+                                                    <NavigationMenu
+                                                        :value="selectedItem"
+                                                        :onValueChange="
+                                                            setSelectedItem
+                                                        "
+                                                        :activeFlujo="flujoName"
+                                                        :activeProceso="
+                                                            procesoName
+                                                        "
+                                                        :activeProcedimiento="
+                                                            procedimientoName
+                                                        "
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <!-- Contenido dinámico -->
+                                            <div
+                                                class="col-span-3 xl:col-span-2 p-8"
+                                            >
+                                                <!-- Contenido para Flujo de Valor -->
+                                                <div
+                                                    v-if="
+                                                        selectedItem ===
+                                                        'flujoDeValor'
+                                                    "
+                                                    class="border-gray-300 p-8 border rounded-md"
+                                                >
+                                                    <h2
+                                                        class="mb-4 font-medium text-lg"
+                                                    >
+                                                        Flujo de valor
+                                                    </h2>
+                                                    <div
+                                                        class="mx-auto mb-3 overflow-x-auto container"
+                                                    >
+                                                        <div
+                                                            class="sm:col-span-1 lg:col-span-1"
+                                                        >
+                                                            <InputText
+                                                                v-model="
+                                                                    globalFilter
+                                                                "
+                                                                placeholder="Buscar..."
+                                                                class="mb-3"
+                                                            />
+                                                            <DataTable
+                                                                :value="
+                                                                    departamentos
+                                                                "
+                                                                paginator
+                                                                :rows="rows"
+                                                                :totalRecords="
+                                                                    totalRecords
+                                                                "
+                                                                :lazy="true"
+                                                                :first="first"
+                                                                @page="onPage"
+                                                                @sort="onSort"
+                                                                :rowsPerPageOptions="[
+                                                                    5, 10, 20,
+                                                                    50,
+                                                                ]"
+                                                                :filters="
+                                                                    filters
+                                                                "
+                                                                :globalFilterFields="[
+                                                                    'nombre',
+                                                                ]"
+                                                                :sortField="
+                                                                    sortField
+                                                                "
+                                                                :sortOrder="
+                                                                    sortOrder
+                                                                "
+                                                                class="p-datatable-gridlines p-datatable-sm p-datatable-striped"
+                                                            >
+                                                                <template
+                                                                    #empty
+                                                                >
+                                                                    Sin
+                                                                    Registros.
+                                                                </template>
+                                                                <Column
+                                                                    field="nombre"
+                                                                    header="Flujo de valor"
+                                                                    headerStyle="width:4em;"
+                                                                    bodyStyle="text-align:center;"
+                                                                    bodyClass="text-center"
+                                                                    sortable
+                                                                >
+                                                                    <template
+                                                                        #body="slotProps"
+                                                                    >
+                                                                        <button
+                                                                            v-bind:class="[
+                                                                                selectedDepartamento ==
+                                                                                slotProps
+                                                                                    .data
+                                                                                    .id
+                                                                                    ? 'selected'
+                                                                                    : '',
+                                                                            ]"
+                                                                            @click="
+                                                                                getProcesos(
+                                                                                    (departamento.value =
+                                                                                        slotProps.data.id),
+                                                                                    1,
+                                                                                    rows,
+                                                                                    newValue,
+                                                                                    sortField,
+                                                                                    sortOrder,
+                                                                                    slotProps
+                                                                                        .data
+                                                                                        .nombre
+                                                                                )
+                                                                            "
+                                                                        >
+                                                                            {{
+                                                                                slotProps
+                                                                                    .data
+                                                                                    .nombre
+                                                                            }}
+                                                                        </button>
+                                                                    </template>
+                                                                </Column>
+                                                                <Column
+                                                                    field="kpis"
+                                                                    header="KPIs"
+                                                                    headerStyle="width:4em;"
+                                                                    bodyStyle="text-align:center;"
+                                                                    bodyClass="text-center"
+                                                                    sortable
+                                                                >
+                                                                    <template
+                                                                        #body="slotProps"
+                                                                    >
+                                                                        <div
+                                                                            v-if="
+                                                                                slotProps
+                                                                                    .data
+                                                                                    .kpis &&
+                                                                                slotProps
+                                                                                    .data
+                                                                                    .kpis
+                                                                                    .length
+                                                                            "
+                                                                        >
+                                                                            <ul>
+                                                                                <li
+                                                                                    v-for="(
+                                                                                        kpi,
+                                                                                        index
+                                                                                    ) in slotProps
+                                                                                        .data
+                                                                                        .kpis"
+                                                                                    :key="
+                                                                                        index
+                                                                                    "
+                                                                                >
+                                                                                    {{
+                                                                                        kpi.titulo
+                                                                                    }}
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                        <div
+                                                                            v-else
+                                                                        >
+                                                                            Sin
+                                                                            KPIs
+                                                                        </div>
+                                                                    </template>
+                                                                </Column>
+                                                            </DataTable>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Contenido para Proceso -->
+                                                <div
+                                                    v-if="
+                                                        selectedItem ===
+                                                        'proceso'
+                                                    "
+                                                    class="h-[620px] overflow-scroll"
+                                                >
+                                                    <h2
+                                                        class="mb-4 font-medium text-lg"
+                                                    >
+                                                        Procesos
+                                                    </h2>
+                                                    <div
+                                                        class="gap-6 grid grid-cols-1 md:grid-cols-2"
+                                                    >
+                                                        <Card
+                                                            v-for="proceso in procesos"
+                                                            :title="
+                                                                proceso.nombre
+                                                            "
+                                                            :link="
+                                                                proceso.link_externo
+                                                            "
+                                                            @click="
+                                                                getProcedimientos(
+                                                                    (proceso.value =
+                                                                        proceso.id),
+                                                                    1,
+                                                                    rows,
+                                                                    newValue,
+                                                                    sortField,
+                                                                    sortOrder,
+                                                                    proceso.nombre
+                                                                )
+                                                            "
+                                                        />
+                                                    </div>
+                                                </div>
+
+                                                <!-- Contenido para Procedimientos -->
+                                                <div
+                                                    v-if="
+                                                        selectedItem ===
+                                                        'procedimiento'
+                                                    "
+                                                    class="border-gray-300 p-8 border rounded-md"
+                                                >
+                                                    <h2
+                                                        class="mb-4 font-medium text-lg"
+                                                    >
+                                                        Procedimientos
+                                                    </h2>
+                                                    <div>
                                                         <InputText
                                                             v-model="
-                                                                globalFilter
+                                                                globalFilterProcedimientos
                                                             "
                                                             placeholder="Buscar..."
                                                             class="mb-3"
                                                         />
                                                         <DataTable
                                                             :value="
-                                                                departamentos
+                                                                procedimientos
                                                             "
                                                             paginator
                                                             :rows="rows"
@@ -597,7 +796,7 @@ watch(
                                                             </template>
                                                             <Column
                                                                 field="nombre"
-                                                                header="Flujo de valor"
+                                                                header="Procedimientos"
                                                                 headerStyle="width:4em;"
                                                                 bodyStyle="text-align:center;"
                                                                 bodyClass="text-center"
@@ -608,7 +807,7 @@ watch(
                                                                 >
                                                                     <button
                                                                         v-bind:class="[
-                                                                            selectedDepartamento ==
+                                                                            selectedProcedimiento ==
                                                                             slotProps
                                                                                 .data
                                                                                 .id
@@ -616,8 +815,8 @@ watch(
                                                                                 : '',
                                                                         ]"
                                                                         @click="
-                                                                            getProcesos(
-                                                                                (departamento.value =
+                                                                            getEstandares(
+                                                                                (procedimiento.value =
                                                                                     slotProps.data.id),
                                                                                 1,
                                                                                 rows,
@@ -639,8 +838,8 @@ watch(
                                                                 </template>
                                                             </Column>
                                                             <Column
-                                                                field="kpis"
-                                                                header="KPIs"
+                                                                field="link_externo"
+                                                                header="Ejecución"
                                                                 headerStyle="width:4em;"
                                                                 bodyStyle="text-align:center;"
                                                                 bodyClass="text-center"
@@ -649,318 +848,148 @@ watch(
                                                                 <template
                                                                     #body="slotProps"
                                                                 >
-                                                                    <div
-                                                                        v-if="
+                                                                    <a
+                                                                        :href="
                                                                             slotProps
                                                                                 .data
-                                                                                .kpis &&
-                                                                            slotProps
-                                                                                .data
-                                                                                .kpis
-                                                                                .length
+                                                                                .link_herramienta
                                                                         "
+                                                                        target="_blank"
+                                                                        rel="noopener noreferrer"
                                                                     >
-                                                                        <ul>
-                                                                            <li
-                                                                                v-for="(
-                                                                                    kpi,
-                                                                                    index
-                                                                                ) in slotProps
-                                                                                    .data
-                                                                                    .kpis"
-                                                                                :key="
-                                                                                    index
-                                                                                "
-                                                                            >
-                                                                                {{
-                                                                                    kpi.titulo
-                                                                                }}
-                                                                            </li>
-                                                                        </ul>
-                                                                    </div>
-                                                                    <div v-else>
-                                                                        Sin KPIs
-                                                                    </div>
+                                                                        {{
+                                                                            slotProps
+                                                                                .data
+                                                                                .link_herramienta
+                                                                        }}
+                                                                    </a>
+                                                                </template>
+                                                            </Column>
+                                                            <Column
+                                                                field="link_externo"
+                                                                header="Documentación"
+                                                                headerStyle="width:4em;"
+                                                                bodyStyle="text-align:center;"
+                                                                bodyClass="text-center"
+                                                                sortable
+                                                            >
+                                                                <template
+                                                                    #body="slotProps"
+                                                                >
+                                                                    <a
+                                                                        :href="
+                                                                            slotProps
+                                                                                .data
+                                                                                .link_externo
+                                                                        "
+                                                                        target="_blank"
+                                                                        rel="noopener noreferrer"
+                                                                    >
+                                                                        {{
+                                                                            slotProps
+                                                                                .data
+                                                                                .link_externo
+                                                                        }}
+                                                                    </a>
                                                                 </template>
                                                             </Column>
                                                         </DataTable>
                                                     </div>
                                                 </div>
-                                            </div>
 
-                                            <!-- Contenido para Proceso -->
-                                            <div
-                                                v-if="
-                                                    selectedItem === 'proceso'
-                                                "
-                                                class="h-[620px] overflow-scroll"
-                                            >
-                                                <h2
-                                                    class="mb-4 font-medium text-lg"
-                                                >
-                                                    Procesos
-                                                </h2>
                                                 <div
-                                                    class="gap-6 grid grid-cols-1 md:grid-cols-2"
+                                                    v-if="
+                                                        selectedItem ===
+                                                        'estandar'
+                                                    "
+                                                    class="border-gray-300 p-8 border rounded-md"
                                                 >
-                                                    <Card
-                                                        v-for="proceso in procesos"
-                                                        :title="proceso.nombre"
-                                                        :link="
-                                                            proceso.link_externo
-                                                        "
-                                                        @click="
-                                                            getProcedimientos(
-                                                                (proceso.value =
-                                                                    proceso.id),
-                                                                1,
-                                                                rows,
-                                                                newValue,
-                                                                sortField,
-                                                                sortOrder,
-                                                                proceso.nombre
-                                                            )
-                                                        "
-                                                    />
-                                                </div>
-                                            </div>
-
-                                            <!-- Contenido para Procedimientos -->
-                                            <div
-                                                v-if="
-                                                    selectedItem ===
-                                                    'procedimiento'
-                                                "
-                                                class="border-gray-300 p-8 border rounded-md"
-                                            >
-                                                <h2
-                                                    class="mb-4 font-medium text-lg"
-                                                >
-                                                    Procedimientos
-                                                </h2>
-                                                <div>
-                                                    <InputText
-                                                        v-model="
-                                                            globalFilterProcedimientos
-                                                        "
-                                                        placeholder="Buscar..."
-                                                        class="mb-3"
-                                                    />
-                                                    <DataTable
-                                                        :value="procedimientos"
-                                                        paginator
-                                                        :rows="rows"
-                                                        :totalRecords="
-                                                            totalRecords
-                                                        "
-                                                        :lazy="true"
-                                                        :first="first"
-                                                        @page="onPage"
-                                                        @sort="onSort"
-                                                        :rowsPerPageOptions="[
-                                                            5, 10, 20, 50,
-                                                        ]"
-                                                        :filters="filters"
-                                                        :globalFilterFields="[
-                                                            'nombre',
-                                                        ]"
-                                                        :sortField="sortField"
-                                                        :sortOrder="sortOrder"
-                                                        class="p-datatable-gridlines p-datatable-sm p-datatable-striped"
+                                                    <h2
+                                                        class="mb-4 font-medium text-lg"
                                                     >
-                                                        <template #empty>
-                                                            Sin Registros.
-                                                        </template>
-                                                        <Column
-                                                            field="nombre"
-                                                            header="Procedimientos"
-                                                            headerStyle="width:4em;"
-                                                            bodyStyle="text-align:center;"
-                                                            bodyClass="text-center"
-                                                            sortable
+                                                        Estandares
+                                                    </h2>
+                                                    <div>
+                                                        <InputText
+                                                            v-model="
+                                                                globalFilterEstandares
+                                                            "
+                                                            placeholder="Buscar..."
+                                                            class="mb-3"
+                                                        />
+                                                        <DataTable
+                                                            :value="estandares"
+                                                            paginator
+                                                            :rows="rows"
+                                                            :totalRecords="
+                                                                totalRecords
+                                                            "
+                                                            :lazy="true"
+                                                            :first="first"
+                                                            @page="onPage"
+                                                            @sort="onSort"
+                                                            :rowsPerPageOptions="[
+                                                                5, 10, 20, 50,
+                                                            ]"
+                                                            :filters="filters"
+                                                            :globalFilterFields="[
+                                                                'nombre',
+                                                            ]"
+                                                            :sortField="
+                                                                sortField
+                                                            "
+                                                            :sortOrder="
+                                                                sortOrder
+                                                            "
+                                                            class="p-datatable-gridlines p-datatable-sm p-datatable-striped"
                                                         >
-                                                            <template
-                                                                #body="slotProps"
-                                                            >
-                                                                <button
-                                                                    v-bind:class="[
-                                                                        selectedProcedimiento ==
-                                                                        slotProps
-                                                                            .data
-                                                                            .id
-                                                                            ? 'selected'
-                                                                            : '',
-                                                                    ]"
-                                                                    @click="
-                                                                        getEstandares(
-                                                                            (procedimiento.value =
-                                                                                slotProps.data.id),
-                                                                            1,
-                                                                            rows,
-                                                                            newValue,
-                                                                            sortField,
-                                                                            sortOrder,
-                                                                            slotProps
-                                                                                .data
-                                                                                .nombre
-                                                                        )
-                                                                    "
-                                                                >
-                                                                    {{
-                                                                        slotProps
-                                                                            .data
-                                                                            .nombre
-                                                                    }}
-                                                                </button>
+                                                            <template #empty>
+                                                                Sin Registros.
                                                             </template>
-                                                        </Column>
-                                                        <Column
-                                                            field="link_externo"
-                                                            header="Ejecución"
-                                                            headerStyle="width:4em;"
-                                                            bodyStyle="text-align:center;"
-                                                            bodyClass="text-center"
-                                                            sortable
-                                                        >
-                                                            <template
-                                                                #body="slotProps"
+                                                            <Column
+                                                                field="nombre"
+                                                                header="Estandares"
+                                                                headerStyle="width:4em;"
+                                                                bodyStyle="text-align:center;"
+                                                                bodyClass="text-center"
+                                                                sortable
                                                             >
-                                                                <a
-                                                                    :href="
-                                                                        slotProps
-                                                                            .data
-                                                                            .link_herramienta
-                                                                    "
-                                                                    target="_blank"
-                                                                    rel="noopener noreferrer"
-                                                                >
-                                                                    {{
-                                                                        slotProps
-                                                                            .data
-                                                                            .link_herramienta
-                                                                    }}
-                                                                </a>
-                                                            </template>
-                                                        </Column>
-                                                        <Column
-                                                            field="link_externo"
-                                                            header="Documentación"
-                                                            headerStyle="width:4em;"
-                                                            bodyStyle="text-align:center;"
-                                                            bodyClass="text-center"
-                                                            sortable
-                                                        >
-                                                            <template
-                                                                #body="slotProps"
-                                                            >
-                                                                <a
-                                                                    :href="
-                                                                        slotProps
-                                                                            .data
-                                                                            .link_externo
-                                                                    "
-                                                                    target="_blank"
-                                                                    rel="noopener noreferrer"
-                                                                >
-                                                                    {{
-                                                                        slotProps
-                                                                            .data
-                                                                            .link_externo
-                                                                    }}
-                                                                </a>
-                                                            </template>
-                                                        </Column>
-                                                    </DataTable>
-                                                </div>
-                                            </div>
-
-                                            <div
-                                                v-if="
-                                                    selectedItem === 'estandar'
-                                                "
-                                                class="border-gray-300 p-8 border rounded-md"
-                                            >
-                                                <h2
-                                                    class="mb-4 font-medium text-lg"
-                                                >
-                                                    Estandares
-                                                </h2>
-                                                <div>
-                                                    <InputText
-                                                        v-model="
-                                                            globalFilterEstandares
-                                                        "
-                                                        placeholder="Buscar..."
-                                                        class="mb-3"
-                                                    />
-                                                    <DataTable
-                                                        :value="estandares"
-                                                        paginator
-                                                        :rows="rows"
-                                                        :totalRecords="
-                                                            totalRecords
-                                                        "
-                                                        :lazy="true"
-                                                        :first="first"
-                                                        @page="onPage"
-                                                        @sort="onSort"
-                                                        :rowsPerPageOptions="[
-                                                            5, 10, 20, 50,
-                                                        ]"
-                                                        :filters="filters"
-                                                        :globalFilterFields="[
-                                                            'nombre',
-                                                        ]"
-                                                        :sortField="sortField"
-                                                        :sortOrder="sortOrder"
-                                                        class="p-datatable-gridlines p-datatable-sm p-datatable-striped"
-                                                    >
-                                                        <template #empty>
-                                                            Sin Registros.
-                                                        </template>
-                                                        <Column
-                                                            field="nombre"
-                                                            header="Estandares"
-                                                            headerStyle="width:4em;"
-                                                            bodyStyle="text-align:center;"
-                                                            bodyClass="text-center"
-                                                            sortable
-                                                        >
-                                                            <!-- <template #body="slotProps">
+                                                                <!-- <template #body="slotProps">
                                             <button @click="getEstandares(slotProps.data.id)">
                                                 {{ slotProps.data.nombre }}
                                             </button>s
                                         </template> -->
-                                                        </Column>
-                                                        <Column
-                                                            field="link_externo"
-                                                            header="Documentación"
-                                                            headerStyle="width:4em;"
-                                                            bodyStyle="text-align:center;"
-                                                            bodyClass="text-center"
-                                                            sortable
-                                                        >
-                                                            <template
-                                                                #body="slotProps"
+                                                            </Column>
+                                                            <Column
+                                                                field="link_externo"
+                                                                header="Documentación"
+                                                                headerStyle="width:4em;"
+                                                                bodyStyle="text-align:center;"
+                                                                bodyClass="text-center"
+                                                                sortable
                                                             >
-                                                                <a
-                                                                    :href="
-                                                                        slotProps
-                                                                            .data
-                                                                            .link_externo
-                                                                    "
-                                                                    target="_blank"
-                                                                    rel="noopener noreferrer"
+                                                                <template
+                                                                    #body="slotProps"
                                                                 >
-                                                                    {{
-                                                                        slotProps
-                                                                            .data
-                                                                            .link_externo
-                                                                    }}
-                                                                </a>
-                                                            </template>
-                                                        </Column>
-                                                    </DataTable>
+                                                                    <a
+                                                                        :href="
+                                                                            slotProps
+                                                                                .data
+                                                                                .link_externo
+                                                                        "
+                                                                        target="_blank"
+                                                                        rel="noopener noreferrer"
+                                                                    >
+                                                                        {{
+                                                                            slotProps
+                                                                                .data
+                                                                                .link_externo
+                                                                        }}
+                                                                    </a>
+                                                                </template>
+                                                            </Column>
+                                                        </DataTable>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
