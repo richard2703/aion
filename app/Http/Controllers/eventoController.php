@@ -88,11 +88,8 @@ class eventoController extends Controller
                         break;
 
                     case 'monthly':
-                        if (is_numeric($data['dia_mes'])) {
-                            $nuevaFecha = $fechaInicio->copy()->addMonths($i)->day($data['dia_mes']);
-                        } else {
-                            $nuevaFecha = $fechaInicio->copy()->addMonths($i)->modify($data['dia_mes']);
-                        }
+                        $diaMes = str_replace('_', ' ', strtolower($data['dia_mes'])); // Reemplaza _ con espacios y convierte a minúsculas
+                        $nuevaFecha = $fechaInicio->copy()->addMonths($i)->modify($diaMes);
                         break;
                 }
 

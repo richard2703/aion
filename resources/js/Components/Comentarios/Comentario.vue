@@ -67,35 +67,27 @@ const deleteComentario = async (comentario_id) => {
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
             <div class="p-3 bg-white border-b border-gray-200">
                 <div class="my-4">
-                    <Message
-                        class="w-full text-center"
-                        closable
-                        severity="secondary"
-                    >
+                    <Message class="w-full text-center" closable severity="secondary">
                         ¡Esta observación no se comparte con nadie!
                     </Message>
                 </div>
+                <ComentarioCreate v-if="!editar" :reporte_semanal_id="reporte_semanal_id" @list="getComentarios" />
+                <ComentarioUpdate v-if="editar" :comentario="comentario" :reporte_semanal_id="reporte_semanal_id"
+                    @list="getComentarios" @close="editar = false" />
                 <div v-if="comentarios" class="my-4 h-60 overflow-y-auto">
                     <div>
                         <h3 class="text-bold text-black">Observaciones</h3>
-                        <ul
-                            v-for="comentario in comentarios"
-                            :key="comentario.id"
-                            class="list-disc list-inside"
-                        >
+                        <ul v-for="comentario in comentarios" :key="comentario.id" class="list-disc list-inside">
                             <div class="flex justify-between">
-                                <li
-                                    class="text-sm text-gray-600 text-justify cursor-pointer hover:text-gray-300"
-                                    @click.stop="getComentario(comentario.id)"
-                                >
+                                <li class="text-sm text-gray-600 text-justify cursor-pointer hover:text-gray-300"
+                                    @click.stop="getComentario(comentario.id)">
                                     {{ comentario.texto }}
                                 </li>
                                 <button
                                     class="float-right mx-4 pi pi-trash text-red-500 cursor-pointer hover:text-red-300"
                                     @click.stop="
                                         deleteComentario(comentario.id)
-                                    "
-                                ></button>
+                                        "></button>
                             </div>
                         </ul>
                     </div>
@@ -103,22 +95,16 @@ const deleteComentario = async (comentario_id) => {
                 <div v-if="menciones" class="my-4 h-42 overflow-y-auto">
                     <div class="text-bold text-black">
                         <h3>Menciones</h3>
-                        <ul
-                            v-for="mencion in menciones"
-                            :key="mencion.id"
-                            class="list-disc list-inside"
-                        >
+                        <ul v-for="mencion in menciones" :key="mencion.id" class="list-disc list-inside">
                             <div class="flex justify-between">
-                                <li
-                                    class="text-sm text-gray-600 text-justify cursor-pointer hover:text-gray-300"
-                                >
+                                <li class="text-sm text-gray-600 text-justify cursor-pointer hover:text-gray-300">
                                     {{ mencion.comentario.texto }}
                                 </li>
                             </div>
                         </ul>
                     </div>
                 </div>
-                <ComentarioCreate
+                <!-- <ComentarioCreate
                     v-if="!editar"
                     :reporte_semanal_id="reporte_semanal_id"
                     @list="getComentarios"
@@ -129,7 +115,7 @@ const deleteComentario = async (comentario_id) => {
                     :reporte_semanal_id="reporte_semanal_id"
                     @list="getComentarios"
                     @close="editar = false"
-                />
+                /> -->
             </div>
         </div>
     </div>
