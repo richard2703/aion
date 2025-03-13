@@ -20,6 +20,7 @@ const form = useForm({
     actuacion: item.value?.actuacion || "",
     logo: null,
     banner: null,
+    nombre_negocio: item.value?.nombre_negocio || "",
 });
 
 const isUpdating = ref(false);
@@ -32,6 +33,7 @@ const getItem = () => {
             form.proposito = item.value[0].proposito;
             form.slogan = item.value[0].slogan;
             form.actuacion = item.value[0].actuacion;
+            form.nombre_negocio = item.value[0].nombre_negocio;
             logo_path.value = item.value[0].logo_path;
             banner_path.value = item.value[0].banner_path;
 
@@ -62,6 +64,7 @@ const submit = async () => {
     formData.append("actuacion", form.actuacion);
     formData.append("logo", form.logo);
     formData.append("banner", form.banner);
+    formData.append("nombre_negocio", form.nombre_negocio);
     try {
         let response;
         if (item.value[0].id) {
@@ -108,6 +111,21 @@ const submit = async () => {
                         enctype="multipart/form-data"
                     >
                         <div class="grid grid-cols-1 gap-4">
+                            <div>
+                                <InputLabel
+                                    for="nombre_negocio"
+                                    value="Identidad del negocio: "
+                                />
+                                <TextInput
+                                    id="nombre_negocio"
+                                    v-model="form.nombre_negocio"
+                                    type="text"
+                                    class="mt-1 block w-full"
+                                    required
+                                    autofocus
+                                    autocomplete="nombre_negocio"
+                                />
+                            </div>
                             <div>
                                 <InputLabel
                                     for="proposito"
