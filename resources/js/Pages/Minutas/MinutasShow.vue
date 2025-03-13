@@ -1153,6 +1153,9 @@ const downloadPdf = () => {
                                                         lider == userLogin ||
                                                         slotProps.data
                                                             .revisor_id ==
+                                                            userLogin ||
+                                                        slotProps.data
+                                                            .responsable_id ==
                                                             userLogin
                                                     "
                                                 >
