@@ -3,7 +3,7 @@ import { useForm } from "@inertiajs/vue3";
 import { ref, onMounted, watch } from "vue";
 import axios from "axios";
 import { confirmDialog, showToast } from "@/Pages/utils/SweetAlert.service";
-import { format } from 'date-fns';
+import { format } from "date-fns";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import InputText from "primevue/inputtext";
@@ -42,7 +42,6 @@ const hasta = ref("");
 
 // const userLogin = usePage().props.auth.user.user.id;
 
-
 const formValidate = useForm({
     validacion: "",
 });
@@ -52,14 +51,12 @@ onMounted(() => {
         area_id: { value: pilar.value, matchMode: "contains" },
         departamento_id: { value: flujoValor.value, matchMode: "contains" },
     };
-    getTareas('', '', filters.value, '', '');
+    getTareas("", "", filters.value, "", "");
     getAreas();
     getDepartamentos();
     getUsuarios();
-    console.log('Hola k aze!!!', authUser.value);
-
+    console.log("Hola k aze!!!", authUser.value);
 });
-
 
 const getTareas = async (
     page = 1,
@@ -80,14 +77,14 @@ const getTareas = async (
             },
         })
         .then((response) => {
-            tareas.value = response.data.data
-            totalRecords.value = response.data.total
-            first.value = (response.data.current_page - 1) * rows.value
+            tareas.value = response.data.data;
+            totalRecords.value = response.data.total;
+            first.value = (response.data.current_page - 1) * rows.value;
         })
         .catch((error) => {
             console.log(error);
         });
-}
+};
 
 async function getAreas() {
     await axios
@@ -108,12 +105,29 @@ async function getDepartamentos() {
         .catch((error) => {
             console.log(error);
         });
-
 }
 
 watch(
-    [globalFilter, pilar, flujoValor, responsable, revisor, estatus, desde, hasta],
-    ([newGlobalFilter, newPilar, newFlujoValor, newResponsable, newRevisor, newEstatus, newDesde, newHasta]) => {
+    [
+        globalFilter,
+        pilar,
+        flujoValor,
+        responsable,
+        revisor,
+        estatus,
+        desde,
+        hasta,
+    ],
+    ([
+        newGlobalFilter,
+        newPilar,
+        newFlujoValor,
+        newResponsable,
+        newRevisor,
+        newEstatus,
+        newDesde,
+        newHasta,
+    ]) => {
         filters.value = {
             global: { value: newGlobalFilter, matchMode: "contains" },
             area_id: { value: newPilar, matchMode: "contains" },
@@ -124,7 +138,13 @@ watch(
             desde: { value: newDesde, matchMode: "contains" },
             hasta: { value: newHasta, matchMode: "contains" },
         };
-        getTareas(1, rows.value, filters.value, sortField.value, sortOrder.value);
+        getTareas(
+            1,
+            rows.value,
+            filters.value,
+            sortField.value,
+            sortOrder.value
+        );
     }
 );
 
@@ -143,13 +163,7 @@ const onPage = (event) => {
 const onSort = (event) => {
     sortField.value = event.sortField || "id";
     sortOrder.value = event.sortOrder;
-    getTareas(
-        1,
-        rows.value,
-        filters.value,
-        sortField.value,
-        sortOrder.value
-    );
+    getTareas(1, rows.value, filters.value, sortField.value, sortOrder.value);
 };
 
 const deleteTarea = async (id) => {
@@ -163,13 +177,11 @@ const deleteTarea = async (id) => {
             await axios.delete(route("tarea.destroy", id));
             tareas.value = tareas.value.filter((tarea) => tarea.id !== id);
             showToast("El registro ha sido eliminado", "success");
-
         }
     } catch (error) {
         console.log(error);
-
     }
-}
+};
 
 async function getUsuarios() {
     await axios
@@ -181,28 +193,27 @@ async function getUsuarios() {
 }
 
 const formatearFecha = (fecha) => {
-    return format(new Date(fecha), 'dd/MM/yyyy');
+    return format(new Date(fecha), "dd/MM/yyyy");
 };
 
 const openFilter = () => {
-    customFilter.value = !customFilter.value
-
+    customFilter.value = !customFilter.value;
 };
 
 const clearFilter = () => {
-    pilar.value = '';
-    flujoValor.value = '';
-    responsable.value = '';
-    revisor.value = '';
-    estatus.value = '';
-    desde.value = '';
-    hasta.value = '';
+    pilar.value = "";
+    flujoValor.value = "";
+    responsable.value = "";
+    revisor.value = "";
+    estatus.value = "";
+    desde.value = "";
+    hasta.value = "";
 
     getTareas();
 };
 
 const validateTarea = async (tarea, $event) => {
-    console.log('validando');
+    console.log("validando");
     console.log({ revisor: tarea.revisor.name });
     console.log({ authUser: authUser.value.name });
 
@@ -214,7 +225,7 @@ const validateTarea = async (tarea, $event) => {
                 "error"
             );
 
-            return $event.target.checked = false;
+            return ($event.target.checked = false);
         }
 
         const result = await confirmDialog(
@@ -223,167 +234,295 @@ const validateTarea = async (tarea, $event) => {
             "warning"
         );
         if (result.isConfirmed) {
-            await axios.patch(route("tareas.validar", tarea.id), {
-                validacion: 1,
-                estatus_id: 4
-            }).then(() => {
-                showToast("El registro ha sido eliminado", "success");
-                getTareas();
-                $event.target.checked = false;
-            });
-
+            await axios
+                .patch(route("tareas.validar", tarea.id), {
+                    validacion: 1,
+                    estatus_id: 4,
+                })
+                .then(() => {
+                    showToast("El registro ha sido eliminado", "success");
+                    getTareas();
+                    $event.target.checked = false;
+                });
         } else {
             $event.target.checked = false;
         }
     } catch (error) {
         console.log(error);
-
     }
-
 };
-
 </script>
 
 <template>
     <div class="px-4 py-2 bg-white border-b border-gray-200">
         <div class="container mx-auto overflow-x-auto gap-4">
             <div class="flex gap-4">
-                <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
-                <PrimaryButton class=" mb-4 float-right pi pi-filter" @click="openFilter">
+                <InputText
+                    v-model="globalFilter"
+                    placeholder="Buscar..."
+                    class="mb-3"
+                />
+                <PrimaryButton
+                    class="mb-4 float-right pi pi-filter"
+                    @click="openFilter"
+                >
                 </PrimaryButton>
-                <PrimaryButton v-if="customFilter" class=" mb-4 float-right pi pi-times" @click="clearFilter">
+                <PrimaryButton
+                    v-if="customFilter"
+                    class="mb-4 float-right pi pi-times"
+                    @click="clearFilter"
+                >
                 </PrimaryButton>
             </div>
-
 
             <!-- formulario de filtrado de tareas -->
             <div v-if="customFilter" class="">
                 <form @submit.prevent="filterTable()">
-                    <div class="m-4 border rounded-lg border-gray-200 flex gap-2 grid grid-cols-4">
+                    <div
+                        class="m-4 border rounded-lg border-gray-200 flex gap-2 grid grid-cols-4"
+                    >
                         <div class="m-4">
                             <InputLabel for="area_id" value="Pilar: " />
-                            <select ref="area_select"
+                            <select
+                                ref="area_select"
                                 class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                v-model="pilar">
+                                v-model="pilar"
+                            >
                                 <option value="" selected>
                                     Seleccione una opcion
                                 </option>
-                                <option v-for="area in areas" :key="area.id" :value="area.id">
+                                <option
+                                    v-for="area in areas"
+                                    :key="area.id"
+                                    :value="area.id"
+                                >
                                     {{ area.nombre }}
                                 </option>
                             </select>
                         </div>
 
                         <div class="m-4">
-                            <InputLabel for="departamento_id" value="Flujo de valor: " />
-                            <select ref="departamento_select"
+                            <InputLabel
+                                for="departamento_id"
+                                value="Flujo de valor: "
+                            />
+                            <select
+                                ref="departamento_select"
                                 class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                v-model="flujoValor">
+                                v-model="flujoValor"
+                            >
                                 <option value="" selected>
                                     Seleccione una opcion
                                 </option>
-                                <option v-for="departamento in departamentos" :key="departamento.id"
-                                    :value="departamento.id">
+                                <option
+                                    v-for="departamento in departamentos"
+                                    :key="departamento.id"
+                                    :value="departamento.id"
+                                >
                                     {{ departamento.nombre }}
                                 </option>
                             </select>
                         </div>
 
                         <div class="m-4">
-                            <InputLabel for="responsable_id" value="Responsable: " />
-                            <select ref="responsable_select"
+                            <InputLabel
+                                for="responsable_id"
+                                value="Responsable: "
+                            />
+                            <select
+                                ref="responsable_select"
                                 class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                v-model="responsable">
+                                v-model="responsable"
+                            >
                                 <option value="" selected>
                                     Seleccione una opcion
                                 </option>
-                                <option v-for="usuario in usuarios" :key="usuario.id" :value="usuario.id">{{
-                                    usuario.name }}</option>
+                                <option
+                                    v-for="usuario in usuarios"
+                                    :key="usuario.id"
+                                    :value="usuario.id"
+                                >
+                                    {{ usuario.name }}
+                                </option>
                             </select>
                         </div>
 
                         <div class="m-4">
                             <InputLabel for="estatus_id" value="Estatus: " />
-                            <select ref="estatus_select"
+                            <select
+                                ref="estatus_select"
                                 class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
-                                v-model="estatus">
+                                v-model="estatus"
+                            >
                                 <option value="" selected>
-                                    Seleccione una opcion </option>
-                                <option value=1>
-                                    Retrasado </option>
-                                <option value=2>
-                                    Iniciado </option>
-                                <option value=3>
-                                    En proceso </option>
-                                <option value=4>
-                                    Terminado </option>
+                                    Seleccione una opcion
+                                </option>
+                                <option value="1">Retrasado</option>
+                                <option value="2">Iniciado</option>
+                                <option value="3">En proceso</option>
+                                <option value="4">Terminado</option>
                             </select>
                         </div>
 
                         <div class="m-4">
-                            <InputLabel for="fecha" value="Fecha de entrega de: " />
-                            <TextInput id="fecha" v-model="desde" type="date" class="mt-1 block w-full"
-                                autocomplete="fecha" />
+                            <InputLabel
+                                for="fecha"
+                                value="Fecha de entrega de: "
+                            />
+                            <TextInput
+                                id="fecha"
+                                v-model="desde"
+                                type="date"
+                                class="mt-1 block w-full"
+                                autocomplete="fecha"
+                            />
                         </div>
 
                         <div class="m-4">
-                            <InputLabel for="created_at" value="Fecha de entrega hasta: " />
-                            <TextInput id="fecha" v-model="hasta" type="date" class="mt-1 block w-full"
-                                autocomplete="fecha" />
+                            <InputLabel
+                                for="created_at"
+                                value="Fecha de entrega hasta: "
+                            />
+                            <TextInput
+                                id="fecha"
+                                v-model="hasta"
+                                type="date"
+                                class="mt-1 block w-full"
+                                autocomplete="fecha"
+                            />
                         </div>
                     </div>
                 </form>
             </div>
 
-
-            <DataTable :value="tareas" paginator :rows="rows" :totalRecords="totalRecords" :lazy="true" :first="first"
-                @page="onPage" @sort="onSort" :rowsPerPageOptions="[5, 10, 20, 50]" tableStyle="min-width: 50rem"
-                :filters="filters" :globalFilterFields="[
+            <DataTable
+                :value="tareas"
+                paginator
+                :rows="rows"
+                :totalRecords="totalRecords"
+                :lazy="true"
+                :first="first"
+                @page="onPage"
+                @sort="onSort"
+                :rowsPerPageOptions="[5, 10, 20, 50]"
+                tableStyle="min-width: 50rem"
+                :filters="filters"
+                :globalFilterFields="[
                     'id',
                     'tarea',
                     'departamento.nombre',
                     'responsable.name',
                     'fecha_entrega',
                     'estatus.titulo',
-                ]" :sortField="sortField" :sortOrder="sortOrder"
-                class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
+                ]"
+                :sortField="sortField"
+                :sortOrder="sortOrder"
+                class="p-datatable-sm p-datatable-striped p-datatable-gridlines"
+            >
                 <template #empty> No data found. </template>
-                <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;" sortable>
+                <Column
+                    field="id"
+                    header="ID"
+                    headerStyle="width:4em;"
+                    bodyStyle="text-align:center;"
+                    sortable
+                >
                 </Column>
-                <Column field="tarea" header="Titulo" headerStyle="width:4em;" bodyClass="text-center" sortable>
+                <Column
+                    field="tarea"
+                    header="Titulo"
+                    headerStyle="width:4em;"
+                    bodyClass="text-center"
+                    sortable
+                >
                 </Column>
-                <Column field="estatus.titulo" header="Estatus" headerStyle="width:4em;" bodyStyle="text-align:center;"
-                    bodyClass="text-center" sortable></Column>
-                <Column field="departamento.nombre" header="Fujo de valor" headerStyle="width:4em;"
-                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
-                <Column field="responsable.name" header="Responsable" headerStyle="width:4em;" bodyClass="text-center"
-                    sortable>
+                <Column
+                    field="estatus.titulo"
+                    header="Estatus"
+                    headerStyle="width:4em;"
+                    bodyStyle="text-align:center;"
+                    bodyClass="text-center"
+                    sortable
+                ></Column>
+                <Column
+                    field="departamento.nombre"
+                    header="Fujo de valor"
+                    headerStyle="width:4em;"
+                    bodyStyle="text-align:center;"
+                    bodyClass="text-center"
+                    sortable
+                ></Column>
+                <Column
+                    field="responsable.name"
+                    header="Responsable"
+                    headerStyle="width:4em;"
+                    bodyClass="text-center"
+                    sortable
+                >
                 </Column>
-                <Column field="fecha" header="Fecha de entrega" headerStyle="width:4em;" bodyStyle="text-align:center;"
-                    bodyClass="text-center" sortable>
+                <Column
+                    field="fecha"
+                    header="Fecha de entrega"
+                    headerStyle="width:4em;"
+                    bodyStyle="text-align:center;"
+                    bodyClass="text-center"
+                    sortable
+                >
                     <template #body="slotProps">
                         {{ formatearFecha(slotProps.data.fecha) }}
                     </template>
                 </Column>
-                <Column field="revisor.name" header="Cliente de la tarea" headerStyle="width:4em;"
-                    bodyClass="text-center" sortable>
+                <Column
+                    field="revisor.name"
+                    header="Cliente de la tarea"
+                    headerStyle="width:4em;"
+                    bodyClass="text-center"
+                    sortable
+                >
                 </Column>
-                <Column header="Validacion" headerStyle="width:4em;" bodyClass="justify-center">
+                <Column
+                    header="Validacion"
+                    headerStyle="width:4em;"
+                    bodyClass="justify-center"
+                >
                     <template #body="slotProps">
-                        <input type="checkbox" @change="validateTarea(slotProps.data, $event)"
+                        <input
+                            type="checkbox"
+                            @change="validateTarea(slotProps.data, $event)"
                             :disabled="slotProps.data.validacion ? true : false"
-                            :checked="slotProps.data.validacion ? true : false" /> Validar
+                            :checked="slotProps.data.validacion ? true : false"
+                        />
+                        Validar
                     </template>
                 </Column>
                 <Column header="" headerStyle="width:4em;">
                     <template #body="slotProps" class="text-center">
                         <div class="flex justify-center">
-                            <PrimaryButton v-if="slotProps.data.validacion !== 1" class="m-2 pi pi-pen-to-square"
-                                :href="route('tareas.edit', slotProps.data.id)">
+                            <PrimaryButton
+                                v-if="slotProps.data.validacion !== 1"
+                                class="m-2 pi pi-pen-to-square"
+                                :href="route('tareas.edit', slotProps.data.id)"
+                            >
                             </PrimaryButton>
 
-                            <PrimaryButton class="pi pi-file-check m-2"
-                                :href="route('tareas.detail', slotProps.data.id)"></PrimaryButton>
+                            <PrimaryButton
+                                class="pi pi-file-check m-2"
+                                :href="
+                                    route('tareas.detail', slotProps.data.id)
+                                "
+                            ></PrimaryButton>
+
+                            <PrimaryButton
+                                class="m-2"
+                                :href="
+                                    route(
+                                        'minutas.show',
+                                        slotProps.data.minuta_id
+                                    )
+                                "
+                            >
+                                Ir a la minuta
+                            </PrimaryButton>
                         </div>
                     </template>
                 </Column>
