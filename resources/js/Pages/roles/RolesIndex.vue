@@ -113,6 +113,7 @@ const onSort = (event) => {
 
 <template>
     <Layout :titulo="title">
+
         <Head title="Roles" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
@@ -120,10 +121,10 @@ const onSort = (event) => {
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
-                    <h3>Home -</h3>
+                <h3>Home -</h3>
                 </Link>
                 <Link class="active">
-                    <h3>Roles</h3>
+                <h3>Roles</h3>
                 </Link>
             </div>
         </div>
@@ -131,120 +132,65 @@ const onSort = (event) => {
         <div class="py-2">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div>
-                    <div
-                        class="px-4 py-2 flex justify-end bg-white border-b border-gray-200"
-                    >
+                    <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
                         <div v-if="userPermissions.includes('roles_crear')">
-                            <PrimaryButton
-                                :href="route('roles.create')"
-                                class="m-4 pi pi-plus"
-                            >
-                                <span
-                                    class="p-1"
-                                    :style="{
-                                        fontSize: '10px',
-                                    }"
-                                >
-                                    Nuevo rol</span
-                                >
+                            <PrimaryButton :href="route('roles.create')" class="m-4 pi pi-plus">
+                                <span class="p-1" :style="{
+                                    fontSize: '10px',
+                                }">
+                                    Nuevo rol</span>
                             </PrimaryButton>
                         </div>
                     </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto overflow-x-auto">
-                            <InputText
-                                v-model="globalFilter"
-                                placeholder="Buscar..."
-                                class="mb-3"
-                            />
-                            <DataTable
-                                :value="items"
-                                paginator
-                                :rows="rows"
-                                :totalRecords="totalRecords"
-                                :lazy="true"
-                                :first="first"
-                                @page="onPage"
-                                @sort="onSort"
-                                :rowsPerPageOptions="[5, 10, 20, 50]"
-                                tableStyle="min-width: 50rem"
-                                :filters="filters"
-                                :globalFilterFields="[
+                            <InputText v-model="globalFilter" placeholder="Buscar..." class="mb-3" />
+                            <DataTable :value="items" paginator :rows="rows" :totalRecords="totalRecords" :lazy="true"
+                                :first="first" @page="onPage" @sort="onSort" :rowsPerPageOptions="[5, 10, 20, 50]"
+                                tableStyle="min-width: 50rem" :filters="filters" :globalFilterFields="[
                                     'id',
                                     'nombre',
                                     // 'usuario.name',
-                                ]"
-                                :sortField="sortField"
-                                :sortOrder="sortOrder"
-                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines"
-                            >
+                                ]" :sortField="sortField" :sortOrder="sortOrder"
+                                class="p-datatable-sm p-datatable-striped p-datatable-gridlines">
                                 <template #empty> Sin registros </template>
-                                <Column
-                                    field="id"
-                                    header="ID"
-                                    headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;"
-                                    sortable
-                                ></Column>
+                                <Column field="id" header="ID" headerStyle="width:4em;" bodyStyle="text-align:center;"
+                                    sortable></Column>
                                 <!-- <Column field="area.nombre" header="Area" headerStyle="width:4em;"
                                     bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column> -->
-                                <Column
-                                    field="name"
-                                    header="Nombre"
-                                    headerStyle="width:4em;"
-                                    bodyStyle="text-align:center;"
-                                    bodyClass="text-center"
-                                    sortable
-                                ></Column>
+                                <Column field="name" header="Nombre" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
+                                <Column field="descripcion" header="Descripcion" headerStyle="width:4em;"
+                                    bodyStyle="text-align:center;" bodyClass="text-center" sortable></Column>
                                 <Column header="" headerStyle="width:4em;">
-                                    <template
-                                        #body="slotProps"
-                                        class="text-center"
-                                    >
+                                    <template #body="slotProps" class="text-center">
                                         <div class="flex justify-evenly">
-                                            <div
-                                                v-if="
-                                                    userPermissions.includes(
-                                                        'roles_editar'
-                                                    )
-                                                "
-                                                class="inline"
-                                            >
-                                                <PrimaryButton
-                                                    class="m-2 pi pi-file-edit"
-                                                    :href="
-                                                        route(
-                                                            'roles.edit',
-                                                            slotProps.data.id
-                                                        )
-                                                    "
-                                                >
-                                                    <span
-                                                        class="p-1"
-                                                        :style="{
-                                                            fontSize: '10px',
-                                                        }"
-                                                    >
-                                                        Editar</span
-                                                    >
+                                            <div v-if="
+                                                userPermissions.includes(
+                                                    'roles_editar'
+                                                )
+                                            " class="inline">
+                                                <PrimaryButton class="m-2 pi pi-file-edit" :href="route(
+                                                    'roles.edit',
+                                                    slotProps.data.id
+                                                )
+                                                    ">
+                                                    <span class="p-1" :style="{
+                                                        fontSize: '10px',
+                                                    }">
+                                                        Editar</span>
                                                 </PrimaryButton>
                                             </div>
-                                            <div
-                                                v-if="
-                                                    userPermissions.includes(
-                                                        'roles_eliminar'
+                                            <div v-if="
+                                                userPermissions.includes(
+                                                    'roles_eliminar'
+                                                )
+                                            " class="inline">
+                                                <PrimaryButton class="m-2 pi pi-trash" @click.prevent="
+                                                    deleteItems(
+                                                        slotProps.data.id
                                                     )
-                                                "
-                                                class="inline"
-                                            >
-                                                <PrimaryButton
-                                                    class="m-2 pi pi-trash"
-                                                    @click.prevent="
-                                                        deleteItems(
-                                                            slotProps.data.id
-                                                        )
-                                                    "
-                                                >
+                                                    ">
                                                 </PrimaryButton>
                                             </div>
                                         </div>
