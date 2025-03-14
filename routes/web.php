@@ -87,6 +87,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('/minutas', [App\Http\Controllers\minutasController::class, 'index'])->name('minutas.index');
     Route::get('/minutas/create', [App\Http\Controllers\minutasController::class, 'create'])->name('minutas.create');
     Route::post('/minutas/store', [App\Http\Controllers\minutasController::class, 'store'])->name('minutas.store');
+    Route::get('/minutas/misminutas', [App\Http\Controllers\minutasController::class, 'misMinutas'])->name('minutas.misminutas');
     Route::get('/minutas/{minuta}', [App\Http\Controllers\minutasController::class, 'show'])->name('minutas.show');
     Route::get('/minutas/{minuta}/edit', [App\Http\Controllers\minutasController::class, 'edit'])->name('minutas.edit');
     Route::get('/minutas/{minuta}/id', [App\Http\Controllers\minutasController::class, 'byId'])->name('minutas.byId');

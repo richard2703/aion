@@ -441,6 +441,12 @@ const menuItems = [
                 icon: "",
                 role: ["user", "admin", "superadmin"],
             },
+            {
+                label: "Favoritos",
+                route: "minutas.misminutas",
+                icon: "",
+                role: ["admin", "superadmin", "user"],
+            },
         ],
     },
     {

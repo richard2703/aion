@@ -446,6 +446,24 @@ const setTareasTotales = () => {
 const downloadPdf = () => {
     window.open(route("minutas.pdf", minuta.value.id), "_blank");
 };
+
+const setBookmark = () => {
+    const isBookmark = !minuta.value.bookmark;
+    minuta.value.bookmark = !minuta.value.bookmark;
+    console.log(isBookmark);
+    try {
+        axios
+            .patch(route("minutas.bookmark", minuta.value.id), {
+                bookmark: isBookmark,
+            })
+            .then(() => {
+                showToast("Se ha marcado como favorito", "success");
+            });
+    } catch (error) {
+        showToast("Ocurrio un error", "error");
+        console.error(error);
+    }
+};
 </script>
 
 <template>
@@ -686,6 +704,16 @@ const downloadPdf = () => {
                                                 : 'pi-filter'
                                         "
                                         @click="openFilter"
+                                    >
+                                    </PrimaryButton>
+                                    <PrimaryButton
+                                        class="mb-4 float-right pi"
+                                        :class="
+                                            minuta.bookmark != 1
+                                                ? 'pi-bookmark'
+                                                : 'pi-bookmark-fill'
+                                        "
+                                        @click="setBookmark"
                                     >
                                     </PrimaryButton>
                                     <PrimaryButton

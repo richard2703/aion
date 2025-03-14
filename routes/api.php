@@ -31,6 +31,7 @@ Route::get('/opciones', [App\Http\Controllers\opcionController::class, 'findAll'
 Route::get('/objetivos', [App\Http\Controllers\objetivosController::class, 'findAll'])->name('objetivos.findAll');
 Route::get('/minutas', [App\Http\Controllers\minutasController::class, 'findAll'])->name('minutas.findAll');
 Route::get('/minutas/{area_id}/area', [App\Http\Controllers\minutasController::class, 'byArea'])->name('minutas.byArea');
+Route::patch('/minutas/{minuta}/bookmark', [App\Http\Controllers\minutasController::class, 'bookmark'])->name('minutas.bookmark');
 Route::get('/procesos', [App\Http\Controllers\procesoController::class, 'findAll'])->name('procesos.findAll');
 Route::get('/procesosTodo', [App\Http\Controllers\procesoController::class, 'findAllSP'])->name('procesos.findAllSP');
 Route::get('/procesos/{area_id}/area', [App\Http\Controllers\procesoController::class, 'byArea'])->name('procesos.byArea');
