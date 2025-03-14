@@ -42,6 +42,11 @@ Generar la clave de la aplicación:
 ```bash
 php artisan key:generate
 ```
+
+Generar un enlace simbólico al almacenamiento de la aplicación:
+```bash
+php artisan storage:link
+```
 ### Configuración del Frontend
 Instalar dependencias de NPM:
 ```bash
