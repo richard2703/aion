@@ -140,7 +140,7 @@ watch(globalFilter, (newValue) => {
                         class="px-4 py-2 flex justify-end bg-white border-b border-gray-200"
                     >
                         <div v-if="userPremissions.includes('pilares_crear')">
-                            <PrimaryButton
+                            <!-- <PrimaryButton
                                 :href="route('area.create')"
                                 class="m-4 pi pi-plus"
                             >
@@ -152,7 +152,7 @@ watch(globalFilter, (newValue) => {
                                 >
                                     Nuevo pilar</span
                                 >
-                            </PrimaryButton>
+                            </PrimaryButton> -->
                         </div>
                     </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
@@ -250,7 +250,7 @@ watch(globalFilter, (newValue) => {
                                                     "
                                                     class="inline"
                                                 >
-                                                    <PrimaryButton
+                                                    <!-- <PrimaryButton
                                                         class="pi pi-trash me-2"
                                                         @click.prevent="
                                                             deleteArea(
@@ -259,7 +259,7 @@ watch(globalFilter, (newValue) => {
                                                             )
                                                         "
                                                     >
-                                                    </PrimaryButton>
+                                                    </PrimaryButton> -->
                                                 </div>
                                             </div>
                                         </div>

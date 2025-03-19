@@ -38,6 +38,7 @@ class minutasController extends Controller
         $filters = $request->get('filter', '');
         $sortField = $request->get('sortField', 'id');
         $sortOrder = $request->get('sortOrder', 'desc');
+        $bookmark = $request->get('bookmark', false);
 
         // Apply global filter if it exists
         if (isset($filters['global']['value']) && !empty($filters['global']['value'])) {
@@ -121,11 +122,8 @@ class minutasController extends Controller
             $query->orderBy('id', $sortOrder);
         }
 
-        $user = auth()->user();
-        if ($user->hasRole('lider_pilar')) {
-            // dd('Admin'); // Devuelve una colección de nombres de roles
-        } else {
-            $query->where('privada', 0);
+        if ($bookmark) {
+            $query->where('bookmark', 1);
         }
         // $result = $query->with('challenge')->paginate($pageSize, ['*'], 'page', $page);
         $result = $query->with('area', 'departamento', 'lider', 'proceso', 'tipoMinuta')->paginate($pageSize, ['*'], 'page', $page);
@@ -524,5 +522,17 @@ class minutasController extends Controller
         $pdf = Pdf::loadView('MinutaPDF', ['minuta' => $minuta, 'asistentes' => $asistentes, 'tareas' => $tareas]);
 
         return $pdf->download('minuta.pdf');
+    }
+
+    function bookmark(minutas $minuta, Request $request)
+    {
+        $minuta->update($request->only('bookmark'));
+
+        return response()->json(['success' => true]);
+    }
+
+    function misMinutas()
+    {
+        return Inertia::render('Minutas/MinutasBookmark');
     }
 }

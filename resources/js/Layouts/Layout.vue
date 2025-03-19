@@ -339,13 +339,13 @@ const rightSidebarItems = ref([
 
 const menuItems = [
     {
-        label: "Alineacion",
+        label: "Alineación",
         route: "dashboard",
         icon: "",
         role: ["admin", "user", "superadmin", "lider_pilar"],
     },
     {
-        label: "Identificacion",
+        label: "Identificación",
         icon: "",
         role: ["admin", "superadmin", "user"],
         children: [
@@ -379,7 +379,12 @@ const menuItems = [
                 icon: "",
                 role: ["admin", "superadmin", "user"],
             },
-
+            {
+                label: "Dashboard",
+                route: "sysgestion.dashboard",
+                icon: "",
+                role: ["admin", "superadmin", "user"],
+            },
             {
                 label: "ScoreCard",
                 route: "scoreCard.index",
@@ -389,16 +394,10 @@ const menuItems = [
         ],
     },
     {
-        label: "Optimizacion",
+        label: "Optimización",
         icon: "",
         role: ["admin", "superadmin", "user"],
         children: [
-            {
-                label: "Dashboard",
-                route: "sysgestion.dashboard",
-                icon: "",
-                role: ["admin", "superadmin", "user"],
-            },
             {
                 label: "PDCA",
                 route: "sysgestion.index",
@@ -425,23 +424,28 @@ const menuItems = [
         role: ["admin", "user", "superadmin"],
         children: [
             {
-                label: "Capacitacion",
+                label: "Capacitación",
                 route: "https://laproductivitycenter.com",
                 icon: "",
                 role: ["admin", "user", "superadmin", "lider_pilar"],
             },
             {
-                label: "Directorio de proveedores",
+                label: "Directorio de Proveedores",
                 route: "proveedores.index",
                 icon: "",
                 role: ["admin", "superadmin"],
             },
             {
                 label: "NotebookLM",
-                // route: "notebook.index", // Reemplaza con la ruta adecuada en cuando notebookLM este para ser "embedded"
                 route: "https://notebooklm.google/",
                 icon: "",
                 role: ["user", "admin", "superadmin"],
+            },
+            {
+                label: "Favoritos",
+                route: "minutas.misminutas",
+                icon: "",
+                role: ["admin", "superadmin", "user"],
             },
         ],
     },
@@ -475,7 +479,7 @@ const menuItems = [
                 role: ["admin", "superadmin"],
             },
             {
-                label: "Tipos de Desperdicios",
+                label: "Tipos de desperdicios",
                 route: "tiposDesperdicios.index",
                 icon: "",
                 role: ["admin", "superadmin"],
@@ -484,7 +488,7 @@ const menuItems = [
                 label: "Eventos",
                 route: "eventos.index",
                 icon: "",
-                role: ["superadmin", "eventos"], // TODO: LIMITAR A SUPERADMIN Y LIDER_PILAR ( PRINCIPALMENTE A GYC)
+                role: ["superadmin", "eventos"],
             },
             {
                 label: "Secciones",
@@ -529,13 +533,13 @@ const menuItems = [
                 role: ["admin", "superadmin"],
             },
             {
-                label: "Estandares",
+                label: "Estándares",
                 route: "estandar.index",
                 icon: "",
                 role: ["admin", "superadmin"],
             },
             {
-                label: "KPI's",
+                label: "KPIs",
                 route: "kpi.index",
                 icon: "",
                 role: ["admin", "superadmin", "user"],
@@ -566,7 +570,7 @@ const menuItems = [
                 role: ["user", "admin", "superadmin"],
             },
             {
-                label: "Terminos y condiciones",
+                label: "Términos y condiciones",
                 route: "terminos.index",
                 icon: "",
                 role: ["user", "admin", "superadmin"],
@@ -574,6 +578,7 @@ const menuItems = [
         ],
     },
 ];
+
 const userNotifications = ref([]);
 const countNotifications = ref(0);
 
