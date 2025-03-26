@@ -122,7 +122,7 @@ class rolesController extends Controller
      */
     public function update(Request $request, role $role)
     {
-        $role->update($request->only('name'));
+        $role->update($request->only('name', 'descripcion'));
 
         // Obtén los permisos seleccionados
         $permissions = Permission::whereIn('id', $request->input('selectedPermisos', []))->get();

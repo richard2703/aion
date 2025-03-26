@@ -466,7 +466,7 @@ const getItem = () => {
                                     <option value="none">Ninguna</option>
                                     <option value="daily">Diaria</option>
                                     <option value="weekly">Semanal</option>
-                                    <!-- <option value="monthly">Mensual</option> -->
+                                    <option value="monthly">Mensual</option>
                                 </select>
                             </div>
 

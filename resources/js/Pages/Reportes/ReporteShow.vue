@@ -9,6 +9,10 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import InputText from "primevue/inputtext";
 import Comentario from "@/Components/Comentarios/Comentario.vue";
+// import ContenidoPanel from "./Partials/ContenidoPanel.vue";
+import ContenidoPanel from "../ScoreCard/Partials/ContenidoPanel.vue";
+import TabPanels from 'primevue/tabpanels';
+import TabPanel from 'primevue/tabpanel';
 
 // Definir propiedades
 const props = defineProps({
@@ -107,7 +111,7 @@ function iscollapsedReport(id) {
 
 // Obtener áreas al montar el componente
 onMounted(() => {
-    console.log({ reporteSemanal: reporteSemanal.value.id });
+    console.log({ reporteSemanal: reporteSemanal.value });
 
     getreportes();
 });
@@ -272,6 +276,9 @@ const getTrend = (promedio, actual, regla) => {
             </div>
 
             <div class="py-2">
+
+                <ContenidoPanel :area=3 />
+
                 <!-- Índice de Departamentos -->
                 <div class="flex">
                     <div class="reporte w-full">
