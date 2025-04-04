@@ -60,6 +60,8 @@ async function getDepartamentos(userArea) {
         });
 }
 
+const getEmpresa = () => {};
+
 async function onChange(event) {
     const taget_id = event.target.value;
     await axios

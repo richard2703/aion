@@ -142,3 +142,5 @@ Route::get('/comentarios/{comentario}/edit', [App\Http\Controllers\comentarioCon
 Route::patch('/comentarios/{comentario}/update', [App\Http\Controllers\comentarioController::class, 'update'])->name('comentario.update');
 Route::delete('/comentarios/{comentario}/destroy', [App\Http\Controllers\comentarioController::class, 'destroy'])->name('comentario.destroy');
 Route::get('/proveedores/{area_id}', [App\Http\Controllers\proveedorController::class, 'findAll'])->name('proveedores.findAll');
+
+Route::get('/membresias', [App\Http\Controllers\membresiaController::class, 'findAll'])->name('membresias.findAll');
