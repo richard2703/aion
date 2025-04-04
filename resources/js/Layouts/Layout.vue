@@ -661,7 +661,7 @@ const tareaCreate = async (minuta_id) => {
 
 // TODO: retirar del arreglo "NotebookLM" si se implementa el "embedded"
 function handleClick(child) {
-    if (["Capacitacion", "NotebookLM"].includes(child.label)) {
+    if (["Capacitación", "NotebookLM"].includes(child.label)) {
         // navigate to external URL
         navigate(child.route);
     } else {
