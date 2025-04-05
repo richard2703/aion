@@ -271,4 +271,12 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
 
     // Terminos y condiciones
     Route::get('terminos', [App\Http\Controllers\terminosController::class, 'index'])->name('terminos.index');
+
+    // Empresa
+    Route::get('empresas', [App\Http\Controllers\empresaController::class, 'index'])->name('empresas.index');
+    Route::get('empresas/create', [App\Http\Controllers\empresaController::class, 'create'])->name('empresas.create');
+    Route::post('empresas/store', [App\Http\Controllers\empresaController::class, 'store'])->name('empresas.store');
+    Route::get('empresas/{empresa}/edit', [App\Http\Controllers\empresaController::class, 'edit'])->name('empresas.edit');
+    Route::post('empresas/{empresa}/update', [App\Http\Controllers\empresaController::class, 'update'])->name('empresas.update');
+    Route::delete('empresas/{empresa}/destroy', [App\Http\Controllers\empresaController::class, 'destroy'])->name('empresas.destroy');
 });

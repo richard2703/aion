@@ -473,6 +473,12 @@ const menuItems = [
                 role: ["admin", "superadmin"],
             },
             {
+                label: "Compañias",
+                route: "empresas.index",
+                icon: "",
+                role: ["admin", "superadmin"],
+            },
+            {
                 label: "Líderes de flujo",
                 route: "encargadoFlujo.index",
                 icon: "",

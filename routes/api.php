@@ -144,3 +144,4 @@ Route::delete('/comentarios/{comentario}/destroy', [App\Http\Controllers\comenta
 Route::get('/proveedores/{area_id}', [App\Http\Controllers\proveedorController::class, 'findAll'])->name('proveedores.findAll');
 
 Route::get('/membresias', [App\Http\Controllers\membresiaController::class, 'findAll'])->name('membresias.findAll');
+Route::get('/empresas', [App\Http\Controllers\empresaController::class, 'findAll'])->name('empresas.findAll');
