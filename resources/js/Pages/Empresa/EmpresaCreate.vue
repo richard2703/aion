@@ -221,6 +221,138 @@ const submit = async () => {
                                             </option>
                                         </select>
                                     </div>
+                                    <div>
+                                        <InputLabel
+                                            for="membresia"
+                                            value="Membresia: "
+                                        />
+                                        <select
+                                            v-model="form.membresia_id"
+                                            name="membresia"
+                                            id="membresia"
+                                        >
+                                            <option value="" disabled selected>
+                                                Seleccione una opcion
+                                            </option>
+                                            <option
+                                                v-for="membresia in membresias"
+                                                :key="membresia.id"
+                                                :value="membresia.id"
+                                            >
+                                                {{ membresia.nombre }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <InputLabel
+                                            for="membresia"
+                                            value="Membresia: "
+                                        />
+                                        <select
+                                            v-model="form.membresia_id"
+                                            name="membresia"
+                                            id="membresia"
+                                        >
+                                            <option value="" disabled selected>
+                                                Seleccione una opcion
+                                            </option>
+                                            <option
+                                                v-for="membresia in membresias"
+                                                :key="membresia.id"
+                                                :value="membresia.id"
+                                            >
+                                                {{ membresia.nombre }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <InputLabel
+                                            for="membresia"
+                                            value="Membresia: "
+                                        />
+                                        <select
+                                            v-model="form.membresia_id"
+                                            name="membresia"
+                                            id="membresia"
+                                        >
+                                            <option value="" disabled selected>
+                                                Seleccione una opcion
+                                            </option>
+                                            <option
+                                                v-for="membresia in membresias"
+                                                :key="membresia.id"
+                                                :value="membresia.id"
+                                            >
+                                                {{ membresia.nombre }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <InputLabel
+                                            for="membresia"
+                                            value="Membresia: "
+                                        />
+                                        <select
+                                            v-model="form.membresia_id"
+                                            name="membresia"
+                                            id="membresia"
+                                        >
+                                            <option value="" disabled selected>
+                                                Seleccione una opcion
+                                            </option>
+                                            <option
+                                                v-for="membresia in membresias"
+                                                :key="membresia.id"
+                                                :value="membresia.id"
+                                            >
+                                                {{ membresia.nombre }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <InputLabel
+                                            for="membresia"
+                                            value="Membresia: "
+                                        />
+                                        <select
+                                            v-model="form.membresia_id"
+                                            name="membresia"
+                                            id="membresia"
+                                        >
+                                            <option value="" disabled selected>
+                                                Seleccione una opcion
+                                            </option>
+                                            <option
+                                                v-for="membresia in membresias"
+                                                :key="membresia.id"
+                                                :value="membresia.id"
+                                            >
+                                                {{ membresia.nombre }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <InputLabel
+                                            for="membresia"
+                                            value="Membresia: "
+                                        />
+                                        <select
+                                            v-model="form.membresia_id"
+                                            name="membresia"
+                                            id="membresia"
+                                        >
+                                            <option value="" disabled selected>
+                                                Seleccione una opcion
+                                            </option>
+                                            <option
+                                                v-for="membresia in membresias"
+                                                :key="membresia.id"
+                                                :value="membresia.id"
+                                            >
+                                                {{ membresia.nombre }}
+                                            </option>
+                                        </select>
+                                    </div>
 
                                     <div
                                         class="col-span-full flex items-center justify-end mt-4"
