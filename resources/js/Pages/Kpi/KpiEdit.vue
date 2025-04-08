@@ -96,6 +96,25 @@ async function getProcedimientos(eventOrValue) {
         });
 }
 
+const newfunction = () => {
+    console.log("newfunction");
+};
+const newfunction2 = () => {
+    console.log("newfunction");
+};
+const newfunction3 = () => {
+    console.log("newfunction");
+};
+const newfunction4 = () => {
+    console.log("newfunction");
+};
+const newfunction5 = () => {
+    console.log("newfunction");
+};
+const newfunction6 = () => {
+    console.log("newfunction");
+};
+
 // const submit = () => {
 //     try {
 //         form.patch(route("kpi.update", kpi.value.id), {
