@@ -18,6 +18,8 @@ const areas = ref(props.areas);
 const departamentos = ref(props.departamentos);
 const roles = ref(props.roles);
 const userPermissions = usePage().props.auth.user.permissions;
+const userRol = ref(usePage().props.auth.user.roles);
+const empresas = ref("");
 
 async function getAreas() {
     await axios
@@ -35,8 +37,23 @@ const form = useForm({
     password_confirmation: "",
     area_id: "",
     departamento_id: "",
+    empresa_id: "",
     roles: [],
 });
+
+const getEmpresas = async () => {
+    await axios.get(route("empresas.findAll")).then((response) => {
+        console.log("empresas", response.data);
+
+        if (userRol.value.includes("admin")) {
+            empresas.value = response.data.filter((item) => {
+                return item.id === usePage().props.auth.user.empresa.id;
+            });
+        } else {
+            empresas.value = response.data;
+        }
+    });
+};
 
 const onChange = async (event) => {
     const target_id = event.target.value;
@@ -64,6 +81,10 @@ const submit = async () => {
 
 onMounted(() => {
     getAreas();
+    // empresas = userRol.value.includes("admin")
+    //     ? ref(usePage().props.auth.user.empresa.nombre)
+    //     : ref("");
+    getEmpresas();
 });
 </script>
 
@@ -174,6 +195,30 @@ onMounted(() => {
                                             :value="departamento.id"
                                         >
                                             {{ departamento.nombre }}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="mt-4">
+                                    <InputLabel
+                                        for="empresa_id"
+                                        value="Compañia: "
+                                    />
+                                    <select
+                                        ref="empresa_select"
+                                        class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full px-3 py-2 cursor-pointer"
+                                        v-model="form.empresa_id"
+                                        required
+                                    >
+                                        <option value="" disabled selected>
+                                            Seleccione una opcion
+                                        </option>
+                                        <option
+                                            v-for="empresa in empresas"
+                                            :key="empresa.id"
+                                            :value="empresa.id"
+                                        >
+                                            {{ empresa.nombre }}
                                         </option>
                                     </select>
                                 </div>

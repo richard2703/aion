@@ -20,10 +20,10 @@ const usuario = ref(props.usuario);
 const areas = ref(props.areas);
 const departamentos = ref(props.departamentos);
 const roles = ref(props.roles);
-
 const userArea = usuario.value.area_id;
-
 const userPermissions = usePage().props.auth.user.permissions;
+const userRol = ref(usePage().props.auth.user.roles);
+const empresa = ref(usePage().props.auth.user.empresa.nombre);
 
 const profileForm = useForm({
     name: usuario.value.name,
@@ -35,6 +35,7 @@ const profileForm = useForm({
         ? usuario.value.roles.map((role) => role.name)
         : [],
     selectedRoles: props.roles_usuario,
+    empresa: empresa.value,
 });
 
 const passwordForm = useForm({
@@ -266,6 +267,18 @@ onMounted(() => {
                                             {{ departamento.nombre }}
                                         </option>
                                     </select>
+                                </div>
+
+                                <div class="mt-4">
+                                    <InputLabel
+                                        for="empresa"
+                                        value="Compañia: "
+                                    />
+                                    <InputLabel
+                                        for="empresa-name"
+                                        class="text-[20px] font-bold pl-6"
+                                        :value="profileForm.empresa"
+                                    />
                                 </div>
 
                                 <!-- Roles -->

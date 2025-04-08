@@ -30,6 +30,7 @@ class User extends Authenticatable
     protected $fillable = [
         'area_id',
         'departamento_id',
+        'empresa_id',
         'name',
         'email',
         'password',
@@ -99,5 +100,10 @@ class User extends Authenticatable
     public function tarea()
     {
         return $this->hasMany(tareas::class, 'responsable_id', 'id');
+    }
+
+    public function empresa()
+    {
+        return $this->belongsTo(Empresa::class, 'empresa_id', 'id');
     }
 }
