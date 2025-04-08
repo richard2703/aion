@@ -43,12 +43,14 @@ const form = useForm({
 
 const getEmpresas = async () => {
     await axios.get(route("empresas.findAll")).then((response) => {
+        console.log("empresas", response.data);
+
         if (userRol.value.includes("admin")) {
-            empresas.value = response.data.value.filter(
-                (item) => item.id == usePage().props.auth.user.empresa.id
-            );
+            empresas.value = response.data.filter((item) => {
+                return item.id === usePage().props.auth.user.empresa.id;
+            });
         } else {
-            empresas.value = response.data.value;
+            empresas.value = response.data;
         }
     });
 };
