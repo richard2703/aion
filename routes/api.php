@@ -17,6 +17,7 @@ Route::get('/procesos/{departamento_id}', [App\Http\Controllers\procesoControlle
 Route::get('/procedimientos/{proceso_id}', [App\Http\Controllers\procedimientoController::class, 'byProceso'])->name('procedimientos.byProceso');
 Route::get('/departamentos', [App\Http\Controllers\departamentoController::class, 'findAll'])->name('departamentos.findAll');
 Route::get('/usuarios', [App\Http\Controllers\userController::class, 'findAll'])->name('users.findAll');
+Route::get('/usuariosDelete', [App\Http\Controllers\userController::class, 'findAllDelete'])->name('users.findAllDelete');
 Route::get('/usuarios/all/todo', [App\Http\Controllers\userController::class, 'all'])->name('users.all');
 Route::get('/usuarios/{area_id}', [App\Http\Controllers\userController::class, 'byArea'])->name('usuarios.byArea');
 

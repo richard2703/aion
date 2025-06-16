@@ -32,7 +32,7 @@ async function getUsuarios(
     sortOrder = 1
 ) {
     try {
-        const response = await axios.get("/api/usuarios", {
+        const response = await axios.get("/api/usuariosDelete", {
             params: {
                 page,
                 rows: rowsPerPage,
@@ -41,6 +41,8 @@ async function getUsuarios(
                 sortOrder: sortOrder === 1 ? "asc" : "desc",
             },
         });
+        console.log("response::", response);
+
         usuarios.value = response.data.data;
         totalRecords.value = response.data.total;
         first.value = (response.data.current_page - 1) * rows.value;
@@ -49,21 +51,22 @@ async function getUsuarios(
     }
 }
 
-async function deleteUser(id) {
+async function restoreUser(id) {
     try {
         const result = await confirmDialog(
             "Estas seguro?",
-            "Ya no podras revertir esto!",
+            // "Ya no podras revertir esto!",
             "warning"
         );
+        console.log("result::", id);
         if (result.isConfirmed) {
             await axios
-                .delete(route("user.destroy", id))
+                .post(route("user.restore", id))
                 .then((response) => (usuarios.value = response.data.usuarios))
                 .catch((error) => {
                     console.log(error);
                 });
-            showToast("El registro ha sido eliminado", "success");
+            showToast("El registro ha sido restaurado", "success");
         }
     } catch (error) {
         console.error(error);
@@ -116,18 +119,21 @@ watch(globalFilter, (newValue) => {
 <template>
     <Layout :titulo="title" :subTitulo="subTitle">
 
-        <Head title="Usuarios" />
+        <Head title="Usuarios Borrados" />
 
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
-                <h3>Usuarios</h3>
+                <h3>Usuarios Borrados</h3>
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
                 <h3>Home -</h3>
                 </Link>
+                <Link :href="route('user.index')" class="px-1">
+                <h3>Usuarios -</h3>
+                </Link>
                 <Link class="active">
-                <h3>Usuarios</h3>
+                <h3>Borrados</h3>
                 </Link>
             </div>
         </div>
@@ -136,12 +142,12 @@ watch(globalFilter, (newValue) => {
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div>
                     <div class="px-4 py-2 flex justify-end bg-white border-b border-gray-200">
-                        <div v-if="userPremissions.includes('usuarios_crear')">
-                            <PrimaryButton :href="route('user.indexDelete')" class="m-4 pi pi-history"></PrimaryButton>
+                        <!-- <div v-if="userPremissions.includes('usuarios_crear')">
+                            <PrimaryButton :href="route('user.create')" class="m-4 pi pi-history"></PrimaryButton>
                         </div>
                         <div v-if="userPremissions.includes('usuarios_crear')">
                             <PrimaryButton :href="route('user.create')" class="m-4 pi pi-plus"></PrimaryButton>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="px-4 py-2 bg-white border-b border-gray-200">
                         <div class="container mx-auto overflow-x-auto">
@@ -173,7 +179,7 @@ watch(globalFilter, (newValue) => {
                                 <Column header="" headerStyle="width:4em;">
                                     <template #body="slotProps" class="text-center">
                                         <div class="flex justify-evenly">
-                                            <div v-if="
+                                            <!-- <div v-if="
                                                 userPremissions.includes(
                                                     'usuarios_editar'
                                                 )
@@ -188,14 +194,14 @@ watch(globalFilter, (newValue) => {
                                                     }">
                                                         Editar</span>
                                                 </PrimaryButton>
-                                            </div>
+                                            </div> -->
                                             <div v-if="
                                                 userPremissions.includes(
                                                     'usuarios_eliminar'
                                                 )
                                             " class="inline">
-                                                <PrimaryButton class="m-2 pi pi-trash" @click.prevent="
-                                                    deleteUser(
+                                                <PrimaryButton class="m-2 pi pi-history" @click.prevent="
+                                                    restoreUser(
                                                         slotProps.data.id
                                                     )
                                                     ">

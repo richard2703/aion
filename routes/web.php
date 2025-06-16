@@ -41,9 +41,11 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('/departamento/{id}/edit', [App\Http\Controllers\departamentoController::class, 'edit'])->name('departamento.edit');
     Route::patch('/departamento/{id}/update', [App\Http\Controllers\departamentoController::class, 'update'])->name('departamento.update');
     Route::delete('/departamento/{id}/destroy', [App\Http\Controllers\departamentoController::class, 'destroy'])->name('departamento.destroy');
+    Route::delete('/departamento/{id}/restore', [App\Http\Controllers\departamentoController::class, 'restore'])->name('departamento.restore');
 
     // User
     Route::get('/users', [App\Http\Controllers\userController::class, 'index'])->name('user.index');
+    Route::get('/usersDelete', [App\Http\Controllers\userController::class, 'indexDelete'])->name('user.indexDelete');
     Route::get('/user/create', [App\Http\Controllers\userController::class, 'create'])->name('user.create');
     Route::post('/user/store', [App\Http\Controllers\userController::class, 'store'])->name('user.store');
     // Route::get('/user/{id}', [App\Http\Controllers\userController::class, 'show'])->name('user.show');
@@ -51,6 +53,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::patch('/user/{id}/update', [App\Http\Controllers\userController::class, 'update'])->name('user.update');
     Route::patch('/user/{id}/updatePassword', [App\Http\Controllers\userController::class, 'updatePassword'])->name('user.updatePassword');
     Route::delete('/user/{id}/destroy', [App\Http\Controllers\userController::class, 'destroy'])->name('user.destroy');
+    Route::post('/user/{id}/restore', [App\Http\Controllers\userController::class, 'restore'])->name('user.restore');
 
     //Chanllenges
     Route::get('/challenges', [App\Http\Controllers\challengesController::class, 'index'])->name('challenge.index');

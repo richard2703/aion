@@ -14,6 +14,8 @@ class dashboardController extends Controller
     {
         $personalizar = Personalizar::first();
         $objetivos = objetivos::all();
+        $iaRecomendada = $personalizar->nombre_IA;
+        $linkIA = $personalizar->link_IA;
 
         $personalizar->logo_path = Storage::disk('public')->url($personalizar->logo);
         $personalizar->banner_path = Storage::disk('public')->url($personalizar->banner);
@@ -29,7 +31,7 @@ class dashboardController extends Controller
 
         // dd($logo);
         // return response()->json($personalizar);
-        return response()->json([$personalizar, $objetivos]);
+        return response()->json([$personalizar, $objetivos, $iaRecomendada, $linkIA]);
     }
 
 

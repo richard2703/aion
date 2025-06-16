@@ -22,5 +22,7 @@ class Personalizar extends Model
         'portada',
         'titulo_evento',
         'nombre_negocio',
+        'nombre_IA',
+        'link_IA',
     ];
 }

@@ -11,7 +11,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 use Spatie\Permission\Models\Role;
-
+use Termwind\Components\Dd;
 
 class userController extends Controller
 {
@@ -21,6 +21,13 @@ class userController extends Controller
     {
         return Inertia::render('Usuario/UsuarioIndex', [
             'usuarios' => User::with('area', 'departamento')->get(),
+        ]);
+    }
+
+    public function indexDelete()
+    {
+        return Inertia::render('Usuario/UsuarioDeleteIndex', [
+            'usuarios' => User::with('area', 'departamento')->onlyTrashed()->get(),
         ]);
     }
 
@@ -74,6 +81,50 @@ class userController extends Controller
         }
 
         $users = $query->with('area', 'departamento')->paginate($pageSize, ['*'], 'page', $page);
+
+        return response()->json($users);
+    }
+
+    function findAllDelete(Request $request)
+    {
+        $query = User::onlyTrashed();
+        $pageSize = $request->get('rows', 10);
+        $page = $request->get('page', 1);
+        $filter = $request->get('filter', '');
+        $sortField = $request->get('sortField', 'id');
+        $sortOrder = $request->get('sortOrder', 'asc');
+
+        if ($filter) {
+            $query->where(function ($q) use ($filter) {
+                $q->where('users.id', 'like', '%' . $filter . '%')
+                    ->orWhere('users.name', 'like', '%' . $filter . '%')
+                    ->orWhere('users.email', 'like', '%' . $filter . '%')
+                    ->orWhereHas('area', function ($q) use ($filter) {
+                        $q->where('areas.nombre', 'like', '%' . $filter . '%')
+                            ->orWhere('areas.descripcion', 'like', '%' . $filter . '%');
+                    })
+                    ->orWhereHas('departamento', function ($q) use ($filter) {
+                        $q->where('departamentos.nombre', 'like', '%' . $filter . '%')
+                            ->orWhere('departamentos.descripcion', 'like', '%' . $filter . '%');
+                    });
+            });
+        }
+
+        if (in_array($sortField, ['id', 'name', 'email', 'area.nombre', 'departamento.nombre'])) {
+            if (strpos($sortField, 'area.') === 0) {
+                $query->join('areas', 'users.area_id', '=', 'areas.id')
+                    ->select('users.*', 'areas.nombre as area_nombre') // Select distinct columns
+                    ->orderBy('areas.' . substr($sortField, 5), $sortOrder);
+            } else if (strpos($sortField, 'departamento.') === 0) {
+                $query->join('departamentos', 'users.departamento_id', '=', 'departamentos.id')
+                    ->select('users.*', 'departamentos.nombre as departamento_nombre') // Select distinct columns
+                    ->orderBy('departamentos.' . substr($sortField, 12), $sortOrder);
+            } else {
+                $query->orderBy($sortField, $sortOrder);
+            }
+        }
+
+        $users = $query->orderBy('deleted_at', 'desc')->with('area', 'departamento')->paginate($pageSize, ['*'], 'page', $page);
 
         return response()->json($users);
     }
@@ -139,6 +190,7 @@ class userController extends Controller
 
         return redirect()->route('user.index');
     }
+
     function updatePassword(Request $request, $id)
     {
         if ($request->password === $request->password_confirmation) {
@@ -154,5 +206,12 @@ class userController extends Controller
         $user = User::find($id);
         $user->delete();
         return response()->json(['usuarios' => User::with('area', 'departamento')->get(),]);
+    }
+
+    function restore($id)
+    {
+        $user = User::onlyTrashed()->find($id);
+        $user->restore();
+        return response()->json(['usuarios' => User::with('area', 'departamento')->onlyTrashed()->get(),]);
     }
 }
