@@ -76,7 +76,7 @@ class dashboardController extends Controller
         // $personalizar->slogan = $request->slogan;
         // $personalizar->actuacion = $request->actuacion;
         // $personalizar->titulo_evento = $request->evento;
-        $personalizar->update($request->only('proposito', 'slogan', 'actuacion', 'titulo_evento', 'nombre_negocio'));
+        $personalizar->update($request->only('proposito', 'slogan', 'actuacion', 'titulo_evento', 'nombre_negocio', 'link_IA', 'nombre_IA'));
 
 
         // Manejar la carga del logo
