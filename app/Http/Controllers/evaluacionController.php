@@ -65,25 +65,25 @@ class evaluacionController extends Controller
         $lastAssessment = Assessment::latest('created_at')
             ->first();
         // Check if the latest assessment is older than 3 months or doesn't exist
-        if (!$lastAssessment || $lastAssessment->created_at->lt(now()->subMonths(3))) {
-            // Create a new assessment
-            $assessment = new Assessment;
-            $assessment->created_by = $userId;
-            $assessment->save();
+        // if (!$lastAssessment || $lastAssessment->created_at->lt(now()->subMonths(3))) {
+        // Create a new assessment
+        $assessment = new Assessment;
+        $assessment->created_by = $userId;
+        $assessment->save();
 
-            // Fetch all sections and create associated records
-            $secciones = Seccion::get();
-            foreach ($secciones as $seccion) {
-                AssessmentAsignado::create([
-                    'assessment_id' => $assessment->id,
-                    'seccion_id' => $seccion->id,
-                    'estatus' => 'INCOMPLETO',
-                ]);
-            }
-
-            // Redirect to the evaluation selection route
-            return redirect(route('evaluacion.select', $assessment->id));
+        // Fetch all sections and create associated records
+        $secciones = Seccion::get();
+        foreach ($secciones as $seccion) {
+            AssessmentAsignado::create([
+                'assessment_id' => $assessment->id,
+                'seccion_id' => $seccion->id,
+                'estatus' => 'INCOMPLETO',
+            ]);
         }
+
+        // Redirect to the evaluation selection route
+        return redirect(route('evaluacion.select', $assessment->id));
+        // }
 
         // If the last assessment is less than 3 months old, return with an error message or redirect
         return redirect()->back()->with('error', 'Solo puede crear una nueva evaluación cada 3 meses.');

@@ -180,7 +180,7 @@ const closeDateModal = () => {
                                                 </p>
                                             </div>
                                             <div>
-                                                <p class="italic m-4 text-lg">
+                                                <p class="text-center py-4 font-bold text-xl">
                                                     {{ slogan }}
                                                 </p>
                                             </div>
