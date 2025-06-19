@@ -368,9 +368,7 @@ const menuItems = computed(() => [
                 role: ["admin", "superadmin"],
             },
             {
-                // label: "NotebookLM",
                 label: item.value[2],
-                // route: "https://notebooklm.google/",
                 route: item.value[3],
                 icon: "",
                 role: ["user", "admin", "superadmin"],
@@ -602,16 +600,35 @@ const tareaCreate = async (minuta_id) => {
 };
 
 // TODO: retirar del arreglo "NotebookLM" si se implementa el "embedded"
+// function handleClick(child) {
+//     if (["Capacitación", "NotebookLM"].includes(child.label)) {
+//         // navigate to external URL
+//         navigate(child.route);
+//     } else {
+//         // navigate to route
+//         window.location.href = route(child.route);
+//     }
+//     // add more conditions or logic here
+// }
+
 function handleClick(child) {
     if (["Capacitación", "NotebookLM"].includes(child.label)) {
-        // navigate to external URL
+        // Redirige directamente a una URL externa
+        // window.open(child.route, "_blank");
         navigate(child.route);
-    } else {
-        // navigate to route
+
+    } else if (child.route.startsWith("http")) {
+        // Si es una URL absoluta
+        navigate(child.route);
+    } else if (child.route.includes(".")) {
+        // Si parece ser una ruta de Laravel (por ejemplo 'proveedores.index')
         window.location.href = route(child.route);
+    } else {
+        // Es una ruta relativa tipo '/alguna-pagina'
+        window.location.href = child.route;
     }
-    // add more conditions or logic here
 }
+
 </script>
 
 <style>
