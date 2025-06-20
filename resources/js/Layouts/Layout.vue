@@ -614,9 +614,7 @@ const tareaCreate = async (minuta_id) => {
 function handleClick(child) {
     if (["Capacitación", "NotebookLM"].includes(child.label)) {
         // Redirige directamente a una URL externa
-        // window.open(child.route, "_blank");
         navigate(child.route);
-
     } else if (child.route.startsWith("http")) {
         // Si es una URL absoluta
         navigate(child.route);

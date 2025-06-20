@@ -253,19 +253,59 @@ class reportesController extends Controller
     //     return response()->json($reporteSemanal);
     // }
 
-    public function findAllReporteSemanal()
+    // public function findAllReporteSemanal(Request $request)
+    // {
+    //     $query = reporteSemanal::query();
+    //     $pageSize = $request->get('rows', 10);
+    //     $page = $request->get('page', 1);
+    //     $filter = $request->get('filter', '');
+    //     $sortField = $request->get('sortField', 'id');
+    //     $sortOrder = $request->get('sortOrder', 'asc');
+
+    //     // $reporteSemanal = $query->orderBy('created_at', 'desc')->get();
+
+    //     // Obtener los datos y ordenarlos
+    //     $reporteSemanal = $query->orderBy('created_at', 'desc')->get()->map(function ($item) {
+    //         // Formatear las fechas
+    //         $item->inicio = Carbon::parse($item->inicio)->format('d-m-Y');
+    //         $item->fin = Carbon::parse($item->fin)->format('d-m-Y');
+
+    //         return $item; // Retornar el item modificado
+    //     });
+
+    //     // $reporteSemanal = $query->paginate($pageSize, ['*'], 'page', $page);
+
+
+    //     return response()->json($reporteSemanal);
+    // }}
+
+    public function findAllReporteSemanal(Request $request)
     {
         $query = reporteSemanal::query();
+        $pageSize = $request->get('rows', 10);
+        $page = $request->get('page', 1);
+        $filter = $request->get('filter', '');
+        $sortField = $request->get('sortField', 'id');
+        $sortOrder = $request->get('sortOrder', 'asc');
 
-        // $reporteSemanal = $query->orderBy('created_at', 'desc')->get();
+        // Filtro solo por numeroSemana
+        if ($filter !== '') {
+            $query->where('numeroSemana', 'like', '%' . $filter . '%');
+        }
 
-        // Obtener los datos y ordenarlos
-        $reporteSemanal = $query->orderBy('created_at', 'desc')->get()->map(function ($item) {
-            // Formatear las fechas
-            $item->inicio = Carbon::parse($item->inicio)->format('d-m-Y');
-            $item->fin = Carbon::parse($item->fin)->format('d-m-Y');
+        // Ordenamiento
+        if (in_array($sortField, ['id', 'numeroSemana', 'created_at', 'inicio', 'fin'])) {
+            $query->orderBy($sortField, $sortOrder);
+        }
 
-            return $item; // Retornar el item modificado
+        // Paginación
+        $reporteSemanal = $query->paginate($pageSize, ['*'], 'page', $page);
+
+        // Formatear fechas
+        $reporteSemanal->getCollection()->transform(function ($item) {
+            $item->inicio = \Carbon\Carbon::parse($item->inicio)->format('d-m-Y');
+            $item->fin = \Carbon\Carbon::parse($item->fin)->format('d-m-Y');
+            return $item;
         });
 
         return response()->json($reporteSemanal);
@@ -274,6 +314,7 @@ class reportesController extends Controller
     public function findAllReportes($id)
     {
 
+        // $id = $request->id;
         // Obtener la fecha actual
         $fechaActual = Carbon::now();
 
@@ -285,11 +326,12 @@ class reportesController extends Controller
 
         $trimestreRegistrado = metatrimestres::where('trimestre', $trimestreActual)
             ->where('ano', $anioActual)->first();
+        // dd($trimestreRegistrado->id);
 
         // Buscar reportes semanales
         $reportes = reportes::where('semana_id', $id)
             ->join('departamentos', 'reportes.departamento_id', '=', 'departamentos.id')
-            ->join('areas', 'departamentos.area_id', '=', 'areas.id') // Join con la tabla de áreas
+            ->join('areas', 'departamentos.area_id', '=', 'areas.id')
             ->with([
                 'departamento',
                 'highlights',
@@ -300,20 +342,25 @@ class reportesController extends Controller
                 'kpis' => function ($query) {
                     $query->where('tipo', 2);
                 },
-                // Agregamos la relación con las metas trimestrales
                 'treintas' => function ($query) use ($trimestreRegistrado) {
-                    $query->where('trimestre_id', $trimestreRegistrado->id);
+                    if ($trimestreRegistrado) {
+                        $query->where('trimestre_id', $trimestreRegistrado->id);
+                    }
                 },
                 'sesentas' => function ($query) use ($trimestreRegistrado) {
-                    $query->where('trimestre_id', $trimestreRegistrado->id);
+                    if ($trimestreRegistrado) {
+                        $query->where('trimestre_id', $trimestreRegistrado->id);
+                    }
                 },
                 'noventas' => function ($query) use ($trimestreRegistrado) {
-                    $query->where('trimestre_id', $trimestreRegistrado->id);
+                    if ($trimestreRegistrado) {
+                        $query->where('trimestre_id', $trimestreRegistrado->id);
+                    }
                 }
             ])
-            ->orderBy('areas.id') // Ordenar por área
-            ->orderBy('departamentos.nombre') // Ordenar dentro de cada área por nombre del departamento
-            ->select('reportes.*') // Seleccionamos solo los campos de reportes
+            ->orderBy('areas.id')
+            ->orderBy('departamentos.nombre')
+            ->select('reportes.*')
             ->get();
 
         return response()->json($reportes);

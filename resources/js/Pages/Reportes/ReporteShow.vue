@@ -57,8 +57,8 @@ async function getreportes(
                 },
             }
         );
-        reportes.value = response.data;
         console.log("reportes", response);
+        reportes.value = response.data;
 
         totalRecords.value = response.data.total;
         first.value = (response.data.current_page - 1) * rows.value;
@@ -111,7 +111,7 @@ function iscollapsedReport(id) {
 
 // Obtener áreas al montar el componente
 onMounted(() => {
-    console.log({ reporteSemanal: reporteSemanal.value });
+    // console.log({ reporteSemanal: reporteSemanal.value });
 
     getreportes();
 });
