@@ -168,6 +168,7 @@ class tareasController extends Controller
         $newAsistentes = "";
 
         foreach ($asistentes as $asistente) {
+            //evaluacion si el responsable ya esta en la minuta
             if ($asistente->user_id != $request->responsable_id && $request->responsable_id != $minuta->lider_id) {
                 $newAsistentes = $request->responsable_id;
             }
