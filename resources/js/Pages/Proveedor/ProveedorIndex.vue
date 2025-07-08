@@ -34,14 +34,14 @@ const getAreas = async () => {
         <Head title="Proveedor" />
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
-                <h3>Proveedores</h3>
+                <h3>Partners</h3>
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
                     <h3>Home -</h3>
                 </Link>
                 <Link class="active" href="#">
-                    <h3>Proveedores</h3>
+                    <h3>Partners</h3>
                 </Link>
             </div>
         </div>
@@ -62,7 +62,7 @@ const getAreas = async () => {
                                     fontSize: '10px',
                                 }"
                             >
-                                Nuevo proveedor</span
+                                Nuevo partner</span
                             >
                         </PrimaryButton>
                     </div>

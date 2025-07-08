@@ -108,14 +108,14 @@ const onFileChange = (key, event) => {
 
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
-                <h3>Editar Proveedor</h3>
+                <h3>Editar Partner</h3>
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
                     <h3>Home -</h3>
                 </Link>
                 <Link :href="route('proveedores.index')" class="px-1">
-                    <h3>Proveedores -</h3>
+                    <h3>Partners -</h3>
                 </Link>
                 <Link
                     :href="route('proveedores.edit', proveedor.id)"

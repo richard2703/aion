@@ -35,7 +35,7 @@ function loadPdf() {
 
             iframe.src = modifiedUrl;
             iframe.width = "100%";
-            iframe.height = "500px";
+            iframe.height = "700px";
             iframe.style.border = "none";
 
             containerRef.value.appendChild(iframe);

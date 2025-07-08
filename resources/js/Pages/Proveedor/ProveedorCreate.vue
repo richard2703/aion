@@ -99,14 +99,14 @@ const onFileChange = (key, event) => {
 
         <div class="overflow-hidden sm:rounded-lg">
             <div class="breadcrumbsTitulo px-1">
-                <h3>Nuevo Proveedor</h3>
+                <h3>Nuevo Partner</h3>
             </div>
             <div class="breadcrumbs flex">
                 <Link :href="route('dashboard')" class="px-1">
                     <h3>Home -</h3>
                 </Link>
                 <Link :href="route('proveedores.index')" class="px-1">
-                    <h3>Proveedores -</h3>
+                    <h3>Partners -</h3>
                 </Link>
                 <Link :href="route('proveedores.create')" class="active">
                     <h3>Nuevo</h3>

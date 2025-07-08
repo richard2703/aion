@@ -102,7 +102,7 @@
                                 ? toggleSubmenu(item)
                                 : $inertia.visit(route(`${item.route}`))
                             "
-                            class="flex items-center justify-between p-2 rounded-md hover:bg-gray-700 hover:text-[#dfb569] w-full">
+                            class="flex items-center  p-2 text-left rounded-md hover:bg-gray-700 hover:text-[#dfb569] w-full">
                             <div class="flex items-center gap-3">
                                 <!-- <i :class="item.icon" class="pi w-5 h-5"></i> -->
                                 <span :class="openMenus.includes(item)
@@ -119,7 +119,7 @@
                         </button>
                         <div v-if="item.children && openMenus.includes(item)" class="pl-6 space-y-2 max-h-screen">
                             <button v-for="child in item.children" :key="child.label" @click="handleClick(child)"
-                                class="flex items-center gap-3 p-2 rounded-md hover:bg-gray-700">
+                                class="flex items-center text-left gap-3 p-2 rounded-md hover:bg-gray-700">
                                 <i :class="child.icon" class="pi w-5 h-5"></i>
                                 <span>{{ child.label }}</span>
                             </button>
@@ -362,7 +362,7 @@ const menuItems = computed(() => [
                 role: ["admin", "user", "superadmin", "lider_pilar"],
             },
             {
-                label: "Directorio de Proveedores",
+                label: "Directorio de partners",
                 route: "proveedores.index",
                 icon: "",
                 role: ["admin", "superadmin"],
@@ -417,7 +417,7 @@ const menuItems = computed(() => [
                 role: ["admin", "superadmin"],
             },
             {
-                label: "Tipos de desperdicios",
+                label: "Tipos de desperdicios ",
                 route: "tiposDesperdicios.index",
                 icon: "",
                 role: ["admin", "superadmin"],

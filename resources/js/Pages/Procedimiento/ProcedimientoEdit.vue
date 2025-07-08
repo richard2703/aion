@@ -81,22 +81,22 @@ async function getProcesos(eventOrValue) {
 
 const submit = () => {
     try {
-        if (
-            isUrlValid(form.link_herramienta) &&
-            isUrlValid(form.link_externo)
-        ) {
+        // if (
+        //     isUrlValid(form.link_herramienta) &&
+        //     isUrlValid(form.link_externo)
+        // ) {
             form.patch(route("procedimiento.update", procedimiento.value.id), {
                 onFinish: () => {
                     showToast("El registro ha sido creado", "success");
                     form.reset();
                 },
             });
-        } else {
-            showToast(
-                "El link a la herramienta o a la documentacion no son validos",
-                "error"
-            );
-        }
+        // } else {
+        //     showToast(
+        //         "El link a la herramienta o a la documentacion no son validos",
+        //         "error"
+        //     );
+        // }
     } catch (error) {
         showToast("Ocurrio un error", "error");
         console.error(error);
@@ -235,7 +235,7 @@ const submit = () => {
                                     <div class="my-4 w-full">
                                         <InputLabel
                                             for="link_externo"
-                                            value="Link externo: "
+                                            value="Link documento: "
                                         />
                                         <Textarea
                                             class="w-full"
