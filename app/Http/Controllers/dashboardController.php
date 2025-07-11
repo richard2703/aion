@@ -13,7 +13,8 @@ class dashboardController extends Controller
     public function getConfig()
     {
         $personalizar = Personalizar::first();
-        $objetivos = objetivos::all();
+        // $objetivos = objetivos::all();
+        $objetivos = objetivos::with('objetivoSteps')->get();
         $iaRecomendada = $personalizar->nombre_IA;
         $linkIA = $personalizar->link_IA;
 

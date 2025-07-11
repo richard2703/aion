@@ -16,4 +16,9 @@ class objetivos extends Model
     protected $fillable = [
         'objetivo', 'meta'
     ];
+
+        public function objetivoSteps()
+    {
+        return $this->hasMany(objetivoSteps::class, 'objetivo_id');
+    }
 }

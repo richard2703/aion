@@ -1,12 +1,6 @@
 <script setup>
-    import {
-        ref,
-        onMounted
-    } from "vue";
-    import {
-        Head,
-        Link
-    } from "@inertiajs/vue3";
+    import {ref,onMounted} from "vue";
+    import {Head,Link} from "@inertiajs/vue3";
     import Layout from "@/Layouts/Layout.vue";
     import tablapilares from "@/Pages/utils/tablapilares.vue";
     import Radar from "./Evaluacion/Chart/Radar.vue";
@@ -62,6 +56,8 @@
                 actuacion.value = item.value[0].actuacion;
                 banner_path.value = item.value[0].banner_path;
                 // Set other form fields here as needed
+
+                console.log("objetivos", objetivos.value);
             })
             .catch((error) => {
                 console.error("Error fetching item:", error);
@@ -258,7 +254,7 @@
                                             </div>
                                             <div v-else>Loading...</div>
                                         </div>
-                                        <div class="bg-gray-300">
+                                        <!-- <div class="bg-gray-300">
                                             <h2 class="text-center py-4 font-bold text-3xl">
                                                 OKR
                                             </h2>
@@ -268,7 +264,19 @@
                                                     {{ objetivo . objetivo }}
                                                 </li>
                                             </ul>
-                                        </div>
+                                        </div> -->
+                                        <ul>
+                                            <li v-for="objetivo in objetivos" :key="objetivo.id"
+                                                class="m-4 py-2 text-lg list-disc list-inside">
+                                                {{ objetivo . objetivo }}
+                                                <ul class="ml-6 list-[circle] text-base text-gray-700">
+                                                    <li v-for="paso in objetivo.objetivo_steps" :key="paso.id"
+                                                        class="my-1">
+                                                        {{ paso . step }}
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
                                         <br />
                                     </div>
                                 </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\objetivos;
+use App\Models\objetivoSteps;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -42,7 +43,6 @@ class objetivosController extends Controller
         return response()->json($result);
     }
 
-
     /**
      * Show the form for creating a new resource.
      */
@@ -56,7 +56,18 @@ class objetivosController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         $objetivos = objetivos::create($request->only('meta', 'objetivo'));
+
+        foreach ($request->steps as $step) {
+            if ($step != null) {
+                # code...
+                objetivoSteps::create([
+                    'objetivo_id' => $objetivos->id,
+                    'step' => $step,
+                ]);
+            }
+        }
         return redirect()->route('objetivo.index');
     }
 
@@ -71,9 +82,14 @@ class objetivosController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(objetivos $objetivo)
+    // public function edit(objetivos $objetivo)
+    // {
+    public function edit($objetivo)
     {
-
+        $objetivo = objetivos::where('id', $objetivo)
+            ->with(['objetivoSteps'])
+            ->orderby('created_at', 'desc')
+            ->first();
         return Inertia::render('Objetivos/ObjetivoEdit', ['objetivo' => $objetivo]);
     }
 
@@ -83,7 +99,21 @@ class objetivosController extends Controller
     public function update(Request $request, objetivos $objetivo)
     {
         //
+        // dd($request);
+        $objetivo = objetivos::findOrFail($objetivo->id);
         $objetivo->update($request->only('meta', 'objetivo'));
+
+        // Actualizar los highlights
+        $objetivo->objetivoSteps()->delete(); // Elimina los existentes
+        foreach ($request->steps as $step) {
+            if ($step != null) {
+                # code...
+                objetivoSteps::create([
+                    'objetivo_id' => $objetivo->id,
+                    'step' => $step,
+                ]);
+            }
+        }
         return redirect()->route('objetivo.index');
     }
 
@@ -92,8 +122,7 @@ class objetivosController extends Controller
      */
     public function destroy(objetivos $objetivo)
     {
-
         $objetivo->delete();
-        return response()->json(['objetivos' => "ok"]);
+        return response()->json(['objetivos' => 'ok']);
     }
 }
